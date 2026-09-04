@@ -28,7 +28,7 @@ type RuleOptions = [
     style: OrderedListStyle;
   },
 ];
-type MessageIds = 'prefix';
+type MessageIds = 'style';
 interface OrderedListItemPrefix {
   startOffset: number;
   text: string;
@@ -76,8 +76,8 @@ export default {
     ],
 
     messages: {
-      prefix:
-        'Expected ordered list item prefix `{{ expected }}`, but found `{{ actual }}`.',
+      style:
+        'Ordered list item prefix should be `{{ expected }}`, but found `{{ actual }}`.',
     },
 
     language: 'markdown',
@@ -85,62 +85,87 @@ export default {
     dialects: ['commonmark', 'gfm'],
   },
 
+  // 1. 항목이 1이다.
+  // 단일 항목 규칙으로 expected 계산
+  // 필요하면 공통 report 함수 호출 -> 종료
+
+  // 2. 항목이 여러개
+  // 다중 항목 규칙으로 expected와 증가 여부 계산
+  // 항목을 순회하며 공통 report 함수 호출
   create(context) {
     const { sourceCode } = context;
     const [{ style }] = context.options;
 
-    if (style !== 'one_or_ordered') {
-      return {};
+    /**
+     * @param prefix
+     * @param expected
+     */
+    function reportStyle(prefix: OrderedListItemPrefix, expected: number) {
+      context.report({
+        loc: {
+          start: sourceCode.getLocFromIndex(prefix.startOffset),
+          end: sourceCode.getLocFromIndex(prefix.startOffset + prefix.text.length),
+        },
+        messageId: 'style',
+        data: {
+          expected,
+          actual: prefix.value,
+        },
+      });
     }
 
     return {
       'list[ordered=true]'(node: List) {
         const prefixes: OrderedListItemPrefix[] = [];
-
         for (const listItem of node.children) {
-          const [startOffset] = sourceCode.getRange(listItem);
+          const [itemStartOffset] = sourceCode.getRange(listItem);
           const match = orderedListItemPrefixRegex.exec(
-            sourceCode.text.slice(startOffset),
+            sourceCode.text.slice(itemStartOffset),
           );
 
           if (match === null) {
-            continue;
+            return;
           }
 
           const [text] = match;
+
           prefixes.push({
-            startOffset,
+            startOffset: itemStartOffset,
             text,
             value: Number(text),
           });
         }
 
-        const firstPrefix = prefixes[0];
-        const secondPrefix = prefixes[1];
-        const isOrdered =
-          firstPrefix !== undefined &&
-          secondPrefix !== undefined &&
-          (firstPrefix.value === 0 || secondPrefix.value !== 1);
-        let expected = firstPrefix?.value === 0 ? 0 : 1;
+        if (prefixes.length === 1) {
+          const [prefix] = prefixes;
+          const expected = style === 'zero' ? 0 : 1;
+
+          if (prefix.value !== expected) {
+            reportStyle(prefix, expected);
+          }
+
+          return;
+        }
+
+        const [firstPrefix, secondPrefix] = prefixes;
+
+        let shouldIncrementPrefix = style === 'ordered';
+
+        if (style === 'one_or_ordered') {
+          shouldIncrementPrefix = firstPrefix.value === 0 || secondPrefix.value !== 1;
+        }
+
+        const expectedStartsAtZero =
+          style === 'zero' || (shouldIncrementPrefix && firstPrefix.value === 0);
+
+        let expected = expectedStartsAtZero ? 0 : 1;
 
         for (const prefix of prefixes) {
           if (prefix.value !== expected) {
-            context.report({
-              loc: {
-                start: sourceCode.getLocFromIndex(prefix.startOffset),
-                end: sourceCode.getLocFromIndex(prefix.startOffset + prefix.text.length),
-              },
-
-              messageId: 'prefix',
-
-              data: {
-                expected,
-                actual: prefix.value,
-              },
-            });
+            reportStyle(prefix, expected);
           }
 
-          if (isOrdered) {
+          if (shouldIncrementPrefix) {
             expected++;
           }
         }
