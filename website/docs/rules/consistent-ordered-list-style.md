@@ -135,7 +135,9 @@ Examples of **correct** code for this rule:
 
 When `style` is set to `'one_or_ordered'`, the rule allows either the `'one'` or `'ordered'` style based on the first two list item prefixes.
 
-You can also specify `'one'` to require every prefix to be `1`, `'ordered'` to require prefixes to increase sequentially from `1` or `0`, or `'zero'` to require every prefix to be `0`.
+You can also specify `'one'` to require every prefix to be `1`, `'ordered'` to require prefixes to increase sequentially from `1`, or `'zero'` to require every prefix to be `0`.
+
+For `'ordered'`, a list that starts with `0` is also accepted, but only when the list has two or more items. This follows the `markdownlint` rule `MD029`.
 
 ## Prior Art
 
