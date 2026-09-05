@@ -149,6 +149,45 @@ Paragraph
       ],
     },
     {
+      name: '`one_or_ordered` style - infers `one` from the second prefix',
+      code: `2. First
+1. Second`,
+      errors: [
+        {
+          messageId: 'style',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 2,
+          data: { expected: 1, actual: 2 },
+        },
+      ],
+    },
+    {
+      name: '`one_or_ordered` style - infers `ordered` from a zero prefix',
+      code: `0. First
+0. Second
+0. Third`,
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 2,
+          data: { expected: 1, actual: 0 },
+        },
+        {
+          messageId: 'style',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 2,
+          data: { expected: 2, actual: 0 },
+        },
+      ],
+    },
+    {
       name: '`one_or_ordered` style - prefixes do not increase sequentially',
       code: `1. First
 3. Second
