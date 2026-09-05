@@ -30,15 +30,21 @@ ruleTester('consistent-ordered-list-style', rule, {
     },
     {
       name: '`one_or_ordered` style - all prefixes are `1`',
-      code: '1. First\n1. Second\n1. Third',
+      code: `1. First
+1. Second
+1. Third`,
     },
     {
       name: '`one_or_ordered` style - prefixes increase from `1`',
-      code: '1. First\n2. Second\n3. Third',
+      code: `1. First
+2. Second
+3. Third`,
     },
     {
       name: '`one_or_ordered` style - prefixes increase from `0`',
-      code: '0. First\n1. Second\n2. Third',
+      code: `0. First
+1. Second
+2. Third`,
     },
     {
       name: '`one` style - single item',
@@ -47,7 +53,9 @@ ruleTester('consistent-ordered-list-style', rule, {
     },
     {
       name: '`one` style - all prefixes are `1`',
-      code: '1. First\n1. Second\n1. Third',
+      code: `1. First
+1. Second
+1. Third`,
       options: [{ style: 'one' }],
     },
     {
@@ -57,12 +65,16 @@ ruleTester('consistent-ordered-list-style', rule, {
     },
     {
       name: '`ordered` style - prefixes increase from `1`',
-      code: '1. First\n2. Second\n3. Third',
+      code: `1. First
+2. Second
+3. Third`,
       options: [{ style: 'ordered' }],
     },
     {
       name: '`ordered` style - prefixes increase from `0`',
-      code: '0. First\n1. Second\n2. Third',
+      code: `0. First
+1. Second
+2. Third`,
       options: [{ style: 'ordered' }],
     },
     {
@@ -72,32 +84,52 @@ ruleTester('consistent-ordered-list-style', rule, {
     },
     {
       name: '`zero` style - all prefixes are `0`',
-      code: '0. First\n0. Second\n0. Third',
+      code: `0. First
+0. Second
+0. Third`,
       options: [{ style: 'zero' }],
     },
     {
       name: 'Parenthesis delimiters',
-      code: '1) First\n1) Second\n1) Third',
+      code: `1) First
+1) Second
+1) Third`,
     },
     {
       name: 'Prefixes with leading zeros',
-      code: '00. First\n01. Second\n02. Third',
+      code: `00. First
+01. Second
+02. Third`,
     },
     {
       name: 'Nested ordered lists use independent prefix sequences',
-      code: '1. Outer first\n   1. Nested first\n   2. Nested second\n1. Outer second',
+      code: `1. Outer first
+    1. Nested first
+    2. Nested second
+1. Outer second`,
     },
     {
       name: 'Ordered list in a blockquote',
-      code: '> 1. First\n> 1. Second',
+      code: `> 1. First
+> 1. Second`,
     },
     {
       name: 'Separate ordered lists use independent prefix sequences',
-      code: '1. First\n2. Second\n\nParagraph\n\n1. First\n1. Second',
+      code: `1. First
+2. Second
+
+Paragraph
+
+1. First
+1. Second`,
     },
     {
       name: 'Unordered lists are ignored',
-      code: '- First\n- Second\n\n1. First\n1. Second',
+      code: `- First
+- Second
+
+1. First
+1. Second`,
     },
   ],
 
@@ -118,7 +150,9 @@ ruleTester('consistent-ordered-list-style', rule, {
     },
     {
       name: '`one_or_ordered` style - prefixes do not increase sequentially',
-      code: '1. First\n3. Second\n4. Third',
+      code: `1. First
+3. Second
+4. Third`,
       errors: [
         {
           messageId: 'style',
@@ -140,7 +174,9 @@ ruleTester('consistent-ordered-list-style', rule, {
     },
     {
       name: '`one_or_ordered` style - prefixes do not remain `1`',
-      code: '1. First\n1. Second\n2. Third',
+      code: `1. First
+1. Second
+2. Third`,
       errors: [
         {
           messageId: 'style',
@@ -169,7 +205,9 @@ ruleTester('consistent-ordered-list-style', rule, {
     },
     {
       name: '`one` style - prefixes are not all `1`',
-      code: '1. First\n2. Second\n3. Third',
+      code: `1. First
+2. Second
+3. Third`,
       options: [{ style: 'one' }],
       errors: [
         {
@@ -207,7 +245,9 @@ ruleTester('consistent-ordered-list-style', rule, {
     },
     {
       name: '`ordered` style - prefixes do not increase',
-      code: '1. First\n1. Second\n1. Third',
+      code: `1. First
+1. Second
+1. Third`,
       options: [{ style: 'ordered' }],
       errors: [
         {
@@ -245,7 +285,9 @@ ruleTester('consistent-ordered-list-style', rule, {
     },
     {
       name: '`zero` style - prefixes are not all `0`',
-      code: '0. First\n1. Second\n2. Third',
+      code: `0. First
+1. Second
+2. Third`,
       options: [{ style: 'zero' }],
       errors: [
         {
@@ -268,21 +310,25 @@ ruleTester('consistent-ordered-list-style', rule, {
     },
     {
       name: 'Nested ordered lists report their own prefix sequence',
-      code: '1. Outer first\n   1. Nested first\n   3. Nested second\n1. Outer second',
+      code: `1. Outer first
+    1. Nested first
+    3. Nested second
+1. Outer second`,
       errors: [
         {
           messageId: 'style',
           line: 3,
-          column: 4,
+          column: 5,
           endLine: 3,
-          endColumn: 5,
+          endColumn: 6,
           data: { expected: 2, actual: 3 },
         },
       ],
     },
     {
       name: 'Ordered lists in blockquotes report the prefix location',
-      code: '> 1. First\n> 3. Second',
+      code: `> 1. First
+> 3. Second`,
       errors: [
         {
           messageId: 'style',
@@ -296,7 +342,8 @@ ruleTester('consistent-ordered-list-style', rule, {
     },
     {
       name: 'Multi-digit prefixes report the entire number',
-      code: '1. First\n10. Second',
+      code: `1. First
+10. Second`,
       options: [{ style: 'one' }],
       errors: [
         {
