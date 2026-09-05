@@ -101,7 +101,7 @@ export default {
             sourceCode.text.slice(itemStartOffset),
           );
 
-          if (match === null) {
+          if (!match) {
             return;
           }
 
