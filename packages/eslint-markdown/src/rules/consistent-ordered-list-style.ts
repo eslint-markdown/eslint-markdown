@@ -97,6 +97,7 @@ export default {
 
         for (const listItem of node.children) {
           const [itemStartOffset] = sourceCode.getRange(listItem);
+          // `match` is never null because this visitor only runs for `list[ordered=true]`, whose items always start with a numeric marker.
           const match = orderedListItemPrefixRegex.exec(
             sourceCode.text.slice(itemStartOffset),
           )!;
