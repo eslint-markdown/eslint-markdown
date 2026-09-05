@@ -99,11 +99,7 @@ export default {
           const [itemStartOffset] = sourceCode.getRange(listItem);
           const match = orderedListItemPrefixRegex.exec(
             sourceCode.text.slice(itemStartOffset),
-          );
-
-          if (!match) {
-            return;
-          }
+          )!;
 
           const [text] = match;
 
