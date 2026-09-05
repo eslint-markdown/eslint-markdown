@@ -133,13 +133,9 @@ Examples of **correct** code for this rule:
 
 > Type: `'one' | 'one_or_ordered' | 'ordered' | 'zero'` / Default: `'one_or_ordered'`
 
-When `style` is set to `'one'`, the rule requires every ordered list item prefix to be `1`.
-
-When `style` is set to `'ordered'`, the rule requires prefixes to increase sequentially from `1` or `0`.
-
-When `style` is set to `'zero'`, the rule requires every ordered list item prefix to be `0`.
-
 When `style` is set to `'one_or_ordered'`, the rule allows either the `'one'` or `'ordered'` style based on the first two list item prefixes.
+
+You can also specify `'one'` to require every prefix to be `1`, `'ordered'` to require prefixes to increase sequentially from `1` or `0`, or `'zero'` to require every prefix to be `0`.
 
 ## Prior Art
 

@@ -22,7 +22,9 @@ type OrderedListStyle = (typeof ORDERED_LIST_STYLE)[number];
 type RuleOptions = [
   {
     /**
-     * Ordered list item prefix style to enforce.
+     * When `style` is set to `'one_or_ordered'`, the rule allows either the `'one'` or `'ordered'` style based on the first two list item prefixes.
+     *
+     * You can also specify `'one'` to require every prefix to be `1`, `'ordered'` to require prefixes to increase sequentially from `1` or `0`, or `'zero'` to require every prefix to be `0`.
      * @default 'one_or_ordered'
      */
     style: 'one_or_ordered' | OrderedListStyle;
