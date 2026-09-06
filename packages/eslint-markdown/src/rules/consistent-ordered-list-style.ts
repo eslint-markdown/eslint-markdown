@@ -42,7 +42,7 @@ interface OrderedListItemPrefix {
 // --------------------------------------------------------------------------------
 
 const ORDERED_LIST_STYLE = ['one', 'ordered', 'zero'] as const;
-const orderedListItemPrefixRegex = /^\d{1,9}/u;
+const orderedListItemPrefixRegex = /\d{1,9}/uy;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -97,10 +97,9 @@ export default {
 
         for (const listItem of node.children) {
           const [itemStartOffset] = sourceCode.getRange(listItem);
+          orderedListItemPrefixRegex.lastIndex = itemStartOffset;
           // `match` is never null because this visitor only runs for `list[ordered=true]`, whose items always start with a numeric marker.
-          const match = orderedListItemPrefixRegex.exec(
-            sourceCode.text.slice(itemStartOffset),
-          )!;
+          const match = orderedListItemPrefixRegex.exec(sourceCode.text)!;
 
           const [text] = match;
 
