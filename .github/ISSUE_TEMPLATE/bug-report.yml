@@ -24,6 +24,7 @@ body:
       options:
         - commonmark
         - gfm
+        - commonmark & gfm
     validations:
       required: true
   - type: textarea
