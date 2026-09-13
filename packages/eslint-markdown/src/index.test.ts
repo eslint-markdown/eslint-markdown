@@ -35,7 +35,7 @@ describe('index', () => {
   });
 
   describe('CommonJS', () => {
-    // See: https://github.com/lumirlumir/npm-eslint-markdown/pull/711#pullrequestreview-5190550194
+    // See: https://github.com/eslint-markdown/eslint-markdown/pull/711#pullrequestreview-5190550194
 
     it('should expose the plugin through `default`', () => {
       const commonJsModule = require('eslint-markdown') as typeof import('./index.js');
