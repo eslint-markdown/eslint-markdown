@@ -33,7 +33,7 @@ So, we **highly recommend** using the `eslint-markdown` plugin alongside ESLint'
 
 ## Code of Conduct
 
-See [Code of Conduct](https://github.com/lumirlumir/.github/blob/main/CODE_OF_CONDUCT.md#contributor-covenant-code-of-conduct).
+See [Code of Conduct](https://github.com/eslint-markdown/eslint-markdown/blob/main/CODE_OF_CONDUCT.md).
 
 ## Change Log
 
@@ -45,7 +45,7 @@ See [Versioning](https://eslint-markdown.lumir.page/docs/get-started/versioning)
 
 ## Security
 
-See [Security](https://github.com/lumirlumir/.github/blob/main/SECURITY.md#security).
+See [Security](https://github.com/eslint-markdown/eslint-markdown/blob/main/SECURITY.md).
 
 ## License
 
