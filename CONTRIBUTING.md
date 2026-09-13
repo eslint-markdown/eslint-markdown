@@ -16,10 +16,10 @@ All packages are located in the `packages` directory, and the documentation can 
     git clone https://github.com/eslint-markdown/eslint-markdown.git
     ```
 
-1. Move to the `npm-eslint-markdown` directory.
+1. Move to the `eslint-markdown` directory.
 
     ```sh
-    cd npm-eslint-markdown
+    cd eslint-markdown
     ```
 
 1. Install npm packages. ([Node.js](https://nodejs.org/en) is required.)
