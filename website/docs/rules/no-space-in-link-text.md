@@ -15,7 +15,7 @@ Padding is also left alone where removing it would change more than spacing:
 
 - **Link text spanning more than one line.** Such text can hold a hard break, a backslash before a line ending, or a blockquote marker opening each line, all in the place padding would be removed from. The rule skips the whole label rather than telling those apart.
 - **Trailing padding that follows an odd number of backslashes.** Removing it would leave the backslash escaping the closing bracket. Padding at the start of the same link is still removed.
-- **A shortcut reference at the head of a list item whose text is `x` or `X`.** Removing the padding would leave `[x]`, which GFM reads as a checked task list item, replacing the link with a checkbox.
+- **A shortcut reference opening the first paragraph of a list item, whose text is `x` or `X` and which is followed by whitespace.** Removing the padding would leave `[x]`, which GFM reads as a checked task list item, replacing the link with a checkbox. The same reference elsewhere in the item, or joined to the text after it, is still fixed.
 
 ## Examples
 

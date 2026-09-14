@@ -148,10 +148,24 @@ export default {
         return false;
       }
 
-      return (
-        taskListMarkers.has(
+      if (
+        !taskListMarkers.has(
           label.slice(leadingSpaceLength, label.length - trailingSpaceLength),
-        ) && listItemHeads.has(node)
+        )
+      ) {
+        return false;
+      }
+
+      // GFM needs whitespace between the brackets and what follows, so a checkbox cannot form
+      // where the next character belongs to the same word.
+      const [, nodeEndOffset] = sourceCode.getRange(node);
+      const charAfterNode = sourceCode.text[nodeEndOffset];
+
+      return (
+        (charAfterNode === undefined ||
+          isSpace(charAfterNode) ||
+          lineEndings.includes(charAfterNode)) &&
+        listItemHeads.has(node)
       );
     }
 
@@ -219,10 +233,17 @@ export default {
     return {
       // Visited before its own children, so the head is known by the time the link is checked.
       listItem(node) {
-        const [firstChild] = node.children;
+        // A definition renders nothing, so the parser keeps looking past it for the paragraph that
+        // a checkbox would open.
+        const firstRenderedChild = node.children.find(
+          child => child.type !== 'definition',
+        );
 
-        if (firstChild?.type === 'paragraph' && firstChild.children.length > 0) {
-          listItemHeads.add(firstChild.children[0]);
+        if (
+          firstRenderedChild?.type === 'paragraph' &&
+          firstRenderedChild.children.length > 0
+        ) {
+          listItemHeads.add(firstRenderedChild.children[0]);
         }
       },
 

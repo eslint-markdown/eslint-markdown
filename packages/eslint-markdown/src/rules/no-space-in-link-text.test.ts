@@ -120,6 +120,15 @@ ruleTester('no-space-in-link-text', rule, {
       code: '-\n  [x ] details\n\n[x]: https://eslint.org',
     },
     {
+      // NOTE: The definition renders nothing, so the paragraph after it still opens the list item.
+      name: 'Shortcut reference that would become a task list item after a definition',
+      code: '- [x]: https://eslint.org\n  [x ] details',
+    },
+    {
+      name: 'Shortcut reference that would become a task list item of a doubly marked list',
+      code: '- - [x ] details\n\n[x]: https://eslint.org',
+    },
+    {
       name: 'Shortcut reference that would become a task list item of a nested list',
       code: '- > - [x ] details\n\n[x]: https://eslint.org',
     },
@@ -438,6 +447,21 @@ ruleTester('no-space-in-link-text', rule, {
           column: 10,
           endLine: 1,
           endColumn: 11,
+        },
+      ],
+    },
+    {
+      // NOTE: GFM needs whitespace after the brackets, so this cannot become a checkbox.
+      name: 'Shortcut reference of a task list marker joined to the text after it',
+      code: '- [x ]details\n\n[x]: https://eslint.org',
+      output: '- [x]details\n\n[x]: https://eslint.org',
+      errors: [
+        {
+          messageId: 'noSpaceInLinkText',
+          line: 1,
+          column: 5,
+          endLine: 1,
+          endColumn: 6,
         },
       ],
     },
