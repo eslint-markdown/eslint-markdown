@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "npm-eslint-markdown",
+  "name": "eslint-markdown",
   "version": "0.16.0",
   "type": "module",
   "packageManager": "npm@10.9.2",
