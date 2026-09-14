@@ -79,6 +79,37 @@ ruleTester('no-space-in-link-text', rule, {
       code: '[\nESLint\n](https://eslint.org)',
     },
     {
+      // NOTE: The two spaces form a hard break with the line ending, so they are not padding.
+      name: 'Hard break at the start of the link text',
+      code: '[  \nESLint](https://eslint.org)',
+    },
+    {
+      // NOTE: Removing the padding would leave the backslash escaping the closing bracket.
+      name: 'Backslash before padding at the end of the link text',
+      code: '[ESLint\\ ](https://eslint.org)',
+    },
+    {
+      // NOTE: The blockquote marker of the second line sits between the text and the bracket.
+      name: 'Link text spanning lines of a blockquote',
+      code: '> [ESLint\n> ](https://eslint.org)',
+    },
+    {
+      name: 'Padding next to a line break inside the link text',
+      code: '[ \nESLint\n ](https://eslint.org)',
+    },
+    {
+      name: 'Autolink followed by trailing spaces',
+      code: '<https://eslint.org>  ',
+    },
+    {
+      name: 'Autolink followed by brackets that are not a link',
+      code: '<https://eslint.org> [ ESLint ]',
+    },
+    {
+      name: 'GFM literal autolink followed by brackets that are not a link',
+      code: 'https://eslint.org [ ESLint ]',
+    },
+    {
       name: 'Bracket that is not a link',
       code: '[ ESLint ]',
     },
@@ -323,28 +354,6 @@ ruleTester('no-space-in-link-text', rule, {
           column: 41,
           endLine: 1,
           endColumn: 42,
-        },
-      ],
-    },
-    {
-      // NOTE: The line break stays, so only the spaces next to the brackets are removed.
-      name: 'Padding next to a line break inside the link text',
-      code: '[ \nESLint\n ](https://eslint.org)',
-      output: '[\nESLint\n](https://eslint.org)',
-      errors: [
-        {
-          messageId: 'noSpaceInLinkText',
-          line: 1,
-          column: 2,
-          endLine: 1,
-          endColumn: 3,
-        },
-        {
-          messageId: 'noSpaceInLinkText',
-          line: 3,
-          column: 1,
-          endLine: 3,
-          endColumn: 2,
         },
       ],
     },

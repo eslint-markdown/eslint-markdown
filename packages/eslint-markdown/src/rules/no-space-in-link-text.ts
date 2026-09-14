@@ -26,13 +26,52 @@ type MessageIds = 'noSpaceInLinkText';
 // Helper
 // --------------------------------------------------------------------------------
 
-// Only spaces and tabs are removable padding. Removing a line break would discard meaning:
-// two spaces before it produce a hard break, and a backslash before it escapes the closing
-// bracket, so dropping the break alone would swallow the link itself.
-const leadingSpaceRegex = /^[ \t]+/u;
-const trailingSpaceRegex = /[ \t]+$/u;
-
+const openingBracket = '[';
 const closingBracket = ']';
+const lineEndings = ['\r', '\n'];
+
+const isSpace = (char: string) => char === ' ' || char === '\t';
+const isBackslash = (char: string) => char === '\\';
+
+/**
+ * Count the characters matching a predicate at one end of a string.
+ * - NOTE: Counting beats an anchored regular expression here, because `/[ \t]+$/` backtracks from
+ *   every position of a long run and turns a padded label into quadratic work.
+ * @param str The string to measure.
+ * @param predicate The test each character must pass to be counted.
+ * @param fromEnd Whether to count from the end instead of the start.
+ * @returns The number of matching characters found.
+ */
+function countChars(
+  str: string,
+  predicate: (char: string) => boolean,
+  fromEnd: boolean,
+): number {
+  const strLength = str.length;
+  let count = 0;
+
+  while (count < strLength) {
+    if (!predicate(str[fromEnd ? strLength - 1 - count : count])) {
+      break;
+    }
+
+    count++;
+  }
+
+  return count;
+}
+
+/**
+ * Check whether removing the trailing padding of a label would escape its closing bracket.
+ * @param label The link label, without its brackets.
+ * @param trailingSpaceLength The length of the padding that would be removed.
+ * @returns `true` if the padding hides an odd number of backslashes. `false` otherwise.
+ */
+function escapesClosingBracket(label: string, trailingSpaceLength: number): boolean {
+  const beforePadding = label.slice(0, label.length - trailingSpaceLength);
+
+  return countChars(beforePadding, isBackslash, true) % 2 === 1;
+}
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -43,7 +82,7 @@ export default {
     type: 'layout',
 
     docs: {
-      description: 'Disallow spaces inside link text',
+      description: 'Disallow spaces at the start and end of link text',
       url: URL_RULE_DOCS('no-space-in-link-text'),
       recommended: false,
       stylistic: false,
@@ -52,7 +91,7 @@ export default {
     fixable: 'whitespace',
 
     messages: {
-      noSpaceInLinkText: 'Space inside link text is not allowed.',
+      noSpaceInLinkText: 'Space at the start or end of link text is not allowed.',
     },
 
     language: 'markdown',
@@ -84,29 +123,40 @@ export default {
 
     /**
      * Checks the link text of a `link` or `linkReference` node.
-     * - NOTE: `children` positions cannot delimit the label on their own. The parser leaves padding
-     *   next to a line break outside them, so the label is measured against the source text instead.
      * @param node The node to check.
      */
     function checkLinkText(node: Link | LinkReference) {
       const { children } = node;
+      const [nodeStartOffset] = sourceCode.getRange(node);
+
+      // An autolink or a GFM literal such as `<https://example.com>` is a `link` node without
+      // brackets, so it has no link text and no label to measure offsets against.
+      if (sourceCode.text[nodeStartOffset] !== openingBracket) {
+        return;
+      }
 
       // An empty link text, `[](url)`, has no children and therefore no padding to report.
       if (children.length === 0) {
         return;
       }
 
-      const [nodeStartOffset] = sourceCode.getRange(node);
       const [, lastChildEndOffset] = sourceCode.getRange(children[children.length - 1]);
 
-      // The opening bracket is the first character of the node, and only padding can sit between
-      // the last child and the closing bracket, so both ends of the label are reachable from here.
+      // The opening bracket is the first character of the node, and the closing bracket is the
+      // first one after the last child, since the label ends there.
       const labelStartOffset = nodeStartOffset + 1;
       const labelEndOffset = sourceCode.text.indexOf(closingBracket, lastChildEndOffset);
       const label = sourceCode.text.slice(labelStartOffset, labelEndOffset);
 
-      const leadingSpaceLength = leadingSpaceRegex.exec(label)?.[0].length ?? 0;
-      const trailingSpaceLength = trailingSpaceRegex.exec(label)?.[0].length ?? 0;
+      // A label spanning several lines carries structure that padding removal would damage: the two
+      // spaces of a hard break, the backslash that escapes the closing bracket, and the blockquote
+      // markers that open each of its lines.
+      if (lineEndings.some(lineEnding => label.includes(lineEnding))) {
+        return;
+      }
+
+      const leadingSpaceLength = countChars(label, isSpace, false);
+      const trailingSpaceLength = countChars(label, isSpace, true);
 
       // A label of padding only, `[ ](url)`, matches on both ends over the same characters.
       if (leadingSpaceLength + trailingSpaceLength > label.length) {
@@ -119,7 +169,9 @@ export default {
         reportPadding(labelStartOffset, labelStartOffset + leadingSpaceLength);
       }
 
-      if (trailingSpaceLength > 0) {
+      // An odd number of backslashes before the padding would escape the closing bracket once the
+      // padding is gone, which turns the link into plain text.
+      if (trailingSpaceLength > 0 && !escapesClosingBracket(label, trailingSpaceLength)) {
         reportPadding(labelEndOffset - trailingSpaceLength, labelEndOffset);
       }
     }

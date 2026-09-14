@@ -7,9 +7,14 @@ This rule disallows spaces and tabs at the start and end of link text.
 
 Link text is the part between the brackets of a link. Padding there is part of the label, so it widens the underlined region of the rendered link and keeps exact searches such as `[ESLint]` from matching the source.
 
-The rule checks inline links and reference links. Images are out of scope.
+The rule checks inline links and reference links. Autolinks and images are out of scope, because neither carries link text between brackets.
 
-A line break inside link text is left as written, and only spaces and tabs beside it are removed. Removing the break itself would change the document: two spaces before a break produce a hard break, and a backslash before a break escapes the closing bracket.
+Only spaces and tabs count as padding, following the CommonMark definition of whitespace. Other characters such as a no-break space are left in place, which differs from `MD039`.
+
+Link text is also left alone where removing its padding would change more than spacing:
+
+- Link text spanning more than one line. A hard break, a backslash before a line ending, and the blockquote markers opening each line all sit where the padding would be removed.
+- Link text whose trailing padding follows an odd number of backslashes, because removing it would leave the backslash escaping the closing bracket.
 
 ## Examples
 
@@ -57,15 +62,17 @@ Spaces between words of the link text are untouched:
 [The ESLint website](https://eslint.org)
 ```
 
-Images keep their padding, matching `MD039`:
+Autolinks and images have no link text to check:
 
 ```md eslint-check
 <!-- eslint md/no-space-in-link-text: 'error' -->
 
+<https://eslint.org>
+
 ![ ESLint ](https://eslint.org/logo.png)
 ```
 
-A line break at either end is preserved, and so is the hard break that two spaces form with it:
+Link text spanning more than one line keeps its padding:
 
 ```md eslint-check
 <!-- eslint md/no-space-in-link-text: 'error' -->
@@ -78,13 +85,21 @@ ESLint
 ](https://eslint.org)
 ```
 
+Trailing padding after a backslash is kept, since removing it would escape the closing bracket:
+
+```md eslint-check
+<!-- eslint md/no-space-in-link-text: 'error' -->
+
+[ESLint\ ](https://eslint.org)
+```
+
 ## Options
 
 No options are available for this rule.
 
 ## Fix
 
-This rule fixes the link text by removing the spaces and tabs next to the brackets, leaving line breaks in place.
+This rule fixes the link text by removing the spaces and tabs next to the brackets.
 
 ## Prior Art
 
