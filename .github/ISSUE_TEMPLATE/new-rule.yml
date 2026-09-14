@@ -1,0 +1,54 @@
+name: "\U0001F680 Propose a new rule"
+description: 'Propose a new rule to be added to the plugin'
+title: 'New Rule: (fill in)'
+body:
+  - type: input
+    attributes:
+      label: Rule details
+      description: What should the new rule do?
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: What type of rule is this?
+      options:
+        - Warns about a potential problem
+        - Suggests an alternate way of doing something
+        - Enforces a consistent style or user preference
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Example code
+      description: Please provide some example code that this rule will warn about.
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Prior Art
+      description: If this rule already exists in another Markdown linter, please mention that here and provide link(s) to documentation.
+  - type: checkboxes
+    attributes:
+      label: Participation
+      options:
+        - label: I am willing to submit a pull request to implement this rule.
+          required: false
+  - type: markdown
+    attributes:
+      value: Please **do not** open a pull request until this issue has been accepted by the team.
+  - type: checkboxes
+    attributes:
+      label: AI acknowledgment
+      description: Please select one option and, if yes, briefly describe how AI was used (e.g., code, tests, docs) and which tool(s) you used.
+      options:
+        - label: No - I did not use AI to generate this issue report.
+          required: false
+        - label: Yes - minimal assistance (e.g., IDE autocomplete, small code completions, grammar fixes).
+          required: false
+        - label: Yes - substantive assistance (AI-generated non-trivial portions of code, tests, or documentation).
+          required: false
+  - type: textarea
+    attributes:
+      label: Additional comments
+      description: Is there anything else that's important for the team to know?

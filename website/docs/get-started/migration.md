@@ -1,6 +1,6 @@
 # Migration Guide
 
-This chapter provides guidance for migrating to [`eslint-markdown`](https://github.com/lumirlumir/npm-eslint-markdown) and [`@eslint/markdown`](https://github.com/eslint/markdown) from other Markdown linting tools like [`markdownlint`](https://github.com/DavidAnson/markdownlint), [`remark-lint`](https://github.com/remarkjs/remark-lint#readme), and [`textlint`](https://github.com/textlint/textlint#readme).
+This chapter provides guidance for migrating to [`eslint-markdown`](https://github.com/eslint-markdown/eslint-markdown) and [`@eslint/markdown`](https://github.com/eslint/markdown) from other Markdown linting tools like [`markdownlint`](https://github.com/DavidAnson/markdownlint), [`remark-lint`](https://github.com/remarkjs/remark-lint#readme), and [`textlint`](https://github.com/textlint/textlint#readme).
 
 | Emoji              | Compatibility        |
 | :----------------: | :------------------: |
