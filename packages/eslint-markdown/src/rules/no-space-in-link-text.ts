@@ -8,7 +8,7 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import type { Link, LinkReference } from 'mdast';
+import type { Link, LinkReference, PhrasingContent } from 'mdast';
 import { URL_RULE_DOCS } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -32,7 +32,6 @@ const lineEndings = ['\r', '\n'];
 
 // GFM reads `[x]` or `[X]` at the head of a list item as a checked task list item.
 const taskListMarkers = new Set(['x', 'X']);
-const listItemPrefixRegex = /^[ \t>]*(?:[-*+]|\d{1,9}[.)])[ \t]+$/u;
 
 const isSpace = (char: string) => char === ' ' || char === '\t';
 const isBackslash = (char: string) => char === '\\';
@@ -106,6 +105,10 @@ export default {
   create(context) {
     const { sourceCode } = context;
 
+    // A checkbox has to open the first paragraph of a list item, which the text before the link on
+    // its own line cannot tell: the list marker may sit on an earlier line, or behind other markers.
+    const listItemHeads = new WeakSet<PhrasingContent>();
+
     /**
      * @param startOffset Start offset of the padding.
      * @param endOffset End offset of the padding.
@@ -145,18 +148,10 @@ export default {
         return false;
       }
 
-      if (
-        !taskListMarkers.has(
+      return (
+        taskListMarkers.has(
           label.slice(leadingSpaceLength, label.length - trailingSpaceLength),
-        )
-      ) {
-        return false;
-      }
-
-      const { start } = sourceCode.getLoc(node);
-
-      return listItemPrefixRegex.test(
-        sourceCode.lines[start.line - 1].slice(0, start.column - 1),
+        ) && listItemHeads.has(node)
       );
     }
 
@@ -222,6 +217,15 @@ export default {
     }
 
     return {
+      // Visited before its own children, so the head is known by the time the link is checked.
+      listItem(node) {
+        const [firstChild] = node.children;
+
+        if (firstChild?.type === 'paragraph' && firstChild.children.length > 0) {
+          listItemHeads.add(firstChild.children[0]);
+        }
+      },
+
       link: checkLinkText,
       linkReference: checkLinkText,
     };

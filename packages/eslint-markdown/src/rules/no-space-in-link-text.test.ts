@@ -115,6 +115,15 @@ ruleTester('no-space-in-link-text', rule, {
       code: '- [x ] details\n\n[x]: https://eslint.org',
     },
     {
+      // NOTE: The list marker sits on an earlier line, so the line holding the link has none.
+      name: 'Shortcut reference that would become a task list item across lines',
+      code: '-\n  [x ] details\n\n[x]: https://eslint.org',
+    },
+    {
+      name: 'Shortcut reference that would become a task list item of a nested list',
+      code: '- > - [x ] details\n\n[x]: https://eslint.org',
+    },
+    {
       name: 'Shortcut reference in uppercase that would become a task list item',
       code: '- [ X ] details\n\n[x]: https://eslint.org',
     },
@@ -429,6 +438,21 @@ ruleTester('no-space-in-link-text', rule, {
           column: 10,
           endLine: 1,
           endColumn: 11,
+        },
+      ],
+    },
+    {
+      // NOTE: The first child of the list item is a blockquote, so the link opens no paragraph of it.
+      name: 'Shortcut reference of a task list marker inside a blockquote of a list item',
+      code: '- > [x ] details\n\n[x]: https://eslint.org',
+      output: '- > [x] details\n\n[x]: https://eslint.org',
+      errors: [
+        {
+          messageId: 'noSpaceInLinkText',
+          line: 1,
+          column: 7,
+          endLine: 1,
+          endColumn: 8,
         },
       ],
     },
