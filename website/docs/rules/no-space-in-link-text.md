@@ -9,12 +9,13 @@ Link text is the part between the brackets of a link. Padding there is part of t
 
 The rule checks inline links and reference links. Autolinks and images are out of scope, because neither carries link text between brackets.
 
-Only spaces and tabs count as padding, following the CommonMark definition of whitespace. Other characters such as a no-break space are left in place, which differs from `MD039`.
+Only spaces and tabs count as padding. Other whitespace, such as a no-break space, is left in place, which differs from `MD039`.
 
-Link text is also left alone where removing its padding would change more than spacing:
+Padding is also left alone where removing it would change more than spacing:
 
-- Link text spanning more than one line. A hard break, a backslash before a line ending, and the blockquote markers opening each line all sit where the padding would be removed.
-- Link text whose trailing padding follows an odd number of backslashes, because removing it would leave the backslash escaping the closing bracket.
+- **Link text spanning more than one line.** Such text can hold a hard break, a backslash before a line ending, or a blockquote marker opening each line, all in the place padding would be removed from. The rule skips the whole label rather than telling those apart.
+- **Trailing padding that follows an odd number of backslashes.** Removing it would leave the backslash escaping the closing bracket. Padding at the start of the same link is still removed.
+- **A shortcut reference at the head of a list item whose text is `x` or `X`.** Removing the padding would leave `[x]`, which GFM reads as a checked task list item, replacing the link with a checkbox.
 
 ## Examples
 
@@ -91,6 +92,16 @@ Trailing padding after a backslash is kept, since removing it would escape the c
 <!-- eslint md/no-space-in-link-text: 'error' -->
 
 [ESLint\ ](https://eslint.org)
+```
+
+A shortcut reference at the head of a list item keeps its padding when the fix would produce a checkbox:
+
+```md eslint-check
+<!-- eslint md/no-space-in-link-text: 'error' -->
+
+- [x ] details
+
+[x]: https://eslint.org
 ```
 
 ## Options

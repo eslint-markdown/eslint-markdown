@@ -110,6 +110,24 @@ ruleTester('no-space-in-link-text', rule, {
       code: 'https://eslint.org [ ESLint ]',
     },
     {
+      // NOTE: `[x]` at the head of a list item is a GFM checkbox, so the fix would drop the link.
+      name: 'Shortcut reference that would become a checked task list item',
+      code: '- [x ] details\n\n[x]: https://eslint.org',
+    },
+    {
+      name: 'Shortcut reference in uppercase that would become a task list item',
+      code: '- [ X ] details\n\n[x]: https://eslint.org',
+    },
+    {
+      name: 'Shortcut reference that would become a task list item of an ordered list',
+      code: '1. [x ] details\n\n[x]: https://eslint.org',
+    },
+    {
+      // NOTE: A no-break space is not padding under this rule, unlike `MD039`.
+      name: 'No-break space at both ends of the link text',
+      code: '[\u00a0ESLint\u00a0](https://eslint.org)',
+    },
+    {
       name: 'Bracket that is not a link',
       code: '[ ESLint ]',
     },
@@ -396,6 +414,63 @@ ruleTester('no-space-in-link-text', rule, {
           column: 11,
           endLine: 1,
           endColumn: 12,
+        },
+      ],
+    },
+    {
+      // NOTE: An even number of backslashes escapes itself, so the closing bracket stays literal.
+      name: 'Two backslashes before padding at the end of the link text',
+      code: '[ESLint\\\\ ](https://eslint.org)',
+      output: '[ESLint\\\\](https://eslint.org)',
+      errors: [
+        {
+          messageId: 'noSpaceInLinkText',
+          line: 1,
+          column: 10,
+          endLine: 1,
+          endColumn: 11,
+        },
+      ],
+    },
+    {
+      name: 'Shortcut reference in a list item that is not a task list marker',
+      code: '- [ESLint ] details\n\n[eslint]: https://eslint.org',
+      output: '- [ESLint] details\n\n[eslint]: https://eslint.org',
+      errors: [
+        {
+          messageId: 'noSpaceInLinkText',
+          line: 1,
+          column: 10,
+          endLine: 1,
+          endColumn: 11,
+        },
+      ],
+    },
+    {
+      name: 'Shortcut reference of a task list marker that is not at the head of a list item',
+      code: '- details [x ] more\n\n[x]: https://eslint.org',
+      output: '- details [x] more\n\n[x]: https://eslint.org',
+      errors: [
+        {
+          messageId: 'noSpaceInLinkText',
+          line: 1,
+          column: 13,
+          endLine: 1,
+          endColumn: 14,
+        },
+      ],
+    },
+    {
+      name: 'Full reference of a task list marker at the head of a list item',
+      code: '- [x ][eslint] details\n\n[eslint]: https://eslint.org',
+      output: '- [x][eslint] details\n\n[eslint]: https://eslint.org',
+      errors: [
+        {
+          messageId: 'noSpaceInLinkText',
+          line: 1,
+          column: 5,
+          endLine: 1,
+          endColumn: 6,
         },
       ],
     },

@@ -30,6 +30,10 @@ const openingBracket = '[';
 const closingBracket = ']';
 const lineEndings = ['\r', '\n'];
 
+// GFM reads `[x]` or `[X]` at the head of a list item as a checked task list item.
+const taskListMarkers = new Set(['x', 'X']);
+const listItemPrefixRegex = /^[ \t>]*(?:[-*+]|\d{1,9}[.)])[ \t]+$/u;
+
 const isSpace = (char: string) => char === ' ' || char === '\t';
 const isBackslash = (char: string) => char === '\\';
 
@@ -122,6 +126,41 @@ export default {
     }
 
     /**
+     * Checks whether removing the padding of a label would turn it into a task list marker.
+     * @param node The node the label belongs to.
+     * @param label The link label, without its brackets.
+     * @param leadingSpaceLength The length of the padding at the start.
+     * @param trailingSpaceLength The length of the padding at the end.
+     * @returns `true` if the fix would produce a checkbox. `false` otherwise.
+     */
+    function becomesTaskListItem(
+      node: Link | LinkReference,
+      label: string,
+      leadingSpaceLength: number,
+      trailingSpaceLength: number,
+    ): boolean {
+      // Only a shortcut reference renders as bare brackets; every other form keeps a destination
+      // or a second label after them, which stops GFM from reading a checkbox.
+      if (node.type !== 'linkReference' || node.referenceType !== 'shortcut') {
+        return false;
+      }
+
+      if (
+        !taskListMarkers.has(
+          label.slice(leadingSpaceLength, label.length - trailingSpaceLength),
+        )
+      ) {
+        return false;
+      }
+
+      const { start } = sourceCode.getLoc(node);
+
+      return listItemPrefixRegex.test(
+        sourceCode.lines[start.line - 1].slice(0, start.column - 1),
+      );
+    }
+
+    /**
      * Checks the link text of a `link` or `linkReference` node.
      * @param node The node to check.
      */
@@ -157,6 +196,12 @@ export default {
 
       const leadingSpaceLength = countChars(label, isSpace, false);
       const trailingSpaceLength = countChars(label, isSpace, true);
+
+      // Removing the padding of a shortcut reference at the head of a list item would leave `[x]`,
+      // which GFM reads as a checkbox, replacing the link with a task list item.
+      if (becomesTaskListItem(node, label, leadingSpaceLength, trailingSpaceLength)) {
+        return;
+      }
 
       // A label of padding only, `[ ](url)`, matches on both ends over the same characters.
       if (leadingSpaceLength + trailingSpaceLength > label.length) {
