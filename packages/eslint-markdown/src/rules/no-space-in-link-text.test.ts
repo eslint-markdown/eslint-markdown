@@ -451,6 +451,36 @@ ruleTester('no-space-in-link-text', rule, {
       ],
     },
     {
+      // NOTE: A checkbox needs content after it, so a list item holding the link alone is safe.
+      name: 'Shortcut reference of a task list marker alone in a list item',
+      code: '- [x ]\n\n[x]: https://eslint.org',
+      output: '- [x]\n\n[x]: https://eslint.org',
+      errors: [
+        {
+          messageId: 'noSpaceInLinkText',
+          line: 1,
+          column: 5,
+          endLine: 1,
+          endColumn: 6,
+        },
+      ],
+    },
+    {
+      // NOTE: The item already holds a checkbox, so the link after it cannot become a second one.
+      name: 'Shortcut reference of a task list marker after an existing checkbox',
+      code: '- [x] [x ] details\n\n[x]: https://eslint.org',
+      output: '- [x] [x] details\n\n[x]: https://eslint.org',
+      errors: [
+        {
+          messageId: 'noSpaceInLinkText',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
+        },
+      ],
+    },
+    {
       // NOTE: GFM needs whitespace after the brackets, so this cannot become a checkbox.
       name: 'Shortcut reference of a task list marker joined to the text after it',
       code: '- [x ]details\n\n[x]: https://eslint.org',

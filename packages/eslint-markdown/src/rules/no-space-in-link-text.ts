@@ -233,15 +233,21 @@ export default {
     return {
       // Visited before its own children, so the head is known by the time the link is checked.
       listItem(node) {
+        // An item that already holds a checkbox cannot grow a second one.
+        if (typeof node.checked === 'boolean') {
+          return;
+        }
+
         // A definition renders nothing, so the parser keeps looking past it for the paragraph that
         // a checkbox would open.
         const firstRenderedChild = node.children.find(
           child => child.type !== 'definition',
         );
 
+        // A checkbox needs content after it, so a paragraph holding the link alone stays a link.
         if (
           firstRenderedChild?.type === 'paragraph' &&
-          firstRenderedChild.children.length > 0
+          firstRenderedChild.children.length > 1
         ) {
           listItemHeads.add(firstRenderedChild.children[0]);
         }
