@@ -108,8 +108,13 @@ ruleTester('no-shell-dollar', rule, {
       code: '```sh\n$ printf foo \\\n\noutput\n```',
     },
     {
+      // The backslash must be immediately followed by a newline; any space or tab after it prevents line continuation.
       name: 'Backslash followed by spaces before output',
       code: '```sh\n$ printf foo \\   \noutput\n```',
+    },
+    {
+      name: 'Backslash followed by tabs before output',
+      code: '```sh\n$ printf foo \\\t\t\t\noutput\n```',
     },
     {
       name: 'Escaped trailing backslash followed by output',
@@ -303,22 +308,6 @@ ruleTester('no-shell-dollar', rule, {
       ],
     },
     {
-      // NOTE: Unlike `markdownlint` and `remark-lint`, `eslint-markdown` recognizes the
-      // backslash-newline pair as a line continuation, which better reflects the rule's intent.
-      name: 'Command continued with a backslash',
-      code: '```sh\n$ npm install \\\n    --save-dev eslint\n```',
-      output: '```sh\nnpm install \\\n    --save-dev eslint\n```',
-      errors: [
-        {
-          messageId: 'noShellDollar',
-          line: 2,
-          column: 1,
-          endLine: 2,
-          endColumn: 3,
-        },
-      ],
-    },
-    {
       name: 'Carriage return line endings',
       code: '```sh\r$ npm install\r$ npm run build\r```',
       output: '```sh\rnpm install\rnpm run build\r```',
@@ -360,6 +349,23 @@ ruleTester('no-shell-dollar', rule, {
         },
       ],
     },
+
+    // NOTE: Unlike `markdownlint` and `remark-lint`, `eslint-markdown` recognizes the
+    // backslash-newline pair as a line continuation, which better reflects the rule's intent.
+    {
+      name: 'Command continued with a backslash',
+      code: '```sh\n$ npm install \\\n    --save-dev eslint\n```',
+      output: '```sh\nnpm install \\\n    --save-dev eslint\n```',
+      errors: [
+        {
+          messageId: 'noShellDollar',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 3,
+        },
+      ],
+    },
     {
       name: 'Command continued with a backslash across carriage return and line feed line endings',
       code: '```sh\r\n$ npm install \\\r\n    --save-dev eslint\r\n```',
@@ -375,8 +381,6 @@ ruleTester('no-shell-dollar', rule, {
       ],
     },
     {
-      // NOTE: Unlike `markdownlint` and `remark-lint`, `eslint-markdown` recognizes the
-      // backslash-newline pair as a line continuation, which better reflects the rule's intent.
       name: 'Command continued across multiple lines',
       code: '```sh\n$ docker run \\\n  --rm \\\n  alpine\n$ echo done\n```',
       output: '```sh\ndocker run \\\n  --rm \\\n  alpine\necho done\n```',
@@ -398,8 +402,6 @@ ruleTester('no-shell-dollar', rule, {
       ],
     },
     {
-      // NOTE: Unlike `markdownlint` and `remark-lint`, `eslint-markdown` recognizes the
-      // backslash-newline pair as a line continuation, which better reflects the rule's intent.
       name: 'Command repeated after the same text appears on a continuation line',
       code: '```sh\n$ echo \\\n$ echo hi\n$ echo hi\n```',
       output: '```sh\necho \\\n$ echo hi\necho hi\n```',
@@ -420,6 +422,7 @@ ruleTester('no-shell-dollar', rule, {
         },
       ],
     },
+
     {
       // NOTE: The list item indentation splits the tab, so `Code#value` holds spaces the source line does not.
       name: 'Fenced code block inside a list item with a tab-indented command',
