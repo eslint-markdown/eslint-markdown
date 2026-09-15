@@ -114,16 +114,25 @@ export default {
         const html = sourceCode.getText(node);
 
         for (const { attrs, sourceCodeLocation } of getElementsByTagName(html, 'a')) {
-          let hasTitle = false;
+          if (!sourceCodeLocation?.startTag || !sourceCodeLocation.attrs?.href) {
+            continue;
+          }
+
+          let needsTitle = true;
 
           for (const { name, value } of attrs) {
             if (name === 'title' && value) {
-              hasTitle = true;
+              needsTitle = false;
+              break;
+            }
+
+            if (name === 'aria-hidden' && value === 'true') {
+              needsTitle = false;
               break;
             }
           }
 
-          if (!hasTitle && sourceCodeLocation?.startTag) {
+          if (needsTitle) {
             report({
               start: sourceCode.getLocFromIndex(
                 nodeStartOffset + sourceCodeLocation.startTag.startOffset,

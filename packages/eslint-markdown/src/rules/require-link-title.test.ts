@@ -88,6 +88,14 @@ ruleTester('require-link-title', rule, {
       code: '<a href="https://example.com" title="title">text</a>',
     },
     {
+      name: 'Html node without href attribute',
+      code: '<a id="section"></a>',
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to true',
+      code: '<a aria-hidden="true" href="https://example.com">text</a>',
+    },
+    {
       name: 'Nested Html node with title attribute',
       code: `
 <div>
@@ -320,6 +328,50 @@ ruleTester('require-link-title', rule, {
           column: 1,
           endLine: 1,
           endColumn: 40,
+        },
+      ],
+    },
+    {
+      name: 'Html node with empty href attribute and without title attribute',
+      code: '<a href="">text</a>',
+      errors: [
+        {
+          messageId: 'requireLinkTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 12,
+        },
+      ],
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to false',
+      code: '<a href="https://example.com" aria-hidden="false">text</a>',
+      errors: [
+        {
+          messageId: 'requireLinkTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 51,
+        },
+      ],
+    },
+    {
+      name: 'Nested Html node with ignored links followed by link without title attribute',
+      code: `
+<div>
+  <a id="section"></a>
+  <a aria-hidden="true" href="https://example.com">hidden</a>
+  <a href="https://example.com">text</a>
+</div>`,
+      errors: [
+        {
+          messageId: 'requireLinkTitle',
+          line: 5,
+          column: 3,
+          endLine: 5,
+          endColumn: 33,
         },
       ],
     },
