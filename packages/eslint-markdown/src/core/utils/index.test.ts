@@ -8,8 +8,8 @@
 
 import { assert, describe, it } from 'vitest';
 import {
-  CODE_STYLE,
   escapeStringRegexp,
+  CODE_STYLE,
   getCodeStyle,
   getElementsByTagName,
   isBlankLine,

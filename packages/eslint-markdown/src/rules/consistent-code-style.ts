@@ -17,8 +17,12 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import { CODE_STYLE, getCodeStyle, isBlankLine } from '../core/utils/index.js';
-import type { CodeStyle } from '../core/utils/index.js';
+import {
+  CODE_STYLE,
+  getCodeStyle,
+  isBlankLine,
+  type CodeStyle,
+} from '../core/utils/index.js';
 import { URL_RULE_DOCS } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 

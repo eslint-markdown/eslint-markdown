@@ -11,30 +11,20 @@
 export type CodeStyle = (typeof CODE_STYLE)[number];
 
 // --------------------------------------------------------------------------------
-// Helper
-// --------------------------------------------------------------------------------
-
-const backtickChar = '`';
-const tildeChar = '~';
-
-// --------------------------------------------------------------------------------
 // Export
 // --------------------------------------------------------------------------------
 
 export const CODE_STYLE = ['indent', 'fence-backtick', 'fence-tilde'] as const;
 
 /**
- * Get the style of a code block.
- * - NOTE: Only the first character is inspected, so a single character read from the start of a `Code` node is enough.
- * @param str Text starting at the beginning of a `Code` node.
+ * Get the code style based on the given text.
+ * @param char The text to determine the code style from. It must be a single character.
  * @returns The code style.
  */
-export function getCodeStyle(str: string): CodeStyle {
-  const firstChar = str[0];
-
-  if (firstChar === backtickChar) {
+export function getCodeStyle(char: string): CodeStyle {
+  if (char === '`') {
     return 'fence-backtick';
-  } else if (firstChar === tildeChar) {
+  } else if (char === '~') {
     return 'fence-tilde';
   } else {
     return 'indent';
