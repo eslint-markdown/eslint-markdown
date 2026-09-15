@@ -1,7 +1,7 @@
 /**
  * @fileoverview Rule to disallow dollar signs before commands without showing output.
  * @author Marry(uncoolclub)
- * @see https://github.com/DavidAnson/markdownlint/blob/v0.40.0/lib/md014.mjs
+ * @see https://github.com/DavidAnson/markdownlint/blob/v0.41.1/lib/md014.mjs
  */
 
 // --------------------------------------------------------------------------------
@@ -10,7 +10,7 @@
 
 import { getCodeStyle, isBlankLine } from '../core/utils/index.js';
 import { URL_RULE_DOCS } from '../core/constants.js';
-import type { RuleModule } from '../core/types.js';
+import type { RuleModule, SourceRange } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
 // Typedef
@@ -37,8 +37,13 @@ type MessageIds = 'noShellDollar';
 const dollarCommandRegex = /^[ \t]*\$[ \t]+/u;
 const promptRegex = /\$[ \t]+/u;
 const trailingBackslashRegex = /\\+$/u;
-// CommonMark accepts CR, LF, and CRLF as line endings, and `Code#value` keeps them as written.
 const lineEndingRegex = /\r\n|[\r\n]/u;
+
+function getNextLineOffset(text: string, offset: number): number {
+  const match = lineEndingRegex.exec(text.slice(offset));
+
+  return match ? offset + match.index + match[0].length : text.length;
+}
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -90,69 +95,70 @@ export default {
   },
 
   create(context) {
-    const { sourceCode } = context;
+    const {
+      sourceCode,
+      sourceCode: { text },
+    } = context;
     const [{ skipCode }] = context.options;
 
     return {
       code(node) {
         if (node.lang && skipCode.includes(node.lang)) {
+          // Early return if the code block's language is in the skip list.
           return;
         }
 
         const [nodeStartOffset] = sourceCode.getRange(node);
-        const {
-          start: { line: nodeStartLine },
-        } = sourceCode.getLoc(node);
+        const ranges: SourceRange[] = [];
+
         // A fenced code block starts its content on the second line, so its opening fence is skipped.
-        const firstCodeLine =
-          getCodeStyle(sourceCode.text[nodeStartOffset]) === 'indent'
-            ? nodeStartLine
-            : nodeStartLine + 1;
+        let codeLineStartOffset =
+          getCodeStyle(text[nodeStartOffset]) === 'indent'
+            ? nodeStartOffset
+            : getNextLineOffset(text, nodeStartOffset);
+        let isPreviousLineContinues = false;
 
-        const promptLocs: { line: number; column: number; endColumn: number }[] = [];
-        let previousLineContinues = false;
+        for (const codeLine of node.value.split(lineEndingRegex)) {
+          const nextCodeLineStartOffset = getNextLineOffset(text, codeLineStartOffset);
 
-        for (const [index, codeLine] of node.value.split(lineEndingRegex).entries()) {
           if (isBlankLine(codeLine)) {
-            previousLineContinues = false;
+            codeLineStartOffset = nextCodeLineStartOffset;
+            isPreviousLineContinues = false;
             continue;
           }
 
-          if (!previousLineContinues) {
+          if (!isPreviousLineContinues) {
             if (!dollarCommandRegex.test(codeLine)) {
               return;
             }
 
-            // `Code#value` drops container markers and expands partial tabs, so the prompt is located on the
-            // source line instead. Everything before it is `>`, spaces, or tabs, so the first `$` is the prompt.
-            const line = firstCodeLine + index;
-            const match = promptRegex.exec(sourceCode.lines[line - 1]) as RegExpExecArray;
+            // `Code#value` drops container markers and expands partial tabs, so find the prompt in the original line.
+            const match = promptRegex.exec(
+              text.slice(codeLineStartOffset, nextCodeLineStartOffset),
+            )!; // `dollarCommandRegex` match guarantees this will succeed.
 
-            promptLocs.push({
-              line,
-              column: match.index + 1,
-              endColumn: match.index + 1 + match[0].length,
-            });
+            const startOffset = codeLineStartOffset + match.index;
+            const endOffset = startOffset + match[0].length;
+
+            ranges.push([startOffset, endOffset]);
           }
 
-          previousLineContinues =
+          codeLineStartOffset = nextCodeLineStartOffset;
+          isPreviousLineContinues =
             (trailingBackslashRegex.exec(codeLine)?.[0].length ?? 0) % 2 === 1;
         }
 
-        for (const { line, column, endColumn } of promptLocs) {
-          const start = { line, column };
-          const end = { line, column: endColumn };
-
+        for (const [startOffset, endOffset] of ranges) {
           context.report({
-            loc: { start, end },
+            loc: {
+              start: sourceCode.getLocFromIndex(startOffset),
+              end: sourceCode.getLocFromIndex(endOffset),
+            },
 
             messageId: 'noShellDollar',
 
             fix(fixer) {
-              return fixer.removeRange([
-                sourceCode.getIndexFromLoc(start),
-                sourceCode.getIndexFromLoc(end),
-              ]);
+              return fixer.removeRange([startOffset, endOffset]);
             },
           });
         }
