@@ -147,11 +147,11 @@ export default {
       },
 
       math(node) {
-        if (skipMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `Code`.
+        if (skipMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `Math`.
       },
 
       inlineMath(node) {
-        if (skipInlineMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `InlineCode`.
+        if (skipInlineMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `InlineMath`.
       },
 
       'root:exit'() {
