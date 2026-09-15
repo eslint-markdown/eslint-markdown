@@ -1,5 +1,5 @@
 /**
- * @fileoverview Get the style of a code block.
+ * @fileoverview Get the code style based on the given character.
  * @see https://spec.commonmark.org/0.31.2/#fenced-code-blocks
  * @see https://spec.commonmark.org/0.31.2/#indented-code-blocks
  */
@@ -17,8 +17,8 @@ export type CodeStyle = (typeof CODE_STYLE)[number];
 export const CODE_STYLE = ['indent', 'fence-backtick', 'fence-tilde'] as const;
 
 /**
- * Get the code style based on the given text.
- * @param char The text to determine the code style from. It must be a single character.
+ * Get the code style based on the given character.
+ * @param char The character to determine the code style from. It must be a single character.
  * @returns The code style.
  */
 export function getCodeStyle(char: string): CodeStyle {
