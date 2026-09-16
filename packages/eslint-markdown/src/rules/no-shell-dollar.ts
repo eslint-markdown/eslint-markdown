@@ -103,7 +103,7 @@ export default {
         }
 
         const { start } = sourceCode.getLoc(node);
-        const ranges: SourceRange[] = [];
+        const promptRanges: SourceRange[] = [];
         const firstCodeLine = // A fenced code block starts its content on the second line, so its opening fence is skipped.
           getCodeStyle(lines[start.line - 1][start.column - 1]) === 'indent'
             ? start.line
@@ -132,14 +132,14 @@ export default {
             });
             const endOffset = startOffset + match[0].length;
 
-            ranges.push([startOffset, endOffset]);
+            promptRanges.push([startOffset, endOffset]);
           }
 
           isPreviousLineContinues =
             (trailingBackslashRegex.exec(codeLine)?.[0].length ?? 0) % 2 === 1;
         }
 
-        for (const [startOffset, endOffset] of ranges) {
+        for (const [startOffset, endOffset] of promptRanges) {
           context.report({
             loc: {
               start: sourceCode.getLocFromIndex(startOffset),
