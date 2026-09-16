@@ -63,19 +63,19 @@ describe('constants', () => {
 
   describe('regex', () => {
     describe('escapedTrailingBackslashRegex', () => {
-      it('should match a single trailing backslash', () => {
+      it('should match one trailing backslash because the run length is odd', () => {
         assert.match('text\\', escapedTrailingBackslashRegex);
       });
 
-      it('should not match two trailing backslashes', () => {
+      it('should not match two trailing backslashes because the run length is even', () => {
         assert.notMatch(`text${'\\'.repeat(2)}`, escapedTrailingBackslashRegex);
       });
 
-      it('should match the last of three trailing backslashes', () => {
+      it('should match three trailing backslashes because the run length is odd', () => {
         assert.match(`text${'\\'.repeat(3)}`, escapedTrailingBackslashRegex);
       });
 
-      it('should not match four trailing backslashes', () => {
+      it('should not match four trailing backslashes because the run length is even', () => {
         assert.notMatch(`text${'\\'.repeat(4)}`, escapedTrailingBackslashRegex);
       });
 
