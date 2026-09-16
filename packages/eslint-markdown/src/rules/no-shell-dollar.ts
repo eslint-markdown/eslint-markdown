@@ -39,12 +39,6 @@ const promptRegex = /\$[ \t]+/u;
 const trailingBackslashRegex = /\\+$/u;
 const lineEndingRegex = /\r\n|[\r\n]/u;
 
-function getNextLineOffset(text: string, offset: number): number {
-  const match = lineEndingRegex.exec(text.slice(offset));
-
-  return match ? offset + match.index + match[0].length : text.length;
-}
-
 // --------------------------------------------------------------------------------
 // Rule Definition
 // --------------------------------------------------------------------------------
@@ -97,7 +91,7 @@ export default {
   create(context) {
     const {
       sourceCode,
-      sourceCode: { text },
+      sourceCode: { lines, text },
     } = context;
     const [{ skipCode }] = context.options;
 
@@ -109,20 +103,20 @@ export default {
         }
 
         const [nodeStartOffset] = sourceCode.getRange(node);
+        const {
+          start: { line: nodeStartLine },
+        } = sourceCode.getLoc(node);
         const ranges: SourceRange[] = [];
 
         // A fenced code block starts its content on the second line, so its opening fence is skipped.
-        let codeLineStartOffset =
+        const firstCodeLine =
           getCodeStyle(text[nodeStartOffset]) === 'indent'
-            ? nodeStartOffset
-            : getNextLineOffset(text, nodeStartOffset);
+            ? nodeStartLine
+            : nodeStartLine + 1;
         let isPreviousLineContinues = false;
 
-        for (const codeLine of node.value.split(lineEndingRegex)) {
-          const nextCodeLineStartOffset = getNextLineOffset(text, codeLineStartOffset);
-
+        for (const [index, codeLine] of node.value.split(lineEndingRegex).entries()) {
           if (isBlankLine(codeLine)) {
-            codeLineStartOffset = nextCodeLineStartOffset;
             isPreviousLineContinues = false;
             continue;
           }
@@ -133,17 +127,18 @@ export default {
             }
 
             // `Code#value` drops container markers and expands partial tabs, so find the prompt in the original line.
-            const match = promptRegex.exec(
-              text.slice(codeLineStartOffset, nextCodeLineStartOffset),
-            )!; // `dollarCommandRegex` match guarantees this will succeed.
+            const line = firstCodeLine + index;
+            const match = promptRegex.exec(lines[line - 1])!; // `dollarCommandRegex` match guarantees this will succeed.
 
-            const startOffset = codeLineStartOffset + match.index;
+            const startOffset = sourceCode.getIndexFromLoc({
+              line,
+              column: match.index + 1,
+            });
             const endOffset = startOffset + match[0].length;
 
             ranges.push([startOffset, endOffset]);
           }
 
-          codeLineStartOffset = nextCodeLineStartOffset;
           isPreviousLineContinues =
             (trailingBackslashRegex.exec(codeLine)?.[0].length ?? 0) % 2 === 1;
         }
