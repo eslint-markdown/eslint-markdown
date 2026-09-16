@@ -9,7 +9,7 @@
 // --------------------------------------------------------------------------------
 
 import { getCodeStyle, isBlankLine } from '../core/utils/index.js';
-import { URL_RULE_DOCS } from '../core/constants.js';
+import { URL_RULE_DOCS, escapedTrailingBackslashRegex } from '../core/constants.js';
 import type { RuleModule, SourceRange } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
@@ -36,7 +36,6 @@ type MessageIds = 'noShellDollar';
 
 const dollarCommandRegex = /^[ \t]*\$[ \t]+/u;
 const promptRegex = /\$[ \t]+/u;
-const trailingBackslashRegex = /\\+$/u;
 const lineEndingRegex = /\r\n|[\r\n]/u;
 
 // --------------------------------------------------------------------------------
@@ -135,8 +134,7 @@ export default {
             promptRanges.push([startOffset, endOffset]);
           }
 
-          isPreviousLineContinues =
-            (trailingBackslashRegex.exec(codeLine)?.[0].length ?? 0) % 2 === 1;
+          isPreviousLineContinues = escapedTrailingBackslashRegex.test(codeLine);
         }
 
         for (const [startOffset, endOffset] of promptRanges) {

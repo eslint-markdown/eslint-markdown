@@ -11,6 +11,7 @@ import { escapeStringRegexp } from '../core/utils/index.js';
 import {
   URL_RULE_DOCS,
   punctuation as defaultPunctuation,
+  escapedTrailingBackslashRegex,
   gemojiRegex,
 } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
@@ -49,7 +50,6 @@ const trailingGemojiRegex = new RegExp(`${gemojiRegex.source}$`, gemojiRegex.fla
  */
 const trailingHtmlEntityRegex =
   /&(?:#\d+|#[xX][\da-fA-F]+|[a-zA-Z]{2,31}|blk\d{2}|emsp1[34]|frac\d{2}|sup\d|there4);$/;
-const escapedTrailingBackslashRegex = /(?<=(?<!\\)(?:\\{2})*)\\$/u;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -108,7 +108,7 @@ export default {
     const [{ punctuation }] = context.options;
 
     const trailingPunctuationRegex = new RegExp(
-      `[ \\t\\r\\n]*[${escapeStringRegexp(punctuation.join(''))}]+$`,
+      `(?<leadingWhitespace>[ \\t\\r\\n]*)[${escapeStringRegexp(punctuation.join(''))}]+$`,
     );
 
     return {
@@ -176,9 +176,11 @@ export default {
         const lastChildText = sourceCode.getText(lastChildNode);
         const match = trailingPunctuationRegex.exec(lastChildText);
 
-        if (!match) {
+        if (!match || !match.groups) {
           return;
         }
+
+        const { leadingWhitespace = '' } = match.groups;
 
         let trailingPunctuation = match[0];
 
@@ -224,11 +226,6 @@ export default {
 
         const [, endOffset] = sourceCode.getRange(lastChildNode);
         const startOffset = endOffset - trailingPunctuation.length;
-        const fixStartOffset = escapedTrailingBackslashRegex.test(
-          sourceCode.text.slice(0, startOffset),
-        )
-          ? startOffset - 1
-          : startOffset;
 
         context.report({
           loc: {
@@ -243,7 +240,17 @@ export default {
           messageId: 'noTrailingHeadingPunctuation',
 
           fix(fixer) {
-            return fixer.removeRange([fixStartOffset, endOffset]);
+            return fixer.removeRange([
+              startOffset -
+                Number(
+                  // When `leadingWhitespace` is `''` (empty string), check for an escaped trailing backslash.
+                  !leadingWhitespace &&
+                    escapedTrailingBackslashRegex.test(
+                      lastChildText.slice(0, -trailingPunctuation.length),
+                    ),
+                ),
+              endOffset,
+            ]);
           },
         });
       },

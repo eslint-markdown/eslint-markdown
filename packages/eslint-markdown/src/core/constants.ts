@@ -50,6 +50,11 @@ export const punctuationWithQuestionMark = [...punctuation, '?', '？'] as const
 // #region regex
 
 /**
+ * Regular expression for identifying an odd-length run of backslashes at the end of a string.
+ */
+export const escapedTrailingBackslashRegex = /(?<=(?<!\\)(?:\\{2})*)\\$/u;
+
+/**
  * Regular expression for identifying a GitHub emoji code.
  * - NOTE: These patterns are based on the `markdownlint`.
  * @see https://github.com/DavidAnson/markdownlint/blob/v0.41.1/helpers/helpers.cjs#L36-L38

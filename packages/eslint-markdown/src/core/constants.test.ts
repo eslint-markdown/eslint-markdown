@@ -11,6 +11,7 @@ import {
   URL_RULE_DOCS,
   punctuation,
   punctuationWithQuestionMark,
+  escapedTrailingBackslashRegex,
   gemojiRegex,
 } from './constants.js';
 
@@ -61,6 +62,28 @@ describe('constants', () => {
   });
 
   describe('regex', () => {
+    describe('escapedTrailingBackslashRegex', () => {
+      it('should match a single trailing backslash', () => {
+        assert.match('text\\', escapedTrailingBackslashRegex);
+      });
+
+      it('should not match two trailing backslashes', () => {
+        assert.notMatch(`text${'\\'.repeat(2)}`, escapedTrailingBackslashRegex);
+      });
+
+      it('should match the last of three trailing backslashes', () => {
+        assert.match(`text${'\\'.repeat(3)}`, escapedTrailingBackslashRegex);
+      });
+
+      it('should not match four trailing backslashes', () => {
+        assert.notMatch(`text${'\\'.repeat(4)}`, escapedTrailingBackslashRegex);
+      });
+
+      it('should not match a backslash before the end of a line', () => {
+        assert.notMatch('text\\more', escapedTrailingBackslashRegex);
+      });
+    });
+
     describe('gemojiRegex', () => {
       describe('valid gemoji', () => {
         it('should match supported single-letter names', () => {
