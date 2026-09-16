@@ -385,6 +385,7 @@ Paragraph`,
 \`\`\`
 code block 2
 \`\`\``,
+      output: '\n    code block 1\n\n    code block 2',
       errors: [
         {
           messageId: 'style',
@@ -404,6 +405,7 @@ code block 2
 ~~~
 code block 2
 ~~~`,
+      output: '\n    code block 1\n\n    code block 2',
       errors: [
         {
           messageId: 'style',
@@ -423,6 +425,7 @@ code block 1
 \`\`\`
 
     code block 2`,
+      output: '\n```\ncode block 1\n```\n\n```\ncode block 2\n```',
       errors: [
         {
           messageId: 'style',
@@ -444,6 +447,7 @@ code block 1
 ~~~
 code block 2
 ~~~`,
+      output: '\n```\ncode block 1\n```\n\n```\ncode block 2\n```',
       errors: [
         {
           messageId: 'style',
@@ -463,6 +467,7 @@ code block 1
 ~~~
 
     code block 2`,
+      output: '\n~~~\ncode block 1\n~~~\n\n~~~\ncode block 2\n~~~',
       errors: [
         {
           messageId: 'style',
@@ -484,6 +489,7 @@ code block 1
 \`\`\`
 code block 2
 \`\`\``,
+      output: '\n~~~\ncode block 1\n~~~\n\n~~~\ncode block 2\n~~~',
       errors: [
         {
           messageId: 'style',
@@ -507,6 +513,7 @@ code block 1
 ~~~
 code block 2
 ~~~`,
+      output: '\n    code block 1\n\n    code block 2',
       options: [{ style: 'indent' }],
       errors: [
         {
@@ -542,6 +549,12 @@ code block 1
           endLine: 2,
           endColumn: 4,
           data: { style: 'indent' },
+          suggestions: [
+            {
+              messageId: 'suggestIndent',
+              output: '\n    code block 1',
+            },
+          ],
         },
       ],
     },
@@ -560,6 +573,12 @@ code block 1
           endLine: 2,
           endColumn: 4,
           data: { style: 'indent' },
+          suggestions: [
+            {
+              messageId: 'suggestIndent',
+              output: '\n    code block 1',
+            },
+          ],
         },
       ],
     },
@@ -578,6 +597,12 @@ code block 1
           endLine: 2,
           endColumn: 4,
           data: { style: 'indent' },
+          suggestions: [
+            {
+              messageId: 'suggestIndent',
+              output: '\n    code block 1',
+            },
+          ],
         },
       ],
     },
@@ -609,6 +634,7 @@ code block 1
 ~~~
 code block 2
 ~~~`,
+      output: '\n```\ncode block 1\n```\n\n```\ncode block 2\n```',
       options: [{ style: 'fence-backtick' }],
       errors: [
         {
@@ -634,6 +660,7 @@ code block 2
       code: `
     code block 1
     code block 2`,
+      output: '\n```\ncode block 1\ncode block 2\n```',
       options: [{ style: 'fence-backtick' }],
       errors: [
         {
@@ -656,6 +683,7 @@ code block 2
 \`\`\`
 code block 2
 \`\`\``,
+      output: '\n~~~\ncode block 1\n~~~\n\n~~~\ncode block 2\n~~~',
       options: [{ style: 'fence-tilde' }],
       errors: [
         {
@@ -673,6 +701,206 @@ code block 2
           endLine: 4,
           endColumn: 4,
           data: { style: 'fence-tilde' },
+        },
+      ],
+    },
+
+    // option: `style` - fix and suggestion safety
+    {
+      name: '`fence-backtick` style - blockquoted tilde-fenced code (🔧)',
+      code: `
+> ~~~
+> code block 1
+> ~~~`,
+      output: '\n> ```\n> code block 1\n> ```',
+      options: [{ style: 'fence-backtick' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 3,
+          endLine: 2,
+          endColumn: 6,
+          data: { style: 'fence-backtick' },
+        },
+      ],
+    },
+    {
+      name: '`fence-backtick` style - nested blockquoted tilde-fenced code (🔧)',
+      code: `
+> > ~~~
+> > code block 1
+> > ~~~`,
+      output: '\n> > ```\n> > code block 1\n> > ```',
+      options: [{ style: 'fence-backtick' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 5,
+          endLine: 2,
+          endColumn: 8,
+          data: { style: 'fence-backtick' },
+        },
+      ],
+    },
+    {
+      name: '`fence-tilde` style - a fence longer than the minimum keeps its length (🔧)',
+      code: `
+\`\`\`\`js
+code block 1
+\`\`\`\``,
+      output: '\n~~~~js\ncode block 1\n~~~~',
+      options: [{ style: 'fence-tilde' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 5,
+          data: { style: 'fence-tilde' },
+        },
+      ],
+    },
+    {
+      name: '`fence-backtick` style - tilde-fenced code containing a backtick fence (❌)',
+      code: `
+~~~
+code block 1
+\`\`\`
+~~~`,
+      options: [{ style: 'fence-backtick' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 4,
+          data: { style: 'fence-backtick' },
+        },
+      ],
+    },
+    {
+      name: '`fence-backtick` style - indented code containing a backtick fence (❌)',
+      code: `
+    code block 1
+    \`\`\``,
+      options: [{ style: 'fence-backtick' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 17,
+          data: { style: 'fence-backtick' },
+        },
+      ],
+    },
+    {
+      name: '`fence-backtick` style - a backtick in the info string of a tilde fence (❌)',
+      code: `
+~~~ \`
+code block 1
+~~~`,
+      options: [{ style: 'fence-backtick' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 4,
+          data: { style: 'fence-backtick' },
+        },
+      ],
+    },
+    {
+      name: '`indent` style - fenced code preceded by a paragraph (❌)',
+      code: `Paragraph
+\`\`\`
+code block 1
+\`\`\``,
+      options: [{ style: 'indent' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 4,
+          data: { style: 'indent' },
+        },
+      ],
+    },
+    {
+      name: '`indent` style - fenced code followed by a paragraph (❌)',
+      code: `\`\`\`
+code block 1
+\`\`\`
+Paragraph`,
+      options: [{ style: 'indent' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 4,
+          data: { style: 'indent' },
+        },
+      ],
+    },
+    {
+      name: '`indent` style - unclosed fenced code (🔧)',
+      code: `
+\`\`\`
+code block 1`,
+      output: '\n    code block 1',
+      options: [{ style: 'indent' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 4,
+          data: { style: 'indent' },
+        },
+      ],
+    },
+    {
+      name: '`indent` style - empty fenced code (❌)',
+      code: `
+\`\`\`
+\`\`\``,
+      options: [{ style: 'indent' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 4,
+          data: { style: 'indent' },
+        },
+      ],
+    },
+    {
+      name: '`fence-backtick` style - tab-indented code (🔧)',
+      code: `	code block 1`,
+      output: '```\ncode block 1\n```',
+      options: [{ style: 'fence-backtick' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 14,
+          data: { style: 'fence-backtick' },
         },
       ],
     },

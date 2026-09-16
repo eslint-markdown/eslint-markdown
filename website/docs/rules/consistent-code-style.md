@@ -257,6 +257,14 @@ For compatibility with `markdownlint`'s [`MD031` - Fenced code blocks should be 
 
 :::
 
+## Fix
+
+This rule fixes code blocks by converting them to the configured style when the conversion is safe: between the two fence characters, and from an indented code block to a fenced one.
+
+## Suggestion
+
+This rule provides suggestions for converting a fenced code block to an indented code block when possible. Review each suggestion before applying it, as a language identifier or metadata on the fence is dropped by the conversion and cannot be recovered.
+
 ## Prior Art
 
 - [`MD031` - Fenced code blocks should be surrounded by blank lines](https://github.com/DavidAnson/markdownlint/blob/main/doc/md031.md#md031---fenced-code-blocks-should-be-surrounded-by-blank-lines)
