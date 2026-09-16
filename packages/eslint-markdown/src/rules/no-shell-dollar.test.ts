@@ -121,6 +121,10 @@ ruleTester('no-shell-dollar', rule, {
       code: '```sh\n$ echo \\\\\n\\\n```',
     },
     {
+      name: 'Command ending with four backslashes followed by output',
+      code: '```sh\n$ echo \\\\\\\\\noutput\n```',
+    },
+    {
       name: 'Shell secondary prompt',
       code: '```sh\n$ for f in *; do\n> echo $f\n> done\n```',
     },
@@ -401,6 +405,20 @@ ruleTester('no-shell-dollar', rule, {
       name: 'Command continued with a backslash',
       code: '```sh\n$ npm install \\\n    --save-dev eslint\n```',
       output: '```sh\nnpm install \\\n    --save-dev eslint\n```',
+      errors: [
+        {
+          messageId: 'noShellDollar',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 3,
+        },
+      ],
+    },
+    {
+      name: 'Command continued with three backslashes',
+      code: '```sh\n$ echo \\\\\\\ncontinued\n```',
+      output: '```sh\necho \\\\\\\ncontinued\n```',
       errors: [
         {
           messageId: 'noShellDollar',

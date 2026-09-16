@@ -11,8 +11,6 @@ A command may start with spaces or tabs. It must then have `$` followed by at le
 
 An odd number of backslashes at the end of a line continues the command. The next line is part of the command and has no prompt to report. A blank line ends the continuation.
 
-The rule checks fenced and indented code blocks in every language. Set [`skipCode`](#skipcode) to exclude languages.
-
 ## Examples
 
 ### :x: Incorrect {#incorrect}
@@ -44,6 +42,21 @@ $ npm install \
     --save-dev eslint
 ```
 ````
+
+::: warning Differences from `markdownlint` rule `MD014`
+
+Unlike `markdownlint` rule `MD014`, this rule recognizes commands continued with a backslash. It reports the `$` in this block.
+
+````md eslint-check
+<!-- eslint md/no-shell-dollar: 'error' -->
+
+```sh
+$ npm install \
+    --save-dev eslint
+```
+````
+
+:::
 
 #### With `{ skipCode: ['console'] }` Option
 
@@ -111,15 +124,7 @@ $ npm install
 
 > Type: `string[]` / Default: `[]`
 
-Use this array to skip code blocks by language. Matching is case-sensitive: `sh` and `SH` differ.
-
-For example, allow prompts in terminal sessions:
-
-```js
-'md/no-shell-dollar': ['error', {
-  skipCode: ['console'],
-}]
-```
+`string[]` allows dollar signs before commands only in code blocks for the specified languages. Matching is case-sensitive: `sh` and `SH` differ.
 
 This option cannot skip indented code blocks or fenced code blocks without a language.
 
@@ -128,19 +133,6 @@ This option cannot skip indented code blocks or fenced code blocks without a lan
 This rule removes the dollar sign and the whitespace that follows it, leaving the indentation of the line untouched.
 
 ## Prior Art
-
-### Differences from MD014
-
-Unlike MD014, this rule recognizes commands continued with a backslash. It reports the `$` in this block. MD014 leaves the block unchanged because the second line has no prompt:
-
-````md
-```sh
-$ npm install \
-    --save-dev eslint
-```
-````
-
-### References
 
 - [`MD014` - Dollar signs used before commands without showing output](https://github.com/DavidAnson/markdownlint/blob/main/doc/md014.md#md014---dollar-signs-used-before-commands-without-showing-output)
 - [`remark-lint-no-shell-dollars`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-shell-dollars#remark-lint-no-shell-dollars)
