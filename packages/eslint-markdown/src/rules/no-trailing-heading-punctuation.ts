@@ -49,6 +49,7 @@ const trailingGemojiRegex = new RegExp(`${gemojiRegex.source}$`, gemojiRegex.fla
  */
 const trailingHtmlEntityRegex =
   /&(?:#\d+|#[xX][\da-fA-F]+|[a-zA-Z]{2,31}|blk\d{2}|emsp1[34]|frac\d{2}|sup\d|there4);$/;
+const escapedTrailingBackslashRegex = /(?<=(?<!\\)(?:\\{2})*)\\$/u;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -223,6 +224,11 @@ export default {
 
         const [, endOffset] = sourceCode.getRange(lastChildNode);
         const startOffset = endOffset - trailingPunctuation.length;
+        const fixStartOffset = escapedTrailingBackslashRegex.test(
+          sourceCode.text.slice(0, startOffset),
+        )
+          ? startOffset - 1
+          : startOffset;
 
         context.report({
           loc: {
@@ -237,7 +243,7 @@ export default {
           messageId: 'noTrailingHeadingPunctuation',
 
           fix(fixer) {
-            return fixer.removeRange([startOffset, endOffset]);
+            return fixer.removeRange([fixStartOffset, endOffset]);
           },
         });
       },
