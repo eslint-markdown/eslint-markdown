@@ -203,9 +203,23 @@ ruleTester('no-shell-dollar', rule, {
       ],
     },
     {
-      name: 'Command indented inside a fenced code block',
+      name: 'Command with spaces before the dollar sign',
       code: '```sh\n  $ ls\n```',
       output: '```sh\n  ls\n```',
+      errors: [
+        {
+          messageId: 'noShellDollar',
+          line: 2,
+          column: 3,
+          endLine: 2,
+          endColumn: 5,
+        },
+      ],
+    },
+    {
+      name: 'Command with tabs before the dollar sign',
+      code: '```sh\n\t\t$ ls\n```',
+      output: '```sh\n\t\tls\n```',
       errors: [
         {
           messageId: 'noShellDollar',
@@ -349,6 +363,37 @@ ruleTester('no-shell-dollar', rule, {
         },
       ],
     },
+    {
+      // NOTE: CommonMark expands the leading tab to four columns. After consuming two
+      // columns as list-item indentation, the parser preserves the remaining two as
+      // spaces in `Code#value`, even though the source contains only a tab.
+      name: 'Fenced code block inside a list item with a tab-indented command',
+      code: '- ```sh\n\t$ ls\n  ```',
+      output: '- ```sh\n\tls\n  ```',
+      errors: [
+        {
+          messageId: 'noShellDollar',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      name: 'Multiple fenced code blocks where only one shows output',
+      code: '```sh\n$ ls\n```\n\n```sh\n$ ls\nfile.txt\n```',
+      output: '```sh\nls\n```\n\n```sh\n$ ls\nfile.txt\n```',
+      errors: [
+        {
+          messageId: 'noShellDollar',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 3,
+        },
+      ],
+    },
 
     // NOTE: Unlike `markdownlint` and `remark-lint`, `eslint-markdown` recognizes the
     // backslash-newline pair as a line continuation, which better reflects the rule's intent.
@@ -418,36 +463,6 @@ ruleTester('no-shell-dollar', rule, {
           line: 4,
           column: 1,
           endLine: 4,
-          endColumn: 3,
-        },
-      ],
-    },
-
-    {
-      // NOTE: The list item indentation splits the tab, so `Code#value` holds spaces the source line does not.
-      name: 'Fenced code block inside a list item with a tab-indented command',
-      code: '- ```sh\n\t$ ls\n  ```',
-      output: '- ```sh\n\tls\n  ```',
-      errors: [
-        {
-          messageId: 'noShellDollar',
-          line: 2,
-          column: 2,
-          endLine: 2,
-          endColumn: 4,
-        },
-      ],
-    },
-    {
-      name: 'Multiple fenced code blocks where only one shows output',
-      code: '```sh\n$ ls\n```\n\n```sh\n$ ls\nfile.txt\n```',
-      output: '```sh\nls\n```\n\n```sh\n$ ls\nfile.txt\n```',
-      errors: [
-        {
-          messageId: 'noShellDollar',
-          line: 2,
-          column: 1,
-          endLine: 2,
           endColumn: 3,
         },
       ],
