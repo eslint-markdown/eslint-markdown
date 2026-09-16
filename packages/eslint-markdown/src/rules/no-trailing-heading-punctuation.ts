@@ -108,7 +108,7 @@ export default {
     const [{ punctuation }] = context.options;
 
     const trailingPunctuationRegex = new RegExp(
-      `(?<leadingWhitespace>[ \\t\\r\\n]*)[${escapeStringRegexp(punctuation.join(''))}]+$`,
+      `(?<leadingSpaces>[ \\t\\r\\n]*)[${escapeStringRegexp(punctuation.join(''))}]+$`,
     );
 
     return {
@@ -180,7 +180,7 @@ export default {
           return;
         }
 
-        const { leadingWhitespace = '' } = match.groups;
+        const { leadingSpaces } = match.groups;
 
         let trailingPunctuation = match[0];
 
@@ -243,8 +243,8 @@ export default {
             return fixer.removeRange([
               startOffset -
                 Number(
-                  // When `leadingWhitespace` is `''` (empty string), check for an escaped trailing backslash.
-                  !leadingWhitespace &&
+                  // When `leadingSpaces` is `''` (empty string), check for an escaped trailing backslash.
+                  !leadingSpaces &&
                     escapedTrailingBackslashRegex.test(
                       lastChildText.slice(0, -trailingPunctuation.length),
                     ),
