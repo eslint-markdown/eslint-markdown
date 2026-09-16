@@ -11,6 +11,7 @@ import consistentDeleteStyle from './consistent-delete-style.js';
 import consistentEmphasisStyle from './consistent-emphasis-style.js';
 import consistentHeadingStyle from './consistent-heading-style.js';
 import consistentInlineCodeStyle from './consistent-inline-code-style.js';
+import consistentListIndentation from './consistent-list-indentation.js';
 import consistentStrongStyle from './consistent-strong-style.js';
 import consistentThematicBreakStyle from './consistent-thematic-break-style.js';
 import consistentUnorderedListStyle from './consistent-unordered-list-style.js';
@@ -42,6 +43,7 @@ export default {
   'consistent-emphasis-style': consistentEmphasisStyle,
   'consistent-heading-style': consistentHeadingStyle,
   'consistent-inline-code-style': consistentInlineCodeStyle,
+  'consistent-list-indentation': consistentListIndentation,
   'consistent-strong-style': consistentStrongStyle,
   'consistent-thematic-break-style': consistentThematicBreakStyle,
   'consistent-unordered-list-style': consistentUnorderedListStyle,
