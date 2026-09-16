@@ -91,7 +91,7 @@ export default {
   create(context) {
     const {
       sourceCode,
-      sourceCode: { lines, text },
+      sourceCode: { lines },
     } = context;
     const [{ skipCode }] = context.options;
 
@@ -102,17 +102,13 @@ export default {
           return;
         }
 
-        const [nodeStartOffset] = sourceCode.getRange(node);
-        const {
-          start: { line: nodeStartLine },
-        } = sourceCode.getLoc(node);
+        const { start } = sourceCode.getLoc(node);
         const ranges: SourceRange[] = [];
+        const firstCodeLine = // A fenced code block starts its content on the second line, so its opening fence is skipped.
+          getCodeStyle(lines[start.line - 1][start.column - 1]) === 'indent'
+            ? start.line
+            : start.line + 1;
 
-        // A fenced code block starts its content on the second line, so its opening fence is skipped.
-        const firstCodeLine =
-          getCodeStyle(text[nodeStartOffset]) === 'indent'
-            ? nodeStartLine
-            : nodeStartLine + 1;
         let isPreviousLineContinues = false;
 
         for (const [index, codeLine] of node.value.split(lineEndingRegex).entries()) {
