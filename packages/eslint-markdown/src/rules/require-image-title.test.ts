@@ -414,7 +414,7 @@ ruleTester('require-image-title', rule, {
           line: 1,
           column: 1,
           endLine: 1,
-          endColumn: 63,
+          endColumn: 64,
         },
       ],
     },

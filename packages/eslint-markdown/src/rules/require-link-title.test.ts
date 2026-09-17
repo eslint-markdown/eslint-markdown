@@ -391,7 +391,7 @@ ruleTester('require-link-title', rule, {
           line: 1,
           column: 1,
           endLine: 1,
-          endColumn: 52,
+          endColumn: 53,
         },
       ],
     },
