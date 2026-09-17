@@ -13,7 +13,7 @@ The rule examines all image elements in a Markdown document and reports any imag
 
 ::: tip NOTE
 
-HTML `<img>` elements without any of the `src`, `srcset`, or `alt` attributes, as well as elements with an empty `alt` attribute or `aria-hidden="true"`, are ignored.
+HTML `<img>` elements without any of the `src`, `srcset`, or `alt` attributes, as well as elements with an empty `alt` attribute or `aria-hidden="true"` (case-insensitive), are ignored.
 
 :::
 

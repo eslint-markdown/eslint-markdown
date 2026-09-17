@@ -131,7 +131,7 @@ export default {
               break;
             }
 
-            if (name === 'aria-hidden' && value === 'true') {
+            if (name === 'aria-hidden' && /^true$/iu.test(value)) {
               needsTitle = false;
               break;
             }

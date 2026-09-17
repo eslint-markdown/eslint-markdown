@@ -107,6 +107,14 @@ ruleTester('require-link-title', rule, {
       name: 'Html node with aria-hidden attribute set to true',
       code: '<a aria-hidden="true" href="https://example.com">text</a>',
     },
+    {
+      name: 'Html node with aria-hidden attribute set to mixed-case true',
+      code: '<a aria-hidden="TrUe" href="https://example.com">text</a>',
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to mixed-case true',
+      code: '<a aria-hidden="TRUE" href="https://example.com">text</a>',
+    },
 
     // Options
     {
@@ -371,6 +379,19 @@ ruleTester('require-link-title', rule, {
           column: 1,
           endLine: 1,
           endColumn: 51,
+        },
+      ],
+    },
+    {
+      name: 'Html node with aria-hidden attribute containing true',
+      code: '<a href="https://example.com" aria-hidden="untrue">text</a>',
+      errors: [
+        {
+          messageId: 'requireLinkTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 52,
         },
       ],
     },
