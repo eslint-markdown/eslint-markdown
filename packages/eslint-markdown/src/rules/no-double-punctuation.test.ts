@@ -7,6 +7,11 @@
 // Import
 // --------------------------------------------------------------------------------
 
+import { assert, describe, it } from 'vitest';
+import { defineConfig } from 'eslint/config';
+import { Linter } from 'eslint/universal';
+import markdown from '@eslint/markdown';
+
 import ruleTester from '../tests/rule-tester.js';
 import rule from './no-double-punctuation.js';
 
@@ -58,6 +63,25 @@ ruleTester('no-double-punctuation', rule, {
       options: [
         {
           allow: [',.'],
+        },
+      ],
+    },
+
+    // `punctuation` option
+    {
+      code: 'Hello?!',
+      options: [
+        {
+          punctuation: ['.', '!'],
+        },
+      ],
+    },
+    {
+      code: 'Hello!!',
+      options: [
+        {
+          allow: ['!!'],
+          punctuation: ['.', '!'],
         },
       ],
     },
@@ -451,5 +475,78 @@ Baz:`,
         },
       ],
     },
+
+    // `punctuation` option
+    {
+      code: 'Hello..',
+      output: 'Hello.',
+      options: [
+        {
+          punctuation: ['.', '!'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 6,
+          endLine: 1,
+          endColumn: 8,
+          data: {
+            punctuation: '..',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'Hello!!',
+      output: 'Hello!',
+      options: [
+        {
+          punctuation: ['.', '!'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 6,
+          endLine: 1,
+          endColumn: 8,
+          data: {
+            punctuation: '!!',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
   ],
+});
+
+describe('no-double-punctuation option validation', () => {
+  it("rejects 'allow' patterns containing characters outside 'punctuation'", () => {
+    const linter = new Linter();
+    const config = defineConfig([
+      {
+        files: ['**/*.md'],
+        plugins: {
+          markdown,
+          test: { rules: { 'no-double-punctuation': rule } },
+        },
+        language: 'markdown/commonmark',
+        rules: {
+          'test/no-double-punctuation': [
+            'error',
+            { allow: ['??'], punctuation: ['.', '!'] },
+          ],
+        },
+      },
+    ]);
+
+    assert.throws(
+      () => linter.verify('Foo!!', config, { filename: 'test.md' }),
+      /not included in the 'punctuation' option/,
+    );
+  });
 });

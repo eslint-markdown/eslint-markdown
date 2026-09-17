@@ -54,11 +54,21 @@ Really!!
 Are you sure?!
 ```
 
+#### With `{ punctuation: ['.', '!'] }` Option
+
+```md eslint-check
+<!-- eslint md/no-double-punctuation: ['error', { punctuation: ['.', '!'] }] -->
+
+Are you sure?!
+Wait...
+```
+
 ## Options
 
 ```js
 'md/no-double-punctuation': ['error', {
   allow: [],
+  punctuation: ['.', ',', ';', ':', '!', '?'],
 }]
 ```
 
@@ -67,6 +77,16 @@ Are you sure?!
 > Type: `string[]` / Default: `[]`
 
 When `allow` is specified, the listed two-character punctuation patterns are ignored by this rule. This is useful when punctuation such as `!!` or `?!` is intentionally used for tone or emphasis instead of being treated as a typo.
+
+Each pattern must consist of characters included in the `punctuation` option.
+
+### `punctuation`
+
+> Type: `string[]` / Default: `['.', ',', ';', ':', '!', '?']`
+
+Specifies the punctuation characters examined by this rule.
+
+The configured array replaces the default punctuation characters. Each item must be a single character, and at least one character is required.
 
 ## Fix
 

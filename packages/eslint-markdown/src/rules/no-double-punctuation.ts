@@ -27,6 +27,11 @@ type RuleOptions = [
      * @default []
      */
     allow: string[];
+    /**
+     * Specifies the punctuation characters examined by this rule.
+     * @default ['.', ',', ';', ':', '!', '?']
+     */
+    punctuation: string[];
   },
 ];
 type MessageIds =
@@ -38,15 +43,6 @@ type MessageIds =
 
 const escapedAsciiPunctuationWithQuestionMark = escapeStringRegexp(
   asciiPunctuationWithQuestionMark.join(''),
-);
-
-/**
- * This pattern is based on the punctuation list used by `remark-lint`.
- * @see https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-punctuation#parameters
- */
-const doublePunctuationRegex = new RegExp(
-  `(?:^|(?<=[^${escapedAsciiPunctuationWithQuestionMark}]))[${escapedAsciiPunctuationWithQuestionMark}]{2}(?:$|(?=[^${escapedAsciiPunctuationWithQuestionMark}]))`,
-  'g',
 );
 
 // --------------------------------------------------------------------------------
@@ -82,6 +78,16 @@ export default {
             },
             uniqueItems: true,
           },
+          punctuation: {
+            type: 'array',
+            items: {
+              type: 'string',
+              minLength: 1,
+              maxLength: 1,
+            },
+            minItems: 1,
+            uniqueItems: true,
+          },
         },
         additionalProperties: false,
       },
@@ -90,6 +96,7 @@ export default {
     defaultOptions: [
       {
         allow: [],
+        punctuation: [...asciiPunctuationWithQuestionMark],
       },
     ],
 
@@ -108,7 +115,28 @@ export default {
 
   create(context) {
     const { sourceCode } = context;
-    const [{ allow }] = context.options;
+    const [{ allow, punctuation }] = context.options;
+
+    for (const pattern of allow) {
+      for (const character of pattern) {
+        if (!punctuation.includes(character)) {
+          throw new Error(
+            `The 'allow' pattern '${pattern}' contains '${character}', which is not included in the 'punctuation' option.`,
+          );
+        }
+      }
+    }
+
+    const escapedPunctuation = escapeStringRegexp(punctuation.join(''));
+
+    /**
+     * This pattern is based on the punctuation list used by `remark-lint`.
+     * @see https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-punctuation#parameters
+     */
+    const doublePunctuationRegex = new RegExp(
+      `(?:^|(?<=[^${escapedPunctuation}]))[${escapedPunctuation}]{2}(?:$|(?=[^${escapedPunctuation}]))`,
+      'g',
+    );
 
     return {
       text(node) {
@@ -116,14 +144,14 @@ export default {
         const matches = sourceCode.getText(node).matchAll(doublePunctuationRegex);
 
         for (const match of matches) {
-          const punctuation = match[0];
+          const matchedPunctuation = match[0];
 
           const startOffset = nodeStartOffset + match.index;
-          const endOffset = startOffset + punctuation.length;
+          const endOffset = startOffset + matchedPunctuation.length;
 
-          if (allow.includes(punctuation)) continue;
+          if (allow.includes(matchedPunctuation)) continue;
 
-          const [leftPunctuation, rightPunctuation] = punctuation;
+          const [leftPunctuation, rightPunctuation] = matchedPunctuation;
           const violation = {
             loc: {
               start: sourceCode.getLocFromIndex(startOffset),
@@ -131,7 +159,7 @@ export default {
             },
 
             data: {
-              punctuation,
+              punctuation: matchedPunctuation,
             },
 
             messageId: 'noDoublePunctuation',
@@ -154,7 +182,7 @@ export default {
                   messageId: 'suggestReplaceWithLeft',
 
                   data: {
-                    punctuation,
+                    punctuation: matchedPunctuation,
                     leftPunctuation,
                   },
 
@@ -169,7 +197,7 @@ export default {
                   messageId: 'suggestReplaceWithRight',
 
                   data: {
-                    punctuation,
+                    punctuation: matchedPunctuation,
                     rightPunctuation,
                   },
 
