@@ -61,6 +61,24 @@ ruleTester('no-double-punctuation', rule, {
         },
       ],
     },
+    // gemoji
+    {
+      name: 'gemoji',
+      code: 'This is :smile:.',
+    },
+    {
+      name: 'gemoji',
+      code: 'This is :smile:. Next sentence.',
+    },
+    // html entity
+    {
+      name: 'html entity',
+      code: 'Copyright &copy;.',
+    },
+    {
+      name: 'html entity',
+      code: 'Copyright &copy;! All rights reserved.',
+    },
   ],
 
   invalid: [
@@ -446,6 +464,112 @@ Baz:`,
                 punctuation: '?!',
                 rightPunctuation: '!',
               },
+            },
+          ],
+        },
+      ],
+    },
+    // emoji
+    {
+      code: 'This is incorrect:. Next sentence.',
+      output: null,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 18,
+          endLine: 1,
+          endColumn: 20,
+          data: {
+            punctuation: ':.',
+          },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: ':.',
+                leftPunctuation: ':',
+              },
+              output: 'This is incorrect: Next sentence.',
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: ':.',
+                rightPunctuation: '.',
+              },
+              output: 'This is incorrect. Next sentence.',
+            },
+          ],
+        },
+      ],
+    },
+    // html entity
+    {
+      code: 'This is incorrect;! Next sentence.',
+      output: null,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 18,
+          endLine: 1,
+          endColumn: 20,
+          data: {
+            punctuation: ';!',
+          },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: ';!',
+                leftPunctuation: ';',
+              },
+              output: 'This is incorrect; Next sentence.',
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: ';!',
+                rightPunctuation: '!',
+              },
+              output: 'This is incorrect! Next sentence.',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'This is :smile:. This is incorrect;!',
+      output: null,
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 35,
+          endLine: 1,
+          endColumn: 37,
+          data: {
+            punctuation: ';!',
+          },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: ';!',
+                leftPunctuation: ';',
+              },
+              output: 'This is :smile:. This is incorrect;',
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: ';!',
+                rightPunctuation: '!',
+              },
+              output: 'This is :smile:. This is incorrect!',
             },
           ],
         },
