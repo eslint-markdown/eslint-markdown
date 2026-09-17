@@ -104,6 +104,14 @@ ruleTester('require-image-title', rule, {
       name: 'Html node with aria-hidden attribute set to true',
       code: '<img src="https://example.com/image.jpg" aria-hidden="true">',
     },
+    {
+      name: 'Html node with aria-hidden attribute set to mixed-case true',
+      code: '<img src="https://example.com/image.jpg" aria-hidden="TrUe">',
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to uppercase true',
+      code: '<img src="https://example.com/image.jpg" aria-hidden="TRUE">',
+    },
 
     // Options
     {
@@ -394,6 +402,32 @@ ruleTester('require-image-title', rule, {
           column: 1,
           endLine: 1,
           endColumn: 62,
+        },
+      ],
+    },
+    {
+      name: 'Html node with aria-hidden attribute containing true',
+      code: '<img src="https://example.com/image.jpg" aria-hidden="untrues">',
+      errors: [
+        {
+          messageId: 'requireImageTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 64,
+        },
+      ],
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to true followed by a line feed',
+      code: '<img src="https://example.com/image.jpg" aria-hidden="true\n">',
+      errors: [
+        {
+          messageId: 'requireImageTitle',
+          line: 1,
+          column: 1,
+          endLine: 2,
+          endColumn: 3,
         },
       ],
     },

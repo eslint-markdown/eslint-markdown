@@ -126,7 +126,7 @@ export default {
               break;
             }
 
-            if (name === 'aria-hidden' && value === 'true') {
+            if (name === 'aria-hidden' && value.toLowerCase() === 'true') {
               needsTitle = false;
               break;
             }
