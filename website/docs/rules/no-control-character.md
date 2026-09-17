@@ -123,12 +123,12 @@ Examples of **incorrect** code for this rule:
 \u001E - Information Separator Two - <RS>  <= Here
 \u001F - Information Separator One - <US>  <= Here
 \u007F - Delete - <DEL>  <= Here
-\u0080 - Padding Character - <PAD> Â <= Here
-\u0081 - High Octet Preset - <HOP> Â <= Here
-\u0082 - Break Permitted Here - <BPH> Â <= Here
-\u0083 - No Break Here - <NBH> Â <= Here
-\u0084 - Index - <IND> Â <= Here
-\u0085 - Next Line - <NEL> Â <= Here
+\u0080 - Padding Character - <PAD>  <= Here
+\u0081 - High Octet Preset - <HOP>  <= Here
+\u0082 - Break Permitted Here - <BPH>  <= Here
+\u0083 - No Break Here - <NBH>  <= Here
+\u0084 - Index - <IND>  <= Here
+\u0085 - Next Line - <NEL>  <= Here
 ```
 
 #### With `{ skipCode: false }` Option
