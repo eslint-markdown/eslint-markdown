@@ -109,7 +109,7 @@ ruleTester('require-image-title', rule, {
       code: '<img src="https://example.com/image.jpg" aria-hidden="TrUe">',
     },
     {
-      name: 'Html node with aria-hidden attribute set to mixed-case true',
+      name: 'Html node with aria-hidden attribute set to uppercase true',
       code: '<img src="https://example.com/image.jpg" aria-hidden="TRUE">',
     },
 

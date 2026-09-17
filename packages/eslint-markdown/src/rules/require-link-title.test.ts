@@ -112,7 +112,7 @@ ruleTester('require-link-title', rule, {
       code: '<a aria-hidden="TrUe" href="https://example.com">text</a>',
     },
     {
-      name: 'Html node with aria-hidden attribute set to mixed-case true',
+      name: 'Html node with aria-hidden attribute set to uppercase true',
       code: '<a aria-hidden="TRUE" href="https://example.com">text</a>',
     },
 
