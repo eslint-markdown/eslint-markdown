@@ -62,8 +62,11 @@ export default {
   meta: {
     type: 'layout',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce consistent code style',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('consistent-code-style'),
       recommended: false,
       stylistic: true,
@@ -122,10 +125,6 @@ export default {
       blankLineBelow:
         'Code should be surrounded by {{ blankLineBelow }} blank line(s) below.',
     },
-
-    language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {
