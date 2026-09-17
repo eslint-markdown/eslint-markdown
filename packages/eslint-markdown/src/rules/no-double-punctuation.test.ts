@@ -7,12 +7,54 @@
 // Import
 // --------------------------------------------------------------------------------
 
+import { assert, describe, it } from 'vitest';
+import { Linter } from 'eslint/universal';
+import markdown from '@eslint/markdown';
+
 import ruleTester from '../tests/rule-tester.js';
 import rule from './no-double-punctuation.js';
 
 // --------------------------------------------------------------------------------
 // Test
 // --------------------------------------------------------------------------------
+
+describe('no-double-punctuation options', () => {
+  it('should reject an `allow` pattern that uses characters outside the configured `punctuation` set', () => {
+    const linter = new Linter();
+
+    assert.throws(
+      () =>
+        linter.verify(
+          'Foo!!',
+          [
+            {
+              files: ['**/*.md'],
+              language: 'markdown/gfm',
+              plugins: {
+                markdown,
+                md: {
+                  rules: {
+                    'no-double-punctuation': rule,
+                  },
+                },
+              },
+              rules: {
+                'md/no-double-punctuation': [
+                  'error',
+                  {
+                    punctuation: ['.', '!'],
+                    allow: ['??'],
+                  },
+                ],
+              },
+            },
+          ],
+          { filename: 'test.md' },
+        ),
+      /The 'allow' option pattern '\?\?' must only contain characters listed in the 'punctuation' option\./,
+    );
+  });
+});
 
 ruleTester('no-double-punctuation', rule, {
   valid: [
@@ -58,6 +100,45 @@ ruleTester('no-double-punctuation', rule, {
       options: [
         {
           allow: [',.'],
+        },
+      ],
+    },
+
+    // `punctuation` option
+    {
+      name: '`punctuation` narrows the set and ignores pairs that use excluded characters',
+      code: 'Foo?!',
+      options: [
+        {
+          punctuation: ['.', '!'],
+        },
+      ],
+    },
+    {
+      name: '`punctuation` replaces the set',
+      code: 'Foo.. Bar??',
+      options: [
+        {
+          punctuation: ['!'],
+        },
+      ],
+    },
+    {
+      name: '`punctuation` replaces the set with non-ASCII characters',
+      code: 'Foo。。',
+      options: [
+        {
+          punctuation: ['！'],
+        },
+      ],
+    },
+    {
+      name: '`allow` exempts a pair from a narrowed `punctuation` set',
+      code: 'Foo!!',
+      options: [
+        {
+          punctuation: ['.', '!'],
+          allow: ['!!'],
         },
       ],
     },
@@ -448,6 +529,140 @@ Baz:`,
               },
             },
           ],
+        },
+      ],
+    },
+
+    // `punctuation` option
+    {
+      name: '`punctuation` narrows the set and still reports a pair inside it',
+      code: 'Foo!!',
+      output: 'Foo!',
+      options: [
+        {
+          punctuation: ['.', '!'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: '!!',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      name: '`punctuation` replaces the set and reports a pair from it',
+      code: 'Foo??',
+      output: 'Foo?',
+      options: [
+        {
+          punctuation: ['?'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: '??',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      name: '`punctuation` reports a pair made of non-ASCII characters',
+      code: 'Foo！！',
+      output: 'Foo！',
+      options: [
+        {
+          punctuation: ['。', '！'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: '！！',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      name: '`punctuation` reports a mixed pair and suggests each configured character',
+      code: 'Foo！？',
+      options: [
+        {
+          punctuation: ['！', '？'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: '！？',
+          },
+          suggestions: [
+            {
+              output: 'Foo！',
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: '！？',
+                leftPunctuation: '！',
+              },
+            },
+            {
+              output: 'Foo？',
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: '！？',
+                rightPunctuation: '？',
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: '`allow` only exempts the listed pairs after `punctuation` narrows the set',
+      code: 'Foo!! Bar..',
+      output: 'Foo!! Bar.',
+      options: [
+        {
+          punctuation: ['.', '!'],
+          allow: ['!!'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 10,
+          endLine: 1,
+          endColumn: 12,
+          data: {
+            punctuation: '..',
+          },
+          suggestions: undefined,
         },
       ],
     },

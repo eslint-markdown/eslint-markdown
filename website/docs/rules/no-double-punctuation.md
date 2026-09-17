@@ -5,13 +5,13 @@
 
 Consecutive punctuation in prose is usually a typo. It often slips through review because the sentence is still readable at a glance, but it makes Markdown sources look noisy and inconsistent. This rule helps catch those accidental punctuation pairs in text.
 
-It reports cases where exactly two of the following punctuation marks appear in a row:
+By default, it reports cases where exactly two of the following punctuation marks appear in a row:
 
 ```txt
 ! , . : ; ?
 ```
 
-For example, `!!`, `?!`, `..`, `::`, `??`, and `;:` are reported, whereas `...`, `!!!`, `?!?`, and `,.;` are not.
+For example, `!!`, `?!`, `..`, `::`, `??`, and `;:` are reported, whereas `...`, `!!!`, `?!?`, and `,.;` are not. The `punctuation` option replaces this default set.
 
 ## Examples
 
@@ -28,6 +28,15 @@ This usually means a typo!.
 Did you mean this?!
 Maybe this..
 Wait,. what about this?
+```
+
+#### With `{ punctuation: ['.', '!'] }` Option
+
+```md eslint-check
+<!-- eslint md/no-double-punctuation: ['error', { punctuation: ['.', '!'] }] -->
+
+This usually means a typo!.
+Maybe this..
 ```
 
 ### :white_check_mark: Correct {#correct}
@@ -54,11 +63,21 @@ Really!!
 Are you sure?!
 ```
 
+#### With `{ punctuation: ['.', '!'], allow: ['!!'] }` Option
+
+```md eslint-check
+<!-- eslint md/no-double-punctuation: ['error', { punctuation: ['.', '!'], allow: ['!!'] }] -->
+
+Really!!
+Did you mean this?!
+```
+
 ## Options
 
 ```js
 'md/no-double-punctuation': ['error', {
   allow: [],
+  punctuation: ['.', ',', ';', ':', '!', '?'],
 }]
 ```
 
@@ -66,7 +85,15 @@ Are you sure?!
 
 > Type: `string[]` / Default: `[]`
 
-When `allow` is specified, the listed two-character punctuation patterns are ignored by this rule. This is useful when punctuation such as `!!` or `?!` is intentionally used for tone or emphasis instead of being treated as a typo.
+When `allow` is specified, the listed two-character punctuation patterns are ignored by this rule. This is useful when punctuation such as `!!` or `?!` is intentionally used for tone or emphasis instead of being treated as a typo. Each pattern must only use characters listed in `punctuation`, otherwise the rule fails to load.
+
+### `punctuation`
+
+> Type: `string[]` / Default: `['.', ',', ';', ':', '!', '?']`
+
+Specifies the characters that are treated as punctuation by this rule.
+
+The configured array replaces the default punctuation characters. Each item must be a single character, and at least one character is required.
 
 ## Fix
 
