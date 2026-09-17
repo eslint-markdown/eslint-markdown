@@ -13,7 +13,7 @@ The rule examines all link elements in a Markdown document and reports any links
 
 ::: tip NOTE
 
-HTML `<a>` elements without an `href` attribute or with `aria-hidden="true"` are ignored.
+HTML `<a>` elements without an `href` attribute or with `aria-hidden="true"` (case-insensitive) are ignored.
 
 :::
 
