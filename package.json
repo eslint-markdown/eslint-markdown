@@ -47,12 +47,10 @@
     "fix": "npm-run-all -c -l -p fix:*",
     "fix:eslint": "eslint --fix --cache --cache-strategy content",
     "fix:prettier": "prettier . --write --ignore-unknown",
-    "fix:markdownlint": "markdownlint **/*.md --fix",
     "lint": "npm-run-all -c -l -p lint:*",
     "lint:eslint": "eslint --cache --cache-strategy content",
     "lint:prettier": "prettier . --check --ignore-unknown",
-    "lint:editorconfig": "editorconfig-checker -config .editorconfig-checker.json",
-    "lint:markdownlint": "markdownlint **/*.md"
+    "lint:editorconfig": "editorconfig-checker -config .editorconfig-checker.json"
   },
   "allowScripts": {
     "esbuild": true
@@ -66,7 +64,6 @@
     "eslint-markdown": "file:packages/eslint-markdown",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
-    "markdownlint-cli": "^0.48.0",
     "npm-run-all2": "^8.0.4",
     "prettier": "^3.9.6",
     "typescript": "^6.0.3",
