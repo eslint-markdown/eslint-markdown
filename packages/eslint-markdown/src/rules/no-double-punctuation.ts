@@ -114,12 +114,6 @@ export default {
 
         for (const match of matches) {
           const punctuation = match[0];
-          //  [
-          //   ';!',
-          //   index: 15,
-          //   input: 'Copyright &copy;! All rights reserved.',
-          //   groups: undefined
-          // ]
 
           const startOffset = nodeStartOffset + match.index;
           const endOffset = startOffset + punctuation.length;
@@ -127,8 +121,7 @@ export default {
           if (allow.includes(punctuation)) continue;
 
           const textBeforeSecondPunctuation = text.slice(0, match.index + 1);
-          // match 된 내용 기준으로 앞의 문자열까지만 파악해서, 내부에 emoji. html entity가 있는지 확인한다.
-          // gemoji, html entity에 해당되지 않으면 다음 오류처리를 진행한다.
+
           if (
             trailingGemojiRegex.test(textBeforeSecondPunctuation) ||
             trailingHtmlEntityRegex.test(textBeforeSecondPunctuation)
