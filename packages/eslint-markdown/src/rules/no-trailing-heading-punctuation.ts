@@ -44,6 +44,12 @@ type MessageIds = 'noTrailingHeadingPunctuation';
 const trailingGemojiRegex = new RegExp(`${gemojiRegex.source}$`, gemojiRegex.flags);
 
 /**
+ * Match a leading ASCII punctuation character that CommonMark allows escaping.
+ * @see https://spec.commonmark.org/0.31.2/#backslash-escapes
+ */
+const escapablePunctuationRegex = /^[\x21-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e]/u;
+
+/**
  * Regular expression for identifying an HTML entity at the end of a line.
  * - NOTE: These patterns are based on the `markdownlint`.
  * @see https://github.com/DavidAnson/markdownlint/blob/v0.41.1/helpers/helpers.cjs#L32-L34
@@ -243,8 +249,9 @@ export default {
             return fixer.removeRange([
               startOffset -
                 Number(
-                  // When `leadingSpaces` is `''` (empty string), check for an escaped trailing backslash.
+                  // Consume an adjacent escape backslash only before ASCII punctuation.
                   !leadingSpaces &&
+                    escapablePunctuationRegex.test(trailingPunctuation) &&
                     escapedTrailingBackslashRegex.test(
                       lastChildText.slice(0, -trailingPunctuation.length),
                     ),

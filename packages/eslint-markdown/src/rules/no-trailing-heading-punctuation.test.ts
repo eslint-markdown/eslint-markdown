@@ -942,6 +942,62 @@ ruleTester('no-trailing-heading-punctuation', rule, {
 
     // Backslash before trailing punctuation
     {
+      name: 'ATX: Preserve a literal backslash before full-width punctuation',
+      code: '# Hello\\！',
+      output: '# Hello\\',
+      errors: [{ messageId: 'noTrailingHeadingPunctuation' }],
+    },
+    {
+      name: 'ATX: Preserve three literal backslashes before full-width punctuation',
+      code: `# Hello${'\\'.repeat(3)}！`,
+      output: `# Hello${'\\'.repeat(3)}`,
+      errors: [{ messageId: 'noTrailingHeadingPunctuation' }],
+    },
+    {
+      name: 'ATX: Preserve two literal backslashes before full-width punctuation',
+      code: '# Hello\\\\！',
+      output: '# Hello\\\\',
+      errors: [{ messageId: 'noTrailingHeadingPunctuation' }],
+    },
+    {
+      name: 'ATX: Preserve a literal backslash before custom Unicode punctuation',
+      code: '# Hello\\·',
+      output: '# Hello\\',
+      options: [{ punctuation: ['·'] }],
+      errors: [{ messageId: 'noTrailingHeadingPunctuation' }],
+    },
+    {
+      name: 'ATX: Preserve a literal backslash when mixed punctuation starts with Unicode',
+      code: '# Hello\\！!',
+      output: '# Hello\\',
+      errors: [{ messageId: 'noTrailingHeadingPunctuation' }],
+    },
+    {
+      name: 'ATX: Remove an escape backslash when mixed punctuation starts with ASCII',
+      code: '# Hello\\!！',
+      output: '# Hello',
+      errors: [{ messageId: 'noTrailingHeadingPunctuation' }],
+    },
+    {
+      name: 'ATX: Remove an escape backslash before custom ASCII punctuation',
+      code: '# Hello\\@',
+      output: '# Hello',
+      options: [{ punctuation: ['@'] }],
+      errors: [{ messageId: 'noTrailingHeadingPunctuation' }],
+    },
+    {
+      name: 'ATX Closed: Preserve a literal backslash before full-width punctuation',
+      code: '## Hello\\！ ##',
+      output: '## Hello\\ ##',
+      errors: [{ messageId: 'noTrailingHeadingPunctuation' }],
+    },
+    {
+      name: 'Setext: Preserve a literal backslash before full-width punctuation',
+      code: 'Hello\\！\n=======',
+      output: 'Hello\\\n=======',
+      errors: [{ messageId: 'noTrailingHeadingPunctuation' }],
+    },
+    {
       name: 'ATX: Heading with an escaped trailing exclamation mark',
       code: '# Hello\\!',
       output: '# Hello',
