@@ -109,16 +109,35 @@ export default {
         const html = sourceCode.getText(node);
 
         for (const { attrs, sourceCodeLocation } of getElementsByTagName(html, 'img')) {
-          let hasTitle = false;
+          if (
+            !sourceCodeLocation ||
+            (!sourceCodeLocation.attrs?.src &&
+              !sourceCodeLocation.attrs?.srcset &&
+              !sourceCodeLocation.attrs?.alt)
+          ) {
+            continue;
+          }
+
+          let needsTitle = true;
 
           for (const { name, value } of attrs) {
             if (name === 'title' && value) {
-              hasTitle = true;
+              needsTitle = false;
+              break;
+            }
+
+            if (name === 'alt' && !value) {
+              needsTitle = false;
+              break;
+            }
+
+            if (name === 'aria-hidden' && value === 'true') {
+              needsTitle = false;
               break;
             }
           }
 
-          if (!hasTitle && sourceCodeLocation) {
+          if (needsTitle) {
             report({
               start: sourceCode.getLocFromIndex(
                 nodeStartOffset + sourceCodeLocation.startOffset,
