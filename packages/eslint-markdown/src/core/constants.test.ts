@@ -9,6 +9,10 @@
 import { assert, describe, it } from 'vitest';
 import {
   URL_RULE_DOCS,
+  asciiPunctuation,
+  asciiPunctuationWithQuestionMark,
+  nonAsciiPunctuation,
+  nonAsciiPunctuationWithQuestionMark,
   punctuation,
   punctuationWithQuestionMark,
   escapedTrailingBackslashRegex,
@@ -37,6 +41,44 @@ describe('constants', () => {
   });
 
   describe('array', () => {
+    describe('asciiPunctuation', () => {
+      it('should contain the ASCII punctuation characters', () => {
+        assert.deepStrictEqual(asciiPunctuation, ['.', ',', ';', ':', '!']);
+      });
+    });
+
+    describe('asciiPunctuationWithQuestionMark', () => {
+      it('should contain the ASCII punctuation characters including the question mark', () => {
+        assert.deepStrictEqual(asciiPunctuationWithQuestionMark, [
+          '.',
+          ',',
+          ';',
+          ':',
+          '!',
+          '?',
+        ]);
+      });
+    });
+
+    describe('nonAsciiPunctuation', () => {
+      it('should contain the full-width punctuation characters', () => {
+        assert.deepStrictEqual(nonAsciiPunctuation, ['。', '，', '；', '：', '！']);
+      });
+    });
+
+    describe('nonAsciiPunctuationWithQuestionMark', () => {
+      it('should contain the full-width punctuation characters including the question mark', () => {
+        assert.deepStrictEqual(nonAsciiPunctuationWithQuestionMark, [
+          '。',
+          '，',
+          '；',
+          '：',
+          '！',
+          '？',
+        ]);
+      });
+    });
+
     describe('punctuation', () => {
       it('should contain the default normal and full-width punctuation characters', () => {
         assert.deepStrictEqual(punctuation, [
@@ -56,7 +98,20 @@ describe('constants', () => {
 
     describe('punctuationWithQuestionMark', () => {
       it('should extend punctuation with normal and full-width question marks', () => {
-        assert.deepStrictEqual(punctuationWithQuestionMark, [...punctuation, '?', '？']);
+        assert.deepStrictEqual(punctuationWithQuestionMark, [
+          '.',
+          ',',
+          ';',
+          ':',
+          '!',
+          '?',
+          '。',
+          '，',
+          '；',
+          '：',
+          '！',
+          '？',
+        ]);
       });
     });
   });

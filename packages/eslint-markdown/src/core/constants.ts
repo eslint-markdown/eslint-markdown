@@ -19,21 +19,26 @@ export const URL_RULE_DOCS = (ruleName = ''): string =>
 // #region array
 
 /**
- * This pattern is based on the punctuation list used by `markdownlint` and `remark-lint`.
- * @see https://github.com/DavidAnson/markdownlint/blob/v0.41.1/helpers/helpers.cjs#L41
- * @see https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-punctuation#parameters
+ * ASCII punctuation characters.
  */
-export const punctuation = [
-  '.',
-  ',',
-  ';',
-  ':',
-  '!',
-  '。',
-  '，',
-  '；',
-  '：',
-  '！',
+export const asciiPunctuation = ['.', ',', ';', ':', '!'] as const;
+
+/**
+ * ASCII punctuation characters including the question mark.
+ */
+export const asciiPunctuationWithQuestionMark = [...asciiPunctuation, '?'] as const;
+
+/**
+ * Non-ASCII punctuation characters.
+ */
+export const nonAsciiPunctuation = ['。', '，', '；', '：', '！'] as const;
+
+/**
+ * Non-ASCII punctuation characters including the question mark.
+ */
+export const nonAsciiPunctuationWithQuestionMark = [
+  ...nonAsciiPunctuation,
+  '？',
 ] as const;
 
 /**
@@ -41,7 +46,17 @@ export const punctuation = [
  * @see https://github.com/DavidAnson/markdownlint/blob/v0.41.1/helpers/helpers.cjs#L41
  * @see https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-punctuation#parameters
  */
-export const punctuationWithQuestionMark = [...punctuation, '?', '？'] as const;
+export const punctuation = [...asciiPunctuation, ...nonAsciiPunctuation] as const;
+
+/**
+ * This pattern is based on the punctuation list used by `markdownlint` and `remark-lint`.
+ * @see https://github.com/DavidAnson/markdownlint/blob/v0.41.1/helpers/helpers.cjs#L41
+ * @see https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-punctuation#parameters
+ */
+export const punctuationWithQuestionMark = [
+  ...asciiPunctuationWithQuestionMark,
+  ...nonAsciiPunctuationWithQuestionMark,
+] as const;
 
 // #endregion array
 // --------------------------------------------------------------------------------
