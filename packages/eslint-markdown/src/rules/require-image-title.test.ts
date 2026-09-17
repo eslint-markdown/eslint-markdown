@@ -419,6 +419,19 @@ ruleTester('require-image-title', rule, {
       ],
     },
     {
+      name: 'Html node with aria-hidden attribute set to true followed by a line feed',
+      code: '<img src="https://example.com/image.jpg" aria-hidden="true\n">',
+      errors: [
+        {
+          messageId: 'requireImageTitle',
+          line: 1,
+          column: 1,
+          endLine: 2,
+          endColumn: 3,
+        },
+      ],
+    },
+    {
       name: 'Nested Html node with ignored images followed by image without title attribute',
       code: `
 <div>

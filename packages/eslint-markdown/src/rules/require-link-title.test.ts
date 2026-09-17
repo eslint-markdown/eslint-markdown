@@ -396,6 +396,19 @@ ruleTester('require-link-title', rule, {
       ],
     },
     {
+      name: 'Html node with aria-hidden attribute set to true followed by a line feed',
+      code: '<a href="https://example.com" aria-hidden="true\n">text</a>',
+      errors: [
+        {
+          messageId: 'requireLinkTitle',
+          line: 1,
+          column: 1,
+          endLine: 2,
+          endColumn: 3,
+        },
+      ],
+    },
+    {
       name: 'Nested Html node with ignored links followed by link without title attribute',
       code: `
 <div>

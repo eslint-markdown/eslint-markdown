@@ -131,7 +131,7 @@ export default {
               break;
             }
 
-            if (name === 'aria-hidden' && /^true$/iu.test(value)) {
+            if (name === 'aria-hidden' && value.toLowerCase() === 'true') {
               needsTitle = false;
               break;
             }
