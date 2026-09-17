@@ -1,8 +1,8 @@
-<!-- markdownlint-disable MD033 -->
-
 # Rules
 
 All rules from `eslint-markdown`.
+
+<!-- eslint-disable markdown/no-html -->
 
 <!-- Auto-generated rule list start -->
 
@@ -60,3 +60,5 @@ const { ruleMetas } = data;
 </div>
 
 <!-- Auto-generated rule list end -->
+
+<!-- eslint-enable markdown/no-html -->

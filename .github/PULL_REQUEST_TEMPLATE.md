@@ -5,7 +5,6 @@
   Be sure to check our contributing guidelines in the `CONTRIBUTING.md` before opening a pull request.
 -->
 
-<!-- markdownlint-disable-next-line MD041 -->
 ## Prerequisites checklist
 
 - [ ] I have read the [code of conduct](https://github.com/eslint-markdown/eslint-markdown/blob/main/CODE_OF_CONDUCT.md).

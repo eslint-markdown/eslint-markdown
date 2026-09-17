@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -37,7 +37,7 @@ Examples of **incorrect** code for this rule:
 
 #### Default
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ```md eslint-check
 <!-- eslint md/no-tab: 'error' -->
@@ -45,11 +45,11 @@ Examples of **incorrect** code for this rule:
 \u0009 - Horizontal Tab (\t) - <TAB> 	 <= Here
 ```
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 #### With `{ skipCode: false }` Option
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 `````md eslint-check
 <!-- eslint md/no-tab: ['error', { skipCode: false }] -->
@@ -69,11 +69,11 @@ Examples of **incorrect** code for this rule:
     \u0009 - Horizontal Tab (\t) - <TAB> 	 <= Here
 `````
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 #### With `{ skipCode: ['js', 'ts'] }` Option
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ````md eslint-check
 <!-- eslint md/no-tab: ['error', { skipCode: ['js', 'ts'] }] -->
@@ -89,11 +89,11 @@ Examples of **incorrect** code for this rule:
     \u0009 - Horizontal Tab (\t) - <TAB> 	 <= Here
 ````
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 #### With `{ skipInlineCode: false }` Option
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ```md eslint-check
 <!-- eslint md/no-tab: ['error', { skipInlineCode: false }] -->
@@ -101,7 +101,7 @@ Examples of **incorrect** code for this rule:
 \u0009 - Horizontal Tab (\t) - <TAB> `	` <= Here
 ```
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 ### :white_check_mark: Correct
 
@@ -117,7 +117,7 @@ Examples of **correct** code for this rule:
 
 #### With `{ skipCode: true }` Option
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 `````md eslint-check
 <!-- eslint md/no-tab: ['error', { skipCode: true }] -->
@@ -137,11 +137,11 @@ Examples of **correct** code for this rule:
     \u0009 - Horizontal Tab (\t) - <TAB> 	 <= Here
 `````
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 #### With `{ skipCode: ['md', 'txt'] }` Option
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ````md eslint-check
 <!-- eslint md/no-tab: ['error', { skipCode: ['md', 'txt'] }] -->
@@ -155,11 +155,11 @@ Examples of **correct** code for this rule:
 ```
 ````
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 #### With `{ skipInlineCode: true }` Option
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ```md eslint-check
 <!-- eslint md/no-tab: ['error', { skipInlineCode: true }] -->
@@ -167,7 +167,7 @@ Examples of **correct** code for this rule:
 \u0009 - Horizontal Tab (\t) - <TAB> `	` <= Here
 ```
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 ## Options
 
