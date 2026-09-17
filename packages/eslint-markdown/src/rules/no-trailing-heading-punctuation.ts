@@ -12,7 +12,8 @@ import {
   URL_RULE_DOCS,
   punctuation as defaultPunctuation,
   escapedTrailingBackslashRegex,
-  gemojiRegex,
+  trailingGemojiRegex,
+  trailingHtmlEntityRegex,
 } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -33,23 +34,6 @@ type RuleOptions = [
   },
 ];
 type MessageIds = 'noTrailingHeadingPunctuation';
-
-// --------------------------------------------------------------------------------
-// Helper
-// --------------------------------------------------------------------------------
-
-/**
- * Regular expression for identifying a GitHub emoji code at the end of a line.
- */
-const trailingGemojiRegex = new RegExp(`${gemojiRegex.source}$`, gemojiRegex.flags);
-
-/**
- * Regular expression for identifying an HTML entity at the end of a line.
- * - NOTE: These patterns are based on the `markdownlint`.
- * @see https://github.com/DavidAnson/markdownlint/blob/v0.41.1/helpers/helpers.cjs#L32-L34
- */
-const trailingHtmlEntityRegex =
-  /&(?:#\d+|#[xX][\da-fA-F]+|[a-zA-Z]{2,31}|blk\d{2}|emsp1[34]|frac\d{2}|sup\d|there4);$/;
 
 // --------------------------------------------------------------------------------
 // Rule Definition

@@ -64,3 +64,31 @@ export const gemojiRegex =
 
 // #endregion regex
 // --------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------
+// #region regex
+
+/**
+ * Regular expression for identifying a GitHub emoji code at the end of a line.
+ */
+export const trailingGemojiRegex = new RegExp(
+  `${gemojiRegex.source}$`,
+  gemojiRegex.flags,
+);
+
+// #endregion regex
+// --------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------
+// #region regex
+
+/**
+ * Regular expression for identifying an HTML entity at the end of a line.
+ * - NOTE: These patterns are based on the `markdownlint`.
+ * @see https://github.com/DavidAnson/markdownlint/blob/v0.41.1/helpers/helpers.cjs#L32-L34
+ */
+export const trailingHtmlEntityRegex =
+  /&(?:#\d+|#[xX][\da-fA-F]+|[a-zA-Z]{2,31}|blk\d{2}|emsp1[34]|frac\d{2}|sup\d|there4);$/;
+
+// #endregion regex
+// --------------------------------------------------------------------------------

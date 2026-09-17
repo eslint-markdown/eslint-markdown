@@ -7,7 +7,11 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import { gemojiRegex, URL_RULE_DOCS } from '../core/constants.js';
+import {
+  trailingGemojiRegex,
+  trailingHtmlEntityRegex,
+  URL_RULE_DOCS,
+} from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
@@ -41,10 +45,6 @@ type MessageIds =
  */
 const doublePunctuationRegex = /(?:^|(?<=[^!,.:;?]))[!,.:;?]{2}(?:$|(?=[^!,.:;?]))/g;
 
-const trailingGemojiRegex = new RegExp(`${gemojiRegex.source}$`, gemojiRegex.flags);
-
-const trailingHtmlEntityRegex =
-  /&(?:#\d+|#[xX][\da-fA-F]+|[a-zA-Z]{2,31}|blk\d{2}|emsp1[34]|frac\d{2}|sup\d|there4);$/;
 // --------------------------------------------------------------------------------
 // Rule Definition
 // --------------------------------------------------------------------------------
