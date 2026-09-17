@@ -142,6 +142,15 @@ ruleTester('no-double-punctuation', rule, {
         },
       ],
     },
+    {
+      name: '`punctuation` treats an astral character as a single character',
+      code: 'Foo😀',
+      options: [
+        {
+          punctuation: ['😀'],
+        },
+      ],
+    },
   ],
 
   invalid: [
@@ -661,6 +670,29 @@ Baz:`,
           endColumn: 12,
           data: {
             punctuation: '..',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      name: '`punctuation` reports a pair of astral characters',
+      code: 'Foo😀😀',
+      output: 'Foo😀',
+      options: [
+        {
+          punctuation: ['😀'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 8,
+          data: {
+            punctuation: '😀😀',
           },
           suggestions: undefined,
         },

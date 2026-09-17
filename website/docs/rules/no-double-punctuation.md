@@ -93,7 +93,7 @@ When `allow` is specified, the listed two-character punctuation patterns are ign
 
 Specifies the characters that are treated as punctuation by this rule.
 
-The configured array replaces the default punctuation characters. Each item must be a single character, and at least one character is required.
+The configured array replaces the default punctuation characters. Each item must be a single character, and at least one character is required. Characters are matched by Unicode code point, so characters outside the Basic Multilingual Plane are handled as one character.
 
 ## Fix
 

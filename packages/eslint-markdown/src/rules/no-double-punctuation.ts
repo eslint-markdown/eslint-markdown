@@ -126,7 +126,7 @@ export default {
      */
     const doublePunctuationRegex = new RegExp(
       `(?:^|(?<=[^${escapedPunctuation}]))[${escapedPunctuation}]{2}(?:$|(?=[^${escapedPunctuation}]))`,
-      'g',
+      'gu',
     );
 
     return {
