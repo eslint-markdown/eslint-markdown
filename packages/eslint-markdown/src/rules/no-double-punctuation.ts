@@ -7,13 +7,13 @@
 // Import
 // --------------------------------------------------------------------------------
 
+import { escapeStringRegexp } from '../core/utils/index.js';
 import {
   trailingGemojiRegex,
   trailingHtmlEntityRegex,
   URL_RULE_DOCS,
-  asciiPunctuationWithQuestionMark
+  asciiPunctuationWithQuestionMark,
 } from '../core/constants.js';
-import { escapeStringRegexp } from '../core/utils/index.js';
 import type { RuleModule } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
