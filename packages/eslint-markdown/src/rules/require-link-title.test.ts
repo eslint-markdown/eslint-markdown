@@ -384,7 +384,7 @@ ruleTester('require-link-title', rule, {
     },
     {
       name: 'Html node with aria-hidden attribute containing true',
-      code: '<a href="https://example.com" aria-hidden="untrue">text</a>',
+      code: '<a href="https://example.com" aria-hidden="untrues">text</a>',
       errors: [
         {
           messageId: 'requireLinkTitle',

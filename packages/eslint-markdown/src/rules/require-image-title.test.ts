@@ -407,7 +407,7 @@ ruleTester('require-image-title', rule, {
     },
     {
       name: 'Html node with aria-hidden attribute containing true',
-      code: '<img src="https://example.com/image.jpg" aria-hidden="untrue">',
+      code: '<img src="https://example.com/image.jpg" aria-hidden="untrues">',
       errors: [
         {
           messageId: 'requireImageTitle',
