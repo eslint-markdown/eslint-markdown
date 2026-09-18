@@ -12,7 +12,7 @@ import {
   URL_RULE_DOCS,
   punctuation as defaultPunctuation,
   escapedTrailingBackslashRegex,
-  trailingGemojiRegex,
+  gemojiRegex,
   htmlEntityRegex,
 } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
@@ -34,6 +34,17 @@ type RuleOptions = [
   },
 ];
 type MessageIds = 'noTrailingHeadingPunctuation';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
+
+const trailingGemojiRegex = new RegExp(`${gemojiRegex.source}$`, gemojiRegex.flags);
+
+const trailingHtmlEntityRegex = new RegExp(
+  `${htmlEntityRegex.source}$`,
+  htmlEntityRegex.flags,
+);
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -198,7 +209,7 @@ export default {
 
         if (
           trailingGemojiRegex.test(textThroughFirstTrailingPunctuation) ||
-          htmlEntityRegex.test(textThroughFirstTrailingPunctuation)
+          trailingHtmlEntityRegex.test(textThroughFirstTrailingPunctuation)
         ) {
           trailingPunctuation = trailingPunctuation.slice(1);
         }

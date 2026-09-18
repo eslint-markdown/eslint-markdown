@@ -9,10 +9,10 @@
 
 import { escapeStringRegexp } from '../core/utils/index.js';
 import {
-  trailingGemojiRegex,
   htmlEntityRegex,
   URL_RULE_DOCS,
   asciiPunctuationWithQuestionMark,
+  gemojiRegex,
 } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -43,6 +43,13 @@ type MessageIds =
 
 const escapedAsciiPunctuationWithQuestionMark = escapeStringRegexp(
   asciiPunctuationWithQuestionMark.join(''),
+);
+
+const trailingGemojiRegex = new RegExp(`${gemojiRegex.source}$`, gemojiRegex.flags);
+
+const trailingHtmlEntityRegex = new RegExp(
+  `${htmlEntityRegex.source}$`,
+  htmlEntityRegex.flags,
 );
 
 /**
@@ -133,7 +140,7 @@ export default {
 
           if (
             trailingGemojiRegex.test(textBeforeSecondPunctuation) ||
-            htmlEntityRegex.test(textBeforeSecondPunctuation)
+            trailingHtmlEntityRegex.test(textBeforeSecondPunctuation)
           ) {
             continue;
           }

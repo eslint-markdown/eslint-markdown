@@ -17,7 +17,6 @@ import {
   punctuationWithQuestionMark,
   escapedTrailingBackslashRegex,
   gemojiRegex,
-  trailingGemojiRegex,
   htmlEntityRegex,
 } from './constants.js';
 
@@ -251,16 +250,6 @@ describe('constants', () => {
       });
     });
 
-    describe('trailingGemojiRegex', () => {
-      it('should match a gemoji at the end of text', () => {
-        assert.match('Before :smile:', trailingGemojiRegex);
-      });
-
-      it('should not match a gemoji followed by text', () => {
-        assert.notMatch('Before :smile: after', trailingGemojiRegex);
-      });
-    });
-
     describe('htmlEntityRegex', () => {
       it('should match named, decimal, and hexadecimal entities at the end of text', () => {
         assert.match('Copyright &copy;', htmlEntityRegex);
@@ -268,8 +257,8 @@ describe('constants', () => {
         assert.match('Copyright &#xA9;', htmlEntityRegex);
       });
 
-      it('should not match an HTML entity followed by text', () => {
-        assert.notMatch('Copyright &copy; notice', htmlEntityRegex);
+      it('should match an HTML entity followed by text', () => {
+        assert.match('Copyright &copy; notice', htmlEntityRegex);
       });
     });
   });
