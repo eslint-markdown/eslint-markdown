@@ -13,7 +13,7 @@ import {
   punctuation as defaultPunctuation,
   escapedTrailingBackslashRegex,
   trailingGemojiRegex,
-  trailingHtmlEntityRegex,
+  htmlEntityRegex,
 } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -198,7 +198,7 @@ export default {
 
         if (
           trailingGemojiRegex.test(textThroughFirstTrailingPunctuation) ||
-          trailingHtmlEntityRegex.test(textThroughFirstTrailingPunctuation)
+          htmlEntityRegex.test(textThroughFirstTrailingPunctuation)
         ) {
           trailingPunctuation = trailingPunctuation.slice(1);
         }

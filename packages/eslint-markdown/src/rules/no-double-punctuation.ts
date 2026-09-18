@@ -10,7 +10,7 @@
 import { escapeStringRegexp } from '../core/utils/index.js';
 import {
   trailingGemojiRegex,
-  trailingHtmlEntityRegex,
+  htmlEntityRegex,
   URL_RULE_DOCS,
   asciiPunctuationWithQuestionMark,
 } from '../core/constants.js';
@@ -133,7 +133,7 @@ export default {
 
           if (
             trailingGemojiRegex.test(textBeforeSecondPunctuation) ||
-            trailingHtmlEntityRegex.test(textBeforeSecondPunctuation)
+            htmlEntityRegex.test(textBeforeSecondPunctuation)
           ) {
             continue;
           }

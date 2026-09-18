@@ -77,12 +77,6 @@ export const escapedTrailingBackslashRegex = /(?<=(?<!\\)(?:\\{2})*)\\$/u;
 export const gemojiRegex =
   /:(?:[abmovx]|[-+]1|100|1234|(?:1st|2nd|3rd)_place_medal|8ball|clock\d{1,4}|e-mail|non-potable_water|o2|t-rex|u5272|u5408|u55b6|u6307|u6708|u6709|u6e80|u7121|u7533|u7981|u7a7a|[a-z]{2,15}2?|[a-z]{1,14}(?:_[a-z\d]{1,16})+):/;
 
-// #endregion regex
-// --------------------------------------------------------------------------------
-
-// --------------------------------------------------------------------------------
-// #region regex
-
 /**
  * Regular expression for identifying a GitHub emoji code at the end of a line.
  */
@@ -91,19 +85,13 @@ export const trailingGemojiRegex = new RegExp(
   gemojiRegex.flags,
 );
 
-// #endregion regex
-// --------------------------------------------------------------------------------
-
-// --------------------------------------------------------------------------------
-// #region regex
-
 /**
- * Regular expression for identifying an HTML entity at the end of a line.
- * - NOTE: These patterns are based on the `markdownlint`.
+ * Regular expression for identifying an HTML entity.
+ * - NOTE: This pattern is based on `markdownlint`.
  * @see https://github.com/DavidAnson/markdownlint/blob/v0.41.1/helpers/helpers.cjs#L32-L34
  */
-export const trailingHtmlEntityRegex =
-  /&(?:#\d+|#[xX][\da-fA-F]+|[a-zA-Z]{2,31}|blk\d{2}|emsp1[34]|frac\d{2}|sup\d|there4);$/;
+export const htmlEntityRegex =
+  /&(?:#\d+|#[xX][\da-fA-F]+|[a-zA-Z]{2,31}|blk\d{2}|emsp1[34]|frac\d{2}|sup\d|there4);/;
 
 // #endregion regex
 // --------------------------------------------------------------------------------

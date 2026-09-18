@@ -18,7 +18,7 @@ import {
   escapedTrailingBackslashRegex,
   gemojiRegex,
   trailingGemojiRegex,
-  trailingHtmlEntityRegex,
+  htmlEntityRegex,
 } from './constants.js';
 
 // --------------------------------------------------------------------------------
@@ -261,15 +261,15 @@ describe('constants', () => {
       });
     });
 
-    describe('trailingHtmlEntityRegex', () => {
+    describe('htmlEntityRegex', () => {
       it('should match named, decimal, and hexadecimal entities at the end of text', () => {
-        assert.match('Copyright &copy;', trailingHtmlEntityRegex);
-        assert.match('Copyright &#169;', trailingHtmlEntityRegex);
-        assert.match('Copyright &#xA9;', trailingHtmlEntityRegex);
+        assert.match('Copyright &copy;', htmlEntityRegex);
+        assert.match('Copyright &#169;', htmlEntityRegex);
+        assert.match('Copyright &#xA9;', htmlEntityRegex);
       });
 
       it('should not match an HTML entity followed by text', () => {
-        assert.notMatch('Copyright &copy; notice', trailingHtmlEntityRegex);
+        assert.notMatch('Copyright &copy; notice', htmlEntityRegex);
       });
     });
   });
