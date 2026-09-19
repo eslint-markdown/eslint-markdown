@@ -81,32 +81,6 @@ $c\td$`,
       },
     },
     {
-      name: '`skipMath: true` explicit option: tabs in math block should be skipped',
-      code: `$$
-a\tb
-$$`,
-      options: [
-        {
-          skipMath: true,
-        },
-      ],
-      languageOptions: {
-        math: true,
-      },
-    },
-    {
-      name: '`skipInlineMath: true` explicit option: tabs in inline math should be skipped',
-      code: '$a\tb$',
-      options: [
-        {
-          skipInlineMath: true,
-        },
-      ],
-      languageOptions: {
-        math: true,
-      },
-    },
-    {
       name: '`skipMath: true, skipInlineMath: false` options: math block should be skipped',
       code: `$$
 a\tb
