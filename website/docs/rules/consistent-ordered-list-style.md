@@ -142,3 +142,4 @@ The `'ordered'` behavior follows the `markdownlint` rule `MD029`.
 ## Prior Art
 
 - [`MD029` - Ordered list item prefix](https://github.com/DavidAnson/markdownlint/blob/main/doc/md029.md#md029---ordered-list-item-prefix)
+- [`remark-lint-ordered-list-marker-value`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-ordered-list-marker-value#remark-lint-ordered-list-marker-value)
