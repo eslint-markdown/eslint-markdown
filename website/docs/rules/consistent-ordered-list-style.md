@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -125,15 +125,15 @@ Examples of **correct** code for this rule:
 
 ```js
 'md/consistent-ordered-list-style': ['error', {
-  style: 'one_or_ordered',
+  style: 'one-or-ordered',
 }]
 ```
 
 ### `style`
 
-> Type: `'one' | 'one_or_ordered' | 'ordered' | 'zero'` / Default: `'one_or_ordered'`
+> Type: `'one' | 'one-or-ordered' | 'ordered' | 'zero'` / Default: `'one-or-ordered'`
 
-When `style` is set to `'one_or_ordered'`, the rule allows either the `'one'` or `'ordered'` style based on the first two list item prefixes.
+When `style` is set to `'one-or-ordered'`, the rule allows either the `'one'` or `'ordered'` style based on the first two list item prefixes.
 
 You can also specify `'one'` to require every prefix to be `1`, `'ordered'` to require prefixes to increase sequentially, starting from `1` or from `0` when the list has two or more items, or `'zero'` to require every prefix to be `0`.
 

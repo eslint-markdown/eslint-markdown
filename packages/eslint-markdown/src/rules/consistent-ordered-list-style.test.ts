@@ -25,23 +25,23 @@ ruleTester('consistent-ordered-list-style', rule, {
       code: '  ',
     },
     {
-      name: '`one_or_ordered` style - single item',
+      name: '`one-or-ordered` style - single item',
       code: '1. First',
     },
     {
-      name: '`one_or_ordered` style - all prefixes are `1`',
+      name: '`one-or-ordered` style - all prefixes are `1`',
       code: `1. First
 1. Second
 1. Third`,
     },
     {
-      name: '`one_or_ordered` style - prefixes increase from `1`',
+      name: '`one-or-ordered` style - prefixes increase from `1`',
       code: `1. First
 2. Second
 3. Third`,
     },
     {
-      name: '`one_or_ordered` style - prefixes increase from `0`',
+      name: '`one-or-ordered` style - prefixes increase from `0`',
       code: `0. First
 1. Second
 2. Third`,
@@ -135,7 +135,7 @@ Paragraph
 
   invalid: [
     {
-      name: '`one_or_ordered` style - single item does not start with `1`',
+      name: '`one-or-ordered` style - single item does not start with `1`',
       code: '2. First',
       errors: [
         {
@@ -149,7 +149,7 @@ Paragraph
       ],
     },
     {
-      name: '`one_or_ordered` style - infers `one` from the second prefix',
+      name: '`one-or-ordered` style - infers `one` from the second prefix',
       code: `2. First
 1. Second`,
       errors: [
@@ -164,7 +164,7 @@ Paragraph
       ],
     },
     {
-      name: '`one_or_ordered` style - infers `ordered` from a zero prefix',
+      name: '`one-or-ordered` style - infers `ordered` from a zero prefix',
       code: `0. First
 0. Second
 0. Third`,
@@ -188,7 +188,7 @@ Paragraph
       ],
     },
     {
-      name: '`one_or_ordered` style - prefixes do not increase sequentially',
+      name: '`one-or-ordered` style - prefixes do not increase sequentially',
       code: `1. First
 3. Second
 4. Third`,
@@ -212,7 +212,7 @@ Paragraph
       ],
     },
     {
-      name: '`one_or_ordered` style - prefixes do not remain `1`',
+      name: '`one-or-ordered` style - prefixes do not remain `1`',
       code: `1. First
 1. Second
 2. Third`,
