@@ -8,7 +8,12 @@
 // --------------------------------------------------------------------------------
 
 import { escapeStringRegexp } from '../core/utils/index.js';
-import { URL_RULE_DOCS, asciiPunctuationWithQuestionMark } from '../core/constants.js';
+import {
+  htmlEntityRegex,
+  URL_RULE_DOCS,
+  asciiPunctuationWithQuestionMark,
+  gemojiRegex,
+} from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
@@ -38,6 +43,13 @@ type MessageIds =
 
 const escapedAsciiPunctuationWithQuestionMark = escapeStringRegexp(
   asciiPunctuationWithQuestionMark.join(''),
+);
+
+const trailingGemojiRegex = new RegExp(`${gemojiRegex.source}$`, gemojiRegex.flags);
+
+const trailingHtmlEntityRegex = new RegExp(
+  `${htmlEntityRegex.source}$`,
+  htmlEntityRegex.flags,
 );
 
 /**
@@ -113,7 +125,8 @@ export default {
     return {
       text(node) {
         const [nodeStartOffset] = sourceCode.getRange(node);
-        const matches = sourceCode.getText(node).matchAll(doublePunctuationRegex);
+        const text = sourceCode.getText(node);
+        const matches = text.matchAll(doublePunctuationRegex);
 
         for (const match of matches) {
           const punctuation = match[0];
@@ -122,6 +135,15 @@ export default {
           const endOffset = startOffset + punctuation.length;
 
           if (allow.includes(punctuation)) continue;
+
+          const textBeforeSecondPunctuation = text.slice(0, match.index + 1);
+
+          if (
+            trailingGemojiRegex.test(textBeforeSecondPunctuation) ||
+            trailingHtmlEntityRegex.test(textBeforeSecondPunctuation)
+          ) {
+            continue;
+          }
 
           const [leftPunctuation, rightPunctuation] = punctuation;
           const violation = {
