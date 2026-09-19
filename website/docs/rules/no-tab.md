@@ -124,7 +124,7 @@ $$
 ```md eslint-check
 <!-- eslint md/no-tab: ['error', { skipInlineMath: false }] -->
 
-\u0009 - Horizontal Tab (\t) - <TAB> $  $ <= Here
+\u0009 - Horizontal Tab (\t) - <TAB> $	$ <= Here
 ```
 
 <!-- markdownlint-enable no-hard-tabs -->
