@@ -172,6 +172,20 @@ This value must be an integer greater than or equal to `1`.
 
 `true` allows consecutive blank lines in all code blocks, while `string[]` allows consecutive blank lines only in code blocks for the specified languages.
 
+### `skipMath`
+
+> Type: `boolean` / Default: `true`
+
+`true` allows consecutive blank lines in all math blocks.
+
+::: tip NOTE
+This option requires enabling math parsing with `languageOptions: { math: true }`.
+:::
+
+::: warning
+Existing users with math parsing enabled will stop receiving reports inside math blocks by default. Setting `skipMath: false` preserves the previous behavior.
+:::
+
 ## Fix
 
 This rule fixes consecutive blank lines by removing blank lines beyond the configured `max` value.

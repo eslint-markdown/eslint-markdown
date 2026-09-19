@@ -93,6 +93,118 @@ qux
 \`\`\``,
       options: [{ skipCode: ['md', 'txt'] }],
     },
+
+    // `skipMath` option
+    {
+      name: 'Consecutive blank lines in math blocks are skipped by default',
+      code: `$$
+a = b
+
+
+c = d
+$$`,
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true` option skips consecutive blank lines in math blocks',
+      code: `$$
+
+
+a = b
+
+
+c = d
+
+
+$$`,
+      options: [{ skipMath: true }],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true` only skips blank lines inside math blocks',
+      code: `foo
+
+$$
+a = b
+
+
+c = d
+$$
+
+bar`,
+      options: [{ skipMath: true }],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true` skips consecutive blank lines in multiple math blocks',
+      code: `$$
+a = b
+
+
+c = d
+$$
+
+foo
+
+$$
+
+x = y
+
+
+z = w
+$$`,
+      options: [{ skipMath: true }],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true` skips math blocks independently of the `max` option',
+      code: `foo
+
+
+bar
+
+$$
+
+a = b
+
+c = d
+$$`,
+      options: [
+        {
+          max: 2,
+          skipMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true` skips math blocks when `skipCode: false`',
+      code: `$$
+a = b
+
+
+c = d
+$$`,
+      options: [
+        {
+          skipCode: false,
+          skipMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
   ],
 
   invalid: [
@@ -500,6 +612,223 @@ bar`,
           line: 7,
           column: 1,
           endLine: 8,
+          endColumn: 1,
+        },
+      ],
+    },
+
+    // `skipMath` option
+    {
+      name: '`skipMath: false` option checks consecutive blank lines in math blocks',
+      code: `$$
+a = b
+
+
+c = d
+$$`,
+      output: `$$
+a = b
+
+c = d
+$$`,
+      options: [{ skipMath: false }],
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 1 },
+          line: 4,
+          column: 1,
+          endLine: 5,
+          endColumn: 1,
+        },
+      ],
+    },
+    {
+      name: '`skipMath: false` option checks consecutive blank lines at the start of math blocks',
+      code: `$$
+
+
+a = b
+$$`,
+      output: `$$
+
+a = b
+$$`,
+      options: [{ skipMath: false }],
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 1 },
+          line: 3,
+          column: 1,
+          endLine: 4,
+          endColumn: 1,
+        },
+      ],
+    },
+    {
+      name: '`skipMath: false` option checks consecutive blank lines at the end of math blocks',
+      code: `$$
+a = b
+
+
+$$`,
+      output: `$$
+a = b
+
+$$`,
+      options: [{ skipMath: false }],
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 1 },
+          line: 4,
+          column: 1,
+          endLine: 5,
+          endColumn: 1,
+        },
+      ],
+    },
+    {
+      name: '`skipMath: false` checks math blocks when `skipCode: true`',
+      code: `\`\`\`
+foo
+
+
+bar
+\`\`\`
+
+$$
+a = b
+
+
+c = d
+$$`,
+      output: `\`\`\`
+foo
+
+
+bar
+\`\`\`
+
+$$
+a = b
+
+c = d
+$$`,
+      options: [
+        {
+          skipCode: true,
+          skipMath: false,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 1 },
+          line: 11,
+          column: 1,
+          endLine: 12,
+          endColumn: 1,
+        },
+      ],
+    },
+    {
+      name: '`skipMath: false` checks consecutive blank lines in multiple math blocks',
+      code: `$$
+a = b
+
+
+c = d
+$$
+
+foo
+
+$$
+x = y
+
+
+z = w
+$$`,
+      output: `$$
+a = b
+
+c = d
+$$
+
+foo
+
+$$
+x = y
+
+z = w
+$$`,
+      options: [{ skipMath: false }],
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 1 },
+          line: 4,
+          column: 1,
+          endLine: 5,
+          endColumn: 1,
+        },
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 1 },
+          line: 13,
+          column: 1,
+          endLine: 14,
+          endColumn: 1,
+        },
+      ],
+    },
+    {
+      name: '`max: 2` option applies to math blocks when `skipMath: false`',
+      code: `$$
+a = b
+
+
+
+c = d
+$$`,
+      output: `$$
+a = b
+
+
+c = d
+$$`,
+      options: [
+        {
+          max: 2,
+          skipMath: false,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 2 },
+          line: 5,
+          column: 1,
+          endLine: 6,
           endColumn: 1,
         },
       ],
