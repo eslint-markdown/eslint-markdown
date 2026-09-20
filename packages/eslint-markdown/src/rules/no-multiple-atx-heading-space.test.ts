@@ -16,6 +16,7 @@ import rule from './no-multiple-atx-heading-space.js';
 
 ruleTester('no-multiple-atx-heading-space', rule, {
   valid: [
+    // Basic cases
     {
       name: 'Empty document',
       code: '',
@@ -32,7 +33,7 @@ ruleTester('no-multiple-atx-heading-space', rule, {
 `,
     },
     {
-      name: 'Closed ATX headings with one space inside each sequence',
+      name: 'Closed ATX headings with one space after the opening sequence',
       code: `
 # Heading 1 #
 ## Heading 2 ##
@@ -40,13 +41,25 @@ ruleTester('no-multiple-atx-heading-space', rule, {
 `,
     },
     {
+      name: 'ATX heading containing inline Markdown',
+      code: '# **bold** `code` [link](https://example.com)',
+    },
+
+    // Accepted whitespace
+    {
       name: 'should not report multiple spaces within ATX heading content',
       code: '# Heading  with  multiple  spaces',
+    },
+    {
+      name: 'should allow one tab after an ATX opening sequence',
+      code: '#\tHeading',
     },
     {
       name: 'should not report trailing spaces after an ATX closing sequence',
       code: '## Heading ##  ',
     },
+
+    // `checkClosedHeading` option
     {
       name: 'should not check spaces before an ATX closing sequence by default',
       code: '## Heading   ##',
@@ -62,18 +75,12 @@ ruleTester('no-multiple-atx-heading-space', rule, {
       options: [{ checkClosedHeading: true }],
     },
     {
-      name: 'should allow one tab after an ATX opening sequence',
-      code: '#\tHeading',
-    },
-    {
       name: 'should not treat an escaped trailing hash as an ATX closing sequence',
       code: '# Heading  \\#',
       options: [{ checkClosedHeading: true }],
     },
-    {
-      name: 'ATX heading containing inline Markdown',
-      code: '# **bold** `code` [link](https://example.com)',
-    },
+
+    // Non-ATX content
     {
       name: 'should not report multiple spaces in Setext headings',
       code: `
@@ -88,8 +95,15 @@ Heading  2
       name: 'should not report multiple spaces in paragraphs',
       code: 'Paragraph  with  multiple  spaces.',
     },
+
+    // HTML entities
+    {
+      name: 'ATX heading containing non-breaking space entities',
+      code: '# &nbsp;&nbsp;Heading',
+    },
   ],
   invalid: [
+    // Opening sequences
     {
       name: 'ATX heading with two spaces after the opening sequence',
       code: '#  Heading',
@@ -132,6 +146,8 @@ Heading  2
         },
       ],
     },
+
+    // Closing sequences
     {
       name: 'should report multiple spaces before an ATX closing sequence when checked',
       code: '## Heading   ##',
@@ -169,6 +185,22 @@ Heading  2
         },
       ],
     },
+
+    // Empty headings
+    {
+      name: 'Empty ATX heading with multiple spaces',
+      code: '##  ',
+      output: '## ',
+      errors: [
+        {
+          messageId: 'noMultipleAtxHeadingSpace',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 5,
+        },
+      ],
+    },
     {
       name: 'Empty closed ATX heading with multiple spaces',
       code: '##  ##',
@@ -184,19 +216,22 @@ Heading  2
       ],
     },
     {
-      name: 'ATX heading with inline Markdown after multiple spaces',
-      code: '#   **bold** `code` [link](https://example.com)',
-      output: '# **bold** `code` [link](https://example.com)',
+      name: 'Empty closed ATX heading with multiple spaces when closed headings are checked',
+      code: '##  ##',
+      output: '## ##',
+      options: [{ checkClosedHeading: true }],
       errors: [
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 2,
+          column: 3,
           endLine: 1,
           endColumn: 5,
         },
       ],
     },
+
+    // Whitespace variants
     {
       name: 'ATX heading with multiple tabs after the opening sequence',
       code: '#\t\tHeading',
@@ -267,6 +302,36 @@ Heading  2
           column: 10,
           endLine: 1,
           endColumn: 13,
+        },
+      ],
+    },
+
+    // Complex cases
+    {
+      name: 'ATX heading with inline Markdown after multiple spaces',
+      code: '#   **bold** `code` [link](https://example.com)',
+      output: '# **bold** `code` [link](https://example.com)',
+      errors: [
+        {
+          messageId: 'noMultipleAtxHeadingSpace',
+          line: 1,
+          column: 2,
+          endLine: 1,
+          endColumn: 5,
+        },
+      ],
+    },
+    {
+      name: 'ATX heading with multiple spaces before non-breaking space entities',
+      code: '#  &nbsp;&nbsp;Heading',
+      output: '# &nbsp;&nbsp;Heading',
+      errors: [
+        {
+          messageId: 'noMultipleAtxHeadingSpace',
+          line: 1,
+          column: 2,
+          endLine: 1,
+          endColumn: 4,
         },
       ],
     },
@@ -353,35 +418,6 @@ Heading  2
           column: 13,
           endLine: 3,
           endColumn: 15,
-        },
-      ],
-    },
-    {
-      name: 'Empty ATX heading with multiple spaces',
-      code: '##  ',
-      output: '## ',
-      errors: [
-        {
-          messageId: 'noMultipleAtxHeadingSpace',
-          line: 1,
-          column: 3,
-          endLine: 1,
-          endColumn: 5,
-        },
-      ],
-    },
-    {
-      name: 'Empty closed ATX heading with multiple spaces when closed headings are checked',
-      code: '##  ##',
-      output: '## ##',
-      options: [{ checkClosedHeading: true }],
-      errors: [
-        {
-          messageId: 'noMultipleAtxHeadingSpace',
-          line: 1,
-          column: 3,
-          endLine: 1,
-          endColumn: 5,
         },
       ],
     },
