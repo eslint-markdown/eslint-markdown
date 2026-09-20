@@ -2,7 +2,7 @@ name: "\U0001F680 Propose a new rule"
 description: 'Propose a new rule to be added to the plugin'
 title: 'New Rule: (fill in)'
 body:
-  - type: input
+  - type: textarea
     attributes:
       label: Rule details
       description: What should the new rule do?

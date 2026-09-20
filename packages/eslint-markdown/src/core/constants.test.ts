@@ -9,8 +9,13 @@
 import { assert, describe, it } from 'vitest';
 import {
   URL_RULE_DOCS,
+  asciiPunctuation,
+  asciiPunctuationWithQuestionMark,
+  nonAsciiPunctuation,
+  nonAsciiPunctuationWithQuestionMark,
   punctuation,
   punctuationWithQuestionMark,
+  escapedTrailingBackslashRegex,
   gemojiRegex,
 } from './constants.js';
 
@@ -36,6 +41,44 @@ describe('constants', () => {
   });
 
   describe('array', () => {
+    describe('asciiPunctuation', () => {
+      it('should contain the ASCII punctuation characters', () => {
+        assert.deepStrictEqual(asciiPunctuation, ['.', ',', ';', ':', '!']);
+      });
+    });
+
+    describe('asciiPunctuationWithQuestionMark', () => {
+      it('should contain the ASCII punctuation characters including the question mark', () => {
+        assert.deepStrictEqual(asciiPunctuationWithQuestionMark, [
+          '.',
+          ',',
+          ';',
+          ':',
+          '!',
+          '?',
+        ]);
+      });
+    });
+
+    describe('nonAsciiPunctuation', () => {
+      it('should contain the full-width punctuation characters', () => {
+        assert.deepStrictEqual(nonAsciiPunctuation, ['。', '，', '；', '：', '！']);
+      });
+    });
+
+    describe('nonAsciiPunctuationWithQuestionMark', () => {
+      it('should contain the full-width punctuation characters including the question mark', () => {
+        assert.deepStrictEqual(nonAsciiPunctuationWithQuestionMark, [
+          '。',
+          '，',
+          '；',
+          '：',
+          '！',
+          '？',
+        ]);
+      });
+    });
+
     describe('punctuation', () => {
       it('should contain the default normal and full-width punctuation characters', () => {
         assert.deepStrictEqual(punctuation, [
@@ -55,12 +98,47 @@ describe('constants', () => {
 
     describe('punctuationWithQuestionMark', () => {
       it('should extend punctuation with normal and full-width question marks', () => {
-        assert.deepStrictEqual(punctuationWithQuestionMark, [...punctuation, '?', '？']);
+        assert.deepStrictEqual(punctuationWithQuestionMark, [
+          '.',
+          ',',
+          ';',
+          ':',
+          '!',
+          '?',
+          '。',
+          '，',
+          '；',
+          '：',
+          '！',
+          '？',
+        ]);
       });
     });
   });
 
   describe('regex', () => {
+    describe('escapedTrailingBackslashRegex', () => {
+      it('should match one trailing backslash because the run length is odd', () => {
+        assert.match('text\\', escapedTrailingBackslashRegex);
+      });
+
+      it('should not match two trailing backslashes because the run length is even', () => {
+        assert.notMatch(`text${'\\'.repeat(2)}`, escapedTrailingBackslashRegex);
+      });
+
+      it('should match three trailing backslashes because the run length is odd', () => {
+        assert.match(`text${'\\'.repeat(3)}`, escapedTrailingBackslashRegex);
+      });
+
+      it('should not match four trailing backslashes because the run length is even', () => {
+        assert.notMatch(`text${'\\'.repeat(4)}`, escapedTrailingBackslashRegex);
+      });
+
+      it('should not match a backslash before the end of a line', () => {
+        assert.notMatch('text\\more', escapedTrailingBackslashRegex);
+      });
+    });
+
     describe('gemojiRegex', () => {
       describe('valid gemoji', () => {
         it('should match supported single-letter names', () => {

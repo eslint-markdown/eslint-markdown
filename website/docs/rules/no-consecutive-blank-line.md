@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -8,6 +8,8 @@ This rule disallows more than a configured number of consecutive blank lines in 
 For this rule, a blank line is a line that contains no characters, or contains only spaces and tabs. By default, the rule allows one consecutive blank line and ignores consecutive blank lines inside code blocks.
 
 ## Examples
+
+<!-- eslint-disable md/no-consecutive-blank-line -->
 
 ### :x: Incorrect {#incorrect}
 
@@ -144,6 +146,8 @@ baz
 qux
 ```
 ````
+
+<!-- eslint-enable md/no-consecutive-blank-line -->
 
 ## Options
 

@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -49,6 +49,8 @@ This rule aims to catch irregular whitespace other than normal tabs and spaces, 
 ```
 
 ## Examples
+
+<!-- eslint-disable md/no-control-character, md/no-irregular-whitespace -->
 
 ### :x: Incorrect
 
@@ -158,7 +160,7 @@ Examples of **correct** code for this rule:
 
 #### Default
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ```md eslint-check
 <!-- eslint md/no-irregular-whitespace: 'error' -->
@@ -167,7 +169,7 @@ Examples of **correct** code for this rule:
 \u0020 - Space - <SP>   <= Here
 ```
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 #### With `{ allow: ['\u1680', '\u2000'] }` Option
 
@@ -246,6 +248,8 @@ $$
 \u000B - Line Tabulation (\v) - <VT> $$ <= Here
 \u0085 - Next Line - <NEL> $$ <= Here
 ```
+
+<!-- eslint-enable md/no-control-character, md/no-irregular-whitespace -->
 
 ## Options
 
