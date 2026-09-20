@@ -26,7 +26,7 @@ Examples of **incorrect** code for this rule:
 #### Default
 
 ```md eslint-check
-<!-- eslint md/no-space-in-link-text: 'error' -->
+<!-- eslint md/no-multiple-link-space: 'error' -->
 
 [ ESLint ](https://eslint.org)
 
@@ -46,7 +46,7 @@ Examples of **correct** code for this rule:
 #### Default
 
 ```md eslint-check
-<!-- eslint md/no-space-in-link-text: 'error' -->
+<!-- eslint md/no-multiple-link-space: 'error' -->
 
 [ESLint](https://eslint.org)
 
@@ -58,7 +58,7 @@ Examples of **correct** code for this rule:
 Spaces between words of the link text are untouched:
 
 ```md eslint-check
-<!-- eslint md/no-space-in-link-text: 'error' -->
+<!-- eslint md/no-multiple-link-space: 'error' -->
 
 [The ESLint website](https://eslint.org)
 ```
@@ -66,7 +66,7 @@ Spaces between words of the link text are untouched:
 Autolinks and images have no link text to check:
 
 ```md eslint-check
-<!-- eslint md/no-space-in-link-text: 'error' -->
+<!-- eslint md/no-multiple-link-space: 'error' -->
 
 <https://eslint.org>
 
@@ -76,7 +76,7 @@ Autolinks and images have no link text to check:
 Link text spanning more than one line keeps its padding:
 
 ```md eslint-check
-<!-- eslint md/no-space-in-link-text: 'error' -->
+<!-- eslint md/no-multiple-link-space: 'error' -->
 
 [
 ESLint
@@ -89,7 +89,7 @@ ESLint
 Trailing padding after a backslash is kept, since removing it would escape the closing bracket:
 
 ```md eslint-check
-<!-- eslint md/no-space-in-link-text: 'error' -->
+<!-- eslint md/no-multiple-link-space: 'error' -->
 
 [ESLint\ ](https://eslint.org)
 ```
@@ -97,7 +97,7 @@ Trailing padding after a backslash is kept, since removing it would escape the c
 A shortcut reference at the head of a list item keeps its padding when the fix would produce a checkbox:
 
 ```md eslint-check
-<!-- eslint md/no-space-in-link-text: 'error' -->
+<!-- eslint md/no-multiple-link-space: 'error' -->
 
 - [x ] details
 

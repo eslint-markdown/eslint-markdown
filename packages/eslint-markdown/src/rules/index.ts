@@ -24,7 +24,7 @@ import noEmoji from './no-emoji.js';
 import noGitConflictMarker from './no-git-conflict-marker.js';
 import noIrregularDash from './no-irregular-dash.js';
 import noIrregularWhitespace from './no-irregular-whitespace.js';
-import noSpaceInLinkText from './no-space-in-link-text.js';
+import noMultipleLinkSpace from './no-multiple-link-space.js';
 import noTab from './no-tab.js';
 import noTrailingHeadingPunctuation from './no-trailing-heading-punctuation.js';
 import noUrlTrailingSlash from './no-url-trailing-slash.js';
@@ -55,7 +55,7 @@ export default {
   'no-git-conflict-marker': noGitConflictMarker,
   'no-irregular-dash': noIrregularDash,
   'no-irregular-whitespace': noIrregularWhitespace,
-  'no-space-in-link-text': noSpaceInLinkText,
+  'no-multiple-link-space': noMultipleLinkSpace,
   'no-tab': noTab,
   'no-trailing-heading-punctuation': noTrailingHeadingPunctuation,
   'no-url-trailing-slash': noUrlTrailingSlash,

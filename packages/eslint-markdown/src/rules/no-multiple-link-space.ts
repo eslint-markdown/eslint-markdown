@@ -17,10 +17,10 @@ import type { RuleModule } from '../core/types.js';
 // --------------------------------------------------------------------------------
 
 /**
- * Options for the `no-space-in-link-text` rule.
+ * Options for the `no-multiple-link-space` rule.
  */
 type RuleOptions = [];
-type MessageIds = 'noSpaceInLinkText';
+type MessageIds = 'noMultipleLinkSpace';
 
 // --------------------------------------------------------------------------------
 // Helper
@@ -86,7 +86,7 @@ export default {
 
     docs: {
       description: 'Disallow spaces at the start and end of link text',
-      url: URL_RULE_DOCS('no-space-in-link-text'),
+      url: URL_RULE_DOCS('no-multiple-link-space'),
       recommended: false,
       stylistic: false,
     },
@@ -94,7 +94,7 @@ export default {
     fixable: 'whitespace',
 
     messages: {
-      noSpaceInLinkText: 'Space at the start or end of link text is not allowed.',
+      noMultipleLinkSpace: 'Space at the start or end of link text is not allowed.',
     },
 
     language: 'markdown',
@@ -120,7 +120,7 @@ export default {
           end: sourceCode.getLocFromIndex(endOffset),
         },
 
-        messageId: 'noSpaceInLinkText',
+        messageId: 'noMultipleLinkSpace',
 
         fix(fixer) {
           return fixer.removeRange([startOffset, endOffset]);

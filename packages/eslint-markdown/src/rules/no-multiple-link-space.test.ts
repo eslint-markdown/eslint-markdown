@@ -1,5 +1,5 @@
 /**
- * @fileoverview Test for `no-space-in-link-text.ts`.
+ * @fileoverview Test for `no-multiple-link-space.ts`.
  * @author Marry(uncoolclub)
  */
 
@@ -8,13 +8,13 @@
 // --------------------------------------------------------------------------------
 
 import ruleTester from '../tests/rule-tester.js';
-import rule from './no-space-in-link-text.js';
+import rule from './no-multiple-link-space.js';
 
 // --------------------------------------------------------------------------------
 // Test
 // --------------------------------------------------------------------------------
 
-ruleTester('no-space-in-link-text', rule, {
+ruleTester('no-multiple-link-space', rule, {
   valid: [
     {
       name: 'Empty',
@@ -166,14 +166,14 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[ESLint](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 2,
           endLine: 1,
           endColumn: 3,
         },
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 9,
           endLine: 1,
@@ -187,7 +187,7 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[ESLint](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 2,
           endLine: 1,
@@ -201,7 +201,7 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[ESLint](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 8,
           endLine: 1,
@@ -215,14 +215,14 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[ESLint](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 2,
           endLine: 1,
           endColumn: 5,
         },
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 11,
           endLine: 1,
@@ -236,14 +236,14 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[ESLint](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 2,
           endLine: 1,
           endColumn: 3,
         },
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 9,
           endLine: 1,
@@ -258,7 +258,7 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 2,
           endLine: 1,
@@ -272,14 +272,14 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[ESLint][eslint]\n\n[eslint]: https://eslint.org',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 2,
           endLine: 1,
           endColumn: 3,
         },
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 9,
           endLine: 1,
@@ -294,14 +294,14 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[ESLint]\n\n[eslint]: https://eslint.org',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 2,
           endLine: 1,
           endColumn: 3,
         },
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 9,
           endLine: 1,
@@ -315,14 +315,14 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[*ESLint*](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 2,
           endLine: 1,
           endColumn: 3,
         },
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 11,
           endLine: 1,
@@ -336,14 +336,14 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[a [b] c](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 2,
           endLine: 1,
           endColumn: 3,
         },
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 10,
           endLine: 1,
@@ -357,14 +357,14 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[a\\]b](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 2,
           endLine: 1,
           endColumn: 3,
         },
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 7,
           endLine: 1,
@@ -378,14 +378,14 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[![ESLint](https://eslint.org/logo.png)](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 2,
           endLine: 1,
           endColumn: 3,
         },
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 41,
           endLine: 1,
@@ -399,14 +399,14 @@ ruleTester('no-space-in-link-text', rule, {
       output: '> [ESLint](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 4,
           endLine: 1,
           endColumn: 5,
         },
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 11,
           endLine: 1,
@@ -420,14 +420,14 @@ ruleTester('no-space-in-link-text', rule, {
       output: '- [ESLint](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 4,
           endLine: 1,
           endColumn: 5,
         },
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 11,
           endLine: 1,
@@ -442,7 +442,7 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[ESLint\\\\](https://eslint.org)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 10,
           endLine: 1,
@@ -457,7 +457,7 @@ ruleTester('no-space-in-link-text', rule, {
       output: '- [x]\n\n[x]: https://eslint.org',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 5,
           endLine: 1,
@@ -472,7 +472,7 @@ ruleTester('no-space-in-link-text', rule, {
       output: '- [x] [x] details\n\n[x]: https://eslint.org',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 9,
           endLine: 1,
@@ -487,7 +487,7 @@ ruleTester('no-space-in-link-text', rule, {
       output: '- [x]details\n\n[x]: https://eslint.org',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 5,
           endLine: 1,
@@ -502,7 +502,7 @@ ruleTester('no-space-in-link-text', rule, {
       output: '- > [x] details\n\n[x]: https://eslint.org',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 7,
           endLine: 1,
@@ -516,7 +516,7 @@ ruleTester('no-space-in-link-text', rule, {
       output: '- [ESLint] details\n\n[eslint]: https://eslint.org',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 10,
           endLine: 1,
@@ -530,7 +530,7 @@ ruleTester('no-space-in-link-text', rule, {
       output: '- details [x] more\n\n[x]: https://eslint.org',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 13,
           endLine: 1,
@@ -544,7 +544,7 @@ ruleTester('no-space-in-link-text', rule, {
       output: '- [x][eslint] details\n\n[eslint]: https://eslint.org',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 5,
           endLine: 1,
@@ -558,14 +558,14 @@ ruleTester('no-space-in-link-text', rule, {
       output: '[ESLint](https://eslint.org) [Prettier](https://prettier.io)',
       errors: [
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 31,
           endLine: 1,
           endColumn: 32,
         },
         {
-          messageId: 'noSpaceInLinkText',
+          messageId: 'noMultipleLinkSpace',
           line: 1,
           column: 40,
           endLine: 1,
