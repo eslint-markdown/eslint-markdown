@@ -1,6 +1,6 @@
 /**
  * @fileoverview Rule to enforce consistent ordered list style.
- * @author Ga eun Lee
+ * @author Ga eun Lee(tooth-is-silver)
  */
 
 // --------------------------------------------------------------------------------
