@@ -111,6 +111,7 @@ ruleTester('no-multiple-link-space', rule, {
     },
     {
       // NOTE: `[x]` at the head of a list item is a GFM checkbox, so the fix would drop the link.
+      // CommonMark has no task list items, but the padding is kept there too for consistency.
       name: 'Shortcut reference that would become a checked task list item',
       code: '- [x ] details\n\n[x]: https://eslint.org',
     },
