@@ -72,7 +72,7 @@ export default {
 
     messages: {
       noMultipleAtxHeadingSpace:
-        'Multiple spaces inside ATX heading markers are not allowed.',
+        'Multiple spaces after opening ATX heading markers are not allowed.',
       noMultipleAtxClosedHeadingSpace:
         'Multiple spaces before closing ATX heading markers are not allowed.',
     },
