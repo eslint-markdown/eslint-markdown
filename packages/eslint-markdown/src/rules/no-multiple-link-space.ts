@@ -42,19 +42,19 @@ const isBackslash = (char: string) => char === '\\';
  *   every position of a long run and turns a padded label into quadratic work.
  * @param str The string to measure.
  * @param predicate The test each character must pass to be counted.
- * @param fromEnd Whether to count from the end instead of the start.
+ * @param end Which end of the string to count from.
  * @returns The number of matching characters found.
  */
 function countChars(
   str: string,
   predicate: (char: string) => boolean,
-  fromEnd: boolean,
+  end: 'start' | 'end',
 ): number {
   const strLength = str.length;
   let count = 0;
 
   while (count < strLength) {
-    if (!predicate(str[fromEnd ? strLength - 1 - count : count])) {
+    if (!predicate(str[end === 'end' ? strLength - 1 - count : count])) {
       break;
     }
 
@@ -73,7 +73,7 @@ function countChars(
 function escapesClosingBracket(label: string, trailingSpaceLength: number): boolean {
   const beforePadding = label.slice(0, label.length - trailingSpaceLength);
 
-  return countChars(beforePadding, isBackslash, true) % 2 === 1;
+  return countChars(beforePadding, isBackslash, 'end') % 2 === 1;
 }
 
 // --------------------------------------------------------------------------------
@@ -203,8 +203,8 @@ export default {
         return;
       }
 
-      const leadingSpaceLength = countChars(label, isSpace, false);
-      const trailingSpaceLength = countChars(label, isSpace, true);
+      const leadingSpaceLength = countChars(label, isSpace, 'start');
+      const trailingSpaceLength = countChars(label, isSpace, 'end');
 
       // Removing the padding of a shortcut reference at the head of a list item would leave `[x]`,
       // which GFM reads as a checkbox, replacing the link with a task list item.
@@ -213,7 +213,7 @@ export default {
       }
 
       // A label of padding only, `[ ](url)`, matches on both ends over the same characters.
-      if (leadingSpaceLength + trailingSpaceLength > label.length) {
+      if (leadingSpaceLength === label.length) {
         reportPadding(labelStartOffset, labelEndOffset);
 
         return;

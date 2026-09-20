@@ -289,6 +289,27 @@ ruleTester('no-multiple-link-space', rule, {
       ],
     },
     {
+      name: 'Collapsed reference link',
+      code: '[ ESLint ][]\n\n[ESLint]: https://eslint.org',
+      output: '[ESLint][]\n\n[ESLint]: https://eslint.org',
+      errors: [
+        {
+          messageId: 'noMultipleLinkSpace',
+          line: 1,
+          column: 2,
+          endLine: 1,
+          endColumn: 3,
+        },
+        {
+          messageId: 'noMultipleLinkSpace',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
+        },
+      ],
+    },
+    {
       // NOTE: The label normalizes to `eslint`, so the definition still matches after the fix.
       name: 'Shortcut reference link',
       code: '[ ESLint ]\n\n[eslint]: https://eslint.org',
