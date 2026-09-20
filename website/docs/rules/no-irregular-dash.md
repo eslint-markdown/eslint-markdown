@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -30,6 +30,8 @@ This rule disallows the following characters except where the options allow:
 ```
 
 ## Examples
+
+<!-- eslint-disable md/no-irregular-dash -->
 
 ### :x: Incorrect
 
@@ -118,6 +120,24 @@ Examples of **incorrect** code for this rule:
 \u2011 - Non-Breaking Hyphen - <NBHY> `‑` <= Here
 ```
 
+#### With `{ skipMath: false }` Option
+
+```md eslint-check
+<!-- eslint md/no-irregular-dash: ['error', { skipMath: false }] -->
+
+$$
+\u2212 - Minus Sign - <MINUS> − <= Here
+$$
+```
+
+#### With `{ skipInlineMath: false }` Option
+
+```md eslint-check
+<!-- eslint md/no-irregular-dash: ['error', { skipInlineMath: false }] -->
+
+\u2212 - Minus Sign - <MINUS> $−$ <= Here
+```
+
 ### :white_check_mark: Correct
 
 Examples of **correct** code for this rule:
@@ -188,6 +208,26 @@ Examples of **correct** code for this rule:
 \u2011 - Non-Breaking Hyphen - <NBHY> `‑` <= Here
 ```
 
+#### With `{ skipMath: true }` Option
+
+```md eslint-check
+<!-- eslint md/no-irregular-dash: ['error', { skipMath: true }] -->
+
+$$
+\u2212 - Minus Sign - <MINUS> − <= Here
+$$
+```
+
+#### With `{ skipInlineMath: true }` Option
+
+```md eslint-check
+<!-- eslint md/no-irregular-dash: ['error', { skipInlineMath: true }] -->
+
+\u2212 - Minus Sign - <MINUS> $−$ <= Here
+```
+
+<!-- eslint-enable md/no-irregular-dash -->
+
 ## Options
 
 ```js
@@ -196,6 +236,8 @@ Examples of **correct** code for this rule:
   override: {},
   skipCode: true,
   skipInlineCode: true,
+  skipMath: true,
+  skipInlineMath: true,
 }]
 ```
 
@@ -226,7 +268,11 @@ For example, to replace an en dash with `--` and an em dash with `---`:
 
 ::: warning Fixing can change the Markdown structure
 
+<!-- eslint-disable md/no-irregular-dash -->
+
 If a dash stands alone on a line, the fixed line can be parsed differently. For example, `–` below a paragraph becomes a [Setext heading](https://spec.commonmark.org/0.31.2/#setext-headings) underline, and with `'\u2014': '---'`, `—` on its own line becomes a [thematic break](https://spec.commonmark.org/0.31.2/#thematic-breaks).
+
+<!-- eslint-enable md/no-irregular-dash -->
 
 :::
 
@@ -241,6 +287,26 @@ If a dash stands alone on a line, the fixed line can be parsed differently. For 
 > Type: `boolean` / Default: `true`
 
 `true` allows irregular dashes in all inline code.
+
+### `skipMath`
+
+> Type: `boolean` / Default: `true`
+
+`true` allows irregular dashes in all math blocks.
+
+::: tip NOTE
+This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
+:::
+
+### `skipInlineMath`
+
+> Type: `boolean` / Default: `true`
+
+`true` allows irregular dashes in all inline math.
+
+::: tip NOTE
+This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
+:::
 
 ## Fix
 

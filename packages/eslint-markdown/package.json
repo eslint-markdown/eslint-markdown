@@ -1,6 +1,6 @@
 {
   "name": "eslint-markdown",
-  "version": "0.16.0",
+  "version": "0.17.1",
   "type": "module",
   "sideEffects": false,
   "description": "Lint your Markdown with ESLint. Additional rules for use with `@eslint/markdown`.🛠️",
@@ -43,11 +43,11 @@
   "homepage": "https://eslint-markdown.lumir.page",
   "repository": {
     "type": "github",
-    "url": "git+https://github.com/lumirlumir/npm-eslint-markdown.git",
+    "url": "git+https://github.com/eslint-markdown/eslint-markdown.git",
     "directory": "packages/eslint-markdown"
   },
   "bugs": {
-    "url": "https://github.com/lumirlumir/npm-eslint-markdown/issues"
+    "url": "https://github.com/eslint-markdown/eslint-markdown/issues"
   },
   "engines": {
     "node": "^20.19.0 || ^22.13.0 || >=24.0.0"

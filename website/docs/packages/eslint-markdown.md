@@ -16,7 +16,7 @@ See [Get Started](../get-started/) for [installation](../get-started/installatio
 
 ## Config Inspector
 
-<!-- markdownlint-disable-next-line no-inline-html -->
+<!-- eslint-disable-next-line markdown/no-html -->
 If you want to inspect the ESLint configuration for `eslint-markdown`, use the <a href="/inspector/eslint-markdown" target="_self">config inspector</a>.
 
 ## Exports

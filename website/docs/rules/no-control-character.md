@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -84,6 +84,8 @@ This rule disallows the following control characters except where the options al
 ```
 
 ## Examples
+
+<!-- eslint-disable md/no-control-character, md/no-irregular-whitespace -->
 
 ### :x: Incorrect
 
@@ -187,7 +189,7 @@ Examples of **correct** code for this rule:
 
 #### Default
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ```md eslint-check
 <!-- eslint md/no-control-character: 'error' -->
@@ -196,7 +198,7 @@ Examples of **correct** code for this rule:
 \u0020 - Space - <SP>   <= Here
 ```
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 #### With `{ allow: ['\u0002', '\u0003'] }` Option
 
@@ -255,6 +257,8 @@ Examples of **correct** code for this rule:
 \u0002 - Start of Text - <STX> `` <= Here
 \u0003 - End of Text - <ETX> `` <= Here
 ```
+
+<!-- eslint-enable md/no-control-character, md/no-irregular-whitespace -->
 
 ## Options
 

@@ -51,6 +51,7 @@ export default function all(plugin: ESLint.Plugin) {
       'md/no-irregular-dash': 'error',
       'md/no-irregular-whitespace': 'error',
       'md/no-multiple-atx-heading-space': 'error',
+      'md/no-shell-dollar': 'error',
       'md/no-tab': 'error',
       'md/no-trailing-heading-punctuation': 'error',
       'md/no-url-trailing-slash': 'error',

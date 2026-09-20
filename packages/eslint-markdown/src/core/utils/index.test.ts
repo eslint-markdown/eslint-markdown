@@ -9,6 +9,8 @@
 import { assert, describe, it } from 'vitest';
 import {
   escapeStringRegexp,
+  CODE_STYLE,
+  getCodeStyle,
   getElementsByTagName,
   isBlankLine,
   normalizeRegexPattern,
@@ -25,6 +27,16 @@ describe('index', () => {
     it('`escapeStringRegexp` should be defined', () => {
       assert.isDefined(escapeStringRegexp);
       assert.strictEqual(typeof escapeStringRegexp, 'function');
+    });
+
+    it('`CODE_STYLE` should be defined', () => {
+      assert.isDefined(CODE_STYLE);
+      assert.isArray(CODE_STYLE);
+    });
+
+    it('`getCodeStyle` should be defined', () => {
+      assert.isDefined(getCodeStyle);
+      assert.strictEqual(typeof getCodeStyle, 'function');
     });
 
     it('`getElementsByTagName` should be defined', () => {

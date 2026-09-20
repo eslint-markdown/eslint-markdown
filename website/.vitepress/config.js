@@ -36,7 +36,7 @@ const PKG_NAME = packageJson.name;
 const PKG_DESCRIPTION = packageJson.description;
 const PKG_AUTHOR = 'lumir';
 const URL_HOMEPAGE = packageJson.homepage;
-const URL_GITHUB = `https://github.com/lumirlumir/npm-${PKG_NAME}`;
+const URL_GITHUB = `https://github.com/${PKG_NAME}/${PKG_NAME}`;
 const URL_RULE_SRC = `${URL_GITHUB}/tree/main/packages/${PKG_NAME}/src/rules`;
 
 // --------------------------------------------------------------------------------

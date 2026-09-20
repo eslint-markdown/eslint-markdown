@@ -47,3 +47,8 @@ export interface RuleModule<
     context: RuleContext<{ RuleOptions: RuleOptions; MessageIds: MessageIds }>,
   ): MarkdownRuleVisitor;
 }
+
+/**
+ * Represents a range of characters in the source.
+ */
+export type SourceRange = [number, number];

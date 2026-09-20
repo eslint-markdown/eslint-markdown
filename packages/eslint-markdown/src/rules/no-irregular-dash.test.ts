@@ -45,6 +45,22 @@ console.log(\u2014'Hello World');
 
 \`console.log(\u2014'Hello World')\``,
     },
+    {
+      name: 'irregular dash in a math',
+      code: `$$
+x\u2212y
+$$`,
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: 'irregular dash in inline math',
+      code: '$x\u2212y$',
+      languageOptions: {
+        math: true,
+      },
+    },
 
     // Options
     {
@@ -108,6 +124,44 @@ console.log(\u2014'Hello World');
           override: { '\u2014': '---' },
         },
       ],
+    },
+    {
+      name: '`skipMath: true` should skip an irregular dash in a math block',
+      code: `$$
+x\u2212y
+$$`,
+      options: [
+        {
+          skipMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipInlineMath: true` should skip an irregular dash in inline math',
+      code: '$x\u2212y$',
+      options: [
+        {
+          skipInlineMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`allow` should permit an irregular dash outside math regions when math parsing is enabled',
+      code: 'Prose\u2013text',
+      options: [
+        {
+          allow: ['\u2013'],
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
     },
   ],
 
@@ -492,6 +546,208 @@ Foo-Bar
       options: [
         {
           override: { '\u2014': '--' },
+        },
+      ],
+    },
+    {
+      name: '`skipMath: false` should report an irregular dash in a math block',
+      code: `$$
+x\u2212y
+$$`,
+      output: `$$
+x-y
+$$`,
+      errors: [
+        {
+          messageId: 'noIrregularDash',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 3,
+          data: {
+            irregularDash: 'U+2212',
+          },
+        },
+      ],
+      options: [
+        {
+          skipMath: false,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipInlineMath: false` should report an irregular dash in inline math',
+      code: '$x\u2212y$',
+      output: '$x-y$',
+      errors: [
+        {
+          messageId: 'noIrregularDash',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 4,
+          data: {
+            irregularDash: 'U+2212',
+          },
+        },
+      ],
+      options: [
+        {
+          skipInlineMath: false,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true, skipInlineMath: false` should skip only the math block',
+      code: `$$
+x\u2212y
+$$
+
+$a\u2212b$`,
+      output: `$$
+x\u2212y
+$$
+
+$a-b$`,
+      errors: [
+        {
+          messageId: 'noIrregularDash',
+          line: 5,
+          column: 3,
+          endLine: 5,
+          endColumn: 4,
+          data: {
+            irregularDash: 'U+2212',
+          },
+        },
+      ],
+      options: [
+        {
+          skipMath: true,
+          skipInlineMath: false,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: false, skipInlineMath: true` should skip only inline math',
+      code: `$$
+x\u2212y
+$$
+
+$a\u2212b$`,
+      output: `$$
+x-y
+$$
+
+$a\u2212b$`,
+      errors: [
+        {
+          messageId: 'noIrregularDash',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 3,
+          data: {
+            irregularDash: 'U+2212',
+          },
+        },
+      ],
+      options: [
+        {
+          skipMath: false,
+          skipInlineMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true, skipInlineMath: true` should report an irregular dash outside skipped math regions',
+      code: `Prose\u2212text
+
+$$
+x\u2212y
+$$
+
+$a\u2212b$`,
+      output: `Prose-text
+
+$$
+x\u2212y
+$$
+
+$a\u2212b$`,
+      errors: [
+        {
+          messageId: 'noIrregularDash',
+          line: 1,
+          column: 6,
+          endLine: 1,
+          endColumn: 7,
+          data: {
+            irregularDash: 'U+2212',
+          },
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true` should not skip math delimiters when math parsing is disabled',
+      code: `$$
+x\u2212y
+$$`,
+      output: `$$
+x-y
+$$`,
+      errors: [
+        {
+          messageId: 'noIrregularDash',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 3,
+          data: {
+            irregularDash: 'U+2212',
+          },
+        },
+      ],
+      options: [
+        {
+          skipMath: true,
+        },
+      ],
+    },
+    {
+      name: '`skipInlineMath: true` should not skip inline math delimiters when math parsing is disabled',
+      code: '$x\u2212y$',
+      output: '$x-y$',
+      errors: [
+        {
+          messageId: 'noIrregularDash',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 4,
+          data: {
+            irregularDash: 'U+2212',
+          },
+        },
+      ],
+      options: [
+        {
+          skipInlineMath: true,
         },
       ],
     },

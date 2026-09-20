@@ -43,10 +43,6 @@ lumirlumir/lumirlumir:
     dest: ./configs/.gitattributes
   - source: ./.gitignore
     dest: ./configs/.gitignore
-  - source: ./.markdownlint.json
-    dest: ./configs/.markdownlint.json
-  - source: ./.markdownlintignore
-    dest: ./configs/.markdownlintignore
   - source: ./.nvmrc
     dest: ./configs/.nvmrc
   - source: ./.prettierignore

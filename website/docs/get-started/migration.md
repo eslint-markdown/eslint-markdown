@@ -1,6 +1,6 @@
 # Migration Guide
 
-This chapter provides guidance for migrating to [`eslint-markdown`](https://github.com/lumirlumir/npm-eslint-markdown) and [`@eslint/markdown`](https://github.com/eslint/markdown) from other Markdown linting tools like [`markdownlint`](https://github.com/DavidAnson/markdownlint), [`remark-lint`](https://github.com/remarkjs/remark-lint#readme), and [`textlint`](https://github.com/textlint/textlint#readme).
+This chapter provides guidance for migrating to [`eslint-markdown`](https://github.com/eslint-markdown/eslint-markdown) and [`@eslint/markdown`](https://github.com/eslint/markdown) from other Markdown linting tools like [`markdownlint`](https://github.com/DavidAnson/markdownlint), [`remark-lint`](https://github.com/remarkjs/remark-lint#readme), and [`textlint`](https://github.com/textlint/textlint#readme).
 
 | Emoji              | Compatibility        |
 | :----------------: | :------------------: |
@@ -47,6 +47,7 @@ This section is currently under construction and will be updated soon.
 | [`MD012` - Multiple consecutive blank lines](https://github.com/DavidAnson/markdownlint/blob/main/doc/md012.md#md012---multiple-consecutive-blank-lines) :white_check_mark: | [`md/no-consecutive-blank-line`](../rules/no-consecutive-blank-line.md) |
 | [`MD019` - Multiple spaces after hash on atx style heading](https://github.com/DavidAnson/markdownlint/blob/main/doc/md019.md#md019---multiple-spaces-after-hash-on-atx-style-heading) :white_check_mark: | [`md/no-multiple-atx-heading-space`](../rules/no-multiple-atx-heading-space.md) |
 | [`MD021` - Multiple spaces inside hashes on closed atx style heading](https://github.com/DavidAnson/markdownlint/blob/main/doc/md021.md#md021---multiple-spaces-inside-hashes-on-closed-atx-style-heading) :white_check_mark: | [`md/no-multiple-atx-heading-space`](../rules/no-multiple-atx-heading-space.md) with `checkClosedHeading: true` |
+| [`MD014` - Dollar signs used before commands without showing output](https://github.com/DavidAnson/markdownlint/blob/main/doc/md014.md#md014---dollar-signs-used-before-commands-without-showing-output) :white_check_mark: | [`md/no-shell-dollar`](../rules/no-shell-dollar.md) |
 | [`MD026` - Trailing punctuation in heading](https://github.com/DavidAnson/markdownlint/blob/main/doc/md026.md#md026---trailing-punctuation-in-heading) :white_check_mark: | [`md/no-trailing-heading-punctuation`](../rules/no-trailing-heading-punctuation.md) |
 | [`MD031` - Fenced code blocks should be surrounded by blank lines](https://github.com/DavidAnson/markdownlint/blob/main/doc/md031.md#md031---fenced-code-blocks-should-be-surrounded-by-blank-lines) :warning: | [`md/consistent-code-style`](../rules/consistent-code-style.md) |
 | [`MD035` - Horizontal rule style](https://github.com/DavidAnson/markdownlint/blob/main/doc/md035.md#md035---horizontal-rule-style) :white_check_mark: | [`md/consistent-thematic-break-style`](../rules/consistent-thematic-break-style.md) |
@@ -78,6 +79,7 @@ This section is currently under construction and will be updated soon.
 | [`remark-lint-no-consecutive-blank-lines`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-consecutive-blank-lines#remark-lint-no-consecutive-blank-lines) :white_check_mark: | [`md/no-consecutive-blank-line`](../rules/no-consecutive-blank-line.md) |
 | [`remark-lint-no-heading-content-indent`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-content-indent#remark-lint-no-heading-content-indent) :warning: | [`md/no-multiple-atx-heading-space`](../rules/no-multiple-atx-heading-space.md) |
 | [`remark-lint-no-heading-punctuation`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-punctuation#remark-lint-no-heading-punctuation) :warning: | [`md/no-trailing-heading-punctuation`](../rules/no-trailing-heading-punctuation.md) |
+| [`remark-lint-no-shell-dollars`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-shell-dollars#remark-lint-no-shell-dollars) :warning: | [`md/no-shell-dollar`](../rules/no-shell-dollar.md) |
 | [`remark-lint-no-tabs`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-tabs#remark-lint-no-tabs) :white_check_mark: | [`md/no-tab`](../rules/no-tab.md) |
 | [`remark-lint-no-url-trailing-slash`](https://github.com/vhf/remark-lint-no-url-trailing-slash) :white_check_mark: | [`md/no-url-trailing-slash`](../rules/no-url-trailing-slash.md) |
 | [`remark-lint-rule-style`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-rule-style#remark-lint-rule-style) :white_check_mark: | [`md/consistent-thematic-break-style`](../rules/consistent-thematic-break-style.md) |

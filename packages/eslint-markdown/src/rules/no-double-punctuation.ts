@@ -7,7 +7,8 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import { URL_RULE_DOCS } from '../core/constants.js';
+import { escapeStringRegexp } from '../core/utils/index.js';
+import { URL_RULE_DOCS, asciiPunctuationWithQuestionMark } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
@@ -35,11 +36,18 @@ type MessageIds =
 // Helper
 // --------------------------------------------------------------------------------
 
+const escapedAsciiPunctuationWithQuestionMark = escapeStringRegexp(
+  asciiPunctuationWithQuestionMark.join(''),
+);
+
 /**
  * This pattern is based on the punctuation list used by `remark-lint`.
  * @see https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-punctuation#parameters
  */
-const doublePunctuationRegex = /(?:^|(?<=[^!,.:;?]))[!,.:;?]{2}(?:$|(?=[^!,.:;?]))/g;
+const doublePunctuationRegex = new RegExp(
+  `(?:^|(?<=[^${escapedAsciiPunctuationWithQuestionMark}]))[${escapedAsciiPunctuationWithQuestionMark}]{2}(?:$|(?=[^${escapedAsciiPunctuationWithQuestionMark}]))`,
+  'g',
+);
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -70,7 +78,7 @@ export default {
               type: 'string',
               minLength: 2,
               maxLength: 2,
-              pattern: '^[!,.:;?]{2}$',
+              pattern: `^[${escapedAsciiPunctuationWithQuestionMark}]{2}$`,
             },
             uniqueItems: true,
           },

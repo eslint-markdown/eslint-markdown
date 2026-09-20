@@ -11,6 +11,7 @@ import { escapeStringRegexp } from '../core/utils/index.js';
 import {
   URL_RULE_DOCS,
   punctuation as defaultPunctuation,
+  escapedTrailingBackslashRegex,
   gemojiRegex,
 } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
@@ -107,7 +108,7 @@ export default {
     const [{ punctuation }] = context.options;
 
     const trailingPunctuationRegex = new RegExp(
-      `[ \\t\\r\\n]*[${escapeStringRegexp(punctuation.join(''))}]+$`,
+      `(?<leadingSpaces>[ \\t\\r\\n]*)[${escapeStringRegexp(punctuation.join(''))}]+$`,
     );
 
     return {
@@ -175,9 +176,11 @@ export default {
         const lastChildText = sourceCode.getText(lastChildNode);
         const match = trailingPunctuationRegex.exec(lastChildText);
 
-        if (!match) {
+        if (!match || !match.groups) {
           return;
         }
+
+        const { leadingSpaces } = match.groups;
 
         let trailingPunctuation = match[0];
 
@@ -237,7 +240,17 @@ export default {
           messageId: 'noTrailingHeadingPunctuation',
 
           fix(fixer) {
-            return fixer.removeRange([startOffset, endOffset]);
+            return fixer.removeRange([
+              startOffset -
+                Number(
+                  // When `leadingSpaces` is `''` (empty string), check for an escaped trailing backslash.
+                  !leadingSpaces &&
+                    escapedTrailingBackslashRegex.test(
+                      lastChildText.slice(0, -trailingPunctuation.length),
+                    ),
+                ),
+              endOffset,
+            ]);
           },
         });
       },
