@@ -728,6 +728,72 @@ $$`,
         },
       ],
     },
+    {
+      name: '`skipMath: true` preserves math blocks when fixing trailing blank lines at EOF',
+      code: `$$
+a = b
+
+
+c = d
+$$
+
+
+`,
+      output: `$$
+a = b
+
+
+c = d
+$$
+`,
+      options: [{ skipMath: true }],
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 1 },
+          line: 8,
+          column: 1,
+          endLine: 9,
+          endColumn: 1,
+        },
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 1 },
+          line: 9,
+          column: 1,
+          endLine: 10,
+          endColumn: 1,
+        },
+      ],
+    },
+    {
+      name: '`skipMath: true` does not skip math delimiters without math parsing',
+      code: `$$
+a = b
+
+
+c = d
+$$`,
+      output: `$$
+a = b
+
+c = d
+$$`,
+      options: [{ skipMath: true }],
+      errors: [
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 1 },
+          line: 4,
+          column: 1,
+          endLine: 5,
+          endColumn: 1,
+        },
+      ],
+    },
 
     // `max` option
     {
