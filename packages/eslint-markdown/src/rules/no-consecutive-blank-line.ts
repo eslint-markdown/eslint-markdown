@@ -33,7 +33,10 @@ type RuleOptions = [
      * @default true
      */
     skipCode: boolean | string[];
-
+    /**
+     * `true` allows consecutive blank lines in all math blocks.
+     * @default true
+     */
     skipMath: boolean;
   },
 ];
