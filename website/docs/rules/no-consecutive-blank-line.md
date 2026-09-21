@@ -69,6 +69,19 @@ bar
 ```
 ````
 
+#### With `{ skipMath: false }` Option
+
+```md eslint-check
+<!-- eslint md/no-consecutive-blank-line: ['error', { skipMath: false }] -->
+
+$$
+foo
+
+
+bar
+$$
+```
+
 ### :white_check_mark: Correct {#correct}
 
 Examples of **correct** code for this rule:
@@ -145,12 +158,26 @@ qux
 ```
 ````
 
+#### With `{ skipMath: true }` Option
+
+```md eslint-check
+<!-- eslint md/no-consecutive-blank-line: ['error', { skipMath: true }] -->
+
+$$
+foo
+
+
+bar
+$$
+```
+
 ## Options
 
 ```js
 'md/no-consecutive-blank-line': ['error', {
   max: 1,
   skipCode: true,
+  skipMath: true,
 }]
 ```
 
@@ -175,11 +202,7 @@ This value must be an integer greater than or equal to `1`.
 `true` allows consecutive blank lines in all math blocks.
 
 ::: tip NOTE
-This option requires enabling math parsing with `languageOptions: { math: true }`.
-:::
-
-::: warning
-Existing users with math parsing enabled will stop receiving reports inside math blocks by default. Setting `skipMath: false` preserves the previous behavior.
+This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
 :::
 
 ## Fix
