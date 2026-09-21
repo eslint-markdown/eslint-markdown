@@ -5,7 +5,7 @@
 
 This rule disallows more than a configured number of consecutive blank lines in Markdown files. Except in a code block, blank lines serve no purpose and do not affect the rendering of content. Consistent blank line usage makes documents easier to scan and avoids accidental large gaps between sections, paragraphs, and list content.
 
-For this rule, a blank line is a line that contains no characters, or contains only spaces and tabs. By default, the rule allows one consecutive blank line and ignores consecutive blank lines inside code blocks.
+For this rule, a blank line is a line that contains no characters, or contains only spaces and tabs. By default, the rule allows one consecutive blank line and ignores consecutive blank lines inside code blocks and math blocks when math parsing is enabled.
 
 ## Examples
 
