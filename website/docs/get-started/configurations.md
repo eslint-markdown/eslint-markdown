@@ -281,7 +281,7 @@ export default defineConfig([
 
 ### `recommended`
 
-<!-- markdownlint-disable-next-line no-inline-html -->
+<!-- eslint-disable-next-line markdown/no-html -->
 > For the exact contents, see the [source code for the `recommended` configuration](https://github.com/eslint-markdown/eslint-markdown/blob/main/packages/eslint-markdown/src/configs/recommended.ts) or view it in the <a href="/inspector/eslint-markdown" target="_self">config inspector</a>.
 
 Recommended rules for documentation correctness that can be used without additional configuration. These rules typically report issues that represent bad practices and/or likely bugs.
@@ -396,7 +396,7 @@ export default defineConfig([
 
 ### `stylistic`
 
-<!-- markdownlint-disable-next-line no-inline-html -->
+<!-- eslint-disable-next-line markdown/no-html -->
 > For the exact contents, see the [source code for the `stylistic` configuration](https://github.com/eslint-markdown/eslint-markdown/blob/main/packages/eslint-markdown/src/configs/stylistic.ts) or view it in the <a href="/inspector/eslint-markdown" target="_self">config inspector</a>.
 
 Rules considered best practices for modern Markdown documents that do not affect documentation rendering. These rules are generally opinionated and focus on enforcing consistent or simpler patterns.
@@ -511,7 +511,7 @@ export default defineConfig([
 
 ### `base`
 
-<!-- markdownlint-disable-next-line no-inline-html -->
+<!-- eslint-disable-next-line markdown/no-html -->
 > For the exact contents, see the [source code for the `base` configuration](https://github.com/eslint-markdown/eslint-markdown/blob/main/packages/eslint-markdown/src/configs/base.ts) or view it in the <a href="/inspector/eslint-markdown" target="_self">config inspector</a>.
 
 A minimal ruleset that defines only the required [language](https://github.com/eslint/markdown?tab=readme-ov-file#languages) and [language options](https://github.com/eslint/markdown?tab=readme-ov-file#language-options) needed to run `eslint-markdown`.
@@ -640,7 +640,7 @@ export default defineConfig([
 
 ### `all`
 
-<!-- markdownlint-disable-next-line no-inline-html -->
+<!-- eslint-disable-next-line markdown/no-html -->
 > For the exact contents, see the [source code for the `all` configuration](https://github.com/eslint-markdown/eslint-markdown/blob/main/packages/eslint-markdown/src/configs/all.ts) or view it in the <a href="/inspector/eslint-markdown" target="_self">config inspector</a>.
 
 Enables all rules provided as a part of `eslint-markdown`. Note that many rules are not applicable in all codebases, or are meant to be configured.
