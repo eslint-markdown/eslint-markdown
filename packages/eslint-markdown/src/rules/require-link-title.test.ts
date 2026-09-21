@@ -95,6 +95,26 @@ ruleTester('require-link-title', rule, {
 </div>
 `,
     },
+    {
+      name: 'Html node without any attributes',
+      code: '<a></a>',
+    },
+    {
+      name: 'Html node without href attribute',
+      code: '<a id="section"></a>',
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to true',
+      code: '<a aria-hidden="true" href="https://example.com">text</a>',
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to mixed-case true',
+      code: '<a aria-hidden="TrUe" href="https://example.com">text</a>',
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to uppercase true',
+      code: '<a aria-hidden="TRUE" href="https://example.com">text</a>',
+    },
 
     // Options
     {
@@ -320,6 +340,89 @@ ruleTester('require-link-title', rule, {
           column: 1,
           endLine: 1,
           endColumn: 40,
+        },
+      ],
+    },
+    {
+      name: 'Html node with empty href attribute and without title attribute',
+      code: '<a href="">text</a>',
+      errors: [
+        {
+          messageId: 'requireLinkTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 12,
+        },
+      ],
+    },
+    {
+      name: 'Html node with lone aria-hidden attribute',
+      code: '<a href="https://example.com" aria-hidden>text</a>',
+      errors: [
+        {
+          messageId: 'requireLinkTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 43,
+        },
+      ],
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to false',
+      code: '<a href="https://example.com" aria-hidden="false">text</a>',
+      errors: [
+        {
+          messageId: 'requireLinkTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 51,
+        },
+      ],
+    },
+    {
+      name: 'Html node with aria-hidden attribute containing true',
+      code: '<a href="https://example.com" aria-hidden="untrues">text</a>',
+      errors: [
+        {
+          messageId: 'requireLinkTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 53,
+        },
+      ],
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to true followed by a line feed',
+      code: '<a href="https://example.com" aria-hidden="true\n">text</a>',
+      errors: [
+        {
+          messageId: 'requireLinkTitle',
+          line: 1,
+          column: 1,
+          endLine: 2,
+          endColumn: 3,
+        },
+      ],
+    },
+    {
+      name: 'Nested Html node with ignored links followed by link without title attribute',
+      code: `
+<div>
+  <a id="section"></a>
+  <a aria-hidden="true" href="https://example.com">hidden</a>
+  <a href="https://example.com">text</a>
+</div>`,
+      errors: [
+        {
+          messageId: 'requireLinkTitle',
+          line: 5,
+          column: 3,
+          endLine: 5,
+          endColumn: 33,
         },
       ],
     },
