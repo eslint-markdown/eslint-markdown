@@ -105,7 +105,7 @@ Examples of **incorrect** code for this rule:
 
 #### With `{ skipMath: false }` Option
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ```md eslint-check
 <!-- eslint md/no-tab: ['error', { skipMath: false }] -->
@@ -115,11 +115,11 @@ $$
 $$
 ```
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 #### With `{ skipInlineMath: false }` Option
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ```md eslint-check
 <!-- eslint md/no-tab: ['error', { skipInlineMath: false }] -->
@@ -127,7 +127,7 @@ $$
 \u0009 - Horizontal Tab (\t) - <TAB> $	$ <= Here
 ```
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 ### :white_check_mark: Correct
 
@@ -197,7 +197,7 @@ Examples of **correct** code for this rule:
 
 #### With `{ skipMath: true }` Option
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ```md eslint-check
 <!-- eslint md/no-tab: ['error', { skipMath: true }] -->
@@ -207,11 +207,11 @@ $$
 $$
 ```
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 #### With `{ skipInlineMath: true }` Option
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ```md eslint-check
 <!-- eslint md/no-tab: ['error', { skipInlineMath: true }] -->
@@ -219,7 +219,7 @@ $$
 \u0009 - Horizontal Tab (\t) - <TAB> $	$ <= Here
 ```
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 ## Options
 
