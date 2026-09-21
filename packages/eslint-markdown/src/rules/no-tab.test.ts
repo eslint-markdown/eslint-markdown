@@ -54,7 +54,7 @@ Hello\tWorld
       ],
     },
     {
-      name: '`skipMath: true` default: tabs in math block should be skipped',
+      name: '`skipMath: true` - math block should be skipped',
       code: `$$
 a\tb
 $$`,
@@ -63,14 +63,14 @@ $$`,
       },
     },
     {
-      name: '`skipInlineMath: true` default: tabs in inline math should be skipped',
+      name: '`skipInlineMath: true` - inline math should be skipped',
       code: '$a\tb$',
       languageOptions: {
         math: true,
       },
     },
     {
-      name: 'Default options: tabs in both math block and inline math should be skipped',
+      name: '`skipMath: true, skipInlineMath: true` - skips math regions',
       code: `$$
 a\tb
 $$
@@ -81,7 +81,7 @@ $c\td$`,
       },
     },
     {
-      name: '`skipMath: true, skipInlineMath: false` options: math block should be skipped',
+      name: '`skipMath: true, skipInlineMath: false` - math block is skipped',
       code: `$$
 a\tb
 $$`,
@@ -96,7 +96,7 @@ $$`,
       },
     },
     {
-      name: '`skipMath: false, skipInlineMath: true` options: inline math should be skipped',
+      name: '`skipMath: false, skipInlineMath: true` - inline math is skipped',
       code: '$a\tb$',
       options: [
         {
@@ -296,7 +296,7 @@ Hello    World
       ],
     },
     {
-      name: '`skipMath: false` option: tabs in math block should be reported',
+      name: '`skipMath: false` - math block should not be skipped',
       code: `$$
 a\tb
 $$`,
@@ -322,7 +322,7 @@ $$`,
       ],
     },
     {
-      name: '`skipInlineMath: false` option: tabs in inline math should be reported',
+      name: '`skipInlineMath: false` - inline math should not be skipped',
       code: '$a\tb$',
       output: '$a    b$',
       options: [
@@ -344,7 +344,7 @@ $$`,
       ],
     },
     {
-      name: '`skipMath: false, skipInlineMath: true` options: math block is reported but inline math is skipped',
+      name: '`skipMath: false, skipInlineMath: true` - reports block, skips inline',
       code: `$$
 a\tb
 $$
@@ -375,7 +375,7 @@ $c\td$`,
       ],
     },
     {
-      name: '`skipMath: true, skipInlineMath: false` options: inline math is reported but math block is skipped',
+      name: '`skipMath: true, skipInlineMath: false` - reports inline, skips block',
       code: `$$
 a\tb
 $$
@@ -406,7 +406,7 @@ $c    d$`,
       ],
     },
     {
-      name: 'Default options: tabs in regular text after math block should still be reported',
+      name: '`skipMath: true` - reports tabs outside math block',
       code: `$$
 a\tb
 $$
@@ -431,7 +431,7 @@ c    d`,
       ],
     },
     {
-      name: 'Default options: tabs in regular text next to inline math should still be reported',
+      name: '`skipInlineMath: true` - reports tabs outside inline math',
       code: '$a\tb$ c\td',
       output: '$a\tb$ c    d',
       languageOptions: {
@@ -448,7 +448,7 @@ c    d`,
       ],
     },
     {
-      name: 'Math parsing disabled: `skipMath: true` does not exclude tabs enclosed in math block delimiters',
+      name: '`skipMath: true` - reports tabs without math parsing',
       code: `$$
 a\tb
 $$`,
@@ -472,7 +472,7 @@ $$`,
       ],
     },
     {
-      name: 'Math parsing disabled: `skipInlineMath: true` does not exclude tabs enclosed in inline math delimiters',
+      name: '`skipInlineMath: true` - reports tabs without math parsing',
       code: '$a\tb$',
       output: '$a    b$',
       options: [
