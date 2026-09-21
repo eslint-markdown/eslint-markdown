@@ -96,7 +96,7 @@ qux
 
     // `skipMath` option
     {
-      name: 'Consecutive blank lines in math blocks are skipped by default',
+      name: '`skipMath: true` default skips consecutive blank lines in math blocks',
       code: `$$
 a = b
 
@@ -547,76 +547,6 @@ bar
       ],
     },
 
-    // `max` option
-    {
-      name: '`max: 2` option reports the third consecutive blank line',
-      code: `foo
-
-
-
-bar`,
-      output: `foo
-
-
-bar`,
-      options: [{ max: 2 }],
-      errors: [
-        {
-          messageId: 'noConsecutiveBlankLine',
-          data: { max: 2 },
-          line: 4,
-          column: 1,
-          endLine: 5,
-          endColumn: 1,
-        },
-      ],
-    },
-    {
-      name: '`max: 2` option fixes trailing consecutive blank lines',
-      code: 'foo\n\n\n  ',
-      output: 'foo\n\n',
-      options: [{ max: 2 }],
-      errors: [
-        {
-          messageId: 'noConsecutiveBlankLine',
-          data: { max: 2 },
-          line: 4,
-          column: 1,
-          endLine: 5,
-          endColumn: 1,
-        },
-      ],
-    },
-    {
-      name: '`max: 5` option reports the sixth consecutive blank line',
-      code: `foo
-
-
-
-
-
-
-bar`,
-      output: `foo
-
-
-
-
-
-bar`,
-      options: [{ max: 5 }],
-      errors: [
-        {
-          messageId: 'noConsecutiveBlankLine',
-          data: { max: 5 },
-          line: 7,
-          column: 1,
-          endLine: 8,
-          endColumn: 1,
-        },
-      ],
-    },
-
     // `skipMath` option
     {
       name: '`skipMath: false` option checks consecutive blank lines in math blocks',
@@ -794,6 +724,76 @@ $$`,
           line: 13,
           column: 1,
           endLine: 14,
+          endColumn: 1,
+        },
+      ],
+    },
+
+    // `max` option
+    {
+      name: '`max: 2` option reports the third consecutive blank line',
+      code: `foo
+
+
+
+bar`,
+      output: `foo
+
+
+bar`,
+      options: [{ max: 2 }],
+      errors: [
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 2 },
+          line: 4,
+          column: 1,
+          endLine: 5,
+          endColumn: 1,
+        },
+      ],
+    },
+    {
+      name: '`max: 2` option fixes trailing consecutive blank lines',
+      code: 'foo\n\n\n  ',
+      output: 'foo\n\n',
+      options: [{ max: 2 }],
+      errors: [
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 2 },
+          line: 4,
+          column: 1,
+          endLine: 5,
+          endColumn: 1,
+        },
+      ],
+    },
+    {
+      name: '`max: 5` option reports the sixth consecutive blank line',
+      code: `foo
+
+
+
+
+
+
+bar`,
+      output: `foo
+
+
+
+
+
+bar`,
+      options: [{ max: 5 }],
+      errors: [
+        {
+          messageId: 'noConsecutiveBlankLine',
+          data: { max: 5 },
+          line: 7,
+          column: 1,
+          endLine: 8,
           endColumn: 1,
         },
       ],
