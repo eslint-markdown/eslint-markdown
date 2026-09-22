@@ -5,9 +5,9 @@
 
 This rule disallows multiple consecutive spaces or tabs after the opening hash characters (`#`) of ATX headings.
 
-By default, the rule checks the whitespace after the opening hash characters. Set `checkClosedHeading` to `true` to also check the whitespace before the closing hash characters in closed ATX headings.
+By default, the rule checks the whitespace after the opening hash characters and before the closing hash characters in closed ATX headings. Set `checkClosedHeading` to `false` to check the opening hash characters only.
 
-This rule does not enforce missing spaces. Use [`markdown/no-missing-atx-heading-space`](https://github.com/eslint/markdown/blob/main/docs/rules/no-missing-atx-heading-space.md) to check missing spaces, and enable its `checkClosedHeading` option to check closed ATX headings.
+This rule does not enforce missing spaces. Use [`markdown/no-missing-atx-heading-space`](https://github.com/eslint/markdown/blob/main/docs/rules/no-missing-atx-heading-space.md) to check missing spaces, and enable its `checkclosedheadings` option to check closed ATX headings.
 
 ## Examples
 
@@ -25,16 +25,8 @@ Examples of **incorrect** code for this rule:
 ##   Heading 2
 
 #  Closed ATX heading #
-```
 
-#### With `{ checkClosedHeading: true }` Option
-
-```md eslint-check
-<!-- eslint md/no-multiple-atx-heading-space: ['error', { checkClosedHeading: true }] -->
-
-# Closed ATX heading  #
-
-##  Closed ATX heading   ##
+## Closed ATX heading   ##
 ```
 
 ### :white_check_mark: Correct {#correct}
@@ -50,19 +42,6 @@ Examples of **correct** code for this rule:
 
 ## Heading 2
 
-# Closed ATX heading  #
-
-## Closed ATX heading   ##
-
-Setext heading
----------------
-```
-
-#### With `{ checkClosedHeading: true }` Option
-
-```md eslint-check
-<!-- eslint md/no-multiple-atx-heading-space: ['error', { checkClosedHeading: true }] -->
-
 # Closed ATX heading #
 
 ## Closed ATX heading ##
@@ -71,25 +50,35 @@ Setext heading
 ---------------
 ```
 
+#### With `{ checkclosedheading: false }` Option
+
+```md eslint-check
+<!-- eslint md/no-multiple-atx-heading-space: ['error', { checkclosedheading: false }] -->
+
+# Closed ATX heading  #
+
+## Closed ATX heading   ##
+```
+
 ## Options
 
 ```js
 'md/no-multiple-atx-heading-space': ['error', {
-  checkClosedHeading: false,
+  checkclosedheading: true,
 }]
 ```
 
-### `checkClosedHeading`
+### `checkclosedheading`
 
-> Type: `boolean` / Default: `false`
+> Type: `boolean` / Default: `true`
 
-When `checkClosedHeading` is set to `true`, this rule also checks for multiple consecutive spaces or tabs before the closing hash characters in closed ATX headings.
+When `checkclosedheading` is set to `false`, this rule stops checking for multiple consecutive spaces or tabs before the closing hash characters in closed ATX headings.
 
 ## Fix
 
 This rule fixes multiple consecutive spaces or tabs by replacing them with a single space.
 
-For example, `#  Heading 1` is fixed to `# Heading 1`. With `checkClosedHeading` enabled, `##  Heading 2  ##` is fixed to `## Heading 2 ##`.
+For example, `#  Heading 1` is fixed to `# Heading 1`. `##  Heading 2  ##` is fixed to `## Heading 2 ##`.
 
 ## When Not To Use It
 

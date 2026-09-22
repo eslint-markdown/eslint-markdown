@@ -21,7 +21,7 @@ type RuleOptions = [
   {
     /**
      * When `checkClosedHeading` is set to `true`, this rule also checks for multiple consecutive spaces or tabs before the closing hash characters in closed ATX headings.
-     * @default false
+     * @default true
      */
     checkClosedHeading: boolean;
   },
@@ -66,7 +66,7 @@ export default {
 
     defaultOptions: [
       {
-        checkClosedHeading: false,
+        checkClosedHeading: true,
       },
     ],
 
