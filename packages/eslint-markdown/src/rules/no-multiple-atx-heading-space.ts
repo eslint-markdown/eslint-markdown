@@ -97,6 +97,7 @@ export default {
           const { spaces } = leadingSpacesMatch.groups!;
           const spacesStartOffset = startOffset + node.depth;
           const spacesEndOffset = spacesStartOffset + spaces.length;
+          const replacement = node.depth + spaces.length === text.length ? '' : ' ';
 
           context.report({
             loc: {
@@ -107,7 +108,10 @@ export default {
             messageId: 'noMultipleAtxHeadingSpace',
 
             fix(fixer) {
-              return fixer.replaceTextRange([spacesStartOffset, spacesEndOffset], ' ');
+              return fixer.replaceTextRange(
+                [spacesStartOffset, spacesEndOffset],
+                replacement,
+              );
             },
           });
         }

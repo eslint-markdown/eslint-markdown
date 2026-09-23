@@ -221,7 +221,7 @@ Heading  2
     {
       name: 'Empty ATX heading with multiple spaces',
       code: '##  ',
-      output: '## ',
+      output: '##',
       errors: [
         {
           messageId: 'noMultipleAtxHeadingSpace',
