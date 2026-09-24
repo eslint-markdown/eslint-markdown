@@ -76,7 +76,7 @@ When `checkClosedHeading` is set to `false`, this rule stops checking for multip
 
 ## Fix
 
-This rule fixes multiple consecutive spaces or tabs by replacing them with a single space.
+This rule fixes multiple consecutive spaces or tabs by keeping the first whitespace character and removing the rest.
 
 For example, `#  Heading 1` is fixed to `# Heading 1`. `##  Heading 2  ##` is fixed to `## Heading 2 ##`.
 
