@@ -122,7 +122,27 @@ Heading  2
       name: 'ATX heading containing non-breaking space entities',
       code: '# &nbsp;&nbsp;Heading',
     },
+
+    // Empty
+    {
+      name: 'Empty closed ATX heading with two tabs',
+      code: '##\t\t##',
+    },
+    {
+      name: 'Empty closed ATX heading with multiple spaces when closed headings are not checked',
+      code: '##  ##',
+      options: [{ checkClosedHeading: false }],
+    },
+    {
+      name: 'Empty closed ATX heading with a space followed by a tab',
+      code: '## \t##',
+    },
+    {
+      name: 'Empty closed ATX heading with a tab followed by a space',
+      code: '##\t ##',
+    },
   ],
+
   invalid: [
     // Opening sequences
     {
@@ -236,9 +256,9 @@ Heading  2
       ],
     },
     {
-      name: 'Empty closed ATX heading with multiple spaces',
-      code: '##  ##',
-      output: '## ##',
+      name: 'Empty closed ATX heading with excess whitespace',
+      code: '##   ##',
+      output: '##  ##',
       errors: [
         {
           messageId: 'noMultipleAtxHeadingSpace',
@@ -250,9 +270,9 @@ Heading  2
       ],
     },
     {
-      name: 'Empty closed ATX heading with multiple spaces when closed headings are not checked',
-      code: '##  ##',
-      output: '## ##',
+      name: 'Empty closed ATX heading with excess whitespace when closed headings are not checked',
+      code: '##   ##',
+      output: '##  ##',
       options: [{ checkClosedHeading: false }],
       errors: [
         {
@@ -261,6 +281,48 @@ Heading  2
           column: 4,
           endLine: 1,
           endColumn: 5,
+        },
+      ],
+    },
+    {
+      name: 'Empty closed ATX heading with a tab between spaces',
+      code: '## \t ##',
+      output: '##  ##',
+      errors: [
+        {
+          messageId: 'noMultipleAtxHeadingSpace',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 5,
+        },
+      ],
+    },
+    {
+      name: 'Empty closed ATX heading with a space between tabs',
+      code: '##\t \t##',
+      output: '##\t\t##',
+      errors: [
+        {
+          messageId: 'noMultipleAtxHeadingSpace',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 5,
+        },
+      ],
+    },
+    {
+      name: 'Empty closed ATX heading with multiple mixed whitespace characters',
+      code: '## \t\t ##',
+      output: '##  ##',
+      errors: [
+        {
+          messageId: 'noMultipleAtxHeadingSpace',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
         },
       ],
     },
@@ -283,7 +345,7 @@ Heading  2
     {
       name: 'ATX heading with multiple tabs after the opening sequence',
       code: '#\t\tHeading',
-      output: '# Heading',
+      output: '#\tHeading',
       errors: [
         {
           messageId: 'noMultipleAtxHeadingSpace',
@@ -311,7 +373,7 @@ Heading  2
     {
       name: 'Closed ATX heading with multiple tabs before the closing sequence',
       code: '# Heading\t\t#',
-      output: '# Heading #',
+      output: '# Heading\t#',
       errors: [
         {
           messageId: 'noMultipleAtxClosedHeadingSpace',
