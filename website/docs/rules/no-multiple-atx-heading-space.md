@@ -80,6 +80,8 @@ This rule fixes multiple consecutive spaces or tabs by replacing them with a sin
 
 For example, `#  Heading 1` is fixed to `# Heading 1`. `##  Heading 2  ##` is fixed to `## Heading 2 ##`.
 
+When the heading has neither content nor a closing sequence, all of the whitespace is removed.
+
 ## When Not To Use It
 
 If you intentionally use multiple spaces or tabs next to ATX heading markers, you should disable this rule.
