@@ -9,10 +9,10 @@
 
 import { escapeStringRegexp } from '../core/utils/index.js';
 import {
-  htmlEntityRegex,
   URL_RULE_DOCS,
   asciiPunctuationWithQuestionMark,
   gemojiRegex,
+  htmlEntityRegex,
 } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
