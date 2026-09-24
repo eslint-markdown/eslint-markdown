@@ -183,6 +183,24 @@ Examples of **incorrect** code for this rule:
 \u0003 - End of Text - <ETX> `` <= Here
 ```
 
+#### With `{ skipMath: false }` Option
+
+```md eslint-check
+<!-- eslint md/no-control-character: ['error', { skipMath: false }] -->
+
+$$
+\u0002 - Start of Text - <STX>  <= Here
+$$
+```
+
+#### With `{ skipInlineMath: false }` Option
+
+```md eslint-check
+<!-- eslint md/no-control-character: ['error', { skipInlineMath: false }] -->
+
+\u0002 - Start of Text - <STX> $$ <= Here
+```
+
 ### :white_check_mark: Correct
 
 Examples of **correct** code for this rule:
@@ -258,6 +276,24 @@ Examples of **correct** code for this rule:
 \u0003 - End of Text - <ETX> `` <= Here
 ```
 
+#### With `{ skipMath: true }` Option
+
+```md eslint-check
+<!-- eslint md/no-control-character: ['error', { skipMath: true }] -->
+
+$$
+\u0002 - Start of Text - <STX>  <= Here
+$$
+```
+
+#### With `{ skipInlineMath: true }` Option
+
+```md eslint-check
+<!-- eslint md/no-control-character: ['error', { skipInlineMath: true }] -->
+
+\u0002 - Start of Text - <STX> $$ <= Here
+```
+
 <!-- eslint-enable md/no-control-character, md/no-irregular-whitespace -->
 
 ## Options
@@ -267,6 +303,8 @@ Examples of **correct** code for this rule:
   allow: [],
   skipCode: true,
   skipInlineCode: true,
+  skipMath: false,
+  skipInlineMath: false,
 }]
 ```
 
@@ -287,6 +325,26 @@ When specified, specific control characters are allowed if they match one of the
 > Type: `boolean` / Default: `true`
 
 `true` allows control characters in all inline code.
+
+### `skipMath`
+
+> Type: `boolean` / Default: `false`
+
+`true` allows control characters in all math blocks. Unlike the code exclusions, this option is opt-in: math blocks are checked by default, so existing math checks remain enabled without any configuration changes. Explicitly setting this option to `true` excludes all characters matched by this rule, including the bidirectional control characters, within math blocks. The exclusion does not imply that those characters are valid math syntax.
+
+::: tip NOTE
+This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
+:::
+
+### `skipInlineMath`
+
+> Type: `boolean` / Default: `false`
+
+`true` allows control characters in all inline math. Unlike the code exclusions, this option is opt-in: inline math is checked by default, so existing math checks remain enabled without any configuration changes. Explicitly setting this option to `true` excludes all characters matched by this rule, including the bidirectional control characters, within inline math. The exclusion does not imply that those characters are valid math syntax.
+
+::: tip NOTE
+This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
+:::
 
 ## Suggestion
 
