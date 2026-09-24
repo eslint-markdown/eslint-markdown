@@ -133,7 +133,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 2,
+          column: 3,
           endLine: 1,
           endColumn: 4,
         },
@@ -147,7 +147,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 4,
+          column: 5,
           endLine: 1,
           endColumn: 8,
         },
@@ -161,7 +161,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 3,
+          column: 4,
           endLine: 1,
           endColumn: 6,
         },
@@ -177,7 +177,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxClosedHeadingSpace',
           line: 1,
-          column: 11,
+          column: 12,
           endLine: 1,
           endColumn: 14,
         },
@@ -191,14 +191,14 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 3,
+          column: 4,
           endLine: 1,
           endColumn: 6,
         },
         {
           messageId: 'noMultipleAtxClosedHeadingSpace',
           line: 1,
-          column: 13,
+          column: 14,
           endLine: 1,
           endColumn: 16,
         },
@@ -213,7 +213,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 3,
+          column: 4,
           endLine: 1,
           endColumn: 6,
         },
@@ -243,7 +243,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 3,
+          column: 4,
           endLine: 1,
           endColumn: 5,
         },
@@ -258,7 +258,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 3,
+          column: 4,
           endLine: 1,
           endColumn: 5,
         },
@@ -267,6 +267,20 @@ Heading  2
 
     // Whitespace variants
     {
+      name: 'Empty ATX heading with multiple tabs',
+      code: '##\t\t',
+      output: '##',
+      errors: [
+        {
+          messageId: 'noMultipleAtxHeadingSpace',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 5,
+        },
+      ],
+    },
+    {
       name: 'ATX heading with multiple tabs after the opening sequence',
       code: '#\t\tHeading',
       output: '# Heading',
@@ -274,7 +288,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 2,
+          column: 3,
           endLine: 1,
           endColumn: 4,
         },
@@ -288,7 +302,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 2,
+          column: 3,
           endLine: 1,
           endColumn: 6,
         },
@@ -302,7 +316,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxClosedHeadingSpace',
           line: 1,
-          column: 10,
+          column: 11,
           endLine: 1,
           endColumn: 12,
         },
@@ -316,7 +330,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxClosedHeadingSpace',
           line: 1,
-          column: 10,
+          column: 11,
           endLine: 1,
           endColumn: 13,
         },
@@ -330,7 +344,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxClosedHeadingSpace',
           line: 1,
-          column: 10,
+          column: 11,
           endLine: 1,
           endColumn: 13,
         },
@@ -346,7 +360,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 2,
+          column: 3,
           endLine: 1,
           endColumn: 5,
         },
@@ -360,7 +374,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 2,
+          column: 3,
           endLine: 1,
           endColumn: 4,
         },
@@ -374,7 +388,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 1,
-          column: 2,
+          column: 3,
           endLine: 1,
           endColumn: 4,
         },
@@ -388,7 +402,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 3,
-          column: 2,
+          column: 3,
           endLine: 3,
           endColumn: 4,
         },
@@ -410,14 +424,14 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 2,
-          column: 4,
+          column: 5,
           endLine: 2,
           endColumn: 6,
         },
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 4,
-          column: 5,
+          column: 6,
           endLine: 4,
           endColumn: 8,
         },
@@ -437,14 +451,14 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 2,
-          column: 2,
+          column: 3,
           endLine: 2,
           endColumn: 4,
         },
         {
           messageId: 'noMultipleAtxClosedHeadingSpace',
           line: 3,
-          column: 13,
+          column: 14,
           endLine: 3,
           endColumn: 15,
         },
@@ -466,7 +480,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 2,
-          column: 3,
+          column: 4,
           endLine: 2,
           endColumn: 6,
         },
@@ -486,7 +500,7 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 2,
-          column: 3,
+          column: 4,
           endLine: 2,
           endColumn: 6,
         },
@@ -506,14 +520,14 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 2,
-          column: 3,
+          column: 4,
           endLine: 2,
           endColumn: 6,
         },
         {
           messageId: 'noMultipleAtxClosedHeadingSpace',
           line: 2,
-          column: 17,
+          column: 18,
           endLine: 2,
           endColumn: 20,
         },
@@ -533,14 +547,14 @@ Heading  2
         {
           messageId: 'noMultipleAtxHeadingSpace',
           line: 2,
-          column: 3,
+          column: 4,
           endLine: 2,
           endColumn: 6,
         },
         {
           messageId: 'noMultipleAtxClosedHeadingSpace',
           line: 2,
-          column: 17,
+          column: 18,
           endLine: 2,
           endColumn: 20,
         },

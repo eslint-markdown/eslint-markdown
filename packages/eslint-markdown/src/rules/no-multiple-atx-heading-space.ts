@@ -97,11 +97,15 @@ export default {
           const { spaces } = leadingSpacesMatch.groups!;
           const spacesStartOffset = startOffset + node.depth;
           const spacesEndOffset = spacesStartOffset + spaces.length;
-          const replacement = node.depth + spaces.length === text.length ? '' : ' ';
+
+          // Unlike markdownlint, remove all whitespace after the opening sequence when the heading has neither content nor a closing sequence.
+          const replacementText = node.depth + spaces.length === text.length ? '' : ' ';
 
           context.report({
             loc: {
-              start: sourceCode.getLocFromIndex(spacesStartOffset),
+              start: sourceCode.getLocFromIndex(
+                spacesStartOffset + replacementText.length,
+              ),
               end: sourceCode.getLocFromIndex(spacesEndOffset),
             },
 
@@ -110,7 +114,7 @@ export default {
             fix(fixer) {
               return fixer.replaceTextRange(
                 [spacesStartOffset, spacesEndOffset],
-                replacement,
+                replacementText,
               );
             },
           });
@@ -128,7 +132,7 @@ export default {
 
           context.report({
             loc: {
-              start: sourceCode.getLocFromIndex(spacesStartOffset),
+              start: sourceCode.getLocFromIndex(spacesStartOffset + 1),
               end: sourceCode.getLocFromIndex(spacesEndOffset),
             },
 
