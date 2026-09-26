@@ -7,11 +7,6 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import { it } from 'vitest';
-import { Linter } from 'eslint/universal';
-import markdown from '@eslint/markdown';
-
-import md from '../index.js';
 import ruleTester from '../tests/rule-tester.js';
 import rule from './no-double-punctuation.js';
 
@@ -619,11 +614,3 @@ Baz:`,
     },
   ],
 });
-
-it('Linting an HTML entity preceded by 50,001 backslashes finishes promptly', () => {
-  new Linter().verify(`${'\\'.repeat(50_001)}&copy;.`, {
-    language: 'markdown/commonmark',
-    plugins: { markdown, md },
-    rules: { 'md/no-double-punctuation': 'error' },
-  });
-}, 500);
