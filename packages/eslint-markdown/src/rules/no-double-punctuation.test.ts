@@ -36,7 +36,6 @@ ruleTester('no-double-punctuation', rule, {
     '`Foo!!` and `Bar??`', // `InlineCode` is ignored.
     '```md\nFoo!!\nBar??\n```', // `Code` is ignored.
     ':banana::tada::confetti_ball::partying_face:', // `Gemoji` is ignored
-    'hi.:tada:',
 
     // `allow` option
     {
@@ -71,6 +70,10 @@ ruleTester('no-double-punctuation', rule, {
     {
       name: 'gemoji',
       code: 'This is :smile:. Next sentence.',
+    },
+    {
+      name: 'gemoji - 3',
+      code: 'hi.:tada:',
     },
     // html entity
     {
