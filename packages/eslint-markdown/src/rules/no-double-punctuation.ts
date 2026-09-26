@@ -45,7 +45,7 @@ const escapedAsciiPunctuationWithQuestionMark = escapeStringRegexp(
   asciiPunctuationWithQuestionMark.join(''),
 );
 
-const trailingGemojiRegex = new RegExp(`${gemojiRegex.source}$`, gemojiRegex.flags);
+const globalGemojiRegex = new RegExp(gemojiRegex.source, 'g');
 
 const trailingHtmlEntityRegex = new RegExp(
   `${htmlEntityRegex.source}$`,
@@ -126,7 +126,12 @@ export default {
       text(node) {
         const [nodeStartOffset] = sourceCode.getRange(node);
         const text = sourceCode.getText(node);
-        const matches = text.matchAll(doublePunctuationRegex);
+
+        // Mask gemoji without changing its offsets in the original text.
+        const textWithoutGemoji = text.replace(globalGemojiRegex, gemoji =>
+          ' '.repeat(gemoji.length),
+        );
+        const matches = textWithoutGemoji.matchAll(doublePunctuationRegex);
 
         for (const match of matches) {
           const punctuation = match[0];
@@ -138,10 +143,7 @@ export default {
 
           const textBeforeSecondPunctuation = text.slice(0, match.index + 1);
 
-          if (
-            trailingGemojiRegex.test(textBeforeSecondPunctuation) ||
-            trailingHtmlEntityRegex.test(textBeforeSecondPunctuation)
-          ) {
+          if (trailingHtmlEntityRegex.test(textBeforeSecondPunctuation)) {
             continue;
           }
 
