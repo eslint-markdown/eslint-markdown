@@ -38,6 +38,7 @@ export default function stylistic(plugin: ESLint.Plugin) {
       'md/consistent-thematic-break-style': 'error',
       'md/consistent-unordered-list-style': 'error',
       'md/no-consecutive-blank-line': 'error',
+      'md/no-multiple-atx-heading-space': 'error',
       'md/no-tab': 'error',
       'md/no-trailing-heading-punctuation': 'error',
     },

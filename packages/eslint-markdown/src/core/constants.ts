@@ -77,5 +77,11 @@ export const escapedTrailingBackslashRegex = /(?<=(?<!\\)(?:\\{2})*)\\$/u;
 export const gemojiRegex =
   /:(?:[abmovx]|[-+]1|100|1234|(?:1st|2nd|3rd)_place_medal|8ball|clock\d{1,4}|e-mail|non-potable_water|o2|t-rex|u5272|u5408|u55b6|u6307|u6708|u6709|u6e80|u7121|u7533|u7981|u7a7a|[a-z]{2,15}2?|[a-z]{1,14}(?:_[a-z\d]{1,16})+):/;
 
+/**
+ * Matches the closing sequence of a closed ATX heading.
+ * @see https://spec.commonmark.org/0.31.2/#atx-headings
+ */
+export const trailingAtxHeadingHashRegex = /[ \t]#+[ \t]*$/;
+
 // #endregion regex
 // --------------------------------------------------------------------------------
