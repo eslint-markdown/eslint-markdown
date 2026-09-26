@@ -711,6 +711,21 @@ ruleTester('no-trailing-heading-punctuation', rule, {
         },
       ],
     },
+    {
+      name: 'ATX: Heading ending with an escaped HTML entity',
+      code: '# \\&copy;',
+      output: '# \\&copy',
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
+          data: { punctuation: ';' },
+        },
+      ],
+    },
     // HTML Entities within Headings
     {
       name: 'ATX: Heading containing an entity with trailing punctuation',

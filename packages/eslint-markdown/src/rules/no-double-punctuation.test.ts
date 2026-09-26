@@ -35,6 +35,7 @@ ruleTester('no-double-punctuation', rule, {
     'Foo?!? Bar,.; Baz;:!',
     '`Foo!!` and `Bar??`', // `InlineCode` is ignored.
     '```md\nFoo!!\nBar??\n```', // `Code` is ignored.
+    ':banana::tada::confetti_ball::partying_face:', // `Gemoji` is ignored
 
     // `allow` option
     {
@@ -60,6 +61,28 @@ ruleTester('no-double-punctuation', rule, {
           allow: [',.'],
         },
       ],
+    },
+    // gemoji
+    {
+      name: 'gemoji',
+      code: 'This is :smile:.',
+    },
+    {
+      name: 'gemoji',
+      code: 'This is :smile:. Next sentence.',
+    },
+    {
+      name: 'gemoji - 3',
+      code: 'hi.:tada:',
+    },
+    // html entity
+    {
+      name: 'html entity',
+      code: 'Copyright &copy;.',
+    },
+    {
+      name: 'html entity',
+      code: 'Copyright &copy;! All rights reserved.',
     },
   ],
 
@@ -446,6 +469,147 @@ Baz:`,
                 punctuation: '?!',
                 rightPunctuation: '!',
               },
+            },
+          ],
+        },
+      ],
+    },
+    // emoji
+    {
+      code: 'This is incorrect:. Next sentence.',
+      output: null,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 18,
+          endLine: 1,
+          endColumn: 20,
+          data: {
+            punctuation: ':.',
+          },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: ':.',
+                leftPunctuation: ':',
+              },
+              output: 'This is incorrect: Next sentence.',
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: ':.',
+                rightPunctuation: '.',
+              },
+              output: 'This is incorrect. Next sentence.',
+            },
+          ],
+        },
+      ],
+    },
+    // html entity
+    {
+      code: 'This is incorrect;! Next sentence.',
+      output: null,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 18,
+          endLine: 1,
+          endColumn: 20,
+          data: {
+            punctuation: ';!',
+          },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: ';!',
+                leftPunctuation: ';',
+              },
+              output: 'This is incorrect; Next sentence.',
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: ';!',
+                rightPunctuation: '!',
+              },
+              output: 'This is incorrect! Next sentence.',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'This is :smile:. This is incorrect;!',
+      output: null,
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 35,
+          endLine: 1,
+          endColumn: 37,
+          data: {
+            punctuation: ';!',
+          },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: ';!',
+                leftPunctuation: ';',
+              },
+              output: 'This is :smile:. This is incorrect;',
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: ';!',
+                rightPunctuation: '!',
+              },
+              output: 'This is :smile:. This is incorrect!',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Escaped HTML entity followed by punctuation',
+      code: 'Copyright \\&copy;.',
+      output: null,
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 17,
+          endLine: 1,
+          endColumn: 19,
+          data: {
+            punctuation: ';.',
+          },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: ';.',
+                leftPunctuation: ';',
+              },
+              output: 'Copyright \\&copy;',
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: ';.',
+                rightPunctuation: '.',
+              },
+              output: 'Copyright \\&copy.',
             },
           ],
         },

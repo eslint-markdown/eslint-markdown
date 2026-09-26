@@ -83,5 +83,13 @@ export const gemojiRegex =
  */
 export const trailingAtxHeadingHashRegex = /[ \t]#+[ \t]*$/;
 
+/**
+ * Regular expression for identifying an HTML entity.
+ * - NOTE: This pattern is based on `markdownlint`.
+ * @see https://github.com/DavidAnson/markdownlint/blob/v0.41.1/helpers/helpers.cjs#L32-L34
+ */
+export const htmlEntityRegex =
+  /(?<=(?<!\\)(?:\\{2})*)&(?:#\d+|#[xX][\da-fA-F]+|[a-zA-Z]{2,31}|blk\d{2}|emsp1[34]|frac\d{2}|sup\d|there4);/;
+
 // #endregion regex
 // --------------------------------------------------------------------------------
