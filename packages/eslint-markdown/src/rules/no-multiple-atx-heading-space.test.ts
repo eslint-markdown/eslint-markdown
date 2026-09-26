@@ -7,6 +7,10 @@
 // Import
 // --------------------------------------------------------------------------------
 
+import { it } from 'vitest';
+import { Linter } from 'eslint/universal';
+import markdown from '@eslint/markdown';
+import md from '../index.js';
 import ruleTester from '../tests/rule-tester.js';
 import rule from './no-multiple-atx-heading-space.js';
 
@@ -717,3 +721,19 @@ Heading  2
     },
   ],
 });
+
+it('ATX: Linting an empty heading with 50,000 spaces finishes promptly', () => {
+  new Linter().verify(`#${' '.repeat(50_000)}`, {
+    language: 'markdown/commonmark',
+    plugins: { markdown, md },
+    rules: { 'md/no-multiple-atx-heading-space': 'error' },
+  });
+}, 500);
+
+it('ATX Closed: Linting 50,000 spaces within heading content finishes promptly', () => {
+  new Linter().verify(`# a${' '.repeat(50_000)}b  #`, {
+    language: 'markdown/commonmark',
+    plugins: { markdown, md },
+    rules: { 'md/no-multiple-atx-heading-space': 'error' },
+  });
+}, 500);
