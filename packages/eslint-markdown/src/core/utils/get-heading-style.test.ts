@@ -65,6 +65,24 @@ describe('get-heading-style', () => {
     );
   });
 
+  it('returns `atx-closed` for an empty ATX closed heading', () => {
+    assert.strictEqual(
+      getHeadingStyle(
+        {
+          type: 'heading',
+          depth: 1,
+          children: [],
+          position: {
+            start: { line: 1, column: 1 },
+            end: { line: 1, column: 6 },
+          },
+        },
+        new SourceCode('## ##'),
+      ),
+      'atx-closed',
+    );
+  });
+
   it('returns `atx` for a heading without closing hashes', () => {
     assert.strictEqual(
       getHeadingStyle(
@@ -96,6 +114,24 @@ describe('get-heading-style', () => {
           },
         },
         new SourceCode('# Heading \\#'),
+      ),
+      'atx',
+    );
+  });
+
+  it('returns `atx` for an empty ATX heading', () => {
+    assert.strictEqual(
+      getHeadingStyle(
+        {
+          type: 'heading',
+          depth: 1,
+          children: [],
+          position: {
+            start: { line: 1, column: 1 },
+            end: { line: 1, column: 3 },
+          },
+        },
+        new SourceCode('##'),
       ),
       'atx',
     );
