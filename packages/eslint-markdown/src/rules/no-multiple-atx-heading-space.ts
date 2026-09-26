@@ -21,7 +21,7 @@ import type { RuleModule } from '../core/types.js';
 type RuleOptions = [
   {
     /**
-     * When `checkClosedHeading` is set to `true`, this rule also checks for multiple
+     * When `checkClosedHeading` is set to `false`, this rule stops checking for multiple
      * consecutive spaces or tabs before the closing hash characters in closed ATX headings.
      * @default true
      */
