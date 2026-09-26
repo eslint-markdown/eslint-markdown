@@ -52,7 +52,7 @@ describe('get-heading-style', () => {
       getHeadingStyle(
         {
           type: 'heading',
-          depth: 1,
+          depth: 2,
           children: [],
           position: {
             start: { line: 1, column: 1 },
@@ -70,7 +70,7 @@ describe('get-heading-style', () => {
       getHeadingStyle(
         {
           type: 'heading',
-          depth: 1,
+          depth: 2,
           children: [],
           position: {
             start: { line: 1, column: 1 },
@@ -124,7 +124,7 @@ describe('get-heading-style', () => {
       getHeadingStyle(
         {
           type: 'heading',
-          depth: 1,
+          depth: 2,
           children: [],
           position: {
             start: { line: 1, column: 1 },
