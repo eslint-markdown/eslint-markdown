@@ -47,10 +47,7 @@ const escapedAsciiPunctuationWithQuestionMark = escapeStringRegexp(
 
 const globalGemojiRegex = new RegExp(gemojiRegex.source, 'g');
 
-const trailingHtmlEntityRegex = new RegExp(
-  `${htmlEntityRegex.source}$`,
-  htmlEntityRegex.flags,
-);
+const globalHtmlEntityRegex = new RegExp(htmlEntityRegex.source, 'g');
 
 /**
  * This pattern is based on the punctuation list used by `remark-lint`.
@@ -128,10 +125,15 @@ export default {
         const text = sourceCode.getText(node);
 
         // Mask gemoji without changing its offsets in the original text.
-        const textWithoutGemoji = text.replace(globalGemojiRegex, gemoji =>
-          ' '.repeat(gemoji.length),
+        const textWithoutHtmlEntity = text.replace(globalHtmlEntityRegex, entity =>
+          ' '.repeat(entity.length),
         );
-        const matches = textWithoutGemoji.matchAll(doublePunctuationRegex);
+        const textWithoutIgnoiredSyntax = textWithoutHtmlEntity.replace(
+          globalGemojiRegex,
+          gemoji => ' '.repeat(gemoji.length),
+        );
+
+        const matches = textWithoutIgnoiredSyntax.matchAll(doublePunctuationRegex);
 
         for (const match of matches) {
           const punctuation = match[0];
@@ -140,12 +142,6 @@ export default {
           const endOffset = startOffset + punctuation.length;
 
           if (allow.includes(punctuation)) continue;
-
-          const textBeforeSecondPunctuation = text.slice(0, match.index + 1);
-
-          if (trailingHtmlEntityRegex.test(textBeforeSecondPunctuation)) {
-            continue;
-          }
 
           const [leftPunctuation, rightPunctuation] = punctuation;
           const violation = {
