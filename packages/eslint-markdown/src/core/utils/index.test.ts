@@ -11,6 +11,8 @@ import {
   escapeStringRegexp,
   CODE_STYLE,
   getCodeStyle,
+  HEADING_STYLE,
+  getHeadingStyle,
   getElementsByTagName,
   isBlankLine,
   normalizeRegexPattern,
@@ -37,6 +39,16 @@ describe('index', () => {
     it('`getCodeStyle` should be defined', () => {
       assert.isDefined(getCodeStyle);
       assert.strictEqual(typeof getCodeStyle, 'function');
+    });
+
+    it('`HEADING_STYLE` should be defined', () => {
+      assert.isDefined(HEADING_STYLE);
+      assert.isArray(HEADING_STYLE);
+    });
+
+    it('`getHeadingStyle` should be defined', () => {
+      assert.isDefined(getHeadingStyle);
+      assert.strictEqual(typeof getHeadingStyle, 'function');
     });
 
     it('`getElementsByTagName` should be defined', () => {
