@@ -7,6 +7,7 @@
 // Import
 // --------------------------------------------------------------------------------
 
+import { getHeadingStyle } from '../core/utils/index.js';
 import { URL_RULE_DOCS } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -20,7 +21,8 @@ import type { RuleModule } from '../core/types.js';
 type RuleOptions = [
   {
     /**
-     * When `checkClosedHeading` is set to `true`, this rule also checks for multiple consecutive spaces or tabs before the closing hash characters in closed ATX headings.
+     * When `checkClosedHeading` is set to `true`, this rule also checks for multiple
+     * consecutive spaces or tabs before the closing hash characters in closed ATX headings.
      * @default true
      */
     checkClosedHeading: boolean;
@@ -32,8 +34,7 @@ type MessageIds = 'noMultipleAtxHeadingSpace' | 'noMultipleAtxClosedHeadingSpace
 // Helper
 // --------------------------------------------------------------------------------
 
-const leadingSpacesRegex = /^#{1,6}(?<spaces>[ \t]{2,})/u;
-const trailingSpacesRegex = /(?<spaces>[ \t]{2,})#+[ \t]*$/u;
+const multipleSpacesRegex = /^[ \t]{2,}/u;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -86,73 +87,70 @@ export default {
     const { sourceCode } = context;
     const [{ checkClosedHeading }] = context.options;
 
+    /**
+     * @param text Text starting immediately after an opening sequence or heading content.
+     * @param textStartOffset Start offset of the text.
+     * @param messageId Message for the opening or closing sequence.
+     */
+    function report(text: string, textStartOffset: number, messageId: MessageIds) {
+      const spacesMatch = multipleSpacesRegex.exec(text)?.[0];
+
+      if (!spacesMatch) return;
+
+      // Empty ATX headings keep no whitespace; otherwise, keep the first character.
+      const startOffset = textStartOffset + Number(spacesMatch.length !== text.length);
+      const endOffset = textStartOffset + spacesMatch.length;
+
+      context.report({
+        loc: {
+          start: sourceCode.getLocFromIndex(startOffset),
+          end: sourceCode.getLocFromIndex(endOffset),
+        },
+
+        messageId,
+
+        fix(fixer) {
+          return fixer.removeRange([startOffset, endOffset]);
+        },
+      });
+    }
+
     return {
       heading(node) {
-        const text = sourceCode.getText(node);
-        const [startOffset] = sourceCode.getRange(node);
-        const leadingSpacesMatch = leadingSpacesRegex.exec(text);
-        const isEmptyClosedHeading =
-          node.children.length === 0 && trailingSpacesRegex.test(text);
+        const currentHeadingStyle = getHeadingStyle(node, sourceCode);
 
-        if (leadingSpacesMatch) {
-          // A successful match always contains the named capture group.
-          const { spaces } = leadingSpacesMatch.groups!;
-
-          if (isEmptyClosedHeading && spaces.length === 2) {
-            return;
-          }
-
-          const spacesStartOffset = startOffset + node.depth;
-          let spacesEndOffset = spacesStartOffset + spaces.length;
-
-          if (isEmptyClosedHeading) {
-            spacesEndOffset--;
-          }
-
-          // Unlike markdownlint, remove all whitespace after the opening sequence when the heading has neither content nor a closing sequence.
-          const replacementText = node.depth + spaces.length === text.length ? '' : ' ';
-
-          context.report({
-            loc: {
-              start: sourceCode.getLocFromIndex(
-                spacesStartOffset + replacementText.length,
-              ),
-              end: sourceCode.getLocFromIndex(spacesEndOffset),
-            },
-
-            messageId: 'noMultipleAtxHeadingSpace',
-
-            fix(fixer) {
-              return fixer.removeRange([
-                spacesStartOffset + replacementText.length,
-                spacesEndOffset,
-              ]);
-            },
-          });
+        if (currentHeadingStyle === 'setext') {
+          // Early returns when the heading is a Setext heading, as this rule only applies to ATX headings.
+          return;
         }
 
-        if (!checkClosedHeading || node.children.length === 0) return;
+        const lastChildNode = node.children.at(-1);
+        const isClosedHeading = currentHeadingStyle === 'atx-closed';
+        const isEmptyHeading = !lastChildNode;
 
-        const trailingSpacesMatch = trailingSpacesRegex.exec(text);
+        if (!checkClosedHeading && isClosedHeading && isEmptyHeading) {
+          // When closing checks are disabled, skip closed headings with no content
+          // (e.g., `'##   ##'`), where opening and closing whitespace overlap.
+          return;
+        }
 
-        if (trailingSpacesMatch) {
-          // A successful match always contains the named capture group.
-          const { spaces } = trailingSpacesMatch.groups!;
-          const spacesStartOffset = startOffset + trailingSpacesMatch.index;
-          const spacesEndOffset = spacesStartOffset + spaces.length;
+        const text = sourceCode.getText(node);
+        const [nodeStartOffset] = sourceCode.getRange(node);
 
-          context.report({
-            loc: {
-              start: sourceCode.getLocFromIndex(spacesStartOffset + 1),
-              end: sourceCode.getLocFromIndex(spacesEndOffset),
-            },
+        report(
+          text.slice(node.depth),
+          nodeStartOffset + node.depth,
+          'noMultipleAtxHeadingSpace',
+        );
 
-            messageId: 'noMultipleAtxClosedHeadingSpace',
+        if (checkClosedHeading && isClosedHeading && !isEmptyHeading) {
+          const [, lastChildNodeEndOffset] = sourceCode.getRange(lastChildNode);
 
-            fix(fixer) {
-              return fixer.removeRange([spacesStartOffset + 1, spacesEndOffset]);
-            },
-          });
+          report(
+            text.slice(lastChildNodeEndOffset - nodeStartOffset),
+            lastChildNodeEndOffset,
+            'noMultipleAtxClosedHeadingSpace',
+          );
         }
       },
     };
