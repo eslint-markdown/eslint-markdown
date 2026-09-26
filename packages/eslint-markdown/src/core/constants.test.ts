@@ -292,6 +292,11 @@ describe('constants', () => {
         it('should match an HTML entity within surrounding text', () => {
           assert.match('Copyright &copy; notice', htmlEntityRegex);
         });
+
+        it('should match an HTML entity preceded by an even number of backslashes', () => {
+          assert.match(`${'\\'.repeat(2)}&copy;`, htmlEntityRegex);
+          assert.match(`${'\\'.repeat(4)}&copy;`, htmlEntityRegex);
+        });
       });
 
       describe('invalid HTML entities', () => {
@@ -329,6 +334,11 @@ describe('constants', () => {
 
         it('should not match unsupported alphanumeric named entities', () => {
           assert.notMatch('&copy1;', htmlEntityRegex);
+        });
+
+        it('should not match an HTML entity preceded by an odd number of backslashes', () => {
+          assert.notMatch(`\\&copy;`, htmlEntityRegex);
+          assert.notMatch(`${'\\'.repeat(3)}&copy;`, htmlEntityRegex);
         });
       });
     });

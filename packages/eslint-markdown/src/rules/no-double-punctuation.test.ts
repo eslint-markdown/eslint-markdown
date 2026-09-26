@@ -7,6 +7,11 @@
 // Import
 // --------------------------------------------------------------------------------
 
+import { it } from 'vitest';
+import { Linter } from 'eslint/universal';
+import markdown from '@eslint/markdown';
+
+import md from '../index.js';
 import ruleTester from '../tests/rule-tester.js';
 import rule from './no-double-punctuation.js';
 
@@ -35,6 +40,8 @@ ruleTester('no-double-punctuation', rule, {
     'Foo?!? Bar,.; Baz;:!',
     '`Foo!!` and `Bar??`', // `InlineCode` is ignored.
     '```md\nFoo!!\nBar??\n```', // `Code` is ignored.
+    ':banana::tada::confetti_ball::partying_face:', // `Gemoji` is ignored
+    'hi.:tada:',
 
     // `allow` option
     {
@@ -575,5 +582,48 @@ Baz:`,
         },
       ],
     },
+    {
+      name: 'Escaped HTML entity followed by punctuation',
+      code: 'Copyright \\&copy;.',
+      output: null,
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 17,
+          endLine: 1,
+          endColumn: 19,
+          data: {
+            punctuation: ';.',
+          },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: ';.',
+                leftPunctuation: ';',
+              },
+              output: 'Copyright \\&copy;',
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: ';.',
+                rightPunctuation: '.',
+              },
+              output: 'Copyright \\&copy.',
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
+
+it('Linting an HTML entity preceded by 50,001 backslashes finishes promptly', () => {
+  new Linter().verify(`${'\\'.repeat(50_001)}&copy;.`, {
+    language: 'markdown/commonmark',
+    plugins: { markdown, md },
+    rules: { 'md/no-double-punctuation': 'error' },
+  });
+}, 500);
