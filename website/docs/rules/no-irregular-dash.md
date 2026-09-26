@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -30,6 +30,8 @@ This rule disallows the following characters except where the options allow:
 ```
 
 ## Examples
+
+<!-- eslint-disable md/no-irregular-dash -->
 
 ### :x: Incorrect
 
@@ -224,6 +226,8 @@ $$
 \u2212 - Minus Sign - <MINUS> $−$ <= Here
 ```
 
+<!-- eslint-enable md/no-irregular-dash -->
+
 ## Options
 
 ```js
@@ -264,7 +268,11 @@ For example, to replace an en dash with `--` and an em dash with `---`:
 
 ::: warning Fixing can change the Markdown structure
 
+<!-- eslint-disable md/no-irregular-dash -->
+
 If a dash stands alone on a line, the fixed line can be parsed differently. For example, `–` below a paragraph becomes a [Setext heading](https://spec.commonmark.org/0.31.2/#setext-headings) underline, and with `'\u2014': '---'`, `—` on its own line becomes a [thematic break](https://spec.commonmark.org/0.31.2/#thematic-breaks).
+
+<!-- eslint-enable md/no-irregular-dash -->
 
 :::
 

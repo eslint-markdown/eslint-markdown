@@ -1,13 +1,15 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
 
 This rule disallows more than a configured number of consecutive blank lines in Markdown files. Except in a code block, blank lines serve no purpose and do not affect the rendering of content. Consistent blank line usage makes documents easier to scan and avoids accidental large gaps between sections, paragraphs, and list content.
 
-For this rule, a blank line is a line that contains no characters, or contains only spaces and tabs. By default, the rule allows one consecutive blank line and ignores consecutive blank lines inside code blocks.
+For this rule, a blank line is a line that contains no characters, or contains only spaces and tabs. By default, the rule allows one consecutive blank line and ignores consecutive blank lines inside code blocks and math blocks when math parsing is enabled.
 
 ## Examples
+
+<!-- eslint-disable md/no-consecutive-blank-line -->
 
 ### :x: Incorrect {#incorrect}
 
@@ -68,6 +70,19 @@ foo
 bar
 ```
 ````
+
+#### With `{ skipMath: false }` Option
+
+```md eslint-check
+<!-- eslint md/no-consecutive-blank-line: ['error', { skipMath: false }] -->
+
+$$
+foo
+
+
+bar
+$$
+```
 
 ### :white_check_mark: Correct {#correct}
 
@@ -145,12 +160,28 @@ qux
 ```
 ````
 
+#### With `{ skipMath: true }` Option
+
+```md eslint-check
+<!-- eslint md/no-consecutive-blank-line: ['error', { skipMath: true }] -->
+
+$$
+foo
+
+
+bar
+$$
+```
+
+<!-- eslint-enable md/no-consecutive-blank-line -->
+
 ## Options
 
 ```js
 'md/no-consecutive-blank-line': ['error', {
   max: 1,
   skipCode: true,
+  skipMath: true,
 }]
 ```
 
@@ -167,6 +198,16 @@ This value must be an integer greater than or equal to `1`.
 > Type: `boolean | string[]` / Default: `true`
 
 `true` allows consecutive blank lines in all code blocks, while `string[]` allows consecutive blank lines only in code blocks for the specified languages.
+
+### `skipMath`
+
+> Type: `boolean` / Default: `true`
+
+`true` allows consecutive blank lines in all math blocks.
+
+::: tip NOTE
+This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
+:::
 
 ## Fix
 

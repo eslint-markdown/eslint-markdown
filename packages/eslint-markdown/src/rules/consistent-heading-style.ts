@@ -10,15 +10,31 @@
 // --------------------------------------------------------------------------------
 
 import type { Heading } from 'mdast';
-import { URL_RULE_DOCS } from '../core/constants.js';
+import { HEADING_STYLE, getHeadingStyle } from '../core/utils/index.js';
+import { URL_RULE_DOCS, trailingAtxHeadingHashRegex } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
 // Typedef
 // --------------------------------------------------------------------------------
 
-type HeadingStyle = (typeof HEADING_STYLE)[number];
-type RuleOptions = [{ style: HeadingStyle }];
+type RuleOptions = [
+  {
+    /**
+     * When `style` is set to `'consistent'`, the rule enforces that all headings in the document use the same style as the first one encountered.
+     *
+     * You can also specify a particular style by setting `style` to one of the following values:
+     *
+     * - `'atx'`: Require ATX headings at every level, such as `## Heading`.
+     * - `'atx-closed'`: Require closed ATX headings at every level, such as `## Heading ##`.
+     * - `'setext'`: Require Setext headings at levels 1 and 2. Headings at levels 3 through 6 are reported because Setext does not support those levels.
+     * - `'setext-with-atx'`: Require Setext headings at levels 1 and 2, and ATX headings at levels 3 through 6.
+     * - `'setext-with-atx-closed'`: Require Setext headings at levels 1 and 2, and closed ATX headings at levels 3 through 6.
+     * @default 'consistent'
+     */
+    style: (typeof EXTENDED_HEADING_STYLE)[number];
+  },
+];
 type MessageIds = 'style' | 'suggestAtxToSetext' | 'suggestAtxClosedToSetext';
 
 // --------------------------------------------------------------------------------
@@ -27,20 +43,12 @@ type MessageIds = 'style' | 'suggestAtxToSetext' | 'suggestAtxClosedToSetext';
 
 const SETEXT_MAX_DEPTH = 2;
 
-const HEADING_STYLE = [
+const EXTENDED_HEADING_STYLE = [
   'consistent',
-  'atx',
-  'atx-closed',
-  'setext',
+  ...HEADING_STYLE,
   'setext-with-atx',
   'setext-with-atx-closed',
 ] as const;
-
-/**
- * Matches the closing sequence of a closed ATX heading.
- * @see https://spec.commonmark.org/0.31.2/#atx-headings
- */
-const trailingAtxHeadingHashRegex = /[ \t]#+[ \t]*$/;
 
 /**
  * Returns the setext marker for the given heading depth.
@@ -75,7 +83,7 @@ export default {
         type: 'object',
         properties: {
           style: {
-            enum: HEADING_STYLE,
+            enum: EXTENDED_HEADING_STYLE,
           },
         },
         additionalProperties: false,
@@ -130,15 +138,7 @@ export default {
     return {
       // The `heading` selector is more general, so it is visited before the other `heading[xxx]` selectors.
       heading(node) {
-        const { start, end } = sourceCode.getLoc(node);
-
-        if (start.line !== end.line /* Multiline Heading */) {
-          currentHeadingStyle = 'setext';
-        } else if (trailingAtxHeadingHashRegex.test(sourceCode.getText(node))) {
-          currentHeadingStyle = 'atx-closed';
-        } else {
-          currentHeadingStyle = 'atx';
-        }
+        currentHeadingStyle = getHeadingStyle(node, sourceCode);
 
         if (headingStyle === null) {
           headingStyle = currentHeadingStyle;

@@ -18,6 +18,7 @@ import {
   escapedTrailingBackslashRegex,
   gemojiRegex,
   htmlEntityRegex,
+  trailingAtxHeadingHashRegex,
 } from './constants.js';
 
 // --------------------------------------------------------------------------------
@@ -340,6 +341,36 @@ describe('constants', () => {
           assert.notMatch(`\\&copy;`, htmlEntityRegex);
           assert.notMatch(`${'\\'.repeat(3)}&copy;`, htmlEntityRegex);
         });
+      });
+    });
+
+    describe('trailingAtxHeadingHashRegex', () => {
+      it('should match closing hashes preceded by a space', () => {
+        assert.match('## Heading ##', trailingAtxHeadingHashRegex);
+      });
+
+      it('should match closing hashes preceded by a tab', () => {
+        assert.match('## Heading\t##', trailingAtxHeadingHashRegex);
+      });
+
+      it('should match closing hashes preceded by a space with trailing tabs', () => {
+        assert.match('## Heading ##\t\t', trailingAtxHeadingHashRegex);
+      });
+
+      it('should match closing hashes preceded by a tab with trailing spaces', () => {
+        assert.match('## Heading\t##  ', trailingAtxHeadingHashRegex);
+      });
+
+      it('should not match a hash without separating whitespace', () => {
+        assert.notMatch('## Heading#', trailingAtxHeadingHashRegex);
+      });
+
+      it('should not match an escaped trailing hash', () => {
+        assert.notMatch('## Heading \\#', trailingAtxHeadingHashRegex);
+      });
+
+      it('should not match hashes followed by heading content', () => {
+        assert.notMatch('## Heading ## more', trailingAtxHeadingHashRegex);
       });
     });
   });
