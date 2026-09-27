@@ -124,8 +124,8 @@ export default {
         const [nodeStartOffset] = sourceCode.getRange(node);
         const matches = sourceCode
           .getText(node) // Mask HTML entities and gemoji without changing their offsets in the original text.
-          .replace(htmlEntityRegex, match => ' '.repeat(match.length))
           .replace(gemojiRegex, match => ' '.repeat(match.length))
+          .replace(htmlEntityRegex, match => ' '.repeat(match.length))
           .matchAll(doublePunctuationRegex);
 
         for (const match of matches) {
