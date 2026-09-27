@@ -11,8 +11,8 @@ import { escapeStringRegexp } from '../core/utils/index.js';
 import {
   URL_RULE_DOCS,
   asciiPunctuationWithQuestionMark,
-  gemojiRegex,
-  htmlEntityRegex,
+  gemojiRegex as originalGemojiRegex,
+  htmlEntityRegex as originalHtmlEntityRegex,
 } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -45,9 +45,9 @@ const escapedAsciiPunctuationWithQuestionMark = escapeStringRegexp(
   asciiPunctuationWithQuestionMark.join(''),
 );
 
-const globalGemojiRegex = new RegExp(gemojiRegex.source, 'g');
+const gemojiRegex = new RegExp(originalGemojiRegex.source, 'g');
 
-const globalHtmlEntityRegex = new RegExp(htmlEntityRegex.source, 'g');
+const htmlEntityRegex = new RegExp(originalHtmlEntityRegex.source, 'g');
 
 /**
  * This pattern is based on the punctuation list used by `remark-lint`.
@@ -122,18 +122,11 @@ export default {
     return {
       text(node) {
         const [nodeStartOffset] = sourceCode.getRange(node);
-        const text = sourceCode.getText(node);
-
-        // Mask gemoji without changing its offsets in the original text.
-        const textWithoutHtmlEntity = text.replace(globalHtmlEntityRegex, entity =>
-          ' '.repeat(entity.length),
-        );
-        const textWithoutIgnoiredSyntax = textWithoutHtmlEntity.replace(
-          globalGemojiRegex,
-          gemoji => ' '.repeat(gemoji.length),
-        );
-
-        const matches = textWithoutIgnoiredSyntax.matchAll(doublePunctuationRegex);
+        const matches = sourceCode
+          .getText(node) // Mask HTML entities and gemoji without changing their offsets in the original text.
+          .replace(htmlEntityRegex, match => ' '.repeat(match.length))
+          .replace(gemojiRegex, match => ' '.repeat(match.length))
+          .matchAll(doublePunctuationRegex);
 
         for (const match of matches) {
           const punctuation = match[0];
