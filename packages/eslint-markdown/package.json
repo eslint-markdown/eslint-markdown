@@ -57,7 +57,7 @@
   },
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "tsc -b tsconfig.build.json && node ../../scripts/build-config.js && tsc -b tsconfig.build.json && node ../../scripts/cp.js ../../LICENSE.md LICENSE.md ../../README.md README.md",
+    "build": "tsc -b tsconfig.build.json && node ../../scripts/build-config.js && tsc -b tsconfig.build.json && node ../../scripts/cp.js ../../README.md README.md",
     "test": "npm run test:types && npm run test:unit",
     "test:types": "tsc -b ./tsconfig.test-d.json",
     "test:unit": "vitest run"

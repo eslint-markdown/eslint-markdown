@@ -57,3 +57,4 @@ lumirlumir/lumirlumir:
     dest: ./configs/prettier.config.js
   # - source: ./tsconfig.base.json
   #   dest: ./configs/tsconfig.base.json
+  # TODO: License file
