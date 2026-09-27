@@ -6,14 +6,14 @@ description: "Installation instructions for `eslint-markdown` npm package with s
 
 ## Prerequisites
 
-- Node.js: `{{ version.nodejs }}`
-- ESLint: `{{ version.eslint }}` & Flat Config Only
-- `@eslint/markdown`: `{{ version.eslintMarkdown }}`
+- Node.js: `{{ $version.nodejs }}`
+- ESLint: `{{ $version.eslint }}` & Flat Config Only
+- `@eslint/markdown`: `{{ $version.eslintMarkdown }}`
 - Module Support: ECMAScript Modules (ESM) Only
 
 ::: tip NOTE
 
-- In line with the [ESLint v10 prerequisites](https://github.com/eslint/eslint?tab=readme-ov-file#installation-and-usage), we support only Node.js versions `{{ version.nodejs }}`.
+- In line with the [ESLint v10 prerequisites](https://github.com/eslint/eslint?tab=readme-ov-file#installation-and-usage), we support only Node.js versions `{{ $version.nodejs }}`.
 - There is a type compatibility issue in older ESLint v9 versions, the minimum required ESLint version is `^9.39.0`.
 - `@eslint/markdown` is a required peer dependency. npm v7 and later install it automatically by default, but Yarn requires explicit installation. The commands below include it for all package managers.
 

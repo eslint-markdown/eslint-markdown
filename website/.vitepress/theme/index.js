@@ -24,7 +24,7 @@ export default {
   ...theme,
   enhanceApp({ app }) {
     app.use(TwoslashFloatingVue);
-    app.config.globalProperties.version = {
+    app.config.globalProperties.$version = {
       nodejs: packageJson.engines.node,
       eslint: packageJson.peerDependencies.eslint,
       eslintMarkdown: packageJson.peerDependencies['@eslint/markdown'],
