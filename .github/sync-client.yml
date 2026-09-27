@@ -55,6 +55,10 @@ lumirlumir/lumirlumir:
     dest: ./configs/lint-staged.config.js
   - source: ./prettier.config.js
     dest: ./configs/prettier.config.js
-  # - source: ./tsconfig.base.json
-  #   dest: ./configs/tsconfig.base.json
-  # TODO: License file
+  - source: ./tsconfig.base.json
+    dest: ./configs/tsconfig.base.json
+  # LICENSE.md
+  - source: ./LICENSE.md
+    dest: ./configs/LICENSE.md
+  - source: ./packages/eslint-markdown/LICENSE.md
+    dest: ./configs/LICENSE.md
