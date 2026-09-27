@@ -148,7 +148,10 @@ export default defineConfig([
       'md/consistent-strong-style': ['error', { style: '*' }],
       'md/consistent-thematic-break-style': ['error', { style: '---' }],
       'md/consistent-unordered-list-style': ['error', { style: '-' }],
-      'md/no-consecutive-blank-line': ['error', { max: 1, skipCode: false }],
+      'md/no-consecutive-blank-line': [
+        'error',
+        { max: 1, skipCode: false, skipMath: false },
+      ],
       'md/no-control-character': ['error', { skipCode: false, skipInlineCode: false }],
       'md/no-curly-quote': 'error',
       'md/no-double-punctuation': ['error', { allow: ['.,'] }],
@@ -173,8 +176,17 @@ export default defineConfig([
           skipInlineMath: false,
         },
       ],
+      'md/no-multiple-atx-heading-space': ['error', { checkClosedHeading: true }],
       'md/no-shell-dollar': 'off',
-      'md/no-tab': ['error', { skipCode: false, skipInlineCode: false }],
+      'md/no-tab': [
+        'error',
+        {
+          skipCode: false,
+          skipInlineCode: false,
+          skipMath: false,
+          skipInlineMath: false,
+        },
+      ],
       'md/no-trailing-heading-punctuation': 'error',
       'md/no-url-trailing-slash': 'off', // TODO: Enable
       'md/require-heading-id': 'off',
@@ -189,7 +201,7 @@ export default defineConfig([
     name: 'md/website',
     files: ['website/docs/**/*.md'],
     rules: {
-      'md/no-emoji': 'error',
+      'md/no-emoji': ['error', { style: 'emoji' }],
     },
   },
   {

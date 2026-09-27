@@ -39,7 +39,7 @@ type RuleOptions = [
      * When `style` is set to `'consistent'`, the rule enforces that all code blocks in the document use the same style as the first one encountered.
      * @default 'consistent'
      */
-    style: 'consistent' | CodeStyle;
+    style: (typeof EXTENDED_CODE_STYLE)[number];
     /**
      * Require a specific number of blank lines above each fenced code block.
      * @default false
@@ -53,6 +53,12 @@ type RuleOptions = [
   },
 ];
 type MessageIds = 'style' | 'blankLineAbove' | 'blankLineBelow';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
+
+const EXTENDED_CODE_STYLE = ['consistent', ...CODE_STYLE] as const;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -78,7 +84,7 @@ export default {
         type: 'object',
         properties: {
           style: {
-            enum: ['consistent', ...CODE_STYLE],
+            enum: EXTENDED_CODE_STYLE,
           },
           blankLineAbove: {
             oneOf: [

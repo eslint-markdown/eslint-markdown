@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "eslint-markdown-monorepo",
-  "version": "0.17.1",
+  "version": "0.18.1",
   "type": "module",
   "packageManager": "npm@10.9.2",
   "engines": {
@@ -65,7 +65,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "npm-run-all2": "^8.0.4",
-    "prettier": "^3.9.6",
+    "prettier": "^3.9.8",
     "typescript": "^6.0.3",
     "vitest": "^4.1.9"
   }
