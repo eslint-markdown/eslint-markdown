@@ -35,7 +35,14 @@ ruleTester('no-double-punctuation', rule, {
     'Foo?!? Bar,.; Baz;:!',
     '`Foo!!` and `Bar??`', // `InlineCode` is ignored.
     '```md\nFoo!!\nBar??\n```', // `Code` is ignored.
-    ':banana::tada::confetti_ball::partying_face:', // `Gemoji` is ignored
+    // gemoji is ignored.
+    'This is :smile:.',
+    'This is :smile:. Next sentence.',
+    'hi.:tada:',
+    ':banana::tada::confetti_ball::partying_face:',
+    // html entity is ignored.
+    'Copyright &copy;.',
+    'Copyright &copy;! All rights reserved.',
 
     // `allow` option
     {
@@ -61,28 +68,6 @@ ruleTester('no-double-punctuation', rule, {
           allow: [',.'],
         },
       ],
-    },
-    // gemoji
-    {
-      name: 'gemoji',
-      code: 'This is :smile:.',
-    },
-    {
-      name: 'gemoji',
-      code: 'This is :smile:. Next sentence.',
-    },
-    {
-      name: 'gemoji - 3',
-      code: 'hi.:tada:',
-    },
-    // html entity
-    {
-      name: 'html entity',
-      code: 'Copyright &copy;.',
-    },
-    {
-      name: 'html entity',
-      code: 'Copyright &copy;! All rights reserved.',
     },
   ],
 
@@ -435,50 +420,10 @@ Baz:`,
       ],
     },
 
-    // `allow` option
-    {
-      code: 'Foo!! Bar?!',
-      options: [
-        {
-          allow: ['!!'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'noDoublePunctuation',
-          line: 1,
-          column: 10,
-          endLine: 1,
-          endColumn: 12,
-          data: {
-            punctuation: '?!',
-          },
-          suggestions: [
-            {
-              output: 'Foo!! Bar?',
-              messageId: 'suggestReplaceWithLeft',
-              data: {
-                punctuation: '?!',
-                leftPunctuation: '?',
-              },
-            },
-            {
-              output: 'Foo!! Bar!',
-              messageId: 'suggestReplaceWithRight',
-              data: {
-                punctuation: '?!',
-                rightPunctuation: '!',
-              },
-            },
-          ],
-        },
-      ],
-    },
-    // emoji
+    // gemoji
     {
       code: 'This is incorrect:. Next sentence.',
       output: null,
-      options: [{}],
       errors: [
         {
           messageId: 'noDoublePunctuation',
@@ -510,11 +455,11 @@ Baz:`,
         },
       ],
     },
+
     // html entity
     {
       code: 'This is incorrect;! Next sentence.',
       output: null,
-      options: [{}],
       errors: [
         {
           messageId: 'noDoublePunctuation',
@@ -581,7 +526,6 @@ Baz:`,
       ],
     },
     {
-      name: 'Escaped HTML entity followed by punctuation',
       code: 'Copyright \\&copy;.',
       output: null,
       errors: [
@@ -610,6 +554,46 @@ Baz:`,
                 rightPunctuation: '.',
               },
               output: 'Copyright \\&copy.',
+            },
+          ],
+        },
+      ],
+    },
+
+    // `allow` option
+    {
+      code: 'Foo!! Bar?!',
+      options: [
+        {
+          allow: ['!!'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 10,
+          endLine: 1,
+          endColumn: 12,
+          data: {
+            punctuation: '?!',
+          },
+          suggestions: [
+            {
+              output: 'Foo!! Bar?',
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: '?!',
+                leftPunctuation: '?',
+              },
+            },
+            {
+              output: 'Foo!! Bar!',
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: '?!',
+                rightPunctuation: '!',
+              },
             },
           ],
         },
