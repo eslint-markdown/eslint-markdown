@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------
 
 import type { Heading } from 'mdast';
-import { escapeStringRegexp } from '../core/utils/index.js';
+import { escapeStringRegexp, getElementsByTagName } from '../core/utils/index.js';
 import { URL_RULE_DOCS } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -125,6 +125,59 @@ export default {
     );
 
     return {
+      html(node) {
+        const [nodeStartOffset] = sourceCode.getRange(node);
+        const html = sourceCode.getText(node);
+
+        for (const depth of [1, 2, 3, 4, 5, 6] as const) {
+          if (allowDepths.includes(depth)) continue;
+
+          for (const { attrs, sourceCodeLocation } of getElementsByTagName(
+            html,
+            `h${depth}`,
+          )) {
+            const startTag = sourceCodeLocation?.startTag;
+            if (!startTag) continue;
+
+            const id = attrs.find(attribute => attribute.name === 'id');
+
+            if (mode === 'always' && !id?.value) {
+              context.report({
+                loc: {
+                  start: sourceCode.getLocFromIndex(
+                    nodeStartOffset + startTag.startOffset,
+                  ),
+                  end: sourceCode.getLocFromIndex(nodeStartOffset + startTag.endOffset),
+                },
+                messageId: 'headingIdAlways',
+              });
+            } else if (mode === 'never' && id && sourceCodeLocation.attrs?.id) {
+              const { startOffset, endOffset } = sourceCodeLocation.attrs.id;
+              const headingId = html.slice(startOffset, endOffset);
+
+              context.report({
+                loc: {
+                  start: sourceCode.getLocFromIndex(nodeStartOffset + startOffset),
+                  end: sourceCode.getLocFromIndex(nodeStartOffset + endOffset),
+                },
+                data: { headingId },
+                messageId: 'headingIdNever',
+                fix(fixer) {
+                  const leadingSpaces =
+                    html.slice(startTag.startOffset, startOffset).match(/[ \t]*$/)?.[0]
+                      .length ?? 0;
+
+                  return fixer.removeRange([
+                    nodeStartOffset + startOffset - leadingSpaces,
+                    nodeStartOffset + endOffset,
+                  ]);
+                },
+              });
+            }
+          }
+        }
+      },
+
       heading(node) {
         // If the heading's depth is included in `allowDepths`, skip it.
         if (allowDepths.includes(node.depth)) {
