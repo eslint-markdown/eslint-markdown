@@ -330,7 +330,7 @@ When specified, specific control characters are allowed if they match one of the
 
 > Type: `boolean` / Default: `false`
 
-`true` allows control characters in all math blocks. Unlike the code exclusions, this option is opt-in: math blocks are checked by default, so existing math checks remain enabled without any configuration changes. Explicitly setting this option to `true` excludes all characters matched by this rule, including the bidirectional control characters, within math blocks. The exclusion does not imply that those characters are valid math syntax.
+`true` allows control characters in all math blocks.
 
 ::: tip NOTE
 This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
@@ -340,7 +340,7 @@ This option requires enabling math parsing with [`languageOptions: { math: true 
 
 > Type: `boolean` / Default: `false`
 
-`true` allows control characters in all inline math. Unlike the code exclusions, this option is opt-in: inline math is checked by default, so existing math checks remain enabled without any configuration changes. Explicitly setting this option to `true` excludes all characters matched by this rule, including the bidirectional control characters, within inline math. The exclusion does not imply that those characters are valid math syntax.
+`true` allows control characters in all inline math.
 
 ::: tip NOTE
 This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
