@@ -601,6 +601,22 @@ ruleTester('no-trailing-heading-punctuation', rule, {
         },
       ],
     },
+    // Gemoji
+    {
+      name: 'ATX: Heading ending with a non-gemoji colon',
+      code: '# Heading smile:',
+      output: '# Heading smile',
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 16,
+          endLine: 1,
+          endColumn: 17,
+          data: { punctuation: ':' },
+        },
+      ],
+    },
     // HTML Entities
     {
       name: 'ATX: Heading ending with a non-entity semicolon',
@@ -679,22 +695,6 @@ ruleTester('no-trailing-heading-punctuation', rule, {
         },
       ],
     },
-    // Gemoji
-    {
-      name: 'ATX: Heading ending with a non-gemoji colon',
-      code: '# Heading smile:',
-      output: '# Heading smile',
-      errors: [
-        {
-          messageId: 'noTrailingHeadingPunctuation',
-          line: 1,
-          column: 16,
-          endLine: 1,
-          endColumn: 17,
-          data: { punctuation: ':' },
-        },
-      ],
-    },
     // HTML Entities without Leading Spaces
     {
       name: 'ATX: Heading ending with adjacent non-entity text',
@@ -707,6 +707,22 @@ ruleTester('no-trailing-heading-punctuation', rule, {
           column: 22,
           endLine: 1,
           endColumn: 23,
+          data: { punctuation: ';' },
+        },
+      ],
+    },
+    // HTML Entities with Leading Backslashes
+    {
+      name: 'ATX: Heading ending with an escaped HTML entity',
+      code: '# \\&copy;',
+      output: '# \\&copy',
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
           data: { punctuation: ';' },
         },
       ],
