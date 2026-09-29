@@ -136,8 +136,8 @@ export default {
             html,
             `h${depth}`,
           )) {
-            const startTag = sourceCodeLocation?.startTag;
-            if (!startTag) continue;
+            const location = sourceCodeLocation!;
+            const startTag = location.startTag!;
 
             const id = attrs.find(attribute => attribute.name === 'id');
 
@@ -151,8 +151,8 @@ export default {
                 },
                 messageId: 'headingIdAlways',
               });
-            } else if (mode === 'never' && id && sourceCodeLocation.attrs?.id) {
-              const { startOffset, endOffset } = sourceCodeLocation.attrs.id;
+            } else if (mode === 'never' && id && location.attrs?.id) {
+              const { startOffset, endOffset } = location.attrs.id;
               const headingId = html.slice(startOffset, endOffset);
 
               context.report({
@@ -163,9 +163,9 @@ export default {
                 data: { headingId },
                 messageId: 'headingIdNever',
                 fix(fixer) {
-                  const leadingSpaces =
-                    html.slice(startTag.startOffset, startOffset).match(/[ \t]*$/)?.[0]
-                      .length ?? 0;
+                  const leadingSpaces = html
+                    .slice(startTag.startOffset, startOffset)
+                    .match(/[ \t]*$/)![0].length;
 
                   return fixer.removeRange([
                     nodeStartOffset + startOffset - leadingSpaces,
