@@ -1083,7 +1083,7 @@ Foo\u0002Bar
       ],
     },
     {
-      name: 'control character in math block is reported by default',
+      name: '`skipMath: false` - control character in math block is reported by default',
       code: `$$
 x\u0001y
 $$`,
@@ -1115,7 +1115,7 @@ $$`,
       },
     },
     {
-      name: 'control character in inline math is reported by default',
+      name: '`skipInlineMath: false` - control character in inline math is reported by default',
       code: '$a\u0001b$',
       errors: [
         {
