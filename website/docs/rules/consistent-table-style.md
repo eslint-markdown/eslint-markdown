@@ -17,7 +17,7 @@ This rule only applies to [GFM tables](https://github.github.com/gfm/#tables-ext
 
 ::: warning This rule is partially compatible with `markdownlint`'s `MD058`
 
-To get the same checks as [`MD058` - Tables should be surrounded by blank lines](https://github.com/DavidAnson/markdownlint/blob/main/doc/md058.md#md058---tables-should-be-surrounded-by-blank-lines), set both `blankLineAbove` and `blankLineBelow` to `1`:
+For checks similar to [`MD058` - Tables should be surrounded by blank lines](https://github.com/DavidAnson/markdownlint/blob/main/doc/md058.md#md058---tables-should-be-surrounded-by-blank-lines), set both `blankLineAbove` and `blankLineBelow` to `1`:
 
 ```js
 'md/consistent-table-style': ['error', {
@@ -26,10 +26,11 @@ To get the same checks as [`MD058` - Tables should be surrounded by blank lines]
 }]
 ```
 
-There are two differences:
+There are three differences:
 
 - This rule does not provide an autofix, while `MD058` can fix some violations.
 - `MD058` regards a line that contains only HTML comments, such as `<!-- prettier-ignore -->`, as a blank line. This rule only regards a line that contains only whitespace (and blockquote markers in blockquotes) as a blank line.
+- `MD058` skips front matter, so a table right after it counts as the start of the document. This rule treats front matter as content and requires a blank line between them.
 
 :::
 

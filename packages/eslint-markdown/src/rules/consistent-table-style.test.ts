@@ -708,6 +708,10 @@ Paragraph
         },
       ],
     },
+
+    // NOTE: Unlike `markdownlint`, this rule doesn't skip front matter, which matches `consistent-code-style`.
+    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/lib/markdownlint.mjs#L123-L140
+    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/lib/markdownlint.mjs#L446-L448
     {
       name: '`blankLineAbove` option - with front matter directly above a table',
       code: `---
