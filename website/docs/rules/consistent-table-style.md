@@ -3,11 +3,11 @@
 
 ## Rule Details
 
-This rule enforces a consistent style for tables in Markdown files. Consistent formatting makes it easier to see where a table begins and ends, and some Markdown parsers do not parse tables that are not surrounded by blank lines correctly.
+This rule enforces a consistent style for tables in Markdown files. Consistent formatting makes it easier to see where a table begins and ends, and some Markdown parsers fail to parse tables that are not surrounded by blank lines.
 
-Currently, this rule can require a specific number of blank lines above and below each table. The blank line checks are skipped at the beginning and the end of a document, so a table at the very beginning of a document does not need a blank line above it, and a table at the very end of a document does not need a blank line below it.
+Currently, this rule can require a specific number of blank lines above and below each table. A table at the very beginning of a document does not need a blank line above it, and a table at the very end does not need one below it.
 
-Text directly below the table rows is parsed as part of the table, not as content following the table. Therefore, the rule checks the blank lines below the last line that is parsed as part of the table.
+Text directly below the table rows is parsed as part of the table, so the blank line check starts after it.
 
 ::: tip NOTE
 
@@ -15,7 +15,7 @@ This rule only applies to [GFM tables](https://github.github.com/gfm/#tables-ext
 
 :::
 
-::: warning This rule is partially compatible with `markdownlint`'s `MD058`
+::: warning Differences from `markdownlint` rule `MD058`
 
 For checks similar to [`MD058` - Tables should be surrounded by blank lines](https://github.com/DavidAnson/markdownlint/blob/main/doc/md058.md#md058---tables-should-be-surrounded-by-blank-lines), set both `blankLineAbove` and `blankLineBelow` to `1`:
 
@@ -29,7 +29,7 @@ For checks similar to [`MD058` - Tables should be surrounded by blank lines](htt
 There are three differences:
 
 - This rule does not provide an autofix, while `MD058` can fix some violations.
-- `MD058` regards a line that contains only HTML comments, such as `<!-- prettier-ignore -->`, as a blank line. This rule only regards a line that contains only whitespace (and blockquote markers in blockquotes) as a blank line.
+- `MD058` treats a line that contains only HTML comments, such as `<!-- prettier-ignore -->`, as blank. This rule only treats whitespace-only lines (and lines with only blockquote markers inside blockquotes) as blank.
 - `MD058` skips front matter, so a table right after it counts as the start of the document. This rule treats front matter as content and requires a blank line between them.
 
 :::
