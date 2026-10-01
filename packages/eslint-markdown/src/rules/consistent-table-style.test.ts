@@ -43,12 +43,6 @@ ruleTester('consistent-table-style', rule, {
 
     // option: `blankLineAbove`
     {
-      name: '`blankLineAbove` option - table at the beginning of the file is skipped',
-      code: `| a | b |
-| - | - |`,
-      options: [{ blankLineAbove: 1 }],
-    },
-    {
       name: '`blankLineAbove` option - table at the beginning of the file is skipped even if `blankLineAbove` is 2',
       code: `| a | b |
 | - | - |`,
@@ -60,14 +54,6 @@ ruleTester('consistent-table-style', rule, {
 | a | b |
 | - | - |`,
       options: [{ blankLineAbove: 2 }],
-    },
-    {
-      name: '`blankLineAbove` option - 1 blank line above',
-      code: `Paragraph
-
-| a | b |
-| - | - |`,
-      options: [{ blankLineAbove: 1 }],
     },
     {
       name: '`blankLineAbove` option - 1 whitespace-only blank line above',
@@ -207,6 +193,25 @@ Paragraph
       options: [{ blankLineAbove: 1 }],
     },
 
+    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/doc/md058.md
+    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/test/blanks-around-tables.md
+    {
+      name: '`blankLineAbove` option - `markdownlint` example',
+      code: `| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |`, // Start of file is skipped for blank line check, so no error is reported.
+      options: [{ blankLineAbove: 1 }],
+    },
+    {
+      name: '`blankLineAbove` option - `markdownlint` example',
+      code: `# Blanks Around Tables
+
+| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |`,
+      options: [{ blankLineAbove: 1 }],
+    },
+
     // option: `blankLineBelow`
     {
       name: '`blankLineBelow` option - table at the end of the file is skipped',
@@ -233,14 +238,6 @@ Paragraph
 | - | - |
 `,
       options: [{ blankLineBelow: 2 }],
-    },
-    {
-      name: '`blankLineBelow` option - 1 blank line below',
-      code: `| a | b |
-| - | - |
-
-Paragraph`,
-      options: [{ blankLineBelow: 1 }],
     },
     {
       name: '`blankLineBelow` option - 1 whitespace-only blank line below',
@@ -283,14 +280,6 @@ Paragraph`,
 | - | - |
 Paragraph
 
-Paragraph`,
-      options: [{ blankLineBelow: 1 }],
-    },
-    {
-      name: '`blankLineBelow` option - text directly below the table rows is parsed as a table row',
-      code: `| a | b |
-| - | - |
-| c | d |
 Paragraph`,
       options: [{ blankLineBelow: 1 }],
     },
@@ -386,32 +375,25 @@ Paragraph`,
 >   Paragraph`,
       options: [{ blankLineBelow: 1 }],
     },
+
     {
-      name: '`blankLineBelow` option - with multiple tables',
-      code: `| a |
-| - |
+      name: '`blankLineBelow` option - `markdownlint` example',
+      code: `| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |`, // End of file is skipped for blank line check, so no error is reported.
+      options: [{ blankLineBelow: 1 }],
+    },
+    {
+      name: '`blankLineBelow` option - `markdownlint` example',
+      code: `| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
 
-| b |
-| - |
-
-Paragraph
-
-| c |
-| - |`,
+Text`,
       options: [{ blankLineBelow: 1 }],
     },
 
     // option: mixed
-    {
-      name: '`blankLineAbove` and `blankLineBelow` options - 1 blank line around a table',
-      code: `Paragraph
-
-| a | b |
-| - | - |
-
-Paragraph`,
-      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
-    },
     {
       name: '`blankLineAbove` and `blankLineBelow` options - 2 blank lines around a table',
       code: `Paragraph
@@ -437,80 +419,39 @@ Paragraph`,
 Paragraph`,
       options: [{ blankLineAbove: 2, blankLineBelow: 3 }],
     },
-    {
-      name: '`blankLineAbove` and `blankLineBelow` options - table alone in the file',
-      code: `| a | b |
-| - | - |`,
-      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
-    },
-    {
-      name: '`blankLineAbove` and `blankLineBelow` options - with blockquote',
-      code: `> Paragraph
->
-> | a | b |
-> | - | - |
->
-> Paragraph`,
-      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
-    },
-    {
-      name: '`blankLineAbove` and `blankLineBelow` options - with nested blockquote',
-      code: `> > Paragraph
-> >
-> > | a | b |
-> > | - | - |
-> >
-> > Paragraph`,
-      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
-    },
-    {
-      name: '`blankLineAbove` and `blankLineBelow` options - with list',
-      code: `- Paragraph
 
-  | a | b |
-  | - | - |
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - `markdownlint` example',
+      code: `Some text
 
-  Paragraph`,
+| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
+
+> Blockquote`,
+      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
+    },
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - `markdownlint` example',
+      code: `| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |`, // Start and end of file are skipped for blank line check, so no error is reported.
+      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
+    },
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - `markdownlint` example',
+      code: `| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
+This text is part of the table and the next line is blank
+
+Some text`, // Text immediately following a table is part of the table, so no error is reported.
       options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
     },
   ],
 
   invalid: [
     // option: `blankLineAbove`
-    {
-      name: '`blankLineAbove` option - paragraph directly above a table',
-      code: `Paragraph
-| a | b |
-| - | - |`,
-      options: [{ blankLineAbove: 1 }],
-      errors: [
-        {
-          messageId: 'blankLineAbove',
-          line: 2,
-          column: 1,
-          endLine: 2,
-          endColumn: 10,
-          data: { blankLineAbove: 1 },
-        },
-      ],
-    },
-    {
-      name: '`blankLineAbove` option - heading directly above a table',
-      code: `# Heading
-| a | b |
-| - | - |`,
-      options: [{ blankLineAbove: 1 }],
-      errors: [
-        {
-          messageId: 'blankLineAbove',
-          line: 2,
-          column: 1,
-          endLine: 2,
-          endColumn: 10,
-          data: { blankLineAbove: 1 },
-        },
-      ],
-    },
     {
       name: '`blankLineAbove` option - 1 blank line above when 2 are required',
       code: `Paragraph
@@ -526,23 +467,6 @@ Paragraph`,
           endLine: 3,
           endColumn: 10,
           data: { blankLineAbove: 2 },
-        },
-      ],
-    },
-    {
-      name: '`blankLineAbove` option - no blank line above when 3 are required',
-      code: `Paragraph
-| a | b |
-| - | - |`,
-      options: [{ blankLineAbove: 3 }],
-      errors: [
-        {
-          messageId: 'blankLineAbove',
-          line: 2,
-          column: 1,
-          endLine: 2,
-          endColumn: 10,
-          data: { blankLineAbove: 3 },
         },
       ],
     },
@@ -807,6 +731,50 @@ title: foo
       ],
     },
 
+    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/doc/md058.md
+    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/test/blanks-around-tables.md
+    {
+      name: '`blankLineAbove` option - `markdownlint` example',
+      code: `Text
+| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |`,
+      options: [{ blankLineAbove: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineAbove',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 20,
+          data: { blankLineAbove: 1 },
+        },
+      ],
+    },
+
+    // NOTE: Unlike `markdownlint`, this rule doesn't regard a line that contains only HTML comments as a blank line, to be consistent with `consistent-code-style`.
+    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/lib/md058.mjs#L25
+    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/helpers/helpers.cjs#L142-L169
+    {
+      name: '`blankLineAbove` option - HTML comment directly above a table is not a blank line',
+      code: `Text
+<!-- prettier-ignore -->
+| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |`,
+      options: [{ blankLineAbove: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineAbove',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 20,
+          data: { blankLineAbove: 1 },
+        },
+      ],
+    },
+
     // option: `blankLineBelow`
     {
       name: '`blankLineBelow` option - heading directly below a table',
@@ -820,24 +788,6 @@ title: foo
           line: 2,
           column: 1,
           endLine: 2,
-          endColumn: 10,
-          data: { blankLineBelow: 1 },
-        },
-      ],
-    },
-    {
-      name: '`blankLineBelow` option - blockquote directly below a table',
-      code: `| a | b |
-| - | - |
-| c | d |
-> Blockquote`,
-      options: [{ blankLineBelow: 1 }],
-      errors: [
-        {
-          messageId: 'blankLineBelow',
-          line: 3,
-          column: 1,
-          endLine: 3,
           endColumn: 10,
           data: { blankLineBelow: 1 },
         },
@@ -932,23 +882,6 @@ Paragraph`,
       ],
     },
     {
-      name: '`blankLineBelow` option - no blank line below when 3 are required',
-      code: `| a | b |
-| - | - |
-# Heading`,
-      options: [{ blankLineBelow: 3 }],
-      errors: [
-        {
-          messageId: 'blankLineBelow',
-          line: 2,
-          column: 1,
-          endLine: 2,
-          endColumn: 10,
-          data: { blankLineBelow: 3 },
-        },
-      ],
-    },
-    {
       name: '`blankLineBelow` option - indented table',
       code: `  | a | b |
   | - | - |
@@ -1007,40 +940,6 @@ Paragraph`,
       code: `> | a | b |
 > | - | - |
 Paragraph`,
-      options: [{ blankLineBelow: 1 }],
-      errors: [
-        {
-          messageId: 'blankLineBelow',
-          line: 2,
-          column: 3,
-          endLine: 2,
-          endColumn: 12,
-          data: { blankLineBelow: 1 },
-        },
-      ],
-    },
-    {
-      name: '`blankLineBelow` option - with blockquote and nested blockquote directly below a table',
-      code: `> | a | b |
-> | - | - |
-> > Blockquote`,
-      options: [{ blankLineBelow: 1 }],
-      errors: [
-        {
-          messageId: 'blankLineBelow',
-          line: 2,
-          column: 3,
-          endLine: 2,
-          endColumn: 12,
-          data: { blankLineBelow: 1 },
-        },
-      ],
-    },
-    {
-      name: '`blankLineBelow` option - with blockquote and heading directly below a table',
-      code: `> | a | b |
-> | - | - |
-> # Heading`,
       options: [{ blankLineBelow: 1 }],
       errors: [
         {
@@ -1170,33 +1069,67 @@ Paragraph`,
       ],
     },
 
-    // option: mixed
     {
-      name: '`blankLineAbove` and `blankLineBelow` options - no blank lines around a table',
-      code: `Paragraph
-| a | b |
-| - | - |
-# Heading`,
-      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
+      name: '`blankLineBelow` option - `markdownlint` example',
+      code: `| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
+> Blockquote`,
+      options: [{ blankLineBelow: 1 }],
       errors: [
-        {
-          messageId: 'blankLineAbove',
-          line: 2,
-          column: 1,
-          endLine: 2,
-          endColumn: 10,
-          data: { blankLineAbove: 1 },
-        },
         {
           messageId: 'blankLineBelow',
           line: 3,
           column: 1,
           endLine: 3,
-          endColumn: 10,
+          endColumn: 20,
           data: { blankLineBelow: 1 },
         },
       ],
     },
+    {
+      name: '`blankLineBelow` option - `markdownlint` example',
+      code: `> | Header | Header |
+> | ------ | ------ |
+> | Cell   | Cell   |
+> > Blockquote`,
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 3,
+          endLine: 3,
+          endColumn: 22,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+
+    // NOTE: Unlike `markdownlint`, this rule doesn't regard a line that contains only HTML comments as a blank line, to be consistent with `consistent-code-style`.
+    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/lib/md058.mjs#L41
+    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/helpers/helpers.cjs#L142-L169
+    {
+      name: '`blankLineBelow` option - HTML comment directly below a table is not a blank line',
+      code: `| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
+<!-- comment -->
+Text`,
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 20,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+
+    // option: mixed
     {
       name: '`blankLineAbove` and `blankLineBelow` options - 1 blank line around a table when 2 are required',
       code: `Paragraph
@@ -1264,32 +1197,6 @@ Paragraph`,
       ],
     },
     {
-      name: '`blankLineAbove` and `blankLineBelow` options - with blockquote',
-      code: `> Paragraph
-> | a | b |
-> | - | - |
-> # Heading`,
-      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
-      errors: [
-        {
-          messageId: 'blankLineAbove',
-          line: 2,
-          column: 3,
-          endLine: 2,
-          endColumn: 12,
-          data: { blankLineAbove: 1 },
-        },
-        {
-          messageId: 'blankLineBelow',
-          line: 3,
-          column: 3,
-          endLine: 3,
-          endColumn: 12,
-          data: { blankLineBelow: 1 },
-        },
-      ],
-    },
-    {
       name: '`blankLineAbove` and `blankLineBelow` options - with list items directly around a table',
       code: `- Paragraph
 - | a | b |
@@ -1349,6 +1256,217 @@ Paragraph
           column: 1,
           endLine: 7,
           endColumn: 10,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - `markdownlint` example',
+      code: `Some text
+| Header | Header |
+| ------ | ------ |
+| Cell   | Cell   |
+> Blockquote`,
+      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineAbove',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 20,
+          data: { blankLineAbove: 1 },
+        },
+        {
+          messageId: 'blankLineBelow',
+          line: 4,
+          column: 1,
+          endLine: 4,
+          endColumn: 20,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - `markdownlint` example',
+      code: `> Text
+> | Header | Header |
+> | ------ | ------ |
+> | Cell   | Cell   |
+Text`,
+      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineAbove',
+          line: 2,
+          column: 3,
+          endLine: 2,
+          endColumn: 22,
+          data: { blankLineAbove: 1 },
+        },
+        {
+          messageId: 'blankLineBelow',
+          line: 4,
+          column: 3,
+          endLine: 4,
+          endColumn: 22,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - `markdownlint` example',
+      code: `- List Item
+  | Header | Header |
+  | ------ | ------ |
+  | Cell   | Cell   |
+- List Item`,
+      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineAbove',
+          line: 2,
+          column: 3,
+          endLine: 2,
+          endColumn: 22,
+          data: { blankLineAbove: 1 },
+        },
+        {
+          messageId: 'blankLineBelow',
+          line: 4,
+          column: 3,
+          endLine: 4,
+          endColumn: 22,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - `markdownlint` example',
+      code: `1. List Item
+\x20\x20\x20| Header | Header |
+\x20\x20\x20| ------ | ------ |
+\x20\x20\x20| Cell   | Cell   |
+1. List Item`,
+      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineAbove',
+          line: 2,
+          column: 4,
+          endLine: 2,
+          endColumn: 23,
+          data: { blankLineAbove: 1 },
+        },
+        {
+          messageId: 'blankLineBelow',
+          line: 4,
+          column: 4,
+          endLine: 4,
+          endColumn: 23,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - with CRLF line endings',
+      code: 'Paragraph\r\n| a | b |\r\n| - | - |\r\n# Heading\r\n',
+      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineAbove',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 10,
+          data: { blankLineAbove: 1 },
+        },
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 10,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - with a single column table',
+      code: `Paragraph
+| a |
+| - |
+# Heading`,
+      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineAbove',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 6,
+          data: { blankLineAbove: 1 },
+        },
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 6,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - with blockquote in list',
+      code: `- item
+  > Paragraph
+  > | a |
+  > | - |
+  > # Heading`,
+      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineAbove',
+          line: 3,
+          column: 5,
+          endLine: 3,
+          endColumn: 10,
+          data: { blankLineAbove: 1 },
+        },
+        {
+          messageId: 'blankLineBelow',
+          line: 4,
+          column: 5,
+          endLine: 4,
+          endColumn: 10,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - with a table without leading and trailing pipes',
+      code: `# Heading
+a | b
+-- | --
+> Blockquote`,
+      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineAbove',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 6,
+          data: { blankLineAbove: 1 },
+        },
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 8,
           data: { blankLineBelow: 1 },
         },
       ],
