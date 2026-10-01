@@ -25,7 +25,7 @@ ruleTester('consistent-table-style', rule, {
       code: '  ',
     },
 
-    // default options
+    // Default
     {
       name: 'Default options do not check blank lines around a table',
       code: `Paragraph
@@ -193,8 +193,8 @@ Paragraph
       options: [{ blankLineAbove: 1 }],
     },
 
-    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/doc/md058.md
-    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/test/blanks-around-tables.md
+    // see: https://github.com/DavidAnson/markdownlint/blob/v0.41.1/doc/md058.md
+    // see: https://github.com/DavidAnson/markdownlint/blob/v0.41.1/test/blanks-around-tables.md
     {
       name: '`blankLineAbove` option - `markdownlint` example',
       code: `| Header | Header |
@@ -710,8 +710,8 @@ Paragraph
     },
 
     // NOTE: Unlike `markdownlint`, this rule doesn't skip front matter, which matches `consistent-code-style`.
-    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/lib/markdownlint.mjs#L123-L140
-    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/lib/markdownlint.mjs#L446-L448
+    // see: https://github.com/DavidAnson/markdownlint/blob/v0.41.1/lib/markdownlint.mjs#L123-L140
+    // see: https://github.com/DavidAnson/markdownlint/blob/v0.41.1/lib/markdownlint.mjs#L446-L448
     {
       name: '`blankLineAbove` option - with front matter directly above a table',
       code: `---
@@ -735,8 +735,8 @@ title: foo
       ],
     },
 
-    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/doc/md058.md
-    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/test/blanks-around-tables.md
+    // see: https://github.com/DavidAnson/markdownlint/blob/v0.41.1/doc/md058.md
+    // see: https://github.com/DavidAnson/markdownlint/blob/v0.41.1/test/blanks-around-tables.md
     {
       name: '`blankLineAbove` option - `markdownlint` example',
       code: `Text
@@ -756,9 +756,9 @@ title: foo
       ],
     },
 
-    // NOTE: Unlike `markdownlint`, this rule doesn't regard a line that contains only HTML comments as a blank line, to be consistent with `consistent-code-style`.
-    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/lib/md058.mjs#L25
-    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/helpers/helpers.cjs#L142-L169
+    // NOTE: Unlike `markdownlint`, this rule doesn't treat HTML comment lines as blank, which matches `consistent-code-style`.
+    // see: https://github.com/DavidAnson/markdownlint/blob/v0.41.1/lib/md058.mjs#L25
+    // see: https://github.com/DavidAnson/markdownlint/blob/v0.41.1/helpers/helpers.cjs#L142-L169
     {
       name: '`blankLineAbove` option - HTML comment directly above a table is not a blank line',
       code: `Text
@@ -1110,9 +1110,9 @@ Paragraph`,
       ],
     },
 
-    // NOTE: Unlike `markdownlint`, this rule doesn't regard a line that contains only HTML comments as a blank line, to be consistent with `consistent-code-style`.
-    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/lib/md058.mjs#L41
-    // see: https://github.com/DavidAnson/markdownlint/blob/e41e5a40ba934f079da0ffbdea0309869c034d47/helpers/helpers.cjs#L142-L169
+    // NOTE: Unlike `markdownlint`, this rule doesn't treat HTML comment lines as blank, which matches `consistent-code-style`.
+    // see: https://github.com/DavidAnson/markdownlint/blob/v0.41.1/lib/md058.mjs#L41
+    // see: https://github.com/DavidAnson/markdownlint/blob/v0.41.1/helpers/helpers.cjs#L142-L169
     {
       name: '`blankLineBelow` option - HTML comment directly below a table is not a blank line',
       code: `| Header | Header |

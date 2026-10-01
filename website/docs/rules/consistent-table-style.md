@@ -68,6 +68,12 @@ Examples of **correct** code for this rule:
 
 #### Default
 
+::: warning
+
+By default, this rule reports nothing. To use this rule, please configure the [`blankLineAbove`](#blanklineabove) or [`blankLineBelow`](#blanklinebelow) options.
+
+:::
+
 ```md eslint-check
 <!-- eslint md/consistent-table-style: 'error' -->
 
