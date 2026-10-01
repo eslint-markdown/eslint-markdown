@@ -56,6 +56,7 @@ This section is currently under construction and will be updated soon.
 | [`MD048` - Code fence style](https://github.com/DavidAnson/markdownlint/blob/main/doc/md048.md#md048---code-fence-style) :warning: | [`md/consistent-code-style`](../rules/consistent-code-style.md) |
 | [`MD049` - Emphasis style](https://github.com/DavidAnson/markdownlint/blob/main/doc/md049.md#md049---emphasis-style) :white_check_mark: | [`md/consistent-emphasis-style`](../rules/consistent-emphasis-style.md) |
 | [`MD050` - Strong style](https://github.com/DavidAnson/markdownlint/blob/main/doc/md050.md#md050---strong-style) :white_check_mark: | [`md/consistent-strong-style`](../rules/consistent-strong-style.md) |
+| [`MD058` - Tables should be surrounded by blank lines](https://github.com/DavidAnson/markdownlint/blob/main/doc/md058.md#md058---tables-should-be-surrounded-by-blank-lines) :warning: | [`md/consistent-table-style`](../rules/consistent-table-style.md) |
 | [`markdownlint-rule-no-trailing-slash-in-links`](https://github.com/xiaogaozi/markdownlint-rule-no-trailing-slash-in-links) :white_check_mark: | [`md/no-url-trailing-slash`](../rules/no-url-trailing-slash.md) |
 
 ## Migrating from [`remark-lint`](https://github.com/remarkjs/remark-lint#readme)
