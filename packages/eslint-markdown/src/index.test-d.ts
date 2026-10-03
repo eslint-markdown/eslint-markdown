@@ -8,8 +8,8 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import plugin from 'eslint-markdown';
 import type { ESLint, Linter } from 'eslint';
+import plugin from 'eslint-markdown';
 
 // --------------------------------------------------------------------------------
 // Test
@@ -83,6 +83,7 @@ plugin.rules['no-emoji'].meta.dialects;
 'no-irregular-whitespace' satisfies RuleName;
 'no-multiple-atx-heading-space' satisfies RuleName;
 'no-multiple-link-space' satisfies RuleName;
+'no-multiple-list-space' satisfies RuleName;
 'no-tab' satisfies RuleName;
 'no-trailing-heading-punctuation' satisfies RuleName;
 'no-url-trailing-slash' satisfies RuleName;
@@ -131,6 +132,7 @@ type AllConfigRuleName = keyof typeof plugin.configs.all.rules;
 'md/no-irregular-whitespace' satisfies AllConfigRuleName;
 'md/no-multiple-atx-heading-space' satisfies AllConfigRuleName;
 'md/no-multiple-link-space' satisfies AllConfigRuleName;
+'md/no-multiple-list-space' satisfies AllConfigRuleName;
 'md/no-tab' satisfies AllConfigRuleName;
 'md/no-trailing-heading-punctuation' satisfies AllConfigRuleName;
 'md/no-url-trailing-slash' satisfies AllConfigRuleName;
