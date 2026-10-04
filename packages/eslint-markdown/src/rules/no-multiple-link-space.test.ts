@@ -16,6 +16,7 @@ import rule from './no-multiple-link-space.js';
 
 ruleTester('no-multiple-link-space', rule, {
   valid: [
+    // Basic
     {
       name: 'Empty',
       code: '',
@@ -57,6 +58,13 @@ ruleTester('no-multiple-link-space', rule, {
       code: '[ESLint](<https://eslint.org/a b>)',
     },
     {
+      // NOTE: A no-break space is not padding under this rule, unlike `MD039`.
+      name: 'No-break space at both ends of the link text',
+      code: '[\u00a0ESLint\u00a0](https://eslint.org)',
+    },
+
+    // Out of scope
+    {
       name: 'Image with padding is out of scope',
       code: '![ ESLint ](https://eslint.org/logo.png)',
     },
@@ -64,6 +72,32 @@ ruleTester('no-multiple-link-space', rule, {
       name: 'Image reference with padding is out of scope',
       code: '![ ESLint ][eslint]\n\n[eslint]: https://eslint.org/logo.png',
     },
+    {
+      name: 'Autolink followed by trailing spaces',
+      code: '<https://eslint.org>  ',
+    },
+    {
+      name: 'Autolink followed by brackets that are not a link',
+      code: '<https://eslint.org> [ ESLint ]',
+    },
+    {
+      name: 'GFM literal autolink followed by brackets that are not a link',
+      code: 'https://eslint.org [ ESLint ]',
+    },
+    {
+      name: 'Bracket that is not a link',
+      code: '[ ESLint ]',
+    },
+    {
+      name: 'Inline code containing a padded link',
+      code: '`[ ESLint ](https://eslint.org)`',
+    },
+    {
+      name: 'Fenced code block containing a padded link',
+      code: '```md\n[ ESLint ](https://eslint.org)\n```',
+    },
+
+    // Line breaks
     {
       // NOTE: Removing the line break would drop the hard break it forms with the two spaces.
       name: 'Hard break at the end of the link text',
@@ -84,11 +118,6 @@ ruleTester('no-multiple-link-space', rule, {
       code: '[  \nESLint](https://eslint.org)',
     },
     {
-      // NOTE: Removing the padding would leave the backslash escaping the closing bracket.
-      name: 'Backslash before padding at the end of the link text',
-      code: '[ESLint\\ ](https://eslint.org)',
-    },
-    {
       // NOTE: The blockquote marker of the second line sits between the text and the bracket.
       name: 'Link text spanning lines of a blockquote',
       code: '> [ESLint\n> ](https://eslint.org)',
@@ -97,18 +126,15 @@ ruleTester('no-multiple-link-space', rule, {
       name: 'Padding next to a line break inside the link text',
       code: '[ \nESLint\n ](https://eslint.org)',
     },
+
+    // Backslashes
     {
-      name: 'Autolink followed by trailing spaces',
-      code: '<https://eslint.org>  ',
+      // NOTE: Removing the padding would leave the backslash escaping the closing bracket.
+      name: 'Backslash before padding at the end of the link text',
+      code: '[ESLint\\ ](https://eslint.org)',
     },
-    {
-      name: 'Autolink followed by brackets that are not a link',
-      code: '<https://eslint.org> [ ESLint ]',
-    },
-    {
-      name: 'GFM literal autolink followed by brackets that are not a link',
-      code: 'https://eslint.org [ ESLint ]',
-    },
+
+    // Task list items
     {
       // NOTE: `[x]` at the head of a list item is a GFM checkbox, so the fix would drop the link.
       // CommonMark has no task list items, but the padding is kept there too for consistency.
@@ -141,26 +167,10 @@ ruleTester('no-multiple-link-space', rule, {
       name: 'Shortcut reference that would become a task list item of an ordered list',
       code: '1. [x ] details\n\n[x]: https://eslint.org',
     },
-    {
-      // NOTE: A no-break space is not padding under this rule, unlike `MD039`.
-      name: 'No-break space at both ends of the link text',
-      code: '[\u00a0ESLint\u00a0](https://eslint.org)',
-    },
-    {
-      name: 'Bracket that is not a link',
-      code: '[ ESLint ]',
-    },
-    {
-      name: 'Inline code containing a padded link',
-      code: '`[ ESLint ](https://eslint.org)`',
-    },
-    {
-      name: 'Fenced code block containing a padded link',
-      code: '```md\n[ ESLint ](https://eslint.org)\n```',
-    },
   ],
 
   invalid: [
+    // Basic
     {
       name: 'Padding on both ends',
       code: '[ ESLint ](https://eslint.org)',
@@ -268,6 +278,29 @@ ruleTester('no-multiple-link-space', rule, {
       ],
     },
     {
+      name: 'Multiple links where only one has padding',
+      code: '[ESLint](https://eslint.org) [ Prettier ](https://prettier.io)',
+      output: '[ESLint](https://eslint.org) [Prettier](https://prettier.io)',
+      errors: [
+        {
+          messageId: 'noMultipleLinkSpace',
+          line: 1,
+          column: 31,
+          endLine: 1,
+          endColumn: 32,
+        },
+        {
+          messageId: 'noMultipleLinkSpace',
+          line: 1,
+          column: 40,
+          endLine: 1,
+          endColumn: 41,
+        },
+      ],
+    },
+
+    // Reference links
+    {
       name: 'Full reference link',
       code: '[ ESLint ][eslint]\n\n[eslint]: https://eslint.org',
       output: '[ESLint][eslint]\n\n[eslint]: https://eslint.org',
@@ -331,6 +364,8 @@ ruleTester('no-multiple-link-space', rule, {
         },
       ],
     },
+
+    // Link text content
     {
       name: 'Link text starting with emphasis',
       code: '[ *ESLint* ](https://eslint.org)',
@@ -415,6 +450,8 @@ ruleTester('no-multiple-link-space', rule, {
         },
       ],
     },
+
+    // Containers
     {
       name: 'Link inside a blockquote',
       code: '> [ ESLint ](https://eslint.org)',
@@ -457,8 +494,10 @@ ruleTester('no-multiple-link-space', rule, {
         },
       ],
     },
+
+    // Backslashes
     {
-      // NOTE: An even number of backslashes escapes itself, so the closing bracket stays literal.
+      // NOTE: Two backslashes escape each other, so the closing bracket still closes the link.
       name: 'Two backslashes before padding at the end of the link text',
       code: '[ESLint\\\\ ](https://eslint.org)',
       output: '[ESLint\\\\](https://eslint.org)',
@@ -472,6 +511,8 @@ ruleTester('no-multiple-link-space', rule, {
         },
       ],
     },
+
+    // Task list items
     {
       // NOTE: A checkbox needs content after it, so a list item holding the link alone is safe.
       name: 'Shortcut reference of a task list marker alone in a list item',
@@ -571,27 +612,6 @@ ruleTester('no-multiple-link-space', rule, {
           column: 5,
           endLine: 1,
           endColumn: 6,
-        },
-      ],
-    },
-    {
-      name: 'Multiple links where only one has padding',
-      code: '[ESLint](https://eslint.org) [ Prettier ](https://prettier.io)',
-      output: '[ESLint](https://eslint.org) [Prettier](https://prettier.io)',
-      errors: [
-        {
-          messageId: 'noMultipleLinkSpace',
-          line: 1,
-          column: 31,
-          endLine: 1,
-          endColumn: 32,
-        },
-        {
-          messageId: 'noMultipleLinkSpace',
-          line: 1,
-          column: 40,
-          endLine: 1,
-          endColumn: 41,
         },
       ],
     },
