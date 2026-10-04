@@ -24,6 +24,7 @@ import noEmoji from './no-emoji.js';
 import noGitConflictMarker from './no-git-conflict-marker.js';
 import noIrregularDash from './no-irregular-dash.js';
 import noIrregularWhitespace from './no-irregular-whitespace.js';
+import noMultipleAtxHeadingSpace from './no-multiple-atx-heading-space.js';
 import noMultipleLinkSpace from './no-multiple-link-space.js';
 import noShellDollar from './no-shell-dollar.js';
 import noTab from './no-tab.js';
@@ -56,6 +57,7 @@ export default {
   'no-git-conflict-marker': noGitConflictMarker,
   'no-irregular-dash': noIrregularDash,
   'no-irregular-whitespace': noIrregularWhitespace,
+  'no-multiple-atx-heading-space': noMultipleAtxHeadingSpace,
   'no-multiple-link-space': noMultipleLinkSpace,
   'no-shell-dollar': noShellDollar,
   'no-tab': noTab,

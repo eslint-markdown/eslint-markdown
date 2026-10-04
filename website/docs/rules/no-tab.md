@@ -103,6 +103,32 @@ Examples of **incorrect** code for this rule:
 
 <!-- eslint-enable md/no-tab -->
 
+#### With `{ skipMath: false }` Option
+
+<!-- eslint-disable md/no-tab -->
+
+```md eslint-check
+<!-- eslint md/no-tab: ['error', { skipMath: false }] -->
+
+$$
+\u0009 - Horizontal Tab (\t) - <TAB> 	 <= Here
+$$
+```
+
+<!-- eslint-enable md/no-tab -->
+
+#### With `{ skipInlineMath: false }` Option
+
+<!-- eslint-disable md/no-tab -->
+
+```md eslint-check
+<!-- eslint md/no-tab: ['error', { skipInlineMath: false }] -->
+
+\u0009 - Horizontal Tab (\t) - <TAB> $	$ <= Here
+```
+
+<!-- eslint-enable md/no-tab -->
+
 ### :white_check_mark: Correct
 
 Examples of **correct** code for this rule:
@@ -169,12 +195,40 @@ Examples of **correct** code for this rule:
 
 <!-- eslint-enable md/no-tab -->
 
+#### With `{ skipMath: true }` Option
+
+<!-- eslint-disable md/no-tab -->
+
+```md eslint-check
+<!-- eslint md/no-tab: ['error', { skipMath: true }] -->
+
+$$
+\u0009 - Horizontal Tab (\t) - <TAB> 	 <= Here
+$$
+```
+
+<!-- eslint-enable md/no-tab -->
+
+#### With `{ skipInlineMath: true }` Option
+
+<!-- eslint-disable md/no-tab -->
+
+```md eslint-check
+<!-- eslint md/no-tab: ['error', { skipInlineMath: true }] -->
+
+\u0009 - Horizontal Tab (\t) - <TAB> $	$ <= Here
+```
+
+<!-- eslint-enable md/no-tab -->
+
 ## Options
 
 ```js
 'md/no-tab': ['error', {
   skipCode: true,
   skipInlineCode: true,
+  skipMath: true,
+  skipInlineMath: true,
   tabWidth: 4,
 }]
 ```
@@ -190,6 +244,26 @@ Examples of **correct** code for this rule:
 > Type: `boolean` / Default: `true`
 
 `true` allows tabs in all inline code.
+
+### `skipMath`
+
+> Type: `boolean` / Default: `true`
+
+`true` allows tabs in all math blocks.
+
+::: tip NOTE
+This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
+:::
+
+### `skipInlineMath`
+
+> Type: `boolean` / Default: `true`
+
+`true` allows tabs in all inline math.
+
+::: tip NOTE
+This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
+:::
 
 ### `tabWidth`
 
