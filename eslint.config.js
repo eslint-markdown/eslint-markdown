@@ -143,6 +143,7 @@ export default defineConfig([
       ],
       'md/consistent-delete-style': ['error', { style: '~' }],
       'md/consistent-emphasis-style': ['error', { style: '*' }],
+      'md/consistent-heading-indent': 'error',
       'md/consistent-heading-style': ['error', { style: 'atx' }],
       'md/consistent-inline-code-style': 'error',
       'md/consistent-strong-style': ['error', { style: '*' }],
