@@ -88,7 +88,7 @@ export default {
       description: 'Disallow spaces at the start and end of link text',
       url: URL_RULE_DOCS('no-multiple-link-space'),
       recommended: false,
-      stylistic: false,
+      stylistic: true,
     },
 
     fixable: 'whitespace',
