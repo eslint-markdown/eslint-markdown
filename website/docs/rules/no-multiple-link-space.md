@@ -115,3 +115,4 @@ This rule fixes the link text by removing the spaces and tabs next to the bracke
 ## Prior Art
 
 - [`MD039` - Spaces inside link text](https://github.com/DavidAnson/markdownlint/blob/main/doc/md039.md#md039---spaces-inside-link-text)
+- [`remark-lint-no-inline-padding`](https://github.com/remarkjs/remark-lint/tree/9cdda8091355364cbb9a5c9e75889d5d67b08bdf/packages/remark-lint-no-inline-padding#remark-lint-no-inline-padding)
