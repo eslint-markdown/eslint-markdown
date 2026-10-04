@@ -33,6 +33,11 @@ type RuleOptions = [
      * @default true
      */
     skipCode: boolean | string[];
+    /**
+     * `true` allows consecutive blank lines in all math blocks.
+     * @default true
+     */
+    skipMath: boolean;
   },
 ];
 type MessageIds = 'noConsecutiveBlankLine';
@@ -76,6 +81,9 @@ export default {
               },
             ],
           },
+          skipMath: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -85,6 +93,7 @@ export default {
       {
         max: 1,
         skipCode: true,
+        skipMath: true,
       },
     ],
 
@@ -100,7 +109,7 @@ export default {
 
   create(context) {
     const { options, sourceCode } = context;
-    const [{ max, skipCode }] = options;
+    const [{ max, skipCode, skipMath }] = options;
     const { lines, text } = sourceCode;
 
     const skipRanges = new SkipRanges();
@@ -111,6 +120,10 @@ export default {
           Array.isArray(skipCode) ? node.lang && skipCode.includes(node.lang) : skipCode
         )
           skipRanges.push(sourceCode.getRange(node)); // Store range information of `Code`.
+      },
+
+      math(node) {
+        if (skipMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `Math`.
       },
 
       'root:exit'() {

@@ -53,6 +53,61 @@ Hello\tWorld
         },
       ],
     },
+    {
+      name: '`skipMath: true` - math block should be skipped',
+      code: `$$
+a\tb
+$$`,
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipInlineMath: true` - inline math should be skipped',
+      code: '$a\tb$',
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true, skipInlineMath: true` - skips math regions',
+      code: `$$
+a\tb
+$$
+
+$c\td$`,
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true, skipInlineMath: false` - math block is skipped',
+      code: `$$
+a\tb
+$$`,
+      options: [
+        {
+          skipMath: true,
+          skipInlineMath: false,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: false, skipInlineMath: true` - inline math is skipped',
+      code: '$a\tb$',
+      options: [
+        {
+          skipMath: false,
+          skipInlineMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
   ],
 
   invalid: [
@@ -237,6 +292,202 @@ Hello    World
           column: 6,
           endLine: 1,
           endColumn: 7,
+        },
+      ],
+    },
+    {
+      name: '`skipMath: false` - math block should not be skipped',
+      code: `$$
+a\tb
+$$`,
+      output: `$$
+a    b
+$$`,
+      options: [
+        {
+          skipMath: false,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noTab',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 3,
+        },
+      ],
+    },
+    {
+      name: '`skipInlineMath: false` - inline math should not be skipped',
+      code: '$a\tb$',
+      output: '$a    b$',
+      options: [
+        {
+          skipInlineMath: false,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noTab',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      name: '`skipMath: false, skipInlineMath: true` - reports block, skips inline',
+      code: `$$
+a\tb
+$$
+
+$c\td$`,
+      output: `$$
+a    b
+$$
+
+$c\td$`,
+      options: [
+        {
+          skipMath: false,
+          skipInlineMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noTab',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 3,
+        },
+      ],
+    },
+    {
+      name: '`skipMath: true, skipInlineMath: false` - reports inline, skips block',
+      code: `$$
+a\tb
+$$
+
+$c\td$`,
+      output: `$$
+a\tb
+$$
+
+$c    d$`,
+      options: [
+        {
+          skipMath: true,
+          skipInlineMath: false,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noTab',
+          line: 5,
+          column: 3,
+          endLine: 5,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      name: '`skipMath: true` - reports tabs outside math block',
+      code: `$$
+a\tb
+$$
+
+c\td`,
+      output: `$$
+a\tb
+$$
+
+c    d`,
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noTab',
+          line: 5,
+          column: 2,
+          endLine: 5,
+          endColumn: 3,
+        },
+      ],
+    },
+    {
+      name: '`skipInlineMath: true` - reports tabs outside inline math',
+      code: '$a\tb$ c\td',
+      output: '$a\tb$ c    d',
+      languageOptions: {
+        math: true,
+      },
+      errors: [
+        {
+          messageId: 'noTab',
+          line: 1,
+          column: 8,
+          endLine: 1,
+          endColumn: 9,
+        },
+      ],
+    },
+    {
+      name: '`skipMath: true` - reports tabs without math parsing',
+      code: `$$
+a\tb
+$$`,
+      output: `$$
+a    b
+$$`,
+      options: [
+        {
+          skipMath: true,
+          skipInlineMath: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noTab',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 3,
+        },
+      ],
+    },
+    {
+      name: '`skipInlineMath: true` - reports tabs without math parsing',
+      code: '$a\tb$',
+      output: '$a    b$',
+      options: [
+        {
+          skipMath: true,
+          skipInlineMath: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noTab',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 4,
         },
       ],
     },

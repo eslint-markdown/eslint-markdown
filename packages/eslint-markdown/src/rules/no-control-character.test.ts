@@ -78,6 +78,69 @@ console.log(\u0003'Hello World');
         },
       ],
     },
+    {
+      name: '`skipMath: true` - math block should be skipped',
+      code: `$$
+x\u0001y
+$$`,
+      options: [
+        {
+          skipMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipInlineMath: true` - inline math should be skipped',
+      code: '$a\u0001b$',
+      options: [
+        {
+          skipInlineMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true, skipInlineMath: true` - math regions should be skipped',
+      code: `$$
+x\u0001y
+$$
+
+$a\u0001b$`,
+      options: [
+        {
+          skipMath: true,
+          skipInlineMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true, skipInlineMath: true` - control character in prose is permitted by `allow`',
+      code: `Prose\u0001text
+
+$$
+x\u0001y
+$$
+
+$a\u0001b$`,
+      options: [
+        {
+          allow: ['\u0001'],
+          skipMath: true,
+          skipInlineMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
   ],
 
   invalid: [
@@ -1016,6 +1079,328 @@ Foo\u0002Bar
       options: [
         {
           skipInlineCode: false,
+        },
+      ],
+    },
+    {
+      name: '`skipMath: false` - control character in math block is reported by default',
+      code: `$$
+x\u0001y
+$$`,
+      errors: [
+        {
+          messageId: 'noControlCharacter',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 3,
+          data: {
+            controlCharacter: 'U+0001',
+          },
+          suggestions: [
+            {
+              output: `$$
+xy
+$$`,
+              messageId: 'suggestRemove',
+              data: {
+                controlCharacter: 'U+0001',
+              },
+            },
+          ],
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipInlineMath: false` - control character in inline math is reported by default',
+      code: '$a\u0001b$',
+      errors: [
+        {
+          messageId: 'noControlCharacter',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 4,
+          data: {
+            controlCharacter: 'U+0001',
+          },
+          suggestions: [
+            {
+              output: '$ab$',
+              messageId: 'suggestRemove',
+              data: {
+                controlCharacter: 'U+0001',
+              },
+            },
+          ],
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: false` - math block should not be skipped',
+      code: `$$
+x\u0001y
+$$`,
+      errors: [
+        {
+          messageId: 'noControlCharacter',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 3,
+          data: {
+            controlCharacter: 'U+0001',
+          },
+          suggestions: [
+            {
+              output: `$$
+xy
+$$`,
+              messageId: 'suggestRemove',
+              data: {
+                controlCharacter: 'U+0001',
+              },
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          skipMath: false,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipInlineMath: false` - inline math should not be skipped',
+      code: '$a\u0001b$',
+      errors: [
+        {
+          messageId: 'noControlCharacter',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 4,
+          data: {
+            controlCharacter: 'U+0001',
+          },
+          suggestions: [
+            {
+              output: '$ab$',
+              messageId: 'suggestRemove',
+              data: {
+                controlCharacter: 'U+0001',
+              },
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          skipInlineMath: false,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: false, skipInlineMath: true` - math block is reported but inline math is skipped',
+      code: `$$
+x\u0001y
+$$
+
+$a\u0001b$`,
+      errors: [
+        {
+          messageId: 'noControlCharacter',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 3,
+          data: {
+            controlCharacter: 'U+0001',
+          },
+          suggestions: [
+            {
+              output: `$$
+xy
+$$
+
+$a\u0001b$`,
+              messageId: 'suggestRemove',
+              data: {
+                controlCharacter: 'U+0001',
+              },
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          skipMath: false,
+          skipInlineMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true, skipInlineMath: false` - inline math is reported but math block is skipped',
+      code: `$$
+x\u0001y
+$$
+
+$a\u0001b$`,
+      errors: [
+        {
+          messageId: 'noControlCharacter',
+          line: 5,
+          column: 3,
+          endLine: 5,
+          endColumn: 4,
+          data: {
+            controlCharacter: 'U+0001',
+          },
+          suggestions: [
+            {
+              output: `$$
+x\u0001y
+$$
+
+$ab$`,
+              messageId: 'suggestRemove',
+              data: {
+                controlCharacter: 'U+0001',
+              },
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          skipMath: true,
+          skipInlineMath: false,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true, skipInlineMath: true` - control character in surrounding prose is reported',
+      code: `Prose\u0001text
+
+$$
+x\u0001y
+$$
+
+$a\u0001b$`,
+      errors: [
+        {
+          messageId: 'noControlCharacter',
+          line: 1,
+          column: 6,
+          endLine: 1,
+          endColumn: 7,
+          data: {
+            controlCharacter: 'U+0001',
+          },
+          suggestions: [
+            {
+              output: `Prosetext
+
+$$
+x\u0001y
+$$
+
+$a\u0001b$`,
+              messageId: 'suggestRemove',
+              data: {
+                controlCharacter: 'U+0001',
+              },
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          skipMath: true,
+          skipInlineMath: true,
+        },
+      ],
+      languageOptions: {
+        math: true,
+      },
+    },
+    {
+      name: '`skipMath: true, skipInlineMath: true` - delimiters in plain text are not excluded when math parsing is disabled',
+      code: `$$
+x\u0001y
+$$
+
+$a\u0001b$`,
+      errors: [
+        {
+          messageId: 'noControlCharacter',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 3,
+          data: {
+            controlCharacter: 'U+0001',
+          },
+          suggestions: [
+            {
+              output: `$$
+xy
+$$
+
+$a\u0001b$`,
+              messageId: 'suggestRemove',
+              data: {
+                controlCharacter: 'U+0001',
+              },
+            },
+          ],
+        },
+        {
+          messageId: 'noControlCharacter',
+          line: 5,
+          column: 3,
+          endLine: 5,
+          endColumn: 4,
+          data: {
+            controlCharacter: 'U+0001',
+          },
+          suggestions: [
+            {
+              output: `$$
+x\u0001y
+$$
+
+$ab$`,
+              messageId: 'suggestRemove',
+              data: {
+                controlCharacter: 'U+0001',
+              },
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          skipMath: true,
+          skipInlineMath: true,
         },
       ],
     },
