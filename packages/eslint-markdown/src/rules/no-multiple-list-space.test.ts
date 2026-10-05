@@ -66,6 +66,23 @@ ruleTester('no-multiple-list-space', rule, {
 `,
     },
 
+    // Indented and nested lists
+    {
+      name: 'Nested list: One space after marker is allowed',
+      code: `
+- item
+  - item
+`,
+    },
+    {
+      name: 'Block quote: One space after marker is allowed',
+      code: '> - item',
+    },
+    {
+      name: 'Indented list: One space after marker is allowed',
+      code: ' - item',
+    },
+
     // Options
     {
       name: 'Option: Custom unordered single-line spacing is allowed',
@@ -90,6 +107,12 @@ ruleTester('no-multiple-list-space', rule, {
           olMulti: 1,
         },
       ],
+    },
+
+    // Checkbox in list
+    {
+      name: 'List item with checkbox',
+      code: '- [ ] checkbox',
     },
   ],
 
@@ -170,6 +193,58 @@ ruleTester('no-multiple-list-space', rule, {
           data: {
             expected: 1,
             actual: 2,
+          },
+        },
+      ],
+    },
+
+    // Indented and nested lists
+    {
+      name: 'Nested list: Multiple spaces after marker are reduced to one',
+      code: `
+- item
+  -   item
+`,
+      output: `
+- item
+  - item
+`,
+      errors: [
+        {
+          messageId: 'noMultipleListSpace',
+          data: {
+            expected: 1,
+            actual: 3,
+          },
+        },
+      ],
+    },
+
+    {
+      name: 'Block quote: Multiple spaces after marker are reduced to one',
+      code: '> -   item',
+      output: '> - item',
+      errors: [
+        {
+          messageId: 'noMultipleListSpace',
+          data: {
+            expected: 1,
+            actual: 3,
+          },
+        },
+      ],
+    },
+
+    {
+      name: 'Indented list: Multiple spaces after marker are reduced to one',
+      code: ' -   item',
+      output: ' - item',
+      errors: [
+        {
+          messageId: 'noMultipleListSpace',
+          data: {
+            expected: 1,
+            actual: 3,
           },
         },
       ],
@@ -280,6 +355,7 @@ ruleTester('no-multiple-list-space', rule, {
         },
       ],
     },
+
     {
       name: 'Multi-line unordered list: All list items are checked',
       code: `
@@ -315,6 +391,22 @@ ruleTester('no-multiple-list-space', rule, {
           data: {
             expected: 2,
             actual: 1,
+          },
+        },
+      ],
+    },
+
+    // Checkbox in list
+    {
+      name: 'List item: checkbox with multiple spaces',
+      code: '-   [ ] checkbox',
+      output: '- [ ] checkbox',
+      errors: [
+        {
+          messageId: 'noMultipleListSpace',
+          data: {
+            expected: 1,
+            actual: 3,
           },
         },
       ],
