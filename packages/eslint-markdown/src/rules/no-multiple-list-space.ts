@@ -33,12 +33,6 @@ type RuleOptions = [
 type MessageIds = 'noMultipleListSpace';
 
 // --------------------------------------------------------------------------------
-// Helper
-// --------------------------------------------------------------------------------
-
-const LIST_MARKER_REGEX = /^(?:[*+-]|\d+[.)])(?<whitespace>[ \t]+)/u;
-
-// --------------------------------------------------------------------------------
 // Rule Definition
 // --------------------------------------------------------------------------------
 
@@ -127,33 +121,32 @@ export default {
     };
 
     function checkListItem(node: ListItem, expectedSpaces: number): void {
-      const [start] = sourceCode.getRange(node);
-      const line = sourceCode.lines[sourceCode.getLocFromIndex(start).line - 1];
+      const [listItemStart] = sourceCode.getRange(node);
+      const [contentStart] = sourceCode.getRange(node.children[0]);
 
-      const match = line.match(LIST_MARKER_REGEX);
+      const prefix = sourceCode.text.slice(listItemStart, contentStart);
 
-      if (!match) {
-        return;
+      const whitespaceIndex = prefix.indexOf(' ');
+
+      const whitespaceStart = listItemStart + whitespaceIndex;
+
+      // 리스트 마커 뒤의 연속된 공백만 계산한다.
+      let whitespaceEnd = whitespaceStart;
+
+      while (sourceCode.text[whitespaceEnd] === ' ') {
+        whitespaceEnd++;
       }
 
-      const whitespace = match.groups?.whitespace;
-
-      if (!whitespace) {
-        return;
-      }
-
-      const actualSpaces = whitespace.length;
+      const actualSpaces = whitespaceEnd - whitespaceStart;
 
       if (actualSpaces === expectedSpaces) {
         return;
       }
 
-      const whitespaceStart = start + match[0].length - whitespace.length;
-
       context.report({
         loc: {
           start: sourceCode.getLocFromIndex(whitespaceStart),
-          end: sourceCode.getLocFromIndex(whitespaceStart + whitespace.length),
+          end: sourceCode.getLocFromIndex(whitespaceEnd),
         },
 
         messageId: 'noMultipleListSpace',
@@ -165,7 +158,7 @@ export default {
 
         fix(fixer) {
           return fixer.replaceTextRange(
-            [whitespaceStart, whitespaceStart + whitespace.length],
+            [whitespaceStart, whitespaceEnd],
             ' '.repeat(expectedSpaces),
           );
         },
