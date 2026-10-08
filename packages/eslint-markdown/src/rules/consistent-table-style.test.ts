@@ -419,6 +419,16 @@ Paragraph`,
 Paragraph`,
       options: [{ blankLineAbove: 2, blankLineBelow: 3 }],
     },
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - with a table in a blockquote after a nested blockquote',
+      code: `> > quote
+>
+> | a | b |
+> | - | - |
+>
+> Paragraph`,
+      options: [{ blankLineAbove: 1, blankLineBelow: 1 }],
+    },
 
     {
       name: '`blankLineAbove` and `blankLineBelow` options - `markdownlint` example',
@@ -986,6 +996,25 @@ Paragraph`,
           column: 4,
           endLine: 2,
           endColumn: 13,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - table after a blockquote is checked at the top level',
+      code: `> quote
+
+| a | b |
+| - | - |
+>`,
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 4,
+          column: 1,
+          endLine: 4,
+          endColumn: 10,
           data: { blankLineBelow: 1 },
         },
       ],
