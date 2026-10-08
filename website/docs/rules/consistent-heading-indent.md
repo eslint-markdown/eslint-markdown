@@ -95,3 +95,4 @@ This rule fixes the heading indentation by removing the spaces or tabs before th
 ## Prior Art
 
 - [`MD023` - Headings Must Start at the Beginning of the Line](https://github.com/DavidAnson/markdownlint/blob/main/doc/md023.md)
+- [`remark-lint-no-heading-indent`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-indent#remark-lint-no-heading-indent)
