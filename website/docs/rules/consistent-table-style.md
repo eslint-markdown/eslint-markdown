@@ -165,3 +165,4 @@ Set this option to `false` to disable the blank line check below tables. Set it 
 ## Prior Art
 
 - [`MD058` - Tables should be surrounded by blank lines](https://github.com/DavidAnson/markdownlint/blob/main/doc/md058.md#md058---tables-should-be-surrounded-by-blank-lines)
+- [`remark-lint-no-missing-blank-lines`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-missing-blank-lines#remark-lint-no-missing-blank-lines)
