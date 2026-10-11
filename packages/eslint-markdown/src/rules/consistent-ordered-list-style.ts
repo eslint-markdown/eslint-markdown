@@ -42,6 +42,9 @@ interface OrderedListItemPrefix {
 // --------------------------------------------------------------------------------
 
 const ORDERED_LIST_STYLE = ['one', 'ordered', 'zero'] as const;
+/**
+ * @see https://spec.commonmark.org/0.31.2/#example-265
+ */
 const orderedListItemPrefixRegex = /\d{1,9}/uy;
 
 // --------------------------------------------------------------------------------
