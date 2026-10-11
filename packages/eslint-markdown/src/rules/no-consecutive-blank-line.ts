@@ -50,8 +50,11 @@ export default {
   meta: {
     type: 'layout',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Disallow consecutive blank lines',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-consecutive-blank-line'),
       recommended: false,
       stylistic: true,
@@ -101,10 +104,6 @@ export default {
       noConsecutiveBlankLine:
         'More than {{ max }} consecutive blank line(s) are not allowed.',
     },
-
-    language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {
