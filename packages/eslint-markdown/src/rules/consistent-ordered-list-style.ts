@@ -78,8 +78,7 @@ export default {
     ],
 
     messages: {
-      style:
-        'Ordered list item prefix should be `{{ expected }}`, but found `{{ actual }}`.',
+      style: 'Ordered list style should be `{{ style }}`.',
     },
 
     language: 'markdown',
@@ -149,8 +148,7 @@ export default {
               messageId: 'style',
 
               data: {
-                expected: expectedNumber,
-                actual: number,
+                style: listStyle,
               },
             });
           }
