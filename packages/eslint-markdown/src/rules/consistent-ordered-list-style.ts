@@ -45,7 +45,7 @@ const ORDERED_LIST_STYLE = ['one', 'ordered', 'zero'] as const;
 /**
  * @see https://spec.commonmark.org/0.31.2/#example-265
  */
-const orderedListItemPrefixRegex = /\d{1,9}/uy;
+const orderedListItemPrefixRegex = /^\d{1,9}/u;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -99,9 +99,10 @@ export default {
 
         for (const listItem of node.children) {
           const [itemStartOffset] = sourceCode.getRange(listItem);
-          orderedListItemPrefixRegex.lastIndex = itemStartOffset;
-          // `match` is never null because this visitor only runs for `list[ordered=true]`, whose items always start with a numeric marker.
-          const match = orderedListItemPrefixRegex.exec(sourceCode.text)!;
+
+          // `match` is never null because this visitor only runs for
+          // ordered list items, whose source text starts with a numeric marker.
+          const match = orderedListItemPrefixRegex.exec(sourceCode.getText(listItem))!;
 
           const [text] = match;
 
