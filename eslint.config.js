@@ -145,6 +145,7 @@ export default defineConfig([
       'md/consistent-emphasis-style': ['error', { style: '*' }],
       'md/consistent-heading-style': ['error', { style: 'atx' }],
       'md/consistent-inline-code-style': 'error',
+      'md/consistent-ordered-list-style': ['error', { style: 'one' }],
       'md/consistent-strong-style': ['error', { style: '*' }],
       'md/consistent-thematic-break-style': ['error', { style: '---' }],
       'md/consistent-unordered-list-style': ['error', { style: '-' }],
