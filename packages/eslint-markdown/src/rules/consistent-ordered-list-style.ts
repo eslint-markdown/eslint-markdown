@@ -7,7 +7,7 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import type { List } from 'mdast';
+import type { ListItem } from 'mdast';
 import { URL_RULE_DOCS } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -93,25 +93,31 @@ export default {
     const { sourceCode } = context;
     const [{ style }] = context.options;
 
+    const prefixStack: OrderedListItemPrefix[][] = [];
+
     return {
-      'list[ordered=true]'(node: List) {
-        const prefixes: OrderedListItemPrefix[] = [];
+      'list[ordered=true]'() {
+        prefixStack.push([]);
+      },
+      'list[ordered=true] > listItem'(node: ListItem) {
+        const prefixes = prefixStack.at(-1)!;
 
-        for (const listItem of node.children) {
-          const [itemStartOffset] = sourceCode.getRange(listItem);
+        const [itemStartOffset] = sourceCode.getRange(node);
 
-          // `match` is never null because this visitor only runs for
-          // ordered list items, whose source text starts with a numeric marker.
-          const match = orderedListItemPrefixRegex.exec(sourceCode.getText(listItem))!;
+        // `match` is never null because this visitor only runs for
+        // ordered list items, whose source text starts with a numeric marker.
+        const match = orderedListItemPrefixRegex.exec(sourceCode.getText(node))!;
 
-          const [text] = match;
+        const [text] = match;
 
-          prefixes.push({
-            startOffset: itemStartOffset,
-            text,
-            number: Number(text),
-          });
-        }
+        prefixes.push({
+          startOffset: itemStartOffset,
+          text,
+          number: Number(text),
+        });
+      },
+      'list[ordered=true]:exit'() {
+        const prefixes = prefixStack.pop()!;
 
         let expectedNumber = 1;
         let incrementing = false;
