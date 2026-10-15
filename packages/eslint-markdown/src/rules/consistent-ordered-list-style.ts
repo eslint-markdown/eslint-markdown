@@ -3,6 +3,8 @@
  * @author Ga eun Lee(tooth-is-silver)
  */
 
+// TODO: add auto-fix
+
 // --------------------------------------------------------------------------------
 // Import
 // --------------------------------------------------------------------------------
@@ -24,28 +26,29 @@ type RuleOptions = [
     /**
      * When `style` is set to `'one-or-ordered'`, the rule allows either the `'one'` or `'ordered'` style based on the first two list item prefixes.
      *
-     * You can also specify `'one'` to require every prefix to be `1`, `'ordered'` to require prefixes to increase sequentially, starting from `1` or from `0` when the list has two or more items, or `'zero'` to require every prefix to be `0`.
+     * When `style` is set to `'one'`, the rule requires every prefix to be `1`.
+     *
+     * When `style` is set to `'ordered'`, the rule requires prefixes to increase sequentially, starting from `1` or from `0` when the list has two or more items.
+     *
+     * When `style` is set to `'zero'`, the rule requires every prefix to be `0`.
      * @default 'one-or-ordered'
      */
     style: 'one-or-ordered' | OrderedListStyle;
   },
 ];
 type MessageIds = 'style';
-interface OrderedListItemPrefix {
-  startOffset: number;
-  text: string;
-  number: number;
-}
 
 // --------------------------------------------------------------------------------
 // Helper
 // --------------------------------------------------------------------------------
 
 const ORDERED_LIST_STYLE = ['one', 'ordered', 'zero'] as const;
+
 /**
+ * Ordered list start numbers must be nine digits or less.
  * @see https://spec.commonmark.org/0.31.2/#example-265
  */
-const orderedListItemPrefixRegex = /^\d{1,9}/u;
+const orderedListPrefixRegex = /^\d{1,9}/u;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -93,77 +96,74 @@ export default {
     const { sourceCode } = context;
     const [{ style }] = context.options;
 
-    const prefixStack: OrderedListItemPrefix[][] = [];
+    const orderedListPrefixesStack: {
+      startOffset: number;
+      endOffset: number;
+      number: number;
+    }[][] = [];
 
     return {
       'list[ordered=true]'() {
-        prefixStack.push([]);
+        orderedListPrefixesStack.push([]);
       },
+
       'list[ordered=true] > listItem'(node: ListItem) {
-        const prefixes = prefixStack.at(-1)!;
+        const [nodeStartOffset] = sourceCode.getRange(node);
 
-        const [itemStartOffset] = sourceCode.getRange(node);
-
-        // `match` is never null because this visitor only runs for
+        // `match` is never `null` because this visitor only runs for
         // ordered list items, whose source text starts with a numeric marker.
-        const match = orderedListItemPrefixRegex.exec(sourceCode.getText(node))!;
+        const match = orderedListPrefixRegex.exec(sourceCode.getText(node))!;
+        const orderedListPrefix = match[0];
 
-        const [text] = match;
-
-        prefixes.push({
-          startOffset: itemStartOffset,
-          text,
-          number: Number(text),
+        orderedListPrefixesStack[orderedListPrefixesStack.length - 1].push({
+          startOffset: nodeStartOffset,
+          endOffset: nodeStartOffset + orderedListPrefix.length,
+          number: Number(orderedListPrefix),
         });
       },
+
       'list[ordered=true]:exit'() {
-        const prefixes = prefixStack.pop()!;
+        // Can never be `undefined` because `list[ordered=true]` always pushes to the stack before exiting.
+        const orderedListPrefixes = orderedListPrefixesStack.pop()!;
+        const [firstOrderedListPrefix, secondOrderedListPrefix] = orderedListPrefixes;
+        const hasMultipleItems = orderedListPrefixes.length > 1;
 
-        let expectedNumber = 1;
-        let incrementing = false;
+        let orderedListStyle = style;
 
-        if (prefixes.length > 1) {
-          const [firstPrefix, secondPrefix] = prefixes;
-          if (secondPrefix.number !== 1 || firstPrefix.number === 0) {
-            incrementing = true;
-            if (firstPrefix.number === 0) {
-              expectedNumber = 0;
-            }
-          }
+        if (orderedListStyle === 'one-or-ordered') {
+          orderedListStyle =
+            hasMultipleItems &&
+            (firstOrderedListPrefix.number === 0 || secondOrderedListPrefix.number !== 1)
+              ? 'ordered'
+              : 'one';
         }
 
-        let listStyle: OrderedListStyle | null =
-          style === 'one-or-ordered' ? null : style;
+        let expectedOrderedListPrefixNumber =
+          orderedListStyle === 'zero' ||
+          (orderedListStyle === 'ordered' &&
+            hasMultipleItems &&
+            firstOrderedListPrefix.number === 0)
+            ? 0
+            : 1;
 
-        if (listStyle === null) {
-          listStyle = incrementing ? 'ordered' : 'one';
-        }
-
-        if (listStyle === 'zero') {
-          expectedNumber = 0;
-        } else if (listStyle === 'one') {
-          expectedNumber = 1;
-        }
-
-        for (const listItemPrefix of prefixes) {
-          const { startOffset, text, number } = listItemPrefix;
-
-          if (number !== expectedNumber) {
+        for (const { startOffset, endOffset, number } of orderedListPrefixes) {
+          if (number !== expectedOrderedListPrefixNumber) {
             context.report({
               loc: {
                 start: sourceCode.getLocFromIndex(startOffset),
-                end: sourceCode.getLocFromIndex(startOffset + text.length),
+                end: sourceCode.getLocFromIndex(endOffset),
               },
 
               messageId: 'style',
 
               data: {
-                style: listStyle,
+                style: orderedListStyle,
               },
             });
           }
-          if (listStyle === 'ordered') {
-            expectedNumber++;
+
+          if (orderedListStyle === 'ordered') {
+            expectedOrderedListPrefixNumber++;
           }
         }
       },
