@@ -3,7 +3,7 @@
 
 ## Rule Details
 
-This rule enforces a consistent numbering style for ordered list item prefixes in Markdown files. Consistent numbering makes the structure of ordered lists easier to understand.
+This rule enforces a single, consistent style for ordered list item prefixes in Markdown files. Consistent numbering makes it easier to understand a document, and mixing different ordered list styles can reduce readability.
 
 Ordered list items can use the same number for every item or increase sequentially. The less common style of starting with `0` is also supported.
 
@@ -131,13 +131,15 @@ Examples of **correct** code for this rule:
 
 ### `style`
 
-> Type: `'one' | 'one-or-ordered' | 'ordered' | 'zero'` / Default: `'one-or-ordered'`
+> Type: `'one-or-ordered' | 'one' | 'ordered' | 'zero'` / Default: `'one-or-ordered'`
 
 When `style` is set to `'one-or-ordered'`, the rule allows either the `'one'` or `'ordered'` style based on the first two list item prefixes.
 
-You can also specify `'one'` to require every prefix to be `1`, `'ordered'` to require prefixes to increase sequentially, starting from `1` or from `0` when the list has two or more items, or `'zero'` to require every prefix to be `0`.
+When `style` is set to `'one'`, the rule requires every prefix to be `1`.
 
-The `'ordered'` behavior follows the `markdownlint` rule `MD029`.
+When `style` is set to `'ordered'`, the rule requires prefixes to increase sequentially, starting from `1` or from `0` when the list has two or more items.
+
+When `style` is set to `'zero'`, the rule requires every prefix to be `0`.
 
 ## Prior Art
 
