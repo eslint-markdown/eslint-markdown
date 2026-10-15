@@ -14,7 +14,20 @@ import type { RuleModule } from '../core/types.js';
 // Typedef
 // --------------------------------------------------------------------------------
 
-type RuleOptions = [{ style: string }];
+/**
+ * Options for the `consistent-thematic-break-style` rule.
+ */
+type RuleOptions = [
+  {
+    /**
+     * When `style` is set to `'consistent'`, the rule enforces that all thematic breaks in the document use the same style as the first one encountered.
+     *
+     * You can also specify a particular style by setting style to `'---'`, `'***'`, `'___'`, or any other valid thematic break, which will enforce that all thematic breaks use the specified style. A valid thematic break is a sequence of three or more matching `-`, `*`, or `_` characters, each optionally followed by any number of spaces or tabs.
+     * @default 'consistent'
+     */
+    style: string;
+  },
+];
 type MessageIds = 'style';
 
 // --------------------------------------------------------------------------------

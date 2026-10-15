@@ -603,10 +603,9 @@ ruleTester('allow-link-url', rule, {
       ],
       errors: [
         {
-          messageId: 'allowLinkUrl',
+          messageId: 'emptyAllowLinkUrl',
           data: {
             url: 'https://example.com',
-            patterns: '',
           },
           line: 2,
           column: 1,
@@ -614,10 +613,9 @@ ruleTester('allow-link-url', rule, {
           endColumn: 28,
         },
         {
-          messageId: 'allowLinkUrl',
+          messageId: 'emptyAllowLinkUrl',
           data: {
             url: 'https://foo.com',
-            patterns: '',
           },
           line: 4,
           column: 1,
@@ -625,10 +623,9 @@ ruleTester('allow-link-url', rule, {
           endColumn: 18,
         },
         {
-          messageId: 'allowLinkUrl',
+          messageId: 'emptyAllowLinkUrl',
           data: {
             url: 'https://bar.com',
-            patterns: '',
           },
           line: 6,
           column: 4,
@@ -636,10 +633,9 @@ ruleTester('allow-link-url', rule, {
           endColumn: 26,
         },
         {
-          messageId: 'allowLinkUrl',
+          messageId: 'emptyAllowLinkUrl',
           data: {
             url: 'https://baz.com',
-            patterns: '',
           },
           line: 10,
           column: 1,

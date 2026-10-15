@@ -18,7 +18,20 @@ import type { RuleModule } from '../core/types.js';
 // Typedef
 // --------------------------------------------------------------------------------
 
-type RuleOptions = [{ allowDefinitions: string[] }];
+/**
+ * Options for the `require-link-title` rule.
+ */
+type RuleOptions = [
+  {
+    /**
+     * When specified, specific definitions are allowed if they match one of the identifiers in this array.
+     *
+     * This is useful for ignoring definitions that are intentionally left without titles, such as comments or placeholders.
+     * @default ['//']
+     */
+    allowDefinitions: string[];
+  },
+];
 type MessageIds = 'requireLinkTitle';
 
 // --------------------------------------------------------------------------------
@@ -101,16 +114,25 @@ export default {
         const html = sourceCode.getText(node);
 
         for (const { attrs, sourceCodeLocation } of getElementsByTagName(html, 'a')) {
-          let hasTitle = false;
+          if (!sourceCodeLocation?.startTag || !sourceCodeLocation.attrs?.href) {
+            continue;
+          }
+
+          let needsTitle = true;
 
           for (const { name, value } of attrs) {
             if (name === 'title' && value) {
-              hasTitle = true;
+              needsTitle = false;
+              break;
+            }
+
+            if (name === 'aria-hidden' && value.toLowerCase() === 'true') {
+              needsTitle = false;
               break;
             }
           }
 
-          if (!hasTitle && sourceCodeLocation?.startTag) {
+          if (needsTitle) {
             report({
               start: sourceCode.getLocFromIndex(
                 nodeStartOffset + sourceCodeLocation.startTag.startOffset,

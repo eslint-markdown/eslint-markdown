@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -84,6 +84,8 @@ This rule disallows the following control characters except where the options al
 ```
 
 ## Examples
+
+<!-- eslint-disable md/no-control-character, md/no-irregular-whitespace -->
 
 ### :x: Incorrect
 
@@ -181,13 +183,31 @@ Examples of **incorrect** code for this rule:
 \u0003 - End of Text - <ETX> `` <= Here
 ```
 
+#### With `{ skipMath: false }` Option
+
+```md eslint-check
+<!-- eslint md/no-control-character: ['error', { skipMath: false }] -->
+
+$$
+\u0002 - Start of Text - <STX>  <= Here
+$$
+```
+
+#### With `{ skipInlineMath: false }` Option
+
+```md eslint-check
+<!-- eslint md/no-control-character: ['error', { skipInlineMath: false }] -->
+
+\u0002 - Start of Text - <STX> $$ <= Here
+```
+
 ### :white_check_mark: Correct
 
 Examples of **correct** code for this rule:
 
 #### Default
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ```md eslint-check
 <!-- eslint md/no-control-character: 'error' -->
@@ -196,7 +216,7 @@ Examples of **correct** code for this rule:
 \u0020 - Space - <SP>   <= Here
 ```
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 #### With `{ allow: ['\u0002', '\u0003'] }` Option
 
@@ -256,6 +276,26 @@ Examples of **correct** code for this rule:
 \u0003 - End of Text - <ETX> `` <= Here
 ```
 
+#### With `{ skipMath: true }` Option
+
+```md eslint-check
+<!-- eslint md/no-control-character: ['error', { skipMath: true }] -->
+
+$$
+\u0002 - Start of Text - <STX>  <= Here
+$$
+```
+
+#### With `{ skipInlineMath: true }` Option
+
+```md eslint-check
+<!-- eslint md/no-control-character: ['error', { skipInlineMath: true }] -->
+
+\u0002 - Start of Text - <STX> $$ <= Here
+```
+
+<!-- eslint-enable md/no-control-character, md/no-irregular-whitespace -->
+
 ## Options
 
 ```js
@@ -263,6 +303,8 @@ Examples of **correct** code for this rule:
   allow: [],
   skipCode: true,
   skipInlineCode: true,
+  skipMath: false,
+  skipInlineMath: false,
 }]
 ```
 
@@ -283,6 +325,26 @@ When specified, specific control characters are allowed if they match one of the
 > Type: `boolean` / Default: `true`
 
 `true` allows control characters in all inline code.
+
+### `skipMath`
+
+> Type: `boolean` / Default: `false`
+
+`true` allows control characters in all math blocks.
+
+::: tip NOTE
+This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
+:::
+
+### `skipInlineMath`
+
+> Type: `boolean` / Default: `false`
+
+`true` allows control characters in all inline math.
+
+::: tip NOTE
+This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
+:::
 
 ## Suggestion
 

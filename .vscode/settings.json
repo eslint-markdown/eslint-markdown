@@ -7,8 +7,7 @@
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always",
-    "source.fixAll.stylelint": "always",
-    "source.fixAll.markdownlint": "always"
+    "source.fixAll.stylelint": "always"
   },
   "eslint.validate": [
     "html",

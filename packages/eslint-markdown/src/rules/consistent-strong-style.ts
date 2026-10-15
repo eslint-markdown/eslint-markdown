@@ -14,8 +14,26 @@ import type { RuleModule } from '../core/types.js';
 // Typedef
 // --------------------------------------------------------------------------------
 
-type RuleOptions = [{ style: 'consistent' | '*' | '_' }];
+type StrongStyle = (typeof STRONG_STYLE)[number];
+/**
+ * Options for the `consistent-strong-style` rule.
+ */
+type RuleOptions = [
+  {
+    /**
+     * When `style` is set to `'consistent'`, the rule enforces that all strong in the document use the same style as the first one encountered.
+     * @default 'consistent'
+     */
+    style: 'consistent' | StrongStyle;
+  },
+];
 type MessageIds = 'style';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
+
+const STRONG_STYLE = ['*', '_'] as const;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -39,7 +57,7 @@ export default {
         type: 'object',
         properties: {
           style: {
-            enum: ['consistent', '*', '_'],
+            enum: ['consistent', ...STRONG_STYLE],
           },
         },
         additionalProperties: false,
@@ -65,7 +83,7 @@ export default {
     const { sourceCode } = context;
     const [{ style }] = context.options;
 
-    let strongStyle: string | null = style === 'consistent' ? null : style;
+    let strongStyle: StrongStyle | null = style === 'consistent' ? null : style;
 
     /**
      * @param startOffset Start offset of the style marker.
@@ -95,7 +113,7 @@ export default {
     return {
       strong(node) {
         const [nodeStartOffset, nodeEndOffset] = sourceCode.getRange(node);
-        const currentStrongStyle = sourceCode.text[nodeStartOffset];
+        const currentStrongStyle = sourceCode.text[nodeStartOffset] as StrongStyle;
 
         if (strongStyle === null) {
           strongStyle = currentStrongStyle;

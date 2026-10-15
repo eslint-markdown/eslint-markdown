@@ -15,13 +15,30 @@ import type { RuleModule } from '../core/types.js';
 // Typedef
 // --------------------------------------------------------------------------------
 
-type UnorderedListStyle = '*' | '+' | '-';
-type RuleOptions = [{ style: 'consistent' | 'sublist' | UnorderedListStyle }];
+type UnorderedListStyle = (typeof UNORDERED_LIST_STYLE)[number];
+/**
+ * Options for the `consistent-unordered-list-style` rule.
+ */
+type RuleOptions = [
+  {
+    /**
+     * When `style` is set to `'consistent'`, the rule enforces that all unordered list markers in the document use the same style as the first one encountered.
+     *
+     * When `style` is set to `'sublist'`, the rule enforces that all unordered list markers in sublists use a consistent symbol that differs from that of their parent list, depending on the nesting depth.
+     *
+     * You can also specify a particular style by setting style to `'-'`, `'*'`, or `'+'`, which will enforce that all unordered list markers use the specified style.
+     * @default 'consistent'
+     */
+    style: 'consistent' | 'sublist' | UnorderedListStyle;
+  },
+];
 type MessageIds = 'style';
 
 // --------------------------------------------------------------------------------
 // Helper
 // --------------------------------------------------------------------------------
+
+const UNORDERED_LIST_STYLE = ['*', '+', '-'] as const;
 
 /**
  * Get the next unordered list style in sequence.
@@ -63,7 +80,7 @@ export default {
         type: 'object',
         properties: {
           style: {
-            enum: ['consistent', 'sublist', '*', '+', '-'],
+            enum: ['consistent', 'sublist', ...UNORDERED_LIST_STYLE],
           },
         },
         additionalProperties: false,

@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -49,6 +49,8 @@ This rule aims to catch irregular whitespace other than normal tabs and spaces, 
 ```
 
 ## Examples
+
+<!-- eslint-disable md/no-control-character, md/no-irregular-whitespace -->
 
 ### :x: Incorrect
 
@@ -132,13 +134,33 @@ Examples of **incorrect** code for this rule:
 \u0085 - Next Line - <NEL> `` <= Here
 ```
 
+#### With `{ skipMath: false }` Option
+
+```md eslint-check
+<!-- eslint md/no-irregular-whitespace: ['error', { skipMath: false }] -->
+
+$$
+\u000B - Line Tabulation (\v) - <VT>  <= Here
+\u0085 - Next Line - <NEL>  <= Here
+$$
+```
+
+#### With `{ skipInlineMath: false }` Option
+
+```md eslint-check
+<!-- eslint md/no-irregular-whitespace: ['error', { skipInlineMath: false }] -->
+
+\u000B - Line Tabulation (\v) - <VT> $$ <= Here
+\u0085 - Next Line - <NEL> $$ <= Here
+```
+
 ### :white_check_mark: Correct
 
 Examples of **correct** code for this rule:
 
 #### Default
 
-<!-- markdownlint-disable no-hard-tabs -->
+<!-- eslint-disable md/no-tab -->
 
 ```md eslint-check
 <!-- eslint md/no-irregular-whitespace: 'error' -->
@@ -147,7 +169,7 @@ Examples of **correct** code for this rule:
 \u0020 - Space - <SP>   <= Here
 ```
 
-<!-- markdownlint-enable no-hard-tabs -->
+<!-- eslint-enable md/no-tab -->
 
 #### With `{ allow: ['\u1680', '\u2000'] }` Option
 
@@ -207,6 +229,28 @@ Examples of **correct** code for this rule:
 \u0085 - Next Line - <NEL> `` <= Here
 ```
 
+#### With `{ skipMath: true }` Option
+
+```md eslint-check
+<!-- eslint md/no-irregular-whitespace: ['error', { skipMath: true }] -->
+
+$$
+\u000B - Line Tabulation (\v) - <VT>  <= Here
+\u0085 - Next Line - <NEL>  <= Here
+$$
+```
+
+#### With `{ skipInlineMath: true }` Option
+
+```md eslint-check
+<!-- eslint md/no-irregular-whitespace: ['error', { skipInlineMath: true }] -->
+
+\u000B - Line Tabulation (\v) - <VT> $$ <= Here
+\u0085 - Next Line - <NEL> $$ <= Here
+```
+
+<!-- eslint-enable md/no-control-character, md/no-irregular-whitespace -->
+
 ## Options
 
 ```js
@@ -214,6 +258,8 @@ Examples of **correct** code for this rule:
   allow: [],
   skipCode: true,
   skipInlineCode: true,
+  skipMath: true,
+  skipInlineMath: true,
 }]
 ```
 
@@ -234,6 +280,26 @@ When specified, specific irregular whitespaces are allowed if they match one of 
 > Type: `boolean` / Default: `true`
 
 `true` allows irregular whitespaces in all inline code.
+
+### `skipMath`
+
+> Type: `boolean` / Default: `true`
+
+`true` allows irregular whitespaces in all math blocks.
+
+::: tip NOTE
+This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
+:::
+
+### `skipInlineMath`
+
+> Type: `boolean` / Default: `true`
+
+`true` allows irregular whitespaces in all inline math.
+
+::: tip NOTE
+This option requires enabling math parsing with [`languageOptions: { math: true }`](https://github.com/eslint/markdown#enabling-math-latex-in-both-commonmark-and-gfm).
+:::
 
 ## When Not To Use It
 

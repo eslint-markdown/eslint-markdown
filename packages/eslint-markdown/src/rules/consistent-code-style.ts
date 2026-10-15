@@ -17,7 +17,12 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import { isBlankLine } from '../core/utils/index.js';
+import {
+  CODE_STYLE,
+  getCodeStyle,
+  isBlankLine,
+  type CodeStyle,
+} from '../core/utils/index.js';
 import { URL_RULE_DOCS } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -25,11 +30,25 @@ import type { RuleModule } from '../core/types.js';
 // Typedef
 // --------------------------------------------------------------------------------
 
-type CodeStyle = 'indent' | 'fence-backtick' | 'fence-tilde';
+/**
+ * Options for the `consistent-code-style` rule.
+ */
 type RuleOptions = [
   {
-    style: 'consistent' | CodeStyle;
+    /**
+     * When `style` is set to `'consistent'`, the rule enforces that all code blocks in the document use the same style as the first one encountered.
+     * @default 'consistent'
+     */
+    style: (typeof EXTENDED_CODE_STYLE)[number];
+    /**
+     * Require a specific number of blank lines above each fenced code block.
+     * @default false
+     */
     blankLineAbove: number | false;
+    /**
+     * Require a specific number of blank lines below each fenced code block.
+     * @default false
+     */
     blankLineBelow: number | false;
   },
 ];
@@ -39,20 +58,7 @@ type MessageIds = 'style' | 'blankLineAbove' | 'blankLineBelow';
 // Helper
 // --------------------------------------------------------------------------------
 
-/**
- * Get the current code style based on the given text.
- * @param text The text to determine the code style from.
- * @returns The current code style.
- */
-function getCurrentCodeStyle(text: string): CodeStyle {
-  if (text === '`') {
-    return 'fence-backtick';
-  } else if (text === '~') {
-    return 'fence-tilde';
-  } else {
-    return 'indent';
-  }
-}
+const EXTENDED_CODE_STYLE = ['consistent', ...CODE_STYLE] as const;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -78,7 +84,7 @@ export default {
         type: 'object',
         properties: {
           style: {
-            enum: ['consistent', 'indent', 'fence-backtick', 'fence-tilde'],
+            enum: EXTENDED_CODE_STYLE,
           },
           blankLineAbove: {
             oneOf: [
@@ -147,8 +153,33 @@ export default {
         // 1. Check code style consistency.
         // ------------------------------------------------------------------------
 
+        const { start, end } = sourceCode.getLoc(node);
         const [nodeStartOffset] = sourceCode.getRange(node);
-        const currentCodeStyle = getCurrentCodeStyle(sourceCode.text[nodeStartOffset]);
+        const currentCodeFenceChar = sourceCode.text[nodeStartOffset];
+        const currentCodeStyle = getCodeStyle(currentCodeFenceChar);
+        const nodeStartLineIndex = start.line - 1;
+        const nodeEndLineIndex = end.line - 1;
+        const nodeStartLineText = lines[nodeStartLineIndex];
+        const nodeEndLineText = lines[nodeEndLineIndex];
+        const leadingCodeFenceLoc = {
+          start,
+          end: {
+            line: start.line,
+            column: (() => {
+              if (currentCodeStyle === 'indent') {
+                return nodeStartLineText.length + 1;
+              }
+
+              let { column } = start;
+
+              while (nodeStartLineText[column - 1] === currentCodeFenceChar) {
+                column++;
+              }
+
+              return column;
+            })(),
+          },
+        } as const;
 
         if (codeStyle === null) {
           codeStyle = currentCodeStyle;
@@ -156,7 +187,7 @@ export default {
 
         if (codeStyle !== currentCodeStyle) {
           context.report({
-            node,
+            loc: leadingCodeFenceLoc,
 
             messageId: 'style',
 
@@ -172,11 +203,6 @@ export default {
 
         // `markdownlint` doesn't check blank lines above indented code blocks, so we skip this check for the `indent` style.
         if (blankLineAbove !== false && currentCodeStyle !== 'indent') {
-          const {
-            start: { line: nodeStartLine },
-          } = sourceCode.getLoc(node);
-          const nodeStartLineIndex = nodeStartLine - 1;
-
           for (
             let i = nodeStartLineIndex - 1; // Start checking from the line above the code block.
             i >= nodeStartLineIndex - blankLineAbove; // Check up to the specified number of blank lines.
@@ -195,7 +221,7 @@ export default {
             }
 
             context.report({
-              node,
+              loc: leadingCodeFenceLoc,
 
               messageId: 'blankLineAbove',
 
@@ -215,11 +241,6 @@ export default {
 
         // `markdownlint` doesn't check blank lines below indented code blocks, so we skip this check for the `indent` style.
         if (blankLineBelow !== false && currentCodeStyle !== 'indent') {
-          const {
-            end: { line: nodeEndLine },
-          } = sourceCode.getLoc(node);
-          const nodeEndLineIndex = nodeEndLine - 1;
-
           for (
             let i = nodeEndLineIndex + 1; // Start checking from the line below the code block.
             i <= nodeEndLineIndex + blankLineBelow; // Check up to the specified number of blank lines.
@@ -238,7 +259,18 @@ export default {
             }
 
             context.report({
-              node,
+              // Report the last line of the code block, as highlighting only the trailing
+              // code fence characters involves many edge cases that cannot be handled reliably.
+              loc: {
+                start: {
+                  line: end.line,
+                  column: 1,
+                },
+                end: {
+                  line: end.line,
+                  column: nodeEndLineText.length + 1,
+                },
+              },
 
               messageId: 'blankLineBelow',
 

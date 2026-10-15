@@ -570,10 +570,9 @@ ruleTester('allow-image-url', rule, {
       ],
       errors: [
         {
-          messageId: 'allowImageUrl',
+          messageId: 'emptyAllowImageUrl',
           data: {
             url: 'https://example.com',
-            patterns: '',
           },
           line: 2,
           column: 1,
@@ -581,10 +580,9 @@ ruleTester('allow-image-url', rule, {
           endColumn: 29,
         },
         {
-          messageId: 'allowImageUrl',
+          messageId: 'emptyAllowImageUrl',
           data: {
             url: 'https://foo.com',
-            patterns: '',
           },
           line: 4,
           column: 6,
@@ -592,10 +590,9 @@ ruleTester('allow-image-url', rule, {
           endColumn: 27,
         },
         {
-          messageId: 'allowImageUrl',
+          messageId: 'emptyAllowImageUrl',
           data: {
             url: 'https://bar.com',
-            patterns: '',
           },
           line: 8,
           column: 1,

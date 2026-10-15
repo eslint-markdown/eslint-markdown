@@ -9,7 +9,9 @@ import codeLangShorthand from './code-lang-shorthand.js';
 import consistentCodeStyle from './consistent-code-style.js';
 import consistentDeleteStyle from './consistent-delete-style.js';
 import consistentEmphasisStyle from './consistent-emphasis-style.js';
+import consistentHeadingStyle from './consistent-heading-style.js';
 import consistentInlineCodeStyle from './consistent-inline-code-style.js';
+import consistentOrderedListStyle from './consistent-ordered-list-style.js';
 import consistentStrongStyle from './consistent-strong-style.js';
 import consistentThematicBreakStyle from './consistent-thematic-break-style.js';
 import consistentUnorderedListStyle from './consistent-unordered-list-style.js';
@@ -23,6 +25,8 @@ import noEmoji from './no-emoji.js';
 import noGitConflictMarker from './no-git-conflict-marker.js';
 import noIrregularDash from './no-irregular-dash.js';
 import noIrregularWhitespace from './no-irregular-whitespace.js';
+import noMultipleAtxHeadingSpace from './no-multiple-atx-heading-space.js';
+import noShellDollar from './no-shell-dollar.js';
 import noTab from './no-tab.js';
 import noTrailingHeadingPunctuation from './no-trailing-heading-punctuation.js';
 import noUrlTrailingSlash from './no-url-trailing-slash.js';
@@ -38,7 +42,9 @@ export default {
   'consistent-code-style': consistentCodeStyle,
   'consistent-delete-style': consistentDeleteStyle,
   'consistent-emphasis-style': consistentEmphasisStyle,
+  'consistent-heading-style': consistentHeadingStyle,
   'consistent-inline-code-style': consistentInlineCodeStyle,
+  'consistent-ordered-list-style': consistentOrderedListStyle,
   'consistent-strong-style': consistentStrongStyle,
   'consistent-thematic-break-style': consistentThematicBreakStyle,
   'consistent-unordered-list-style': consistentUnorderedListStyle,
@@ -52,6 +58,8 @@ export default {
   'no-git-conflict-marker': noGitConflictMarker,
   'no-irregular-dash': noIrregularDash,
   'no-irregular-whitespace': noIrregularWhitespace,
+  'no-multiple-atx-heading-space': noMultipleAtxHeadingSpace,
+  'no-shell-dollar': noShellDollar,
   'no-tab': noTab,
   'no-trailing-heading-punctuation': noTrailingHeadingPunctuation,
   'no-url-trailing-slash': noUrlTrailingSlash,
