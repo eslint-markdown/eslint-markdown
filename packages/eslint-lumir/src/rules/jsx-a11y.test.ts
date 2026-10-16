@@ -13,13 +13,13 @@ import { jsxA11yPlugin, jsxA11yRules } from './jsx-a11y.js';
 // Helper
 // --------------------------------------------------------------------------------
 
-const prefix = 'jsx-a11y/';
+const prefix = 'jsx-a11y-x/';
 
 // --------------------------------------------------------------------------------
 // Test
 // --------------------------------------------------------------------------------
 
-describe('jsx-a11y', () => {
+describe('jsx-a11y-x', () => {
   describe('Exports', () => {
     it('`jsxA11yPlugin` should be defined', () => {
       assert.ok(jsxA11yPlugin);
