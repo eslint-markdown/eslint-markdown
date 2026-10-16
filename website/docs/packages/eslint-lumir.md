@@ -53,21 +53,20 @@ bun add -d eslint@latest eslint-config-bananass@latest
 ## API 참고서 {#apis}
 
 ```ts
-import bananass from 'eslint-config-bananass';
+import bananass from 'eslint-lumir';
 
 // 초기 로딩 속도 최적화를 위해, 설정별 Subpath Import도 지원합니다.
-import js from 'eslint-config-bananass/js';
-import ts from 'eslint-config-bananass/ts';
-import jsxReact from 'eslint-config-bananass/jsx-react';
-import jsxNext from 'eslint-config-bananass/jsx-next';
-import tsxReact from 'eslint-config-bananass/tsx-react';
-import tsxNext from 'eslint-config-bananass/tsx-next';
-import json from 'eslint-config-bananass/json';
-import jsonc from 'eslint-config-bananass/jsonc';
-import json5 from 'eslint-config-bananass/json5';
+import js from 'eslint-lumir/js';
+import ts from 'eslint-lumir/ts';
+import jsx from 'eslint-lumir/jsx';
+import tsx from 'eslint-lumir/tsx';
+import next from 'eslint-lumir/next';
+import json from 'eslint-lumir/json';
+import jsonc from 'eslint-lumir/jsonc';
+import json5 from 'eslint-lumir/json5';
 
 // `eslint-config-bananass` 패키지의 `package.json` 파일도 불러올 수 있습니다.
-import pkg from 'eslint-config-bananass/package.json' with { type: 'json' };
+import pkg from 'eslint-lumir/package.json' with { type: 'json' };
 ```
 
 ---
@@ -78,7 +77,7 @@ import pkg from 'eslint-config-bananass/package.json' with { type: 'json' };
 
 정확한 구성은 [깃허브 리포지토리](https://github.com/lumirlumir/npm-bananass/blob/main/packages/eslint-config-bananass/src/index.ts)를 참고해주세요.
 
-### `js`, `ts`, `jsxReact`, `jsxNext`, `tsxReact`, `tsxNext`, `json`, `jsonc`, `json5` {#subpath-imports}
+### `js`, `ts`, `jsx`, `tsx`, `next`, `json`, `jsonc`, `json5` {#subpath-imports}
 
 > 타입: `Linter.Config`
 
@@ -92,16 +91,15 @@ import pkg from 'eslint-config-bananass/package.json' with { type: 'json' };
 
 ## ESLint Config 설정 방법 {#eslint-config-setting}
 
-`eslint-config-bananass`는 아래와 같은 9가지 설정<sup>Config</sup>을 지원합니다. 필요에 따라 아래 설정 중 하나 혹은 여러개를 선택하여 사용해주세요.
+`eslint-lumir` provides eight configurations. Select the configurations required by your project.
 
 각각의 구성에 포함된 정확한 규칙들은 [ESLint Config Inspector](https://eslint-config-bananass.lumir.page)를 참고해주세요.
 
 - `js`: 자바스크립트
-- `jsxReact`: 자바스크립트 + React
-- `jsxNext`: 자바스크립트 + React + Next.js
+- `jsx`: 자바스크립트 + React
 - `ts`: 타입스크립트
-- `tsxReact`: 타입스크립트 + React
-- `tsxNext`: 타입스크립트 + React + Next.js
+- `tsx`: 타입스크립트 + React
+- `next`: Next.js rules to combine with `jsx` or `tsx`
 - `json`: JSON
 - `jsonc`: JSONC
 - `json5`: JSON5
@@ -112,42 +110,61 @@ Subpath Import 방식을 이용하여, 필요한 설정만 선택적으로 불�
 
 ```js [eslint.config.mjs]
 import { defineConfig } from 'eslint/config';
-import js from 'eslint-config-bananass/js';
-import jsxReact from 'eslint-config-bananass/jsx-react';
-import jsxNext from 'eslint-config-bananass/jsx-next';
-import ts from 'eslint-config-bananass/ts';
-import tsxReact from 'eslint-config-bananass/tsx-react';
-import tsxNext from 'eslint-config-bananass/tsx-next';
-import json from 'eslint-config-bananass/json';
-import jsonc from 'eslint-config-bananass/jsonc';
-import json5 from 'eslint-config-bananass/json5';
+import js from 'eslint-lumir/js';
+import jsx from 'eslint-lumir/jsx';
+import ts from 'eslint-lumir/ts';
+import tsx from 'eslint-lumir/tsx';
+import next from 'eslint-lumir/next';
+import json from 'eslint-lumir/json';
+import jsonc from 'eslint-lumir/jsonc';
+import json5 from 'eslint-lumir/json5';
 
 export default defineConfig([
   js, // JavaScript
-  jsxReact, // JavaScript + React
-  jsxNext, // JavaScript + React + Next.js
+  jsx, // JavaScript + React
   ts, // TypeScript
-  tsxReact, // TypeScript + React
-  tsxNext, // TypeScript + React + Next.js
+  tsx, // TypeScript + React
+  next, // Next.js
   json, // JSON
   jsonc, // JSONC
   json5, // JSON5
 ]);
 ```
 
+### Next.js configuration {#next}
+
+The `next` configuration adds Next.js rules to `jsx` or `tsx`. Install its optional peer dependency explicitly in the project that uses this configuration:
+
+```sh
+npm install -D @next/eslint-plugin-next@^16.3.0
+```
+
+```js [eslint.config.mjs]
+import { defineConfig } from 'eslint/config';
+import jsx from 'eslint-lumir/jsx';
+import tsx from 'eslint-lumir/tsx';
+import next from 'eslint-lumir/next';
+
+export default defineConfig([jsx, tsx, next]);
+```
+
+Use `[jsx, next]` for JavaScript, `[tsx, next]` for TypeScript, or both as shown above for mixed projects. The Next.js configuration preserves the parser, React rules, and settings provided by the base configuration.
+
+The package entrypoint exposes `configs.jsx` and `configs.tsx`. Import `next` separately from `eslint-lumir/next`; it is not included in `configs`, so importing the package does not require the optional Next.js plugin.
+
+Migrate `jsx-react` to `jsx`, `tsx-react` to `tsx`, `jsx-next` to `[jsx, next]`, and `tsx-next` to `[tsx, next]`. The former subpath exports have been removed.
+
 ### Package Entrypoint 방식 {#package-entrypoint}
 
 ```js [eslint.config.mjs]
 import { defineConfig } from 'eslint/config';
-import bananass from 'eslint-config-bananass';
+import bananass from 'eslint-lumir';
 
 export default defineConfig([
   bananass.configs.js, // JavaScript
-  bananass.configs.jsxReact, // JavaScript + React
-  bananass.configs.jsxNext, // JavaScript + React + Next.js
+  bananass.configs.jsx, // JavaScript + React
   bananass.configs.ts, // TypeScript
-  bananass.configs.tsxReact, // TypeScript + React
-  bananass.configs.tsxNext, // TypeScript + React + Next.js
+  bananass.configs.tsx, // TypeScript + React
   bananass.configs.json, // JSON
   bananass.configs.jsonc, // JSONC
   bananass.configs.json5, // JSON5
