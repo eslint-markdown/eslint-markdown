@@ -24,9 +24,9 @@ export default defineConfig([
   {
     name: 'js/global',
     rules: {
-      'import/no-cycle': 'off', // Too computationally expensive. TODO: Remove this in shared config.
-      'import/no-extraneous-dependencies': 'off', // Too computationally expensive. TODO: Remove this in shared config.
-      'import/prefer-default-export': 'off', // Personal preference. TODO: Remove this in shared config.
+      'import-x/no-cycle': 'off', // Too computationally expensive. TODO: Remove this in shared config.
+      'import-x/no-extraneous-dependencies': 'off', // Too computationally expensive. TODO: Remove this in shared config.
+      'import-x/prefer-default-export': 'off', // Personal preference. TODO: Remove this in shared config.
     },
   },
   {
@@ -55,7 +55,7 @@ export default defineConfig([
           ],
         },
       ],
-      'import/order': [
+      'import-x/order': [
         'error',
         {
           groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],

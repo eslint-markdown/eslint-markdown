@@ -25,6 +25,9 @@
     "**/fixtures/**"
   ],
   "compilerOptions": {
+    /* Modules */
+    "types": ["node"],
+
     /* Emit */
     "emitDeclarationOnly": false,
     "outDir": "build",
