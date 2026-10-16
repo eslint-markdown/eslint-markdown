@@ -19,9 +19,6 @@ export const globals = {
   ...globalsModule.node,
   // Browser Web Speech APIs which are not yet supported by `globals`: https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API
   webkitSpeechRecognition: false,
-  SpeechRecognitionAlternative: false,
-  SpeechRecognitionResult: false,
-  SpeechRecognitionResultList: false,
 } as const;
 
 export const parserOptions = {
