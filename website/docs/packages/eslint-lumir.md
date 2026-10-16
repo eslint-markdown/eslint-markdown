@@ -62,6 +62,7 @@ import next from 'eslint-lumir/next';
 import json from 'eslint-lumir/json';
 import jsonc from 'eslint-lumir/jsonc';
 import json5 from 'eslint-lumir/json5';
+import md from 'eslint-lumir/md';
 
 // `eslint-config-bananass` 패키지의 `package.json` 파일도 불러올 수 있습니다.
 import pkg from 'eslint-lumir/package.json' with { type: 'json' };
@@ -69,7 +70,7 @@ import pkg from 'eslint-lumir/package.json' with { type: 'json' };
 
 ---
 
-### `js`, `ts`, `jsx`, `tsx`, `next`, `json`, `jsonc`, `json5` {#subpath-imports}
+### `js`, `ts`, `jsx`, `tsx`, `next`, `json`, `jsonc`, `json5`, `md` {#subpath-imports}
 
 > 타입: `Linter.Config`
 
@@ -83,7 +84,7 @@ import pkg from 'eslint-lumir/package.json' with { type: 'json' };
 
 ## ESLint Config 설정 방법 {#eslint-config-setting}
 
-`eslint-lumir` provides eight configurations. Select the configurations required by your project.
+`eslint-lumir` provides nine configurations. Select the configurations required by your project.
 
 각각의 구성에 포함된 정확한 규칙들은 [ESLint Config Inspector](https://eslint-config-bananass.lumir.page)를 참고해주세요.
 
@@ -95,6 +96,7 @@ import pkg from 'eslint-lumir/package.json' with { type: 'json' };
 - `json`: JSON
 - `jsonc`: JSONC
 - `json5`: JSON5
+- `md`: Markdown
 
 ### Subpath Import 방식 {#subpath-import}
 
@@ -110,6 +112,7 @@ import next from 'eslint-lumir/next';
 import json from 'eslint-lumir/json';
 import jsonc from 'eslint-lumir/jsonc';
 import json5 from 'eslint-lumir/json5';
+import md from 'eslint-lumir/md';
 
 export default defineConfig([
   js, // JavaScript
@@ -120,6 +123,7 @@ export default defineConfig([
   json, // JSON
   jsonc, // JSONC
   json5, // JSON5
+  md, // Markdown
 ]);
 ```
 

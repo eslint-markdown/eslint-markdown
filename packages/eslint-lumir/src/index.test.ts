@@ -16,6 +16,7 @@ import next from 'eslint-lumir/next';
 import json from 'eslint-lumir/json';
 import jsonc from 'eslint-lumir/jsonc';
 import json5 from 'eslint-lumir/json5';
+import md from 'eslint-lumir/md';
 import packageJson from '../package.json' with { type: 'json' };
 
 // --------------------------------------------------------------------------------
@@ -66,6 +67,10 @@ describe('index', () => {
 
     it('should have a `json5` subpath export', () => {
       assert.ok(json5);
+    });
+
+    it('should have a `md` subpath export', () => {
+      assert.ok(md);
     });
   });
 });

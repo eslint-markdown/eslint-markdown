@@ -6,6 +6,7 @@ import next from 'eslint-lumir/next';
 import json from 'eslint-lumir/json';
 import jsonc from 'eslint-lumir/jsonc';
 import json5 from 'eslint-lumir/json5';
+import md from 'eslint-lumir/md';
 
 /** @type {import("eslint").Linter.Config[]} */
-export default [js, jsx, ts, tsx, next, json, jsonc, json5];
+export default [js, jsx, ts, tsx, next, json, jsonc, json5, md];

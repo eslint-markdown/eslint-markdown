@@ -14,6 +14,7 @@ import next from 'eslint-lumir/next';
 import json from 'eslint-lumir/json';
 import jsonc from 'eslint-lumir/jsonc';
 import json5 from 'eslint-lumir/json5';
+import md from 'eslint-lumir/md';
 
 // --------------------------------------------------------------------------------
 // Test
@@ -30,6 +31,7 @@ next.name satisfies 'lumir/next';
 json.name satisfies 'lumir/json';
 jsonc.name satisfies 'lumir/jsonc';
 json5.name satisfies 'lumir/json5';
+md.name satisfies 'lumir/md';
 
 // #endregion config
 // --------------------------------------------------------------------------------

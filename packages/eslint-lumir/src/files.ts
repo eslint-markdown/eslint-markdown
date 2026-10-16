@@ -26,3 +26,5 @@ export const jsonc = [
 ] as const;
 
 export const json5 = ['**/*.json5'] as const;
+
+export const md = ['**/*.md'] as const;

@@ -1,5 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
+  "references": [{ "path": "../eslint-markdown/tsconfig.build.json" }],
   "include": [
     "src/**/*.js",
     "src/**/*.mjs",

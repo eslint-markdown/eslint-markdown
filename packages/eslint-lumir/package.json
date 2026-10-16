@@ -37,6 +37,10 @@
       "types": "./build/configs/json5.d.ts",
       "default": "./build/configs/json5.js"
     },
+    "./md": {
+      "types": "./build/configs/md.d.ts",
+      "default": "./build/configs/md.js"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
@@ -64,6 +68,9 @@
       ],
       "json5": [
         "./build/configs/json5.d.ts"
+      ],
+      "md": [
+        "./build/configs/md.d.ts"
       ]
     }
   },
@@ -134,8 +141,10 @@
   "dependencies": {
     "@eslint-react/eslint-plugin": "^5.28.0",
     "@eslint/json": "^2.1.1",
+    "@eslint/markdown": "^8.0.3",
     "@typescript-eslint/eslint-plugin": "^8.71.2",
     "@typescript-eslint/parser": "^8.71.2",
+    "eslint-markdown": "^0.19.0",
     "eslint-plugin-import-x": "^4.17.1",
     "eslint-plugin-jsx-a11y-x": "^0.2.0",
     "eslint-plugin-n": "^18.4.1",
