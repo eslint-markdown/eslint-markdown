@@ -122,6 +122,12 @@ export const typescriptRules = {
   '@typescript-eslint/no-unused-expressions': ['error', { enforceForJSX: true }],
 
   /**
+   * @see https://typescript-eslint.io/rules/no-unused-private-class-members
+   */
+  'no-unused-private-class-members': 'off',
+  '@typescript-eslint/no-unused-private-class-members': 'error',
+
+  /**
    * @see https://typescript-eslint.io/rules/no-unused-vars
    */
   'no-unused-vars': 'off',
