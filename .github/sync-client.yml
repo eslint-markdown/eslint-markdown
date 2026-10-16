@@ -60,5 +60,7 @@ lumirlumir/lumirlumir:
   # LICENSE.md
   - source: ./LICENSE.md
     dest: ./configs/LICENSE.md
+  - source: ./packages/eslint-lumir/LICENSE.md
+    dest: ./configs/LICENSE.md
   - source: ./packages/eslint-markdown/LICENSE.md
     dest: ./configs/LICENSE.md

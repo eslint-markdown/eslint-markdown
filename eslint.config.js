@@ -1,9 +1,9 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
-import js from 'eslint-config-bananass/js';
-import ts from 'eslint-config-bananass/ts';
-import json from 'eslint-config-bananass/json';
-import jsonc from 'eslint-config-bananass/jsonc';
-import json5 from 'eslint-config-bananass/json5';
+import js from 'eslint-lumir/js';
+import ts from 'eslint-lumir/ts';
+import json from 'eslint-lumir/json';
+import jsonc from 'eslint-lumir/jsonc';
+import json5 from 'eslint-lumir/json5';
 import md from 'eslint-markdown';
 
 export default defineConfig([

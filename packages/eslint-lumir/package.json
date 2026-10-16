@@ -3,11 +3,47 @@
   "version": "0.0.0-canary.0",
   "type": "module",
   "sideEffects": false,
-  "description": "TODO",
+  "description": "ESLint Config for TODO",
   "exports": {
     ".": {
       "types": "./build/index.d.ts",
       "default": "./build/index.js"
+    },
+    "./js": {
+      "types": "./build/configs/js.d.ts",
+      "default": "./build/configs/js.js"
+    },
+    "./ts": {
+      "types": "./build/configs/ts.d.ts",
+      "default": "./build/configs/ts.js"
+    },
+    "./jsx-react": {
+      "types": "./build/configs/jsx-react.d.ts",
+      "default": "./build/configs/jsx-react.js"
+    },
+    "./jsx-next": {
+      "types": "./build/configs/jsx-next.d.ts",
+      "default": "./build/configs/jsx-next.js"
+    },
+    "./tsx-react": {
+      "types": "./build/configs/tsx-react.d.ts",
+      "default": "./build/configs/tsx-react.js"
+    },
+    "./tsx-next": {
+      "types": "./build/configs/tsx-next.d.ts",
+      "default": "./build/configs/tsx-next.js"
+    },
+    "./json": {
+      "types": "./build/configs/json.d.ts",
+      "default": "./build/configs/json.js"
+    },
+    "./jsonc": {
+      "types": "./build/configs/jsonc.d.ts",
+      "default": "./build/configs/jsonc.js"
+    },
+    "./json5": {
+      "types": "./build/configs/json5.d.ts",
+      "default": "./build/configs/json5.js"
     },
     "./package.json": "./package.json"
   },
@@ -18,6 +54,33 @@
       ],
       ".": [
         "./build/index.d.ts"
+      ],
+      "js": [
+        "./build/configs/js.d.ts"
+      ],
+      "ts": [
+        "./build/configs/ts.d.ts"
+      ],
+      "jsx-react": [
+        "./build/configs/jsx-react.d.ts"
+      ],
+      "jsx-next": [
+        "./build/configs/jsx-next.d.ts"
+      ],
+      "tsx-react": [
+        "./build/configs/tsx-react.d.ts"
+      ],
+      "tsx-next": [
+        "./build/configs/tsx-next.d.ts"
+      ],
+      "json": [
+        "./build/configs/json.d.ts"
+      ],
+      "jsonc": [
+        "./build/configs/jsonc.d.ts"
+      ],
+      "json5": [
+        "./build/configs/json5.d.ts"
       ]
     }
   },
@@ -27,10 +90,26 @@
     "README.md"
   ],
   "keywords": [
+    "bananass",
+    "baekjoon",
+    "framework",
+    "javascript",
     "eslint",
-    "lint",
-    "linter",
-    "lumir"
+    "eslintconfig",
+    "eslint-config",
+    "config",
+    "flat",
+    "flat-config",
+    "typescript",
+    "react",
+    "nextjs",
+    "js",
+    "ts",
+    "jsx",
+    "tsx",
+    "json",
+    "jsonc",
+    "json5"
   ],
   "author": "lumir <rpfos@naver.com> (https://github.com/lumirlumir)",
   "funding": "https://github.com/sponsors/lumirlumir",
@@ -38,11 +117,11 @@
   "homepage": "https://eslint-markdown.lumir.page",
   "repository": {
     "type": "github",
-    "url": "git+https://github.com/lumirlumir/npm-eslint-markdown.git",
+    "url": "git+https://github.com/eslint-markdown/eslint-markdown.git",
     "directory": "packages/eslint-lumir"
   },
   "bugs": {
-    "url": "https://github.com/lumirlumir/npm-eslint-markdown/issues"
+    "url": "https://github.com/eslint-markdown/eslint-markdown/issues"
   },
   "engines": {
     "node": "^20.19.0 || ^22.13.0 || >=24.0.0"
@@ -52,12 +131,32 @@
   },
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "tsc -b tsconfig.build.json && node ../../scripts/cp.js ../../LICENSE.md LICENSE.md ../../README.md README.md",
+    "build": "tsc -b tsconfig.build.json",
     "test": "npm run test:types && npm run test:unit",
-    "test:types": "tsc -b ./tsconfig.json",
+    "test:types": "tsc -b tsconfig.json",
     "test:unit": "vitest run"
   },
+  "peerDependencies": {
+    "eslint": "^9.35.0"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@eslint/json": "^0.14.0",
+    "@next/eslint-plugin-next": "^16.2.9",
+    "@typescript-eslint/eslint-plugin": "^8.68.0",
+    "@typescript-eslint/parser": "^8.68.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-n": "^18.3.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.4.0"
+  },
   "devDependencies": {
-    "vitest": "^4.1.9"
+    "@types/eslint-plugin-jsx-a11y": "^6.10.1"
   }
 }
