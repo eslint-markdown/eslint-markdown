@@ -175,6 +175,13 @@ export const nodeRules = {
   'n/no-sync': 'off',
 
   /**
+   * Disallow top-level `await` in published modules.
+   * @description This rule is not included in `airbnb-base`.
+   * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-top-level-await.md (n)
+   */
+  'n/no-top-level-await': 'off',
+
+  /**
    * Disallow `bin` files that npm ignores.
    * @description This rule is not included in `airbnb-base`.
    * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-unpublished-bin.md (n)
@@ -231,6 +238,13 @@ export const nodeRules = {
   'n/prefer-global/console': 'off',
 
   /**
+   * Enforce using the global `crypto` instead of `require("crypto").webcrypto`.
+   * @description This rule is not included in `airbnb-base`.
+   * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/crypto.md (n)
+   */
+  'n/prefer-global/crypto': ['error', 'always'],
+
+  /**
    * Enforce either `process` or `require("process")`.
    * @description This rule is not included in `airbnb-base`.
    * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/process.md (n)
@@ -252,6 +266,13 @@ export const nodeRules = {
   'n/prefer-global/text-encoder': ['error', 'always'],
 
   /**
+   * Enforce using global timer functions instead of `require("timers")`.
+   * @description This rule is not included in `airbnb-base`.
+   * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/timers.md (n)
+   */
+  'n/prefer-global/timers': ['error', 'always'],
+
+  /**
    * Enforce either `URL` or `require("url").URL`.
    * @description This rule is not included in `airbnb-base`.
    * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/url.md (n)
@@ -266,11 +287,25 @@ export const nodeRules = {
   'n/prefer-global/url-search-params': ['error', 'always'],
 
   /**
+   * Enforce using `node:assert/strict` instead of `node:assert`.
+   * @description This rule is not included in `airbnb-base`.
+   * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-import/assert-strict.md (n)
+   */
+  'n/prefer-import/assert-strict': 'error',
+
+  /**
    * Enforce using the `node:` protocol when importing Node.js builtin modules.
    * @description This rule is not included in `airbnb-base`.
    * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-node-protocol.md (n)
    */
   'n/prefer-node-protocol': 'error',
+
+  /**
+   * Enforce using `process.getBuiltinModule()` to load Node.js built-in modules.
+   * @description This rule is not included in `airbnb-base`.
+   * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-process-get-builtin-module.md (n)
+   */
+  'n/prefer-process-get-builtin-module': 'off',
 
   /**
    * Enforce `require("dns").promises`.
