@@ -55,7 +55,8 @@
     "lint:editorconfig": "editorconfig-checker -config .editorconfig-checker.json"
   },
   "allowScripts": {
-    "esbuild": true
+    "esbuild": true,
+    "unrs-resolver": true
   },
   "devDependencies": {
     "@types/node": "^20.19.43",
