@@ -1,5 +1,5 @@
 /**
- * @fileoverview Configuration applied when a user configuration extends from `tsx.react`.
+ * @fileoverview Configuration applied when a user configuration extends from `tsx`.
  *
  * - Values not explicitly defined on the object will use their default values.
  * - Use the config inspector (`--inspect-config` in the CLI) to test which config objects apply to a specific file.
@@ -28,7 +28,7 @@ import { typescriptPlugin, typescriptRules } from '../rules/typescript.js';
 // --------------------------------------------------------------------------------
 
 export default {
-  name: 'lumir/tsx-react',
+  name: 'lumir/tsx',
   files: [...ts, ...tsx],
   languageOptions: {
     globals,

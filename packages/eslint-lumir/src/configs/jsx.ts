@@ -1,5 +1,5 @@
 /**
- * @fileoverview Configuration applied when a user configuration extends from `jsx.react`.
+ * @fileoverview Configuration applied when a user configuration extends from `jsx`.
  *
  * - Values not explicitly defined on the object will use their default values.
  * - Use the config inspector (`--inspect-config` in the CLI) to test which config objects apply to a specific file.
@@ -26,7 +26,7 @@ import { reactHooksPlugin, reactHooksRules } from '../rules/react-hooks.js';
 // --------------------------------------------------------------------------------
 
 export default {
-  name: 'lumir/jsx-react',
+  name: 'lumir/jsx',
   files: [...js, ...jsx],
   languageOptions: {
     globals,
