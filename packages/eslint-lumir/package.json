@@ -17,21 +17,17 @@
       "types": "./build/configs/ts.d.ts",
       "default": "./build/configs/ts.js"
     },
-    "./jsx-react": {
-      "types": "./build/configs/jsx-react.d.ts",
-      "default": "./build/configs/jsx-react.js"
+    "./jsx": {
+      "types": "./build/configs/jsx.d.ts",
+      "default": "./build/configs/jsx.js"
     },
-    "./jsx-next": {
-      "types": "./build/configs/jsx-next.d.ts",
-      "default": "./build/configs/jsx-next.js"
+    "./tsx": {
+      "types": "./build/configs/tsx.d.ts",
+      "default": "./build/configs/tsx.js"
     },
-    "./tsx-react": {
-      "types": "./build/configs/tsx-react.d.ts",
-      "default": "./build/configs/tsx-react.js"
-    },
-    "./tsx-next": {
-      "types": "./build/configs/tsx-next.d.ts",
-      "default": "./build/configs/tsx-next.js"
+    "./next": {
+      "types": "./build/configs/next.d.ts",
+      "default": "./build/configs/next.js"
     },
     "./json": {
       "types": "./build/configs/json.d.ts",
@@ -61,17 +57,14 @@
       "ts": [
         "./build/configs/ts.d.ts"
       ],
-      "jsx-react": [
-        "./build/configs/jsx-react.d.ts"
+      "jsx": [
+        "./build/configs/jsx.d.ts"
       ],
-      "jsx-next": [
-        "./build/configs/jsx-next.d.ts"
+      "tsx": [
+        "./build/configs/tsx.d.ts"
       ],
-      "tsx-react": [
-        "./build/configs/tsx-react.d.ts"
-      ],
-      "tsx-next": [
-        "./build/configs/tsx-next.d.ts"
+      "next": [
+        "./build/configs/next.d.ts"
       ],
       "json": [
         "./build/configs/json.d.ts"
@@ -137,16 +130,19 @@
     "test:unit": "vitest run"
   },
   "peerDependencies": {
+    "@next/eslint-plugin-next": "^16.3.0",
     "eslint": "^9.35.0"
   },
   "peerDependenciesMeta": {
+    "@next/eslint-plugin-next": {
+      "optional": true
+    },
     "eslint": {
       "optional": true
     }
   },
   "dependencies": {
     "@eslint/json": "^2.1.1",
-    "@next/eslint-plugin-next": "^16.2.9",
     "@typescript-eslint/eslint-plugin": "^8.71.2",
     "@typescript-eslint/parser": "^8.71.2",
     "eslint-plugin-import": "^2.32.0",
@@ -155,5 +151,8 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^16.4.2"
   }
 }
