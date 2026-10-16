@@ -10,10 +10,9 @@ import { assert, describe, it } from 'vitest';
 
 import js from 'eslint-lumir/js';
 import ts from 'eslint-lumir/ts';
-import jsxReact from 'eslint-lumir/jsx-react';
-import jsxNext from 'eslint-lumir/jsx-next';
-import tsxReact from 'eslint-lumir/tsx-react';
-import tsxNext from 'eslint-lumir/tsx-next';
+import jsx from 'eslint-lumir/jsx';
+import tsx from 'eslint-lumir/tsx';
+import next from 'eslint-lumir/next';
 import json from 'eslint-lumir/json';
 import jsonc from 'eslint-lumir/jsonc';
 import json5 from 'eslint-lumir/json5';
@@ -45,20 +44,16 @@ describe('index', () => {
       assert.ok(ts);
     });
 
-    it('should have a `jsx-react` subpath export', () => {
-      assert.ok(jsxReact);
+    it('should have a `jsx` subpath export', () => {
+      assert.ok(jsx);
     });
 
-    it('should have a `jsx-next` subpath export', () => {
-      assert.ok(jsxNext);
+    it('should have a `tsx` subpath export', () => {
+      assert.ok(tsx);
     });
 
-    it('should have a `tsx-react` subpath export', () => {
-      assert.ok(tsxReact);
-    });
-
-    it('should have a `tsx-next` subpath export', () => {
-      assert.ok(tsxNext);
+    it('should have a `next` subpath export', () => {
+      assert.ok(next);
     });
 
     it('should have a `json` subpath export', () => {

@@ -5,10 +5,6 @@
   "sideEffects": false,
   "description": "ESLint Config for TODO",
   "exports": {
-    ".": {
-      "types": "./build/index.d.ts",
-      "default": "./build/index.js"
-    },
     "./js": {
       "types": "./build/configs/js.d.ts",
       "default": "./build/configs/js.js"
@@ -45,12 +41,6 @@
   },
   "typesVersions": {
     "*": {
-      "*": [
-        "./build/*"
-      ],
-      ".": [
-        "./build/index.d.ts"
-      ],
       "js": [
         "./build/configs/js.d.ts"
       ],

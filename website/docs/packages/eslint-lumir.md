@@ -53,9 +53,7 @@ bun add -d eslint@latest eslint-config-bananass@latest
 ## API 참고서 {#apis}
 
 ```ts
-import bananass from 'eslint-lumir';
-
-// 초기 로딩 속도 최적화를 위해, 설정별 Subpath Import도 지원합니다.
+// Import each configuration from its subpath.
 import js from 'eslint-lumir/js';
 import ts from 'eslint-lumir/ts';
 import jsx from 'eslint-lumir/jsx';
@@ -70,12 +68,6 @@ import pkg from 'eslint-lumir/package.json' with { type: 'json' };
 ```
 
 ---
-
-### `bananass` {#bananass}
-
-> 타입: `ESLint.Plugin`
-
-정확한 구성은 [깃허브 리포지토리](https://github.com/lumirlumir/npm-bananass/blob/main/packages/eslint-config-bananass/src/index.ts)를 참고해주세요.
 
 ### `js`, `ts`, `jsx`, `tsx`, `next`, `json`, `jsonc`, `json5` {#subpath-imports}
 
@@ -150,26 +142,11 @@ export default defineConfig([jsx, tsx, next]);
 
 Use `[jsx, next]` for JavaScript, `[tsx, next]` for TypeScript, or both as shown above for mixed projects. The Next.js configuration preserves the parser, React rules, and settings provided by the base configuration.
 
-The package entrypoint exposes `configs.jsx` and `configs.tsx`. Import `next` separately from `eslint-lumir/next`; it is not included in `configs`, so importing the package does not require the optional Next.js plugin.
+Only importing `eslint-lumir/next` requires the optional Next.js plugin. The other configuration subpaths can be imported without it.
 
 Migrate `jsx-react` to `jsx`, `tsx-react` to `tsx`, `jsx-next` to `[jsx, next]`, and `tsx-next` to `[tsx, next]`. The former subpath exports have been removed.
 
-### Package Entrypoint 방식 {#package-entrypoint}
-
-```js [eslint.config.mjs]
-import { defineConfig } from 'eslint/config';
-import bananass from 'eslint-lumir';
-
-export default defineConfig([
-  bananass.configs.js, // JavaScript
-  bananass.configs.jsx, // JavaScript + React
-  bananass.configs.ts, // TypeScript
-  bananass.configs.tsx, // TypeScript + React
-  bananass.configs.json, // JSON
-  bananass.configs.jsonc, // JSONC
-  bananass.configs.json5, // JSON5
-]);
-```
+The package has no main entrypoint. Replace imports from `eslint-lumir` and accesses such as `lumir.configs.tsx` with direct subpath imports such as `import tsx from 'eslint-lumir/tsx'`.
 
 ## 참고 사항 {#additional-notes}
 

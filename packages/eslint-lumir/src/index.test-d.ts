@@ -6,7 +6,14 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import config from './index.js';
+import js from 'eslint-lumir/js';
+import ts from 'eslint-lumir/ts';
+import jsx from 'eslint-lumir/jsx';
+import tsx from 'eslint-lumir/tsx';
+import next from 'eslint-lumir/next';
+import json from 'eslint-lumir/json';
+import jsonc from 'eslint-lumir/jsonc';
+import json5 from 'eslint-lumir/json5';
 
 // --------------------------------------------------------------------------------
 // Test
@@ -15,15 +22,14 @@ import config from './index.js';
 // --------------------------------------------------------------------------------
 // #region config
 
-config.configs.js.name satisfies 'lumir/js';
-config.configs.ts.name satisfies 'lumir/ts';
-config.configs.jsxReact.name satisfies 'lumir/jsx-react';
-config.configs.jsxNext.name satisfies 'lumir/jsx-next';
-config.configs.tsxReact.name satisfies 'lumir/tsx-react';
-config.configs.tsxNext.name satisfies 'lumir/tsx-next';
-config.configs.json.name satisfies 'lumir/json';
-config.configs.jsonc.name satisfies 'lumir/jsonc';
-config.configs.json5.name satisfies 'lumir/json5';
+js.name satisfies 'lumir/js';
+ts.name satisfies 'lumir/ts';
+jsx.name satisfies 'lumir/jsx';
+tsx.name satisfies 'lumir/tsx';
+next.name satisfies 'lumir/next';
+json.name satisfies 'lumir/json';
+jsonc.name satisfies 'lumir/jsonc';
+json5.name satisfies 'lumir/json5';
 
 // #endregion config
 // --------------------------------------------------------------------------------
