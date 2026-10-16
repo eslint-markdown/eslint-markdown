@@ -56,6 +56,6 @@ export default {
   },
   settings: {
     node,
-    react,
+    'react-x': react,
   },
 } as const satisfies Linter.Config;

@@ -13,13 +13,13 @@ import { reactPlugin, reactRules } from './react.js';
 // Helper
 // --------------------------------------------------------------------------------
 
-const prefix = 'react/';
+const prefix = '@eslint-react/';
 
 // --------------------------------------------------------------------------------
 // Test
 // --------------------------------------------------------------------------------
 
-describe('react', () => {
+describe('@eslint-react', () => {
   describe('Exports', () => {
     it('`reactPlugin` should be defined', () => {
       assert.ok(reactPlugin);

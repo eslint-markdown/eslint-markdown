@@ -121,7 +121,7 @@
   },
   "peerDependencies": {
     "@next/eslint-plugin-next": "^16.3.0",
-    "eslint": "^9.35.0"
+    "eslint": "^10.3.0"
   },
   "peerDependenciesMeta": {
     "@next/eslint-plugin-next": {
@@ -132,13 +132,13 @@
     }
   },
   "dependencies": {
+    "@eslint-react/eslint-plugin": "^5.28.0",
     "@eslint/json": "^2.1.1",
     "@typescript-eslint/eslint-plugin": "^8.71.2",
     "@typescript-eslint/parser": "^8.71.2",
     "eslint-plugin-import-x": "^4.17.1",
     "eslint-plugin-jsx-a11y-x": "^0.2.0",
     "eslint-plugin-n": "^18.4.1",
-    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0"
   },

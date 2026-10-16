@@ -4,7 +4,7 @@ description: "Package documentation for the `eslint-lumir` package."
 
 # `eslint-config-bananass` {#eslint-config-bananass}
 
-TODO: why `^10.3.0`: `@eslint-react/eslint-plugin` requires ESLint v10.3.0 or higher.
+`eslint-lumir` requires ESLint `^10.3.0` because its React configurations use `@eslint-react/eslint-plugin`.
 
 [![GitHub Repository](https://img.shields.io/badge/Repository-fff478?label=GitHub&color=fff478&labelColor=333333&logo=github)](https://github.com/lumirlumir/npm-bananass/tree/main/packages/eslint-config-bananass)&nbsp;
 ![Node Current](https://img.shields.io/node/v/eslint-config-bananass?label=Node&color=fff478&labelColor=333333&logo=node.js)  
@@ -19,7 +19,7 @@ TODO: why `^10.3.0`: `@eslint-react/eslint-plugin` requires ESLint v10.3.0 or hi
 
 ::: danger 반드시 읽어주세요!
 
-- `eslint-config-bananass`는 최신 사양의 [ESLint v9 Flat Config](https://eslint.org/docs/latest/use/configure/configuration-files)만 지원하며, ESM 모듈 시스템만<sup>ESM Only</sup> 지원합니다.
+- `eslint-config-bananass`는 최신 사양의 [ESLint v10 Flat Config](https://eslint.org/docs/latest/use/configure/configuration-files)만 지원하며, ESM 모듈 시스템만<sup>ESM Only</sup> 지원합니다.
 - `eslint-config-bananass`는 스타일 관련 규칙들을 포함하지 않습니다. 스타일 포맷팅을 진행하고 싶으시다면 [Prettier](https://prettier.io/)를 이용해 주세요.
 
 :::
