@@ -6,8 +6,7 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import { parseFragment } from 'parse5';
-import type { DefaultTreeAdapterTypes } from 'parse5';
+import { parseFragment, type DefaultTreeAdapterTypes } from 'parse5';
 
 // --------------------------------------------------------------------------------
 // Export
