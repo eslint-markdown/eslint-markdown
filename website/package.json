@@ -7,7 +7,7 @@
     "dev:vp": "vitepress --open --host",
     "dev:el": "eslint-config-inspector --config ./configs/eslint-lumir.js --no-open",
     "dev:em": "eslint-config-inspector --config ./configs/eslint-markdown.js --no-open",
-    "build": "npm run build:vp && npm run build:em",
+    "build": "npm run build:vp && npm run build:em && npm run build:el",
     "build:vp": "vitepress build --outDir build",
     "build:el": "eslint-config-inspector build --config ./configs/eslint-lumir.js --base /inspector/eslint-lumir/ --outDir ./build/inspector/eslint-lumir",
     "build:em": "eslint-config-inspector build --config ./configs/eslint-markdown.js --base /inspector/eslint-markdown/ --outDir ./build/inspector/eslint-markdown",
