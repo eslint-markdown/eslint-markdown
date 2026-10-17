@@ -137,7 +137,7 @@ export default defineConfig({
           },
           {
             text: 'Packages',
-            link: '/docs/packages/eslint-markdown',
+            link: '/docs/packages',
             activeMatch: '/docs/packages',
           },
           {
@@ -216,11 +216,16 @@ export default defineConfig({
         {
           base: '/docs/packages/',
           text: 'Packages',
+          link: '/',
           collapsed: false,
           items: [
             {
               text: 'eslint-markdown',
               link: 'eslint-markdown',
+            },
+            {
+              text: 'eslint-lumir',
+              link: 'eslint-lumir',
             },
           ],
         },
