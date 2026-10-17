@@ -21,14 +21,6 @@ export default defineConfig([
 
   // js
   {
-    name: 'js/global',
-    rules: {
-      'import-x/no-cycle': 'off', // Too computationally expensive. TODO: Remove this in shared config.
-      'import-x/no-extraneous-dependencies': 'off', // Too computationally expensive. TODO: Remove this in shared config.
-      'import-x/prefer-default-export': 'off', // Personal preference. TODO: Remove this in shared config.
-    },
-  },
-  {
     name: 'js/global/test-d',
     files: ['**/*.test-d.{ts,mts,cts,tsx}'],
     rules: {
