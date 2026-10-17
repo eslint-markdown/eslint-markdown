@@ -105,10 +105,11 @@ export const eslintRules = {
 
   /**
    * Disallow constant expressions in conditions.
+   * @description This rule is `'error'` because it is recommended by ESLint.
    * @see https://eslint.org/docs/latest/rules/no-constant-condition (eslint)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/errors.js#L30 (airbnb-base)
    */
-  'no-constant-condition': 'warn',
+  'no-constant-condition': 'error',
 
   /**
    * Disallow returning value from constructor.
@@ -168,11 +169,10 @@ export const eslintRules = {
 
   /**
    * Disallow duplicate module imports.
-   * @description Replaced by [import-x/no-duplicates](https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-duplicates.md). Note that it's `'off'`.
    * @see https://eslint.org/docs/latest/rules/no-duplicate-imports (eslint)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/es6.js#L57 (airbnb-base)
    */
-  'no-duplicate-imports': 'off',
+  'no-duplicate-imports': 'error',
 
   /**
    * Disallow empty character classes in regular expressions.
@@ -338,11 +338,12 @@ export const eslintRules = {
 
   /**
    * Disallow confusing multiline expressions.
+   * @description This rule is enabled because it is recommended by ESLint.
    * @see https://eslint.org/docs/latest/rules/no-unexpected-multiline (eslint)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/errors.js#L127 (airbnb-base)
    * @see https://github.com/prettier/eslint-config-prettier/blob/v9.1.0/index.js#L14 (prettier)
    */
-  'no-unexpected-multiline': 'off',
+  'no-unexpected-multiline': 'error',
 
   /**
    * Disallow unmodified loop conditions.
@@ -1026,11 +1027,10 @@ export const eslintRules = {
 
   /**
    * Disallow octal literals.
-   * @description I've changed the rule to `'warn'` from `'error'`.
    * @see https://eslint.org/docs/latest/rules/no-octal (eslint)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/best-practices.js#L216 (airbnb-base)
    */
-  'no-octal': 'warn',
+  'no-octal': 'error',
 
   /**
    * Disallow octal escape sequences in string literals.
@@ -1181,7 +1181,7 @@ export const eslintRules = {
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/style.js#L333-L351 (airbnb-base)
    */
   'no-restricted-syntax': [
-    'warn',
+    'error',
     {
       selector: 'ForInStatement',
       message:
