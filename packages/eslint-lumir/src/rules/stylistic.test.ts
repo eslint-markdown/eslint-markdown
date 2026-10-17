@@ -6,6 +6,7 @@
 // Import
 // --------------------------------------------------------------------------------
 
+import { Linter } from 'eslint';
 import { assert, describe, it } from 'vitest';
 import { stylisticPlugin, stylisticRules } from './stylistic.js';
 
@@ -20,6 +21,18 @@ const prefix = '@stylistic/';
 // --------------------------------------------------------------------------------
 
 describe('stylistic', () => {
+  describe('ESLint integration', () => {
+    it('should lint comments with the configured stylistic rules', () => {
+      const messages = new Linter().verify('//comment\n', {
+        plugins: stylisticPlugin,
+        rules: stylisticRules,
+      });
+
+      assert.lengthOf(messages, 1);
+      assert.strictEqual(messages[0].ruleId, '@stylistic/spaced-comment');
+    });
+  });
+
   describe('Exports', () => {
     it('`stylisticPlugin` should be defined', () => {
       assert.ok(stylisticPlugin);

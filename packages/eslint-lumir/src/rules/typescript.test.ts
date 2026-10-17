@@ -6,6 +6,8 @@
 // Import
 // --------------------------------------------------------------------------------
 
+import parser from '@typescript-eslint/parser';
+import { Linter } from 'eslint';
 import { assert, describe, it } from 'vitest';
 import { typescriptPlugin, typescriptRules } from './typescript.js';
 
@@ -24,6 +26,19 @@ const typescriptKeys = Object.keys(typescriptRules).filter(key => key.includes('
 // --------------------------------------------------------------------------------
 
 describe('typescript', () => {
+  describe('ESLint integration', () => {
+    it('should lint TypeScript with the configured TypeScript rules', () => {
+      const messages = new Linter().verify('export const value: any = 1;', {
+        languageOptions: { parser },
+        plugins: typescriptPlugin,
+        rules: typescriptRules,
+      });
+
+      assert.lengthOf(messages, 1);
+      assert.strictEqual(messages[0].ruleId, '@typescript-eslint/no-explicit-any');
+    });
+  });
+
   describe('Exports', () => {
     it('`typescriptPlugin` should be defined', () => {
       assert.ok(typescriptPlugin);

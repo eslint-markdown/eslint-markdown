@@ -6,6 +6,7 @@
 // Import
 // --------------------------------------------------------------------------------
 
+import { Linter } from 'eslint';
 import { assert, describe, it } from 'vitest';
 import { importPlugin, importRules } from './import.js';
 
@@ -20,6 +21,21 @@ const prefix = 'import-x/';
 // --------------------------------------------------------------------------------
 
 describe('import', () => {
+  describe('ESLint integration', () => {
+    it('should lint exports with the configured import rules', () => {
+      const messages = new Linter().verify(
+        'export let first = 1; export const second = 2;',
+        {
+          plugins: importPlugin,
+          rules: importRules,
+        },
+      );
+
+      assert.lengthOf(messages, 1);
+      assert.strictEqual(messages[0].ruleId, 'import-x/no-mutable-exports');
+    });
+  });
+
   describe('Exports', () => {
     it('`importPlugin` should be defined', () => {
       assert.ok(importPlugin);

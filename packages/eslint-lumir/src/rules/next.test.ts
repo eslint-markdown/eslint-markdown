@@ -6,6 +6,7 @@
 // Import
 // --------------------------------------------------------------------------------
 
+import { Linter } from 'eslint';
 import { assert, describe, it } from 'vitest';
 import { nextPlugin, nextRules } from './next.js';
 
@@ -20,6 +21,22 @@ const prefix = '@next/next/';
 // --------------------------------------------------------------------------------
 
 describe('next', () => {
+  describe('ESLint integration', () => {
+    it('should lint JSX with the configured Next.js rules', () => {
+      const messages = new Linter().verify(
+        'const element = <img src="/example.png" alt="Example" />;',
+        {
+          languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+          plugins: nextPlugin,
+          rules: nextRules,
+        },
+      );
+
+      assert.lengthOf(messages, 1);
+      assert.strictEqual(messages[0].ruleId, '@next/next/no-img-element');
+    });
+  });
+
   describe('Exports', () => {
     it('`nextPlugin` should be defined', () => {
       assert.ok(nextPlugin);
