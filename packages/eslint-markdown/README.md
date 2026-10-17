@@ -55,7 +55,7 @@ This repository is maintained as a monorepo and includes the following two packa
 [![npm package eslint-markdown next version](https://img.shields.io/npm/v/eslint-markdown/next?label=eslint-markdown@next&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-markdown)
 [![npm package eslint-markdown downloads per month](https://img.shields.io/npm/dm/eslint-markdown?label=downloads&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-markdown)
 
-> [!WARNING]
+> [!IMPORTANT]
 >
 > #### Compatibility
 >
