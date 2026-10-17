@@ -47,7 +47,7 @@ export const importRules = {
    * @description This rule is not included in `airbnb-base`.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-empty-named-blocks.md (import-x)
    */
-  'import-x/no-empty-named-blocks': 'error',
+  'import-x/no-empty-named-blocks': 'error', // ⚠️ inline
 
   /**
    * Forbid the use of extraneous packages.
@@ -95,21 +95,23 @@ export const importRules = {
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-mutable-exports.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L101 (airbnb-base)
    */
-  'import-x/no-mutable-exports': 'error',
+  'import-x/no-mutable-exports': 'error', // ✅
 
   /**
    * Forbid use of exported name as identifier of default export.
+   * @description Disabled because default import names may legitimately match named exports.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-named-as-default.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L58 (airbnb-base)
    */
-  'import-x/no-named-as-default': 'error',
+  'import-x/no-named-as-default': 'off',
 
   /**
    * Forbid use of exported name as property of default export.
+   * @description Prefer TypeScript's property checks, since a default export may legitimately have properties matching named exports.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-named-as-default-member.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L62 (airbnb-base)
    */
-  'import-x/no-named-as-default-member': 'error',
+  'import-x/no-named-as-default-member': 'off',
 
   /**
    * Forbid modules without exports, or exports without matching import in another module.
@@ -146,7 +148,7 @@ export const importRules = {
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L265-L267 (airbnb-base)
    */
   'import-x/no-import-module-exports': [
-    'error',
+    'off',
     {
       exceptions: ['**/*.{ts,cts}'],
     },
@@ -199,7 +201,7 @@ export const importRules = {
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-absolute-path.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L169 (airbnb-base)
    */
-  'import-x/no-absolute-path': 'error',
+  'import-x/no-absolute-path': 'error', // ⚠️ inline
 
   /**
    * Forbid a module from importing a module with a dependency path back to itself.
@@ -226,10 +228,11 @@ export const importRules = {
 
   /**
    * Forbid importing packages through relative paths.
+   * @description Too computationally expensive for large codebases. I've disabled it.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-relative-packages.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L271 (airbnb-base)
    */
-  'import-x/no-relative-packages': 'error',
+  'import-x/no-relative-packages': 'off',
 
   /**
    * Forbid importing modules from parent directories.
@@ -247,10 +250,11 @@ export const importRules = {
 
   /**
    * Forbid a module from importing itself.
+   * @description Too computationally expensive for large codebases. I've disabled it.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-self-import.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L233 (airbnb-base)
    */
-  'import-x/no-self-import': 'error',
+  'import-x/no-self-import': 'off',
 
   /**
    * Ensure imports point to a file/module that can be resolved.
@@ -262,10 +266,11 @@ export const importRules = {
 
   /**
    * Forbid unnecessary path segments in import and require statements.
+   * @description Too computationally expensive for large codebases. I've disabled it.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-useless-path-segments.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L241 (airbnb-base)
    */
-  'import-x/no-useless-path-segments': ['error', { commonjs: true }],
+  'import-x/no-useless-path-segments': 'off',
 
   /**
    * Forbid webpack loader syntax in imports.
@@ -315,7 +320,7 @@ export const importRules = {
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/first.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L122 (airbnb-base)
    */
-  'import-x/first': 'error',
+  'import-x/first': 'error', // ✅
 
   /**
    * Prefer named exports to be grouped together in a single export declaration
@@ -336,7 +341,7 @@ export const importRules = {
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/newline-after-import.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L153 (airbnb-base)
    */
-  'import-x/newline-after-import': 'error',
+  'import-x/newline-after-import': 'error', // ✅
 
   /**
    * Forbid anonymous values as default exports.
@@ -365,7 +370,7 @@ export const importRules = {
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-named-default.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L199 (airbnb-base)
    */
-  'import-x/no-named-default': 'error',
+  'import-x/no-named-default': 'error', // ✅
 
   /**
    * Forbid named exports.
@@ -393,7 +398,7 @@ export const importRules = {
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/order.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L149 (airbnb-base)
    */
-  'import-x/order': ['error', { groups: [['builtin', 'external', 'internal']] }],
+  'import-x/order': ['error', { groups: [['builtin', 'external', 'internal']] }], // ⚠️ inline
 
   /**
    * Prefer a default export if module exports a single name or multiple names.
