@@ -79,7 +79,7 @@
     "@eslint/markdown": "^8.0.3",
     "@types/mdast": "^4.0.4",
     "@types/unist": "^3.0.3",
-    "eslint": "^10.12.0",
+    "eslint": "^10.13.0",
     "vitest": "^4.1.9"
   }
 }

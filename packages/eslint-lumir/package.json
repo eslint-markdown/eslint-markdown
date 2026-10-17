@@ -152,6 +152,7 @@
     "globals": "^17.13.0"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^16.4.2"
+    "@next/eslint-plugin-next": "^16.4.2",
+    "eslint": "^10.13.0"
   }
 }
