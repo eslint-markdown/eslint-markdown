@@ -5,7 +5,12 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],
-      exclude: ['**/build/**', '**/tests/**'],
+      exclude: [
+        '**/build/**',
+        '**/tests/**',
+        // These files are copied and pasted, so we exclude them from coverage.
+        'packages/eslint-lumir/src/plugins/**/*.ts',
+      ],
     },
     projects: ['packages/*'],
   },
