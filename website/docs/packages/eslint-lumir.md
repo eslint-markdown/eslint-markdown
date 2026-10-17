@@ -1,26 +1,28 @@
 ---
-description: "Package documentation for the `eslint-lumir` package."
+description: "Lumir's ESLint config preset"
 ---
 
-# `eslint-config-bananass` {#eslint-config-bananass}
+# `eslint-lumir` {#eslint-lumir}
+
+Lumir's ESLint config preset.
 
 `eslint-lumir` requires ESLint `^10.3.0` because its React configurations use `@eslint-react/eslint-plugin`.
 
-[![GitHub Repository](https://img.shields.io/badge/Repository-fff478?label=GitHub&color=fff478&labelColor=333333&logo=github)](https://github.com/lumirlumir/npm-bananass/tree/main/packages/eslint-config-bananass)&nbsp;
-![Node Current](https://img.shields.io/node/v/eslint-config-bananass?label=Node&color=fff478&labelColor=333333&logo=node.js)  
-[![npm package eslint-config-bananass latest version](https://img.shields.io/npm/v/eslint-config-bananass?label=eslint-config-bananass@latest&color=fff478&labelColor=333333&logo=npm)](https://www.npmjs.com/package/eslint-config-bananass)&nbsp;
-[![npm package eslint-config-bananass next version](https://img.shields.io/npm/v/eslint-config-bananass/next?label=eslint-config-bananass@next&color=fff478&labelColor=333333&logo=npm)](https://www.npmjs.com/package/eslint-config-bananass)
+[![GitHub Repository](https://img.shields.io/badge/Repository-fff478?label=GitHub&color=fff478&labelColor=333333&logo=github)](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir)&nbsp;
+![Node Current](https://img.shields.io/node/v/eslint-lumir?label=Node&color=fff478&labelColor=333333&logo=node.js)  
+[![npm package eslint-lumir latest version](https://img.shields.io/npm/v/eslint-lumir?label=eslint-lumir@latest&color=fff478&labelColor=333333&logo=npm)](https://www.npmjs.com/package/eslint-lumir)&nbsp;
+[![npm package eslint-lumir next version](https://img.shields.io/npm/v/eslint-lumir/next?label=eslint-lumir@next&color=fff478&labelColor=333333&logo=npm)](https://www.npmjs.com/package/eslint-lumir)
 
-`eslint-config-bananass`는 [`eslint-config-airbnb`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb#eslint-config-airbnb) 및 [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript?tab=readme-ov-file#airbnb-javascript-style-guide-)를 기반으로 하는 [ESLint](https://eslint.org) 설정 파일 패키지입니다.
+`eslint-lumir`는 [`eslint-config-airbnb`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb#eslint-config-airbnb) 및 [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript?tab=readme-ov-file#airbnb-javascript-style-guide-)를 기반으로 하는 [ESLint](https://eslint.org) 설정 파일 패키지입니다.
 
 코딩 테스트 관련하여 자주 쓰이는 문법 및 사용자에 따라 호불호가 나뉠 수 있는 일부 규칙들을 해제하였기에, [`eslint-config-airbnb`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb#eslint-config-airbnb) 및 [`eslint-config-airbnb-base`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base#eslint-config-airbnb-base-) 보다 훨씬 느슨한 규칙들을 만나보실 수 있습니다.
 
-`eslint-config-bananass`에 포함된 정확한 규칙들은 [ESLint Config Inspector](https://eslint-config-bananass.lumir.page)를 참고해주세요.
+`eslint-lumir`에 포함된 정확한 규칙들은 [ESLint configurations](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir/src/configs)를 참고해주세요.
 
 ::: danger 반드시 읽어주세요!
 
-- `eslint-config-bananass`는 최신 사양의 [ESLint v10 Flat Config](https://eslint.org/docs/latest/use/configure/configuration-files)만 지원하며, ESM 모듈 시스템만<sup>ESM Only</sup> 지원합니다.
-- `eslint-config-bananass`는 스타일 관련 규칙들을 포함하지 않습니다. 스타일 포맷팅을 진행하고 싶으시다면 [Prettier](https://prettier.io/)를 이용해 주세요.
+- `eslint-lumir`는 최신 사양의 [ESLint v10 Flat Config](https://eslint.org/docs/latest/use/configure/configuration-files)만 지원하며, ESM 모듈 시스템만<sup>ESM Only</sup> 지원합니다.
+- `eslint-lumir`는 스타일 관련 규칙들을 포함하지 않습니다. 스타일 포맷팅을 진행하고 싶으시다면 [Prettier](https://prettier.io/)를 이용해 주세요.
 
 :::
 
@@ -33,19 +35,19 @@ description: "Package documentation for the `eslint-lumir` package."
 ::: code-group
 
 ```sh [npm]
-npm install -D eslint@latest eslint-config-bananass@latest
+npm install -D eslint@latest eslint-lumir@latest
 ```
 
 ```sh [pnpm]
-pnpm add -D eslint@latest eslint-config-bananass@latest
+pnpm add -D eslint@latest eslint-lumir@latest
 ```
 
 ```sh [yarn]
-yarn add --dev eslint@latest eslint-config-bananass@latest
+yarn add --dev eslint@latest eslint-lumir@latest
 ```
 
 ```sh [bun]
-bun add -d eslint@latest eslint-config-bananass@latest
+bun add -d eslint@latest eslint-lumir@latest
 ```
 
 :::
@@ -64,7 +66,7 @@ import jsonc from 'eslint-lumir/jsonc';
 import json5 from 'eslint-lumir/json5';
 import md from 'eslint-lumir/md';
 
-// `eslint-config-bananass` 패키지의 `package.json` 파일도 불러올 수 있습니다.
+// `eslint-lumir` 패키지의 `package.json` 파일도 불러올 수 있습니다.
 import pkg from 'eslint-lumir/package.json' with { type: 'json' };
 ```
 
@@ -74,19 +76,19 @@ import pkg from 'eslint-lumir/package.json' with { type: 'json' };
 
 > 타입: `Linter.Config`
 
-정확한 구성은 [깃허브 리포지토리](https://github.com/lumirlumir/npm-bananass/tree/main/packages/eslint-config-bananass/src/configs)를 참고해주세요.
+정확한 구성은 [깃허브 리포지토리](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir/src/configs)를 참고해주세요.
 
 ### `pkg` {#pkg}
 
 > 타입: `Record<string, any>`
 
-정확한 구성은 [깃허브 리포지토리](https://github.com/lumirlumir/npm-bananass/blob/main/packages/eslint-config-bananass/package.json)를 참고해주세요.
+정확한 구성은 [깃허브 리포지토리](https://github.com/eslint-markdown/eslint-markdown/blob/main/packages/eslint-lumir/package.json)를 참고해주세요.
 
 ## ESLint Config 설정 방법 {#eslint-config-setting}
 
 `eslint-lumir` provides nine configurations. Select the configurations required by your project.
 
-각각의 구성에 포함된 정확한 규칙들은 [ESLint Config Inspector](https://eslint-config-bananass.lumir.page)를 참고해주세요.
+각각의 구성에 포함된 정확한 규칙들은 [ESLint configurations](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir/src/configs)를 참고해주세요.
 
 - `js`: 자바스크립트
 - `jsx`: 자바스크립트 + React
@@ -154,5 +156,5 @@ The package has no main entrypoint. Replace imports from `eslint-lumir` and acce
 
 ## 참고 사항 {#additional-notes}
 
-- `eslint-config-bananass`는 스타일 관련 규칙들을 포함하지 않기 때문에, Prettier와 충돌을 일으키는 스타일 관련 규칙들을 모두 끄는 [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier)가 필요하지 않습니다.
+- `eslint-lumir`는 스타일 관련 규칙들을 포함하지 않기 때문에, Prettier와 충돌을 일으키는 스타일 관련 규칙들을 모두 끄는 [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier)가 필요하지 않습니다.
 - 스타일 포맷팅을 진행하고 싶으시다면 [Prettier](https://prettier.io/)를 이용해 주세요.

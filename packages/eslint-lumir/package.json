@@ -3,7 +3,7 @@
   "version": "0.0.0-canary.0",
   "type": "module",
   "sideEffects": false,
-  "description": "ESLint Config for TODO",
+  "description": "Lumir's ESLint config preset",
   "exports": {
     "./js": {
       "types": "./build/configs/js.d.ts",
@@ -80,7 +80,7 @@
     "README.md"
   ],
   "keywords": [
-    "bananass",
+    "eslint-lumir",
     "baekjoon",
     "framework",
     "javascript",

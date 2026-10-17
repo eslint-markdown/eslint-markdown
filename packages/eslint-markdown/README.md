@@ -38,9 +38,9 @@ So, we **highly recommend** using the `eslint-markdown` plugin alongside ESLint'
 
 This repository is maintained as a monorepo and includes the following two packages.
 
-### `eslint-lumir` - [Docs](https://eslint-markdown.lumir.page/docs/packages/eslint-lumir) | [Repository](https://github.com/lumirlumir/npm-eslint-markdown/tree/main/packages/eslint-lumir) | [npm](https://www.npmjs.com/package/eslint-lumir)
+### `eslint-lumir` - [Docs](https://eslint-markdown.lumir.page/docs/packages/eslint-lumir) | [Repository](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir) | [npm](https://www.npmjs.com/package/eslint-lumir)
 
-TODO
+Lumir's ESLint config preset.
 
 ### `eslint-markdown` - [Docs](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown) | [Repository](https://github.com/lumirlumir/npm-eslint-markdown/tree/main/packages/eslint-markdown) | [npm](https://www.npmjs.com/package/eslint-markdown)
 

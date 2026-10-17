@@ -1,6 +1,6 @@
 # `eslint-lumir`
 
-ESLint Config for TODO.
+Lumir's ESLint config preset.
 
 ## Documentation
 
