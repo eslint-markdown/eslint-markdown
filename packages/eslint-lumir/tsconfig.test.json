@@ -15,6 +15,9 @@
     }
   ],
   "compilerOptions": {
+    /* Modules */
+    "types": ["node"],
+
     /* Emit */
     "noEmit": true,
 

@@ -145,14 +145,16 @@
     "@typescript-eslint/eslint-plugin": "^8.71.2",
     "@typescript-eslint/parser": "^8.71.2",
     "eslint-markdown": "^0.19.0",
-    "eslint-plugin-import-x": "^4.17.1",
+    "eslint-plugin-import-lite": "^0.6.0",
     "eslint-plugin-jsx-a11y-x": "^0.2.0",
     "eslint-plugin-n": "^18.4.1",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "globals": "^17.13.0"
+    "globals": "^17.13.0",
+    "minimatch": "^10.2.6"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^16.4.2",
+    "@typescript-eslint/utils": "^8.71.2",
     "eslint": "^10.13.0"
   }
 }

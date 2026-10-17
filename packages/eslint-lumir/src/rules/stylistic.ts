@@ -10,7 +10,7 @@
 // --------------------------------------------------------------------------------
 
 import type { ESLint, Linter } from 'eslint';
-import { stylistic as stylisticPluginModule } from '../plugins/index.js';
+import { stylisticPlugin as stylisticPluginModule } from '../plugins/index.js';
 
 // --------------------------------------------------------------------------------
 // Export
