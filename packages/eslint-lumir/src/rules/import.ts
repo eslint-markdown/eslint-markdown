@@ -29,10 +29,11 @@ export const importRules = {
 
   /**
    * Forbid any invalid exports, i.e. re-export of the same name.
+   * @description TypeScript already checks this, so the rule is disabled to avoid duplicate checks.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/export.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L54 (airbnb-base)
    */
-  'import-x/export': 'error',
+  'import-x/export': 'off',
 
   /**
    * Forbid imported names marked with `@deprecated` documentation tag.
@@ -50,11 +51,12 @@ export const importRules = {
 
   /**
    * Forbid the use of extraneous packages.
+   * @description Too computationally expensive for large codebases. I've disabled it. Note that this check is already handled by `n/no-extraneous-import` and `n/no-extraneous-require`.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-extraneous-dependencies.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L71-L97 (airbnb-base)
    */
   'import-x/no-extraneous-dependencies': [
-    'error',
+    'off',
     {
       devDependencies: [
         'test/**', // tape, common npm pattern
@@ -124,10 +126,11 @@ export const importRules = {
 
   /**
    * Forbid AMD `require` and `define` calls.
+   * @description Only relevant if using AMD module system. Disabled here.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-amd.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L111 (airbnb-base)
    */
-  'import-x/no-amd': 'error',
+  'import-x/no-amd': 'off',
 
   /**
    * Forbid CommonJS `require` calls and `module.exports` or `exports.*`.
@@ -178,10 +181,11 @@ export const importRules = {
 
   /**
    * Ensure named imports correspond to a named export in the remote file.
+   * @description TypeScript already checks this, so the rule is disabled to avoid duplicate checks.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/named.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L41 (airbnb-base)
    */
-  'import-x/named': 'error',
+  'import-x/named': 'off',
 
   /**
    * Ensure imported namespaces contain dereferenced properties as they are dereferenced.
@@ -199,10 +203,11 @@ export const importRules = {
 
   /**
    * Forbid a module from importing a module with a dependency path back to itself.
+   * @description Too computationally expensive for large codebases. I've disabled it.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-cycle.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L237 (airbnb-base)
    */
-  'import-x/no-cycle': ['error', { maxDepth: Infinity }],
+  'import-x/no-cycle': 'off',
 
   /**
    * Forbid `require()` calls with expressions.
@@ -264,10 +269,11 @@ export const importRules = {
 
   /**
    * Forbid webpack loader syntax in imports.
+   * @description Only relevant if using webpack loader syntax in imports. Disabled here.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-webpack-loader-syntax.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L190 (airbnb-base)
    */
-  'import-x/no-webpack-loader-syntax': 'error',
+  'import-x/no-webpack-loader-syntax': 'off',
 
   // #endregion Static Analysis
   // ------------------------------------------------------------------------------
@@ -348,10 +354,11 @@ export const importRules = {
 
   /**
    * Forbid repeated import of the same module in multiple places.
+   * @description Replaced by [`no-duplicate-imports`](https://eslint.org/docs/latest/rules/no-duplicate-imports). Note that it's `'off'`.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-duplicates.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L131 (airbnb-base)
    */
-  'import-x/no-duplicates': 'error',
+  'import-x/no-duplicates': 'off',
 
   /**
    * Forbid named default exports.
@@ -390,11 +397,11 @@ export const importRules = {
 
   /**
    * Prefer a default export if module exports a single name or multiple names.
-   * @description I've set this rule to `'warn'` because I don't want to enforce default exports.
+   * @description I've set this rule to `'off'` because I don't want to enforce default exports.
    * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/prefer-default-export.md (import-x)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/imports.js#L157 (airbnb-base)
    */
-  'import-x/prefer-default-export': 'warn',
+  'import-x/prefer-default-export': 'off',
 
   // #endregion Style Guide
   // ------------------------------------------------------------------------------
