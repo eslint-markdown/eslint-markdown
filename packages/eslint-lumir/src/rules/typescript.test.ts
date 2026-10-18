@@ -26,24 +26,28 @@ const typescriptKeys = Object.keys(typescriptRules).filter(key => key.includes('
 // --------------------------------------------------------------------------------
 
 describe('typescript', () => {
-  describe('ESLint integration', () => {
-    it('should lint TypeScript with the configured TypeScript rules', () => {
-      const messages = new Linter().verify('export const value: any = 1;', {
-        languageOptions: { parser },
-        plugins: typescriptPlugin,
-        rules: typescriptRules,
-      });
+  it('should lint TypeScript with the configured TypeScript rules', () => {
+    const messages = new Linter().verify('export const value: any = 1;', {
+      languageOptions: { parser },
+      plugins: typescriptPlugin,
+      rules: typescriptRules,
+    });
 
-      assert.lengthOf(messages, 1);
-      assert.strictEqual(messages[0].ruleId, '@typescript-eslint/no-explicit-any');
+    assert.lengthOf(messages, 1);
+    assert.strictEqual(messages[0].ruleId, '@typescript-eslint/no-explicit-any');
+  });
+
+  it('should not configure any TypeScript rule with warning severity', () => {
+    Object.entries(typescriptRules).forEach(([ruleId, config]) => {
+      const severity = Array.isArray(config) ? config[0] : config;
+
+      assert.notInclude(['warn', 1], severity, ruleId);
     });
   });
 
-  describe('Exports', () => {
-    it('`typescriptPlugin` should be defined', () => {
-      assert.ok(typescriptPlugin);
-      assert.strictEqual(typeof typescriptPlugin, 'object');
-    });
+  it('`typescriptPlugin` should be defined', () => {
+    assert.ok(typescriptPlugin);
+    assert.strictEqual(typeof typescriptPlugin, 'object');
   });
 
   it('The rules of ESLint and TypeScript must correspond one-to-one in the extension rules', () => {

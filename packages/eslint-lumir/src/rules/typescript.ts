@@ -14,6 +14,8 @@
  *   - @see https://github.com/typescript-eslint/typescript-eslint/blob/v8.24.1/packages/eslint-plugin/src/configs/stylistic.ts
  */
 
+// TODO: remove deprecated rule
+
 // --------------------------------------------------------------------------------
 // Import
 // --------------------------------------------------------------------------------
@@ -126,7 +128,7 @@ export const typescriptRules = {
    * @see https://typescript-eslint.io/rules/no-shadow
    */
   'no-shadow': 'off',
-  '@typescript-eslint/no-shadow': 'warn',
+  '@typescript-eslint/no-shadow': 'error',
 
   /**
    * Disallow unused expressions.
@@ -251,7 +253,7 @@ export const typescriptRules = {
    * Disallow using the unsafe built-in Function type.
    * @see https://typescript-eslint.io/rules/no-unsafe-function-type
    */
-  '@typescript-eslint/no-unsafe-function-type': 'warn',
+  '@typescript-eslint/no-unsafe-function-type': 'error',
 
   /**
    * Disallow using confusing built-in primitive class wrappers.
@@ -318,7 +320,7 @@ export const typescriptRules = {
    * Require or disallow the `Record` type.
    * @see https://typescript-eslint.io/rules/consistent-indexed-object-style
    */
-  '@typescript-eslint/consistent-indexed-object-style': 'warn',
+  '@typescript-eslint/consistent-indexed-object-style': 'error',
 
   /**
    * Enforce consistent usage of type assertions.

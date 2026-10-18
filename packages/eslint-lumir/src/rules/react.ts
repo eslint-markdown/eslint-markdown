@@ -130,8 +130,8 @@ export const reactRules = {
    * @see https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/jsx-no-leaked-render.md
    */
   // Requires type-aware linting; review before enabling react-x/no-leaked-conditional-rendering.
-  // 'react/jsx-no-leaked-render': 'warn',
-  // 'react-x/no-leaked-conditional-rendering': 'warn',
+  // 'react/jsx-no-leaked-render': 'error',
+  // 'react-x/no-leaked-conditional-rendering': 'error',
 
   /**
    * Enforce PascalCase for user-defined JSX components.
