@@ -21,8 +21,6 @@
     "src/**/*.test-d.ts",
     "src/**/*.test-d.mts",
     "src/**/*.test-d.cts",
-    "src/tests/**/*.js",
-    "src/tests/**/*.ts",
     "**/fixtures/**"
   ],
   "compilerOptions": {
@@ -32,9 +30,6 @@
     /* Emit */
     "emitDeclarationOnly": false,
     "outDir": "build",
-
-    /* Completeness */
-    "skipLibCheck": true,
 
     /* Projects */
     "tsBuildInfoFile": "${configDir}/.tsbuildinfo/tsconfig.build.tsbuildinfo"
