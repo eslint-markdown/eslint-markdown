@@ -14,8 +14,6 @@
  *   - @see https://github.com/typescript-eslint/typescript-eslint/blob/v8.24.1/packages/eslint-plugin/src/configs/stylistic.ts
  */
 
-// TODO: remove deprecated rule
-
 // --------------------------------------------------------------------------------
 // Import
 // --------------------------------------------------------------------------------
