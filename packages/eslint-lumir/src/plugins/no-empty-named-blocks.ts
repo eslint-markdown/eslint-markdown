@@ -29,8 +29,8 @@
  */
 
 /* eslint-disable
-  @typescript-eslint/ban-ts-comment,
-  @typescript-eslint/no-shadow,
+  typescript/ban-ts-comment,
+  typescript/no-shadow,
   prefer-destructuring
 */
 // @ts-nocheck -- TODO: Code was simply copied and pasted. Type annotations will be modified later.

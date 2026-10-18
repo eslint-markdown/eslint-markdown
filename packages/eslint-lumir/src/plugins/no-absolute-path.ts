@@ -29,8 +29,8 @@
  */
 
 /* eslint-disable
-  @typescript-eslint/array-type,
-  @typescript-eslint/ban-ts-comment,
+  typescript/array-type,
+  typescript/ban-ts-comment,
   func-names,
   prefer-destructuring
 */

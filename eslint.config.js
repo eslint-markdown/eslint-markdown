@@ -26,8 +26,8 @@ export default defineConfig([
     rules: {
       'no-useless-assignment': 'off',
       'prefer-const': 'off',
-      '@typescript-eslint/no-unsafe-function-type': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
+      'typescript/no-unsafe-function-type': 'off',
+      'typescript/no-unused-vars': 'off',
     },
   },
   {

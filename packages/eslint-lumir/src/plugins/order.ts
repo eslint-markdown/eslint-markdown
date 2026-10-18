@@ -29,8 +29,8 @@
  */
 
 /* eslint-disable
-  @typescript-eslint/ban-ts-comment,
-  @typescript-eslint/no-shadow,
+  typescript/ban-ts-comment,
+  typescript/no-shadow,
   consistent-return,
   no-restricted-properties,
   no-useless-return,

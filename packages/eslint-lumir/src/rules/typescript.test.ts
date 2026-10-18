@@ -15,7 +15,7 @@ import { typescriptPlugin, typescriptRules } from './typescript.js';
 // Helper
 // --------------------------------------------------------------------------------
 
-const prefix = '@typescript-eslint/';
+const prefix = 'typescript/';
 const eslintKeys = Object.keys(typescriptRules).filter(
   (key): key is keyof typeof typescriptRules => !key.includes('/'),
 );
@@ -34,7 +34,7 @@ describe('typescript', () => {
     });
 
     assert.lengthOf(messages, 1);
-    assert.strictEqual(messages[0].ruleId, '@typescript-eslint/no-explicit-any');
+    assert.strictEqual(messages[0].ruleId, 'typescript/no-explicit-any');
   });
 
   it('should not configure any TypeScript rule with warning severity', () => {
@@ -62,7 +62,7 @@ describe('typescript', () => {
     }
   });
 
-  it('The rules of TypeScript should have `@typescript-eslint/` prefix', () => {
+  it('The rules of TypeScript should have `typescript/` prefix', () => {
     for (const typescriptKey of typescriptKeys) {
       assert.ok(typescriptKey.startsWith(prefix));
     }

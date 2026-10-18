@@ -26,7 +26,7 @@ describe('ts', () => {
       );
 
       assert.lengthOf(messages, 1);
-      assert.strictEqual(messages[0].ruleId, '@typescript-eslint/no-explicit-any');
+      assert.strictEqual(messages[0].ruleId, 'typescript/no-explicit-any');
     });
   });
 });
