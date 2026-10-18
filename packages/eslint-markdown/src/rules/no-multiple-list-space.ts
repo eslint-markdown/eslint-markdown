@@ -130,7 +130,7 @@ export default {
 
       const whitespaceStart = listItemStart + whitespaceIndex;
 
-      // 리스트 마커 뒤의 연속된 공백만 계산한다.
+      // Only consecutive spaces following a list marker are counted.
       let whitespaceEnd = whitespaceStart;
 
       while (sourceCode.text[whitespaceEnd] === ' ') {
