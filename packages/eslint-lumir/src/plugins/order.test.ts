@@ -524,8 +524,8 @@ ruleTester.run('order', rule, {
         },
       ],
       settings: {
-        'import-x/resolver-next': fixtureResolver,
-        'import-x/external-module-folders': ['node_modules', 'symlinked-module'],
+        'import/resolver-next': fixtureResolver,
+        'import/external-module-folders': ['node_modules', 'symlinked-module'],
       },
     }),
     // Monorepo setup, using Node resolver (doesn't resolve symlinks)
@@ -542,8 +542,8 @@ ruleTester.run('order', rule, {
         },
       ],
       settings: {
-        'import-x/resolver': 'node',
-        'import-x/external-module-folders': ['node_modules', 'symlinked-module'],
+        'import/resolver': 'node',
+        'import/external-module-folders': ['node_modules', 'symlinked-module'],
       },
     }),
     // Option: newlines-between: 'always'
@@ -1052,7 +1052,7 @@ ruleTester.run('order', rule, {
         },
       ],
       settings: {
-        'import-x/resolver-next': fixtureResolver,
+        'import/resolver-next': fixtureResolver,
       },
     }),
     // Option pathGroup[].distinctGroup: 'true' does not prevent 'position' properties from affecting the visible grouping
@@ -2457,7 +2457,7 @@ ruleTester.run('order', rule, {
         },
       ],
       settings: {
-        'import-x/internal-regex': String.raw`^(a|b|c|d|e|f|g|h|i|j|k)(\/|$)`,
+        'import/internal-regex': String.raw`^(a|b|c|d|e|f|g|h|i|j|k)(\/|$)`,
       },
       errors: Array.from({ length: 11 }, () => ({
         messageId: 'oneLineBetweenGroups',

@@ -177,17 +177,17 @@ function getContextPackagePath(context: RuleContext): string {
  */
 function resolveImport(name: string, context: RuleContext): string | null | undefined {
   const { settings, physicalFilename } = context;
-  if (settings['import-x/core-modules']?.includes(name)) {
+  if (settings['import/core-modules']?.includes(name)) {
     return null;
   }
-  const configured = settings['import-x/resolver-next'];
+  const configured = settings['import/resolver-next'];
   if (configured) {
     try {
       const resolvers = Array.isArray(configured) ? configured : [configured];
       for (const [index, resolver] of resolvers.entries()) {
         if (resolver?.interfaceVersion !== 3 || typeof resolver.resolve !== 'function') {
           throw new TypeError(
-            `${resolver?.name || `settings['import-x/resolver-next'][${index}]`} is not a valid import resolver for eslint-plugin-import-x!`,
+            `${resolver?.name || `settings['import/resolver-next'][${index}]`} is not a valid import resolver for import/order!`,
           );
         }
         const resolved = resolver.resolve(name, physicalFilename);
@@ -224,7 +224,7 @@ function importType(name: LiteralNodeValue, context: RuleContext): ImportType {
   const { settings } = context;
   const modulePath = typeof name === 'string' ? resolveImport(name, context) : null;
   if (typeof name === 'string') {
-    const internalScope = settings['import-x/internal-regex'];
+    const internalScope = settings['import/internal-regex'];
     if (internalScope && new RegExp(internalScope).test(name)) {
       return 'internal';
     }
@@ -234,7 +234,7 @@ function importType(name: LiteralNodeValue, context: RuleContext): ImportType {
     const base = /^@[^/]+\/?[^/]+/.test(name)
       ? name.split('/').slice(0, 2).join('/')
       : name.split('/')[0];
-    const extras = settings['import-x/core-modules'] || [];
+    const extras = settings['import/core-modules'] || [];
     if (!modulePath && name && (isBuiltin(base) || extras.includes(base))) {
       return 'builtin';
     }
@@ -251,7 +251,7 @@ function importType(name: LiteralNodeValue, context: RuleContext): ImportType {
   if (modulePath) {
     const packagePath = getContextPackagePath(context);
     const relativePath = path.relative(packagePath, modulePath);
-    const folders = settings['import-x/external-module-folders'] || ['node_modules'];
+    const folders = settings['import/external-module-folders'] || ['node_modules'];
     if (
       relativePath.startsWith('..') ||
       folders.some(

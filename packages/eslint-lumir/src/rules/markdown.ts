@@ -80,8 +80,8 @@ export const markdownRules = {
     'error',
     {
       allowed: [
-        'strong',
-        'em',
+        'strong', // CJK characters have a known issue with emphasis.
+        'em', // CJK characters have a known issue with emphasis.
         'small',
         'sub',
         'sup',

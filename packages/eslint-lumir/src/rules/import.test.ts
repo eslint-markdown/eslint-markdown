@@ -14,7 +14,7 @@ import { importPlugin, importRules } from './import.js';
 // Helper
 // --------------------------------------------------------------------------------
 
-const prefix = 'import-x/';
+const prefix = 'import/';
 
 // --------------------------------------------------------------------------------
 // Test
@@ -32,7 +32,7 @@ describe('import', () => {
       );
 
       assert.lengthOf(messages, 1);
-      assert.strictEqual(messages[0].ruleId, 'import-x/no-mutable-exports');
+      assert.strictEqual(messages[0].ruleId, 'import/no-mutable-exports');
     });
   });
 

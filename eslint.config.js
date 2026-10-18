@@ -46,7 +46,7 @@ export default defineConfig([
           ],
         },
       ],
-      'import-x/order': [
+      'import/order': [
         'error',
         {
           groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
