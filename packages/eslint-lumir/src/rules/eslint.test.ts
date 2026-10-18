@@ -21,20 +21,24 @@ const prefix = '/';
 // --------------------------------------------------------------------------------
 
 describe('eslint', () => {
-  describe('ESLint integration', () => {
-    it('should lint JavaScript with the configured ESLint rules', () => {
-      const messages = new Linter().verify('debugger;', { rules: eslintRules });
+  it('should lint JavaScript with the configured ESLint rules', () => {
+    const messages = new Linter().verify('debugger;', { rules: eslintRules });
 
-      assert.lengthOf(messages, 1);
-      assert.strictEqual(messages[0].ruleId, 'no-debugger');
+    assert.lengthOf(messages, 1);
+    assert.strictEqual(messages[0].ruleId, 'no-debugger');
+  });
+
+  it('should not configure any ESLint rule with warning severity', () => {
+    Object.entries(eslintRules).forEach(([ruleId, config]) => {
+      const severity = Array.isArray(config) ? config[0] : config;
+
+      assert.notInclude(['warn', 1], severity, ruleId);
     });
   });
 
-  describe(`All key values must not include \`${prefix}\`.`, () => {
-    it('eslint.ts', () => {
-      Object.keys(eslintRules).forEach(key => {
-        assert.strictEqual(key.includes(prefix), false);
-      });
+  it(`all key values must not include \`${prefix}\`.`, () => {
+    Object.keys(eslintRules).forEach(key => {
+      assert.strictEqual(key.includes(prefix), false);
     });
   });
 });

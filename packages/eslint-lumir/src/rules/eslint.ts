@@ -597,7 +597,7 @@ export const eslintRules = {
    * @see https://eslint.org/docs/latest/rules/func-names (eslint)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/style.js#L96 (airbnb-base)
    */
-  'func-names': ['warn', 'as-needed'],
+  'func-names': ['error', 'as-needed'],
 
   /**
    * Enforce the consistent use of either `function` declarations or expressions assigned to variables.
@@ -740,11 +740,10 @@ export const eslintRules = {
 
   /**
    * Disallow bitwise operators.
-   * @description I've changed the rule to `'warn'` from `'error'`.
    * @see https://eslint.org/docs/latest/rules/no-bitwise (eslint)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/style.js#L274 (airbnb-base)
    */
-  'no-bitwise': 'warn',
+  'no-bitwise': 'error',
 
   /**
    * Disallow the use of `arguments.caller` or `arguments.callee`.
@@ -1176,7 +1175,7 @@ export const eslintRules = {
 
   /**
    * Disallow specified syntax.
-   * @description I've changed the rule to `'warn'` from `'error'`. I’ve also removed `LabeledStatement` and `WithStatement` since they are redundant, as `no-labels` and `no-with` already cover them.
+   * @description Removed `LabeledStatement` and `WithStatement` since they are redundant, as `no-labels` and `no-with` already cover them.
    * @see https://eslint.org/docs/latest/rules/no-restricted-syntax (eslint)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/style.js#L333-L351 (airbnb-base)
    */
@@ -1212,11 +1211,10 @@ export const eslintRules = {
 
   /**
    * Disallow variable declarations from shadowing variables declared in the outer scope.
-   * @description I've changed the rule to `'warn'` from `'error'`.
    * @see https://eslint.org/docs/latest/rules/no-shadow (eslint)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/variables.js#L34 (airbnb-base)
    */
-  'no-shadow': 'warn',
+  'no-shadow': 'error',
 
   /**
    * Disallow identifiers from shadowing restricted names.
