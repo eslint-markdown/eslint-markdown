@@ -12,6 +12,6 @@ export default defineConfig({
         'packages/eslint-lumir/src/plugins/**/*.ts',
       ],
     },
-    projects: ['packages/*'],
+    projects: ['packages/*', 'tests'],
   },
 });
