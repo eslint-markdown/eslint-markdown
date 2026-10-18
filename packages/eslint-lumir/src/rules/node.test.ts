@@ -14,7 +14,7 @@ import { nodePlugin, nodeRules } from './node.js';
 // Helper
 // --------------------------------------------------------------------------------
 
-const prefix = 'n/';
+const prefix = 'node/';
 
 // --------------------------------------------------------------------------------
 // Test
@@ -28,7 +28,7 @@ describe('node', () => {
     });
 
     assert.lengthOf(messages, 1);
-    assert.strictEqual(messages[0].ruleId, 'n/prefer-node-protocol');
+    assert.strictEqual(messages[0].ruleId, 'node/prefer-node-protocol');
   });
 
   it('should not configure any Node.js rule with warning severity', () => {

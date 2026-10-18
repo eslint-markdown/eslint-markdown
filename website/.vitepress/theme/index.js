@@ -13,7 +13,7 @@ import eslintLumirPackageJson from 'eslint-lumir/package.json' with { type: 'jso
 import eslintMarkdownPackageJson from 'eslint-markdown/package.json' with { type: 'json' };
 
 import './style.css';
-import 'virtual:group-icons.css'; // eslint-disable-line n/no-missing-import
+import 'virtual:group-icons.css'; // eslint-disable-line node/no-missing-import
 import '@shikijs/vitepress-twoslash/style.css';
 
 // --------------------------------------------------------------------------------
