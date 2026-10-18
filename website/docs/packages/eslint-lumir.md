@@ -6,23 +6,31 @@ description: "Lumir's ESLint config preset"
 
 Lumir's ESLint config preset.
 
-`eslint-lumir` requires ESLint `^10.3.0` because its React configurations use `@eslint-react/eslint-plugin`.
+::: info Internal workspace
+
+This workspace is currently marked as private and excluded from npm publishing. Its version remains synchronized with `eslint-markdown`, but current workspace changes are only available within this monorepo.
+
+:::
+
+`eslint-lumir` requires ESLint `{{ $version['eslint-lumir'].eslint }}` because its React configurations use `@eslint-react/eslint-plugin`.
 
 [![GitHub Repository](https://img.shields.io/badge/Repository-fff478?label=GitHub&color=fff478&labelColor=333333&logo=github)](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir)&nbsp;
 ![Node Current](https://img.shields.io/node/v/eslint-lumir?label=Node&color=fff478&labelColor=333333&logo=node.js)  
 [![npm package eslint-lumir latest version](https://img.shields.io/npm/v/eslint-lumir?label=eslint-lumir@latest&color=fff478&labelColor=333333&logo=npm)](https://www.npmjs.com/package/eslint-lumir)&nbsp;
 [![npm package eslint-lumir next version](https://img.shields.io/npm/v/eslint-lumir/next?label=eslint-lumir@next&color=fff478&labelColor=333333&logo=npm)](https://www.npmjs.com/package/eslint-lumir)
 
-`eslint-lumir`는 [`eslint-config-airbnb`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb#eslint-config-airbnb) 및 [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript?tab=readme-ov-file#airbnb-javascript-style-guide-)를 기반으로 하는 [ESLint](https://eslint.org) 설정 파일 패키지입니다.
+`eslint-lumir` is an [ESLint](https://eslint.org) configuration package based on [`eslint-config-airbnb`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb#eslint-config-airbnb) and the [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript?tab=readme-ov-file#airbnb-javascript-style-guide-).
 
-코딩 테스트 관련하여 자주 쓰이는 문법 및 사용자에 따라 호불호가 나뉠 수 있는 일부 규칙들을 해제하였기에, [`eslint-config-airbnb`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb#eslint-config-airbnb) 및 [`eslint-config-airbnb-base`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base#eslint-config-airbnb-base-) 보다 훨씬 느슨한 규칙들을 만나보실 수 있습니다.
+It relaxes rules that restrict syntax commonly used in coding challenges, along with some rules that depend on personal preference. This makes it more permissive than [`eslint-config-airbnb`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb#eslint-config-airbnb) and [`eslint-config-airbnb-base`](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb-base#eslint-config-airbnb-base-).
 
-`eslint-lumir`에 포함된 정확한 규칙들은 [ESLint configurations](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir/src/configs)를 참고해주세요.
+For the exact rules included in `eslint-lumir`, see the [ESLint configurations](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir/src/configs).
 
-::: danger 반드시 읽어주세요!
+All rules in the presets are configured as either `error` or `off`, never `warn`.
 
-- `eslint-lumir`는 최신 사양의 [ESLint v10 Flat Config](https://eslint.org/docs/latest/use/configure/configuration-files)만 지원하며, ESM 모듈 시스템만<sup>ESM Only</sup> 지원합니다.
-- `eslint-lumir`는 스타일 관련 규칙들을 포함하지 않습니다. 스타일 포맷팅을 진행하고 싶으시다면 [Prettier](https://prettier.io/)를 이용해 주세요.
+::: danger IMPORTANT
+
+- `eslint-lumir` supports ESLint `{{ $version['eslint-lumir'].eslint }}` with [Flat Config](https://eslint.org/docs/latest/use/configure/configuration-files) and ES modules (ESM) only.
+- `eslint-lumir` does not include stylistic rules. Use [Prettier](https://prettier.io/) for formatting.
 
 :::
 
@@ -30,7 +38,15 @@ Lumir's ESLint config preset.
 
 [[TOC]]
 
-## 설치하기 {#installation}
+## Installation {#installation}
+
+### Prerequisites
+
+- Node.js: `{{ $version['eslint-lumir'].nodejs }}`
+- ESLint: `{{ $version['eslint-lumir'].eslint }}` & Flat Config Only
+- Module Support: ECMAScript Modules (ESM) Only
+
+### Install
 
 ::: code-group
 
@@ -52,7 +68,12 @@ bun add -d eslint@latest eslint-lumir@latest
 
 :::
 
-## API 참고서 {#apis}
+## Config Inspector
+
+<!-- eslint-disable-next-line markdown/no-html -->
+If you want to inspect the ESLint configuration for `eslint-lumir`, use the <a href="/inspector/eslint-lumir" target="_self">config inspector</a>.
+
+## API Reference {#apis}
 
 ```ts
 // Import each configuration from its subpath.
@@ -66,7 +87,7 @@ import jsonc from 'eslint-lumir/jsonc';
 import json5 from 'eslint-lumir/json5';
 import md from 'eslint-lumir/md';
 
-// `eslint-lumir` 패키지의 `package.json` 파일도 불러올 수 있습니다.
+// You can also import the package's `package.json` file.
 import pkg from 'eslint-lumir/package.json' with { type: 'json' };
 ```
 
@@ -74,35 +95,35 @@ import pkg from 'eslint-lumir/package.json' with { type: 'json' };
 
 ### `js`, `ts`, `jsx`, `tsx`, `next`, `json`, `jsonc`, `json5`, `md` {#subpath-imports}
 
-> 타입: `Linter.Config`
+> Type: `Linter.Config`
 
-정확한 구성은 [깃허브 리포지토리](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir/src/configs)를 참고해주세요.
+For the exact configuration contents, see the [GitHub repository](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir/src/configs).
 
 ### `pkg` {#pkg}
 
-> 타입: `Record<string, any>`
+> Type: `Record<string, any>`
 
-정확한 구성은 [깃허브 리포지토리](https://github.com/eslint-markdown/eslint-markdown/blob/main/packages/eslint-lumir/package.json)를 참고해주세요.
+For the exact package metadata, see the [GitHub repository](https://github.com/eslint-markdown/eslint-markdown/blob/main/packages/eslint-lumir/package.json).
 
-## ESLint Config 설정 방법 {#eslint-config-setting}
+## ESLint Configuration {#eslint-config-setting}
 
 `eslint-lumir` provides nine configurations. Select the configurations required by your project.
 
-각각의 구성에 포함된 정확한 규칙들은 [ESLint configurations](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir/src/configs)를 참고해주세요.
+For the exact rules included in each configuration, see the [ESLint configurations](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir/src/configs).
 
-- `js`: 자바스크립트
-- `jsx`: 자바스크립트 + React
-- `ts`: 타입스크립트
-- `tsx`: 타입스크립트 + React
+- `js`: JavaScript
+- `jsx`: JavaScript + React
+- `ts`: TypeScript
+- `tsx`: TypeScript + React
 - `next`: Next.js rules to combine with `jsx` or `tsx`
 - `json`: JSON
 - `jsonc`: JSONC
 - `json5`: JSON5
 - `md`: Markdown
 
-### Subpath Import 방식 {#subpath-import}
+### Subpath Imports {#subpath-import}
 
-Subpath Import 방식을 이용하여, 필요한 설정만 선택적으로 불러와 사용할 수 있습니다. 해당 방식은 초기 로딩 속도 최적화에 도움이 됩니다.
+Use subpath imports to load only the configurations you need. This can help reduce startup time.
 
 ```js [eslint.config.mjs]
 import { defineConfig } from 'eslint/config';
@@ -133,8 +154,8 @@ export default defineConfig([
 
 The `next` configuration adds Next.js rules to `jsx` or `tsx`. Install its optional peer dependency explicitly in the project that uses this configuration:
 
-```sh
-npm install -D @next/eslint-plugin-next@^16.3.0
+```sh-vue
+npm install -D "@next/eslint-plugin-next@{{ $version['eslint-lumir'].eslintPluginNext }}"
 ```
 
 ```js [eslint.config.mjs]
@@ -146,7 +167,7 @@ import next from 'eslint-lumir/next';
 export default defineConfig([jsx, tsx, next]);
 ```
 
-Use `[jsx, next]` for JavaScript, `[tsx, next]` for TypeScript, or both as shown above for mixed projects. The Next.js configuration preserves the parser, React rules, and settings provided by the base configuration.
+Use `[jsx, next]` for JavaScript, `[tsx, next]` for TypeScript, or both as shown above for mixed projects. The Next.js configuration uses `@typescript-eslint/parser` for all matching JavaScript and TypeScript files, replacing the default Espree parser when combined with `jsx`. It preserves the React rules and settings provided by the base configuration.
 
 Only importing `eslint-lumir/next` requires the optional Next.js plugin. The other configuration subpaths can be imported without it.
 
@@ -154,7 +175,7 @@ Migrate `jsx-react` to `jsx`, `tsx-react` to `tsx`, `jsx-next` to `[jsx, next]`,
 
 The package has no main entrypoint. Replace imports from `eslint-lumir` and accesses such as `lumir.configs.tsx` with direct subpath imports such as `import tsx from 'eslint-lumir/tsx'`.
 
-## 참고 사항 {#additional-notes}
+## Additional Notes {#additional-notes}
 
-- `eslint-lumir`는 스타일 관련 규칙들을 포함하지 않기 때문에, Prettier와 충돌을 일으키는 스타일 관련 규칙들을 모두 끄는 [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier)가 필요하지 않습니다.
-- 스타일 포맷팅을 진행하고 싶으시다면 [Prettier](https://prettier.io/)를 이용해 주세요.
+- Since `eslint-lumir` does not include stylistic rules, you do not need [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier), which disables rules that conflict with Prettier.
+- Use [Prettier](https://prettier.io/) for formatting.
