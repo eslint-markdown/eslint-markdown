@@ -41,7 +41,6 @@
 // --------------------------------------------------------------------------------
 
 import path from 'node:path';
-
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { Rule } from 'eslint';
 

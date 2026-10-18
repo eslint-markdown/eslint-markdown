@@ -43,12 +43,12 @@ import rule from './no-absolute-path.js';
 
 RuleTester.describe = describe;
 RuleTester.it = it;
+
 const ruleTester = new RuleTester();
 
 function tValid(test: RuleTester.ValidTestCase): RuleTester.ValidTestCase {
   return { languageOptions: { parser }, ...test };
 }
-
 function tInvalid(test: RuleTester.InvalidTestCase): RuleTester.InvalidTestCase {
   return { languageOptions: { parser }, ...test };
 }

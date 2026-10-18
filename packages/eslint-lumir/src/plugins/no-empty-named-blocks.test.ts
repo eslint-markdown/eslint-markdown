@@ -43,6 +43,7 @@ import rule from './no-empty-named-blocks.js';
 
 RuleTester.describe = describe;
 RuleTester.it = it;
+
 const ruleTester = new RuleTester({ languageOptions: { parser } });
 
 const tValid = (test: RuleTester.ValidTestCase) => test;
