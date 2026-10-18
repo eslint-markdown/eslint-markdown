@@ -23,6 +23,7 @@ import { createTwoslasher } from 'twoslash-eslint';
 
 import {
   CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
+  CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
   vitePluginCodecov,
   vitePluginConfigInspector,
 } from './plugins/index.js';
@@ -100,7 +101,10 @@ export default defineConfig({
 
   /* Routing */
   cleanUrls: true,
-  ignoreDeadLinks: [CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH],
+  ignoreDeadLinks: [
+    CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
+    CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
+  ],
 
   /* Build */
   outDir: 'build',
@@ -163,6 +167,11 @@ export default defineConfig({
           {
             text: 'eslint-markdown',
             link: CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
+            target: '_self',
+          },
+          {
+            text: 'eslint-lumir',
+            link: CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
             target: '_self',
           },
         ],
