@@ -14,41 +14,43 @@ import { nextPlugin, nextRules } from './next.js';
 // Helper
 // --------------------------------------------------------------------------------
 
-const prefix = '@next/next/';
+const prefix = 'next/';
 
 // --------------------------------------------------------------------------------
 // Test
 // --------------------------------------------------------------------------------
 
 describe('next', () => {
-  describe('ESLint integration', () => {
-    it('should lint JSX with the configured Next.js rules', () => {
-      const messages = new Linter().verify(
-        'const element = <img src="/example.png" alt="Example" />;',
-        {
-          languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
-          plugins: nextPlugin,
-          rules: nextRules,
-        },
-      );
+  it('should lint JSX with the configured Next.js rules', () => {
+    const messages = new Linter().verify(
+      'const element = <img src="/example.png" alt="Example" />;',
+      {
+        languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+        plugins: nextPlugin,
+        rules: nextRules,
+      },
+    );
 
-      assert.lengthOf(messages, 1);
-      assert.strictEqual(messages[0].ruleId, '@next/next/no-img-element');
+    assert.lengthOf(messages, 1);
+    assert.strictEqual(messages[0].ruleId, 'next/no-img-element');
+  });
+
+  it('should not configure any Next.js rule with warning severity', () => {
+    Object.entries(nextRules).forEach(([ruleId, config]) => {
+      const severity = Array.isArray(config) ? config[0] : config;
+
+      assert.notInclude(['warn', 1], severity, ruleId);
     });
   });
 
-  describe('Exports', () => {
-    it('`nextPlugin` should be defined', () => {
-      assert.ok(nextPlugin);
-      assert.strictEqual(typeof nextPlugin, 'object');
-    });
+  it('`nextPlugin` should be defined', () => {
+    assert.ok(nextPlugin);
+    assert.strictEqual(typeof nextPlugin, 'object');
   });
 
-  describe(`All key values must start with \`${prefix}\`.`, () => {
-    it('next.ts', () => {
-      Object.keys(nextRules).forEach(key => {
-        assert.strictEqual(key.startsWith(prefix), true);
-      });
+  it(`all key values must start with \`${prefix}\`.`, () => {
+    Object.keys(nextRules).forEach(key => {
+      assert.strictEqual(key.startsWith(prefix), true);
     });
   });
 });

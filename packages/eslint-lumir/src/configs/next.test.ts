@@ -24,7 +24,7 @@ describe('next', () => {
       );
 
       assert.lengthOf(messages, 1);
-      assert.strictEqual(messages[0].ruleId, '@next/next/no-img-element');
+      assert.strictEqual(messages[0].ruleId, 'next/no-img-element');
     });
   });
 
@@ -47,8 +47,8 @@ describe('next', () => {
 
       assert.strictEqual(loadedJsx.name, 'lumir/jsx');
       assert.strictEqual(loadedTsx.name, 'lumir/tsx');
-      assert.notProperty(loadedJsx.plugins, '@next/next');
-      assert.notProperty(loadedTsx.plugins, '@next/next');
+      assert.notProperty(loadedJsx.plugins, 'next');
+      assert.notProperty(loadedTsx.plugins, 'next');
     } finally {
       vi.doUnmock('@next/eslint-plugin-next');
       vi.resetModules();
