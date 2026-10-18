@@ -35,10 +35,14 @@ export const reactHooksRules = {
   'react-hooks/rules-of-hooks': 'error',
 
   /**
-   * Validates against higher order functions defining nested components or hooks. Components and hooks should be defined at the module level.
+   * Previously validated higher order functions defining nested components or hooks.
+   * @description Disabled because the compiler validation was removed during feature flag cleanup in 7.1.0.
+   * Version 7.1.1 restored only a deprecated no-op rule for configuration compatibility.
    * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/component-hook-factories
+   * @see https://github.com/facebook/react/pull/35825
+   * @see https://github.com/facebook/react/pull/36307
    */
-  'react-hooks/component-hook-factories': 'error',
+  'react-hooks/component-hook-factories': 'off',
 
   /**
    * Validates the compiler configuration options.

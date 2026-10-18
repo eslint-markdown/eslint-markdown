@@ -74,8 +74,8 @@ console.log(`
 ${bgCyan('Bump transitive dependency and dev-dependency versions')}
 `);
 
-const packages = stringifyBuffer(execSync('npm pkg get -ws'));
-const bumpedPackages = stringifyBuffer(execSync('npm pkg get -w packages'));
+const packages = stringifyBuffer(execSync('npm pkg get --workspaces --json'));
+const bumpedPackages = stringifyBuffer(execSync('npm pkg get -w packages --json'));
 
 /** @type {Map<string, string>} */
 const bumpedPackagesMap = new Map(

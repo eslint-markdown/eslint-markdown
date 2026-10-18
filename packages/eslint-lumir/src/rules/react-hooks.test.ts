@@ -21,30 +21,32 @@ const prefix = 'react-hooks/';
 // --------------------------------------------------------------------------------
 
 describe('react-hooks', () => {
-  describe('ESLint integration', () => {
-    it('should lint hook calls with the configured React Hooks rules', () => {
-      const messages = new Linter().verify('useState();', {
-        plugins: reactHooksPlugin,
-        rules: reactHooksRules,
-      });
+  it('should lint hook calls with the configured React Hooks rules', () => {
+    const messages = new Linter().verify('useState();', {
+      plugins: reactHooksPlugin,
+      rules: reactHooksRules,
+    });
 
-      assert.lengthOf(messages, 1);
-      assert.strictEqual(messages[0].ruleId, 'react-hooks/rules-of-hooks');
+    assert.lengthOf(messages, 1);
+    assert.strictEqual(messages[0].ruleId, 'react-hooks/rules-of-hooks');
+  });
+
+  it('should not configure any React Hooks rule with warning severity', () => {
+    Object.entries(reactHooksRules).forEach(([ruleId, config]) => {
+      const severity = Array.isArray(config) ? config[0] : config;
+
+      assert.notInclude(['warn', 1], severity, ruleId);
     });
   });
 
-  describe('Exports', () => {
-    it('`reactHooksPlugin` should be defined', () => {
-      assert.ok(reactHooksPlugin);
-      assert.strictEqual(typeof reactHooksPlugin, 'object');
-    });
+  it('`reactHooksPlugin` should be defined', () => {
+    assert.ok(reactHooksPlugin);
+    assert.strictEqual(typeof reactHooksPlugin, 'object');
   });
 
-  describe(`All key values must start with \`${prefix}\`.`, () => {
-    it('react-hooks.ts', () => {
-      Object.keys(reactHooksRules).forEach(key => {
-        assert.strictEqual(key.startsWith(prefix), true);
-      });
+  it(`all key values must start with \`${prefix}\`.`, () => {
+    Object.keys(reactHooksRules).forEach(key => {
+      assert.strictEqual(key.startsWith(prefix), true);
     });
   });
 });
