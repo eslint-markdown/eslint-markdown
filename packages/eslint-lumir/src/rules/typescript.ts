@@ -97,10 +97,11 @@ export const typescriptRules = {
 
   /**
    * Disallow function declarations that contain unsafe references inside loop statements.
+   * @description Disabled because it is deprecated.
+   * ESLint's core `no-loop-func` rule now supports TypeScript and remains enabled.
    * @see https://typescript-eslint.io/rules/no-loop-func
    */
-  'no-loop-func': 'off',
-  '@typescript-eslint/no-loop-func': 'error',
+  '@typescript-eslint/no-loop-func': 'off',
 
   /**
    * Disallow magic numbers.
