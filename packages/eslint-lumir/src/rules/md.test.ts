@@ -22,31 +22,33 @@ const prefix = 'md/';
 // --------------------------------------------------------------------------------
 
 describe('md', () => {
-  describe('ESLint integration', () => {
-    it('should lint Markdown with the configured eslint-markdown rules', () => {
-      const messages = new Linter().verify('Text  here.\n', {
-        language: 'markdown/commonmark',
-        plugins: { ...markdownPlugin, ...mdPlugin },
-        rules: mdRules,
-      });
+  it('should lint Markdown with the configured eslint-markdown rules', () => {
+    const messages = new Linter().verify('Text  here.\n', {
+      language: 'markdown/commonmark',
+      plugins: { ...markdownPlugin, ...mdPlugin },
+      rules: mdRules,
+    });
 
-      assert.lengthOf(messages, 1);
-      assert.strictEqual(messages[0].ruleId, 'md/no-double-space');
+    assert.lengthOf(messages, 1);
+    assert.strictEqual(messages[0].ruleId, 'md/no-double-space');
+  });
+
+  it('should not configure any eslint-markdown rule with warning severity', () => {
+    Object.entries(mdRules).forEach(([ruleId, config]) => {
+      const severity = Array.isArray(config) ? config[0] : config;
+
+      assert.notInclude(['warn', 1], severity, ruleId);
     });
   });
 
-  describe('Exports', () => {
-    it('`mdPlugin` should be defined', () => {
-      assert.ok(mdPlugin);
-      assert.strictEqual(typeof mdPlugin, 'object');
-    });
+  it('`mdPlugin` should be defined', () => {
+    assert.ok(mdPlugin);
+    assert.strictEqual(typeof mdPlugin, 'object');
   });
 
-  describe(`All key values must start with \`${prefix}\`.`, () => {
-    it('md.ts', () => {
-      Object.keys(mdRules).forEach(key => {
-        assert.strictEqual(key.startsWith(prefix), true);
-      });
+  it(`all key values must start with \`${prefix}\`.`, () => {
+    Object.keys(mdRules).forEach(key => {
+      assert.strictEqual(key.startsWith(prefix), true);
     });
   });
 });
