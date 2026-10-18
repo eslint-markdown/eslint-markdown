@@ -6,7 +6,6 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import type { Rule } from 'eslint';
 import noAbsolutePath from './no-absolute-path.js';
 import noEmptyNamedBlocks from './no-empty-named-blocks.js';
 import order from './order.js';
@@ -26,6 +25,6 @@ export const importPlugin = {
 
 export const stylisticPlugin = {
   rules: {
-    'spaced-comment': spacedComment as Rule.RuleModule,
+    'spaced-comment': spacedComment,
   },
 } as const;

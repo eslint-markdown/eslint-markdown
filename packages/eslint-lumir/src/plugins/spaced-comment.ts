@@ -1,7 +1,7 @@
 /**
- * @fileoverview Source code for spaced-comment rule.
+ * @fileoverview Source code for `spaced-comment` rule.
  * @license MIT Copied from `eslint` package.
- * @see https://github.com/eslint/eslint/blob/v10.0.0/lib/rules/spaced-comment.js
+ * @see https://github.com/eslint/eslint/blob/v10.13.0/lib/rules/spaced-comment.js
  */
 
 /*
@@ -28,16 +28,38 @@
  * SOFTWARE.
  */
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck -- TODO: Code was simply copied and pasted. Type annotations will be modified later.
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
+import type { JSRuleDefinition, SourceCode } from 'eslint';
 
 // --------------------------------------------------------------------------------
 // Typedef
 // --------------------------------------------------------------------------------
 
-/**
- * @import { Rule } from 'eslint';
- */
+interface CommentOptions {
+  exceptions?: string[];
+  markers?: string[];
+}
+
+export type RuleOptions = [
+  ('always' | 'never')?,
+  (CommentOptions & {
+    line?: CommentOptions;
+    block?: CommentOptions & { balanced?: boolean };
+  })?,
+];
+
+interface StyleRule {
+  beginRegex: RegExp;
+  endRegex: RegExp;
+  hasExceptions: boolean;
+  captureMarker: RegExp;
+  markers: Set<string>;
+}
+
+type Comment = ReturnType<SourceCode['getAllComments']>[number];
 
 // --------------------------------------------------------------------------------
 // Helper
@@ -51,10 +73,10 @@ const LINEBREAKS = new Set(['\r\n', '\r', '\n', '\u2028', '\u2029']);
 /**
  * Escape `RegExp` special characters.
  * @license MIT Copied from `escape-string-regexp` package.
- * @param {string} string A string to escape.
- * @returns {string} An escaped string.
+ * @param string A string to escape.
+ * @returns An escaped string.
  */
-function escapeRegExp(string) {
+function escapeRegExp(string: string) {
   // Escape characters with special meaning either inside or outside character sets.
   // Use a simple backslash escape when it’s always valid, and a `\xnn` escape when the simpler form would be disallowed by Unicode patterns’ stricter grammar.
   return string.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&').replace(/-/g, '\\x2d');
@@ -62,30 +84,30 @@ function escapeRegExp(string) {
 
 /**
  * Escapes the control characters of a given string.
- * @param {string} s A string to escape.
- * @returns {string} An escaped string.
+ * @param s A string to escape.
+ * @returns An escaped string.
  */
-function escape(s) {
+function escape(s: string) {
   return `(?:${escapeRegExp(s)})`;
 }
 
 /**
  * Escapes the control characters of a given string.
  * And adds a repeat flag.
- * @param {string} s A string to escape.
- * @returns {string} An escaped string.
+ * @param s A string to escape.
+ * @returns An escaped string.
  */
-function escapeAndRepeat(s) {
+function escapeAndRepeat(s: string) {
   return `${escape(s)}+`;
 }
 
 /**
  * Parses `markers` option.
  * If markers don't include `"*"`, this adds `"*"` to allow JSDoc comments.
- * @param {string[]} markers A marker list.
- * @returns {string[]} A marker list.
+ * @param markers A marker list.
+ * @returns A marker list.
  */
-function parseMarkersOption(markers) {
+function parseMarkersOption(markers: string[]) {
   // `*` is a marker for JSDoc comments.
   if (!markers.includes('*')) {
     return markers.concat('*');
@@ -99,10 +121,10 @@ function parseMarkersOption(markers) {
  * Generated pattern:
  *
  * 1. A space or an exception pattern sequence.
- * @param {string[]} exceptions An exception pattern list.
- * @returns {string} A regular expression string for exceptions.
+ * @param exceptions An exception pattern list.
+ * @returns A regular expression string for exceptions.
  */
-function createExceptionsPattern(exceptions) {
+function createExceptionsPattern(exceptions: string[]) {
   let pattern = '';
 
   /*
@@ -140,11 +162,11 @@ function createExceptionsPattern(exceptions) {
  *
  * 1. First, a marker or nothing.
  * 2. Next, a space or an exception pattern sequence.
- * @param {string[]} markers A marker list.
- * @param {string[]} exceptions An exception pattern list.
- * @returns {RegExp} A RegExp object for the beginning of a comment in `always` mode.
+ * @param markers A marker list.
+ * @param exceptions An exception pattern list.
+ * @returns A RegExp object for the beginning of a comment in `always` mode.
  */
-function createAlwaysStylePattern(markers, exceptions) {
+function createAlwaysStylePattern(markers: string[], exceptions: string[]) {
   let pattern = '^';
 
   /*
@@ -175,10 +197,10 @@ function createAlwaysStylePattern(markers, exceptions) {
  *
  * 1. First, a marker or nothing (captured).
  * 2. Next, a space or a tab.
- * @param {string[]} markers A marker list.
- * @returns {RegExp} A RegExp object for `never` mode.
+ * @param markers A marker list.
+ * @returns A RegExp object for `never` mode.
  */
-function createNeverStylePattern(markers) {
+function createNeverStylePattern(markers: string[]) {
   const pattern = `^(${markers.map(escape).join('|')})?[ \t]+`;
 
   return new RegExp(pattern, 'u');
@@ -188,8 +210,7 @@ function createNeverStylePattern(markers) {
 // Rule Definition
 // --------------------------------------------------------------------------------
 
-/** @type {Rule.RuleModule} */
-export default {
+const spacedComment: JSRuleDefinition<{ RuleOptions: RuleOptions }> = {
   meta: {
     type: 'suggestion',
 
@@ -278,60 +299,67 @@ export default {
   },
 
   create(context) {
-    const { sourceCode } = context;
+    const { sourceCode, options } = context;
 
     // Unless the first option is never, require a space
-    const requireSpace = context.options[0] !== 'never';
+    const requireSpace = options[0] !== 'never';
 
     /*
      * Parse the second options.
      * If markers don't include `"*"`, it's added automatically for JSDoc
      * comments.
      */
-    const config = context.options[1] || {};
+    const config = options[1] || {};
     const balanced = config.block && config.block.balanced;
 
-    const styleRules = ['block', 'line'].reduce((rule, type) => {
-      const markers = parseMarkersOption(
-        (config[type] && config[type].markers) || config.markers || [],
-      );
-      const exceptions =
-        (config[type] && config[type].exceptions) || config.exceptions || [];
-      const endNeverPattern = '[ \t]+$';
+    const styleRules = (['block', 'line'] as const).reduce(
+      (rule, type) => {
+        const markers = parseMarkersOption(
+          (config[type] && config[type].markers) || config.markers || [],
+        );
+        const exceptions =
+          (config[type] && config[type].exceptions) || config.exceptions || [];
+        const endNeverPattern = '[ \t]+$';
 
-      // Create RegExp object for valid patterns.
-      rule[type] = {
-        beginRegex: requireSpace
-          ? createAlwaysStylePattern(markers, exceptions)
-          : createNeverStylePattern(markers),
-        endRegex:
-          balanced && requireSpace
-            ? new RegExp(`${createExceptionsPattern(exceptions)}$`, 'u')
-            : new RegExp(endNeverPattern, 'u'),
-        hasExceptions: exceptions.length > 0,
-        captureMarker: new RegExp(`^(${markers.map(escape).join('|')})`, 'u'),
-        markers: new Set(markers),
-      };
+        // Create RegExp object for valid patterns.
+        rule[type] = {
+          beginRegex: requireSpace
+            ? createAlwaysStylePattern(markers, exceptions)
+            : createNeverStylePattern(markers),
+          endRegex:
+            balanced && requireSpace
+              ? new RegExp(`${createExceptionsPattern(exceptions)}$`, 'u')
+              : new RegExp(endNeverPattern, 'u'),
+          hasExceptions: exceptions.length > 0,
+          captureMarker: new RegExp(`^(${markers.map(escape).join('|')})`, 'u'),
+          markers: new Set(markers),
+        };
 
-      return rule;
-    }, {});
+        return rule;
+      },
+      {} as Record<'block' | 'line', StyleRule>,
+    );
 
     /**
      * Reports a beginning spacing error with an appropriate message.
-     * @param {ASTNode} node A comment node to check.
-     * @param {string} messageId An error message to report.
-     * @param {Array} match An array of match results for markers.
-     * @param {string} refChar Character used for reference in the error message.
-     * @returns {void}
+     * @param node A comment node to check.
+     * @param messageId An error message to report.
+     * @param match An array of match results for markers.
+     * @param refChar Character used for reference in the error message.
      */
-    function reportBegin(node, messageId, match, refChar) {
+    function reportBegin(
+      node: Comment,
+      messageId: string,
+      match: RegExpExecArray | null,
+      refChar: string,
+    ) {
       const type = node.type.toLowerCase();
       const commentIdentifier = type === 'block' ? '/*' : '//';
 
       context.report({
         node,
         fix(fixer) {
-          const start = node.range[0];
+          const [start] = sourceCode.getRange(node);
           let end = start + 2;
 
           if (requireSpace) {
@@ -340,10 +368,11 @@ export default {
             }
             return fixer.insertTextAfterRange([start, end], ' ');
           }
-          end += match[0].length;
+          // In never mode, callers only report when the pattern matches.
+          end += match![0].length;
           return fixer.replaceTextRange(
             [start, end],
-            commentIdentifier + (match[1] ? match[1] : ''),
+            commentIdentifier + (match![1] ? match![1] : ''),
           );
         },
         messageId,
@@ -353,20 +382,22 @@ export default {
 
     /**
      * Reports an ending spacing error with an appropriate message.
-     * @param {ASTNode} node A comment node to check.
-     * @param {string} messageId An error message to report.
-     * @param {string} match An array of the matched whitespace characters.
-     * @returns {void}
+     * @param node A comment node to check.
+     * @param messageId An error message to report.
+     * @param [match] An array of the matched whitespace characters.
      */
-    function reportEnd(node, messageId, match) {
+    function reportEnd(node: Comment, messageId: string, match?: RegExpExecArray) {
       context.report({
         node,
         fix(fixer) {
+          const [nodeStart, nodeEnd] = sourceCode.getRange(node);
+
           if (requireSpace) {
-            return fixer.insertTextAfterRange([node.range[0], node.range[1] - 2], ' ');
+            return fixer.insertTextAfterRange([nodeStart, nodeEnd - 2], ' ');
           }
-          const end = node.range[1] - 2;
-          const start = end - match[0].length;
+          const end = nodeEnd - 2;
+          // In never mode, callers only report when the pattern matches.
+          const start = end - match![0].length;
 
           return fixer.replaceTextRange([start, end], '');
         },
@@ -376,11 +407,10 @@ export default {
 
     /**
      * Reports a given comment if it's invalid.
-     * @param {ASTNode} node a comment node to check.
-     * @returns {void}
+     * @param node a comment node to check.
      */
-    function checkCommentForSpace(node) {
-      const type = node.type.toLowerCase();
+    function checkCommentForSpace(node: Comment) {
+      const type = node.type === 'Block' ? 'block' : 'line';
       const rule = styleRules[type];
       const commentIdentifier = type === 'block' ? '/*' : '//';
 
@@ -427,8 +457,11 @@ export default {
       Program() {
         const comments = sourceCode.getAllComments();
 
+        // @ts-expect-error -- TODO: ESLint returns Shebang comments, but its comment type omits them.
         comments.filter(token => token.type !== 'Shebang').forEach(checkCommentForSpace);
       },
     };
   },
 };
+
+export default spacedComment;

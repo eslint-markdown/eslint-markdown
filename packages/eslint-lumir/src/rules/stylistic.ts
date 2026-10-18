@@ -16,8 +16,8 @@ import { stylisticPlugin as stylisticPluginModule } from '../plugins/index.js';
 // Export
 // --------------------------------------------------------------------------------
 
-export const stylisticPlugin: { '@stylistic': ESLint.Plugin } = {
-  '@stylistic': stylisticPluginModule,
+export const stylisticPlugin: { style: ESLint.Plugin } = {
+  style: stylisticPluginModule,
 };
 
 export const stylisticRules = {
@@ -26,7 +26,7 @@ export const stylisticRules = {
    * @see https://eslint.style/rules/spaced-comment (@stylistic)
    * @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb-base/rules/style.js#L499-L509 (airbnb-base)
    */
-  '@stylistic/spaced-comment': [
+  'style/spaced-comment': [
     'error',
     'always',
     {

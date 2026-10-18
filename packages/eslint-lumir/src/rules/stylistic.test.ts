@@ -14,37 +14,39 @@ import { stylisticPlugin, stylisticRules } from './stylistic.js';
 // Helper
 // --------------------------------------------------------------------------------
 
-const prefix = '@stylistic/';
+const prefix = 'style/';
 
 // --------------------------------------------------------------------------------
 // Test
 // --------------------------------------------------------------------------------
 
 describe('stylistic', () => {
-  describe('ESLint integration', () => {
-    it('should lint comments with the configured stylistic rules', () => {
-      const messages = new Linter().verify('//comment\n', {
-        plugins: stylisticPlugin,
-        rules: stylisticRules,
-      });
+  it('should lint comments with the configured stylistic rules', () => {
+    const messages = new Linter().verify('//comment\n', {
+      plugins: stylisticPlugin,
+      rules: stylisticRules,
+    });
 
-      assert.lengthOf(messages, 1);
-      assert.strictEqual(messages[0].ruleId, '@stylistic/spaced-comment');
+    assert.lengthOf(messages, 1);
+    assert.strictEqual(messages[0].ruleId, 'style/spaced-comment');
+  });
+
+  it('should not configure any stylistic rule with warning severity', () => {
+    Object.entries(stylisticRules).forEach(([ruleId, config]) => {
+      const severity = Array.isArray(config) ? config[0] : config;
+
+      assert.notInclude(['warn', 1], severity, ruleId);
     });
   });
 
-  describe('Exports', () => {
-    it('`stylisticPlugin` should be defined', () => {
-      assert.ok(stylisticPlugin);
-      assert.strictEqual(typeof stylisticPlugin, 'object');
-    });
+  it('`stylisticPlugin` should be defined', () => {
+    assert.ok(stylisticPlugin);
+    assert.strictEqual(typeof stylisticPlugin, 'object');
   });
 
-  describe(`All key values must start with \`${prefix}\`.`, () => {
-    it('stylistic.ts', () => {
-      Object.keys(stylisticRules).forEach(key => {
-        assert.strictEqual(key.startsWith(prefix), true);
-      });
+  it(`all key values must start with \`${prefix}\`.`, () => {
+    Object.keys(stylisticRules).forEach(key => {
+      assert.strictEqual(key.startsWith(prefix), true);
     });
   });
 });
