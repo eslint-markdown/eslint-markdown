@@ -464,4 +464,8 @@ const spacedComment: JSRuleDefinition<{ RuleOptions: RuleOptions }> = {
   },
 };
 
+// --------------------------------------------------------------------------------
+// Export
+// --------------------------------------------------------------------------------
+
 export default spacedComment;

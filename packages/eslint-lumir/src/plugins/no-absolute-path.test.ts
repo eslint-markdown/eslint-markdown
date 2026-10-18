@@ -28,10 +28,18 @@
  * SOFTWARE.
  */
 
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
 import parser from '@typescript-eslint/parser';
 import { RuleTester } from 'eslint';
 import { describe, it } from 'vitest';
 import rule from './no-absolute-path.js';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
 
 RuleTester.describe = describe;
 RuleTester.it = it;
@@ -48,6 +56,10 @@ function tInvalid(test: RuleTester.InvalidTestCase): RuleTester.InvalidTestCase 
 const ABSOLUTE_ERROR: RuleTester.TestCaseError = {
   messageId: 'absolute',
 };
+
+// --------------------------------------------------------------------------------
+// Test
+// --------------------------------------------------------------------------------
 
 ruleTester.run('no-absolute-path', rule, {
   valid: [

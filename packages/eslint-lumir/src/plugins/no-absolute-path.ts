@@ -36,10 +36,18 @@
 */
 // @ts-nocheck -- TODO: Code was simply copied and pasted. Type annotations will be modified later.
 
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
 import path from 'node:path';
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { Rule } from 'eslint';
+
+// --------------------------------------------------------------------------------
+// Typedef
+// --------------------------------------------------------------------------------
 
 export type MessageId = 'absolute';
 
@@ -60,6 +68,10 @@ interface ModuleOptions {
   esmodule?: boolean;
   ignore?: Array<RegExp | string>;
 }
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
 
 /**
  * Returns an object of node visitors that will call 'visitor' with every
@@ -231,6 +243,10 @@ function moduleVisitor(visitor: Visitor, options?: ModuleOptions) {
   return visitors;
 }
 
+// --------------------------------------------------------------------------------
+// Rule Definition
+// --------------------------------------------------------------------------------
+
 const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
@@ -280,5 +296,9 @@ const rule: Rule.RuleModule = {
     }, options);
   },
 };
+
+// --------------------------------------------------------------------------------
+// Export
+// --------------------------------------------------------------------------------
 
 export default rule;

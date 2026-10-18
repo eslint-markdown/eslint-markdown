@@ -327,7 +327,9 @@ type Category = keyof typeof categories;
 const defaultGroups = ['builtin', 'external', 'parent', 'sibling', 'index'] as const;
 const unassignedImportsTopRank = Number.NEGATIVE_INFINITY;
 
-// REPORTING AND FIXING
+// --------------------------------------------------------------------------------
+// Helper: Reporting and Fixing
+// --------------------------------------------------------------------------------
 
 function reverse(array: ImportEntryWithRank[]): ImportEntryWithRank[] {
   return array.map(v => ({ ...v, rank: -v.rank })).reverse();
@@ -936,7 +938,9 @@ function mutateRanksToAlphabetize(
   }
 }
 
-// DETECTING
+// --------------------------------------------------------------------------------
+// Helper: Detecting
+// --------------------------------------------------------------------------------
 
 function computePathRank(
   ranks: RanksGroups,
@@ -1910,5 +1914,9 @@ const rule: Rule.RuleModule = {
     };
   },
 };
+
+// --------------------------------------------------------------------------------
+// Export
+// --------------------------------------------------------------------------------
 
 export default rule;

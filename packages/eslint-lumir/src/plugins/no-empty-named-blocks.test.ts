@@ -28,10 +28,18 @@
  * SOFTWARE.
  */
 
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
 import parser from '@typescript-eslint/parser';
 import { RuleTester } from 'eslint';
 import { describe, it } from 'vitest';
 import rule from './no-empty-named-blocks.js';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
 
 RuleTester.describe = describe;
 RuleTester.it = it;
@@ -62,6 +70,10 @@ function generateSuggestionsTestCases(cases: string[]): ReturnType<typeof tInval
     }),
   );
 }
+
+// --------------------------------------------------------------------------------
+// Test
+// --------------------------------------------------------------------------------
 
 ruleTester.run('no-empty-named-blocks', rule, {
   valid: [

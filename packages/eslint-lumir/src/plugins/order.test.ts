@@ -29,11 +29,19 @@
  * SOFTWARE.
  */
 
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
 import { fileURLToPath } from 'node:url';
 import parser from '@typescript-eslint/parser';
 import { RuleTester } from 'eslint';
 import { describe, it } from 'vitest';
 import rule from './order.js';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
 
 RuleTester.describe = describe;
 RuleTester.it = it;
@@ -84,6 +92,10 @@ function createOrderError(
 function createGenericError(error: string): RuleTester.TestCaseError {
   return { messageId: 'error', data: { error } };
 }
+
+// --------------------------------------------------------------------------------
+// Test
+// --------------------------------------------------------------------------------
 
 ruleTester.run('order', rule, {
   valid: [

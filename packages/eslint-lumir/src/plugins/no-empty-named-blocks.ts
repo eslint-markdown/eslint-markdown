@@ -35,8 +35,16 @@
 */
 // @ts-nocheck -- TODO: Code was simply copied and pasted. Type annotations will be modified later.
 
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { Rule } from 'eslint';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
 
 function getEmptyBlockRange(tokens: TSESTree.Token[], index: number) {
   const token = tokens[index];
@@ -56,6 +64,10 @@ function getEmptyBlockRange(tokens: TSESTree.Token[], index: number) {
 
   return [start, end] as const;
 }
+
+// --------------------------------------------------------------------------------
+// Rule Definition
+// --------------------------------------------------------------------------------
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -169,5 +181,9 @@ const rule: Rule.RuleModule = {
     };
   },
 };
+
+// --------------------------------------------------------------------------------
+// Export
+// --------------------------------------------------------------------------------
 
 export default rule;
