@@ -249,7 +249,7 @@ export const nodeRules = {
    * @description This rule is not included in `airbnb-base`.
    * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/process.md (n)
    */
-  'node/prefer-global/process': ['error', 'always'],
+  'node/prefer-global/process': 'off',
 
   /**
    * Enforce either `TextDecoder` or `require("util").TextDecoder`.
