@@ -144,6 +144,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 1,
+          column: 2,
+          endLine: 1,
+          endColumn: 6,
           data: {
             expected: 1,
             actual: 4,
@@ -159,6 +163,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 1,
+          column: 2,
+          endLine: 1,
+          endColumn: 5,
           data: {
             expected: 1,
             actual: 3,
@@ -175,6 +183,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 5,
           data: {
             expected: 1,
             actual: 2,
@@ -190,6 +202,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
           data: {
             expected: 1,
             actual: 2,
@@ -212,6 +228,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 3,
+          column: 4,
+          endLine: 3,
+          endColumn: 7,
           data: {
             expected: 1,
             actual: 3,
@@ -227,6 +247,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 7,
           data: {
             expected: 1,
             actual: 3,
@@ -242,6 +266,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 6,
           data: {
             expected: 1,
             actual: 3,
@@ -266,6 +294,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 1,
+          column: 2,
+          endLine: 1,
+          endColumn: 3,
           data: {
             expected: 3,
             actual: 1,
@@ -289,6 +321,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 4,
           data: {
             expected: 3,
             actual: 1,
@@ -319,6 +355,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 3,
           data: {
             expected: 2,
             actual: 1,
@@ -348,6 +388,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 2,
+          column: 3,
+          endLine: 2,
+          endColumn: 4,
           data: {
             expected: 2,
             actual: 1,
@@ -381,6 +425,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 2,
+          column: 2,
+          endLine: 2,
+          endColumn: 3,
           data: {
             expected: 2,
             actual: 1,
@@ -388,6 +436,10 @@ ruleTester('no-multiple-list-space', rule, {
         },
         {
           messageId: 'noMultipleListSpace',
+          line: 4,
+          column: 2,
+          endLine: 4,
+          endColumn: 3,
           data: {
             expected: 2,
             actual: 1,
@@ -404,6 +456,10 @@ ruleTester('no-multiple-list-space', rule, {
       errors: [
         {
           messageId: 'noMultipleListSpace',
+          line: 1,
+          column: 2,
+          endLine: 1,
+          endColumn: 5,
           data: {
             expected: 1,
             actual: 3,

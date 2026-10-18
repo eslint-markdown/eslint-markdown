@@ -207,6 +207,7 @@ For example, to require two spaces:
 
 - [CommonMark Spec: Lists](https://spec.commonmark.org/current/#lists)
 - [GFM Spec: Lists](https://github.github.com/gfm/#lists)
+- [remark-lint-list-item-spacing](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-list-item-spacing)
 
 ## Prior Art
 
