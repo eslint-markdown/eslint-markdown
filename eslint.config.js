@@ -178,6 +178,7 @@ export default defineConfig([
         },
       ],
       'md/no-multiple-atx-heading-space': ['error', { checkClosedHeading: true }],
+      'md/no-multiple-link-space': 'error',
       'md/no-shell-dollar': 'off',
       'md/no-tab': [
         'error',
