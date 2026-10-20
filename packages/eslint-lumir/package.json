@@ -140,22 +140,21 @@
     }
   },
   "dependencies": {
-    "@eslint-react/eslint-plugin": "^5.28.1",
+    "@eslint-react/eslint-plugin": "^5.28.3",
     "@eslint/json": "^2.1.1",
     "@eslint/markdown": "^8.0.3",
-    "@typescript-eslint/eslint-plugin": "^8.71.2",
-    "@typescript-eslint/parser": "^8.71.2",
+    "@typescript-eslint/eslint-plugin": "^8.72.0",
+    "@typescript-eslint/parser": "^8.72.0",
     "eslint-markdown": "^0.19.0",
     "eslint-plugin-import-lite": "^0.6.0",
     "eslint-plugin-jsx-a11y-x": "^0.2.0",
     "eslint-plugin-n": "^18.5.0",
-    "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0",
     "minimatch": "^10.2.6"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^16.4.2",
-    "@typescript-eslint/utils": "^8.71.2",
+    "@typescript-eslint/utils": "^8.72.0",
     "eslint": "^10.13.0"
   }
 }

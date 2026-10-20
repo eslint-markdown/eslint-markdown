@@ -19,7 +19,6 @@ import { nodePlugin, nodeRules } from '../rules/node.js';
 import { stylisticPlugin, stylisticRules } from '../rules/stylistic.js';
 import { jsxA11yPlugin, jsxA11yRules } from '../rules/jsx-a11y.js';
 import { reactPlugin, reactRules } from '../rules/react.js';
-import { reactHooksPlugin, reactHooksRules } from '../rules/react-hooks.js';
 
 // --------------------------------------------------------------------------------
 // Export
@@ -38,7 +37,6 @@ export default {
     ...stylisticPlugin,
     ...jsxA11yPlugin,
     ...reactPlugin,
-    ...reactHooksPlugin,
   },
   rules: {
     ...eslintRules,
@@ -47,7 +45,6 @@ export default {
     ...stylisticRules,
     ...jsxA11yRules,
     ...reactRules,
-    ...reactHooksRules,
   },
   settings: {
     node,

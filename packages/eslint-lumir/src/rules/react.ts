@@ -1,18 +1,11 @@
 /**
  * @fileoverview This file follows:
  *
- * - The original rule order from `eslint-plugin-react`, migrated to `@eslint-react/eslint-plugin`.
- * - Unmapped rules and their original options remain commented out for review.
- *   - @see https://github.com/jsx-eslint/eslint-plugin-react?tab=readme-ov-file#list-of-supported-rules
+ * - The rules listed on `eslint-plugin-react-hooks`.
+ *   - @see https://react.dev/reference/eslint-plugin-react-hooks
  *
- * - The best practices outlined in `eslint-config-next@15.1.4`.
- *   - @see https://github.com/vercel/next.js/blob/v15.1.4/packages/eslint-config-next/index.js#L57
- *
- * - The best practices outlined in `eslint-config-airbnb@19.0.4`.
- *   - @see https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v19.0.4/packages/eslint-config-airbnb/rules/react.js
- *
- * - The rules disabled by `eslint-config-prettier@9.1.0`.
- *   - @see https://github.com/prettier/eslint-config-prettier/blob/v9.1.0/index.js#L55-L69
+ * - The rules listed on `@eslint-react/eslint-plugin`.
+ *   - @see https://eslint-react.xyz/docs/rules
  */
 
 // --------------------------------------------------------------------------------
@@ -35,34 +28,36 @@ export const reactRules = {
   // #region X Rules
 
   /**
-   * Validates usage of Error Boundaries instead of try/catch for errors in child components.
-   * @description Disabled to avoid duplicate checks with `react-hooks/error-boundaries`.
+   * Validates usage of Error Boundaries instead of `try`/`catch` for errors in child components.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/error-boundaries
    * @see https://eslint-react.xyz/docs/rules/error-boundaries
    */
-  'react-x/error-boundaries': 'off',
+  'react-x/error-boundaries': 'error',
 
   /**
    * Verifies the list of dependencies for Hooks like `useEffect` and similar.
-   * @description Disabled to avoid duplicate checks with `react-hooks/exhaustive-deps`.
+   * (Validates that dependency arrays for React hooks contain all necessary dependencies.)
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/exhaustive-deps
+   * @see https://eslint-react.xyz/docs/rules/exhaustive-deps
    * @see https://github.com/facebook/react/issues/14920
    */
-  'react-x/exhaustive-deps': 'off',
+  'react-x/exhaustive-deps': 'error',
 
   /**
    * Validates against assignment/mutation of globals during render,
    * part of ensuring that side effects must run outside of render.
-   * @description Disabled to avoid duplicate checks with `react-hooks/globals`.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/globals
    * @see https://eslint-react.xyz/docs/rules/globals
    */
-  'react-x/globals': 'off',
+  'react-x/globals': 'error',
 
   /**
    * Validates against mutating props, state, and other immutable values, including through functions
    * passed into frozen contexts such as JSX props, hook arguments, and hook return values.
-   * @description Disabled to avoid duplicate checks with `react-hooks/immutability`.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/immutability
    * @see https://eslint-react.xyz/docs/rules/immutability
    */
-  'react-x/immutability': 'off',
+  'react-x/immutability': 'error',
 
   /**
    * Disallows accessing `this.state` inside `setState` calls.
@@ -311,59 +306,62 @@ export const reactRules = {
 
   /**
    * Validates that components and hooks are pure by checking that they do not call known-impure functions during render.
-   * @description Disabled to avoid duplicate checks with `react-hooks/purity`.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/purity
    * @see https://eslint-react.xyz/docs/rules/purity
    */
-  'react-x/purity': 'off',
+  'react-x/purity': 'error',
 
   /**
    * Validates correct usage of refs by checking that `ref.current` is not read or written during render.
-   * @description Disabled to avoid duplicate checks with `react-hooks/refs`.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/refs
    * @see https://eslint-react.xyz/docs/rules/refs
    */
-  'react-x/refs': 'off',
+  'react-x/refs': 'error',
 
   /**
-   * Enforces the Rules of Hooks.
-   * @description Disabled to avoid duplicate checks with `react-hooks/rules-of-hooks`.
+   * Validates that components and hooks follow the Rules of Hooks.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/rules-of-hooks
+   * @see https://eslint-react.xyz/docs/rules/rules-of-hooks
    * @see https://react.dev/reference/rules/rules-of-hooks
    */
-  'react-x/rules-of-hooks': 'off',
+  'react-x/rules-of-hooks': 'error',
 
   /**
-   * Validates against setting state synchronously in an effect, which can lead to re-renders that degrade performance.
-   * @description Disabled to avoid duplicate checks with `react-hooks/set-state-in-effect`.
+   * Validates against calling `setState` synchronously in an effect, which can lead to re-renders that degrade performance.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/set-state-in-effect
    * @see https://eslint-react.xyz/docs/rules/set-state-in-effect
    */
-  'react-x/set-state-in-effect': 'off',
+  'react-x/set-state-in-effect': 'error',
 
   /**
    * Validates against unconditionally setting state during render, which can trigger additional renders and potential infinite render loops.
-   * @description Disabled to avoid duplicate checks with `react-hooks/set-state-in-render`.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/set-state-in-render
    * @see https://eslint-react.xyz/docs/rules/set-state-in-render
    */
-  'react-x/set-state-in-render': 'off',
+  'react-x/set-state-in-render': 'error',
 
   /**
    * Validates that components are static, not recreated every render.
-   * @description Disabled to avoid duplicate checks with `react-hooks/static-components`.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/static-components
    * @see https://eslint-react.xyz/docs/rules/static-components
    */
-  'react-x/static-components': 'off',
+  'react-x/static-components': 'error',
 
   /**
    * Validates against syntax that React Compiler does not support.
-   * @description Disabled to avoid duplicate checks with `react-hooks/unsupported-syntax`.
+   * If you need to, you can still use this syntax outside of React,
+   * such as in a standalone utility function.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/unsupported-syntax
    * @see https://eslint-react.xyz/docs/rules/unsupported-syntax
    */
-  'react-x/unsupported-syntax': 'off',
+  'react-x/unsupported-syntax': 'error',
 
   /**
    * Validates that `useMemo` is called with a callback that returns a value.
-   * @description Disabled to avoid duplicate checks with `react-hooks/use-memo`.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/use-memo
    * @see https://eslint-react.xyz/docs/rules/use-memo
    */
-  'react-x/use-memo': 'off',
+  'react-x/use-memo': 'error',
 
   /**
    * Enforces correct usage of `useState`, including destructuring, symmetric naming of the value and setter,
