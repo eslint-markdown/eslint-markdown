@@ -96,6 +96,8 @@ This rule fixes trailing punctuation by removing it and any whitespace immediate
 
 For example, `# Heading !` is fixed to `# Heading`. An escape backslash immediately before ASCII punctuation is also removed, so `# Heading\!` is fixed to `# Heading`.
 
+Because CommonMark only recognizes backslash escapes before ASCII punctuation, a backslash before non-ASCII punctuation is a literal character and is preserved. For example, `# Heading\！` is fixed to `# Heading\`.
+
 ## When Not To Use It
 
 If you intentionally use punctuation at the end of headings, you should disable this rule.

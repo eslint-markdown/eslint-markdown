@@ -1059,5 +1059,146 @@ ruleTester('no-trailing-heading-punctuation', rule, {
         },
       ],
     },
+
+    // Backslash before trailing non-ASCII punctuation
+    {
+      name: 'ATX: Heading with a literal backslash before trailing full-width exclamation mark',
+      code: '# Hello\\！',
+      output: '# Hello\\',
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
+          data: {
+            punctuation: '！',
+          },
+        },
+      ],
+    },
+    {
+      name: 'ATX: Heading with two backslashes before trailing full-width exclamation mark',
+      code: `# Hello${'\\'.repeat(2)}！`,
+      output: `# Hello${'\\'.repeat(2)}`,
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 10,
+          endLine: 1,
+          endColumn: 11,
+          data: {
+            punctuation: '！',
+          },
+        },
+      ],
+    },
+    {
+      name: 'ATX: Heading with three backslashes before trailing full-width exclamation mark',
+      code: `# Hello${'\\'.repeat(3)}！`,
+      output: `# Hello${'\\'.repeat(3)}`,
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 11,
+          endLine: 1,
+          endColumn: 12,
+          data: {
+            punctuation: '！',
+          },
+        },
+      ],
+    },
+    {
+      name: 'ATX: Heading with a literal backslash before configured trailing non-ASCII punctuation',
+      code: '# Hello\\、',
+      output: '# Hello\\',
+      options: [{ punctuation: ['、'] }],
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
+          data: {
+            punctuation: '、',
+          },
+        },
+      ],
+    },
+    {
+      name: 'ATX: Heading with a literal backslash before trailing full-width and ASCII punctuation',
+      code: '# Hello\\！!',
+      output: '# Hello\\',
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 11,
+          data: {
+            punctuation: '！!',
+          },
+        },
+      ],
+    },
+    {
+      name: 'ATX: Heading with an escaped trailing ASCII punctuation before full-width punctuation',
+      code: '# Hello\\!！',
+      output: '# Hello',
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 11,
+          data: {
+            punctuation: '!！',
+          },
+        },
+      ],
+    },
+    {
+      name: 'ATX: Heading with an escaped configured trailing question mark',
+      code: '# Hello\\?',
+      output: '# Hello',
+      options: [{ punctuation: ['?'] }],
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
+          data: {
+            punctuation: '?',
+          },
+        },
+      ],
+    },
+    {
+      name: 'ATX: Heading with a literal backslash before configured trailing full-width question mark',
+      code: '# Hello\\？',
+      output: '# Hello\\',
+      options: [{ punctuation: ['？'] }],
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
+          data: {
+            punctuation: '？',
+          },
+        },
+      ],
+    },
   ],
 });

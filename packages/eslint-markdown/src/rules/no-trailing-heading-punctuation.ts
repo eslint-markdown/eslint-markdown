@@ -10,6 +10,7 @@
 import { escapeStringRegexp } from '../core/utils/index.js';
 import {
   URL_RULE_DOCS,
+  asciiPunctuationWithQuestionMark,
   punctuation as defaultPunctuation,
   escapedTrailingBackslashRegex,
   gemojiRegex,
@@ -44,6 +45,16 @@ const trailingGemojiRegex = new RegExp(`${gemojiRegex.source}$`, gemojiRegex.fla
 const trailingHtmlEntityRegex = new RegExp(
   `${htmlEntityRegex.source}$`,
   htmlEntityRegex.flags,
+);
+
+/**
+ * Regular expression for identifying a single backslash-escapable punctuation character.
+ * - NOTE: CommonMark only recognizes backslash escapes before ASCII punctuation, so a
+ *   backslash before non-ASCII punctuation is a literal character instead of an escape.
+ * @see https://spec.commonmark.org/0.31.2/#backslash-escapes
+ */
+const escapablePunctuationRegex = new RegExp(
+  `^[${escapeStringRegexp(asciiPunctuationWithQuestionMark.join(''))}]$`,
 );
 
 // --------------------------------------------------------------------------------
@@ -240,6 +251,8 @@ export default {
                 Number(
                   // When `leadingSpaces` is `''` (empty string), check for an escaped trailing backslash.
                   !leadingSpaces &&
+                    // The preceding backslash is an escape only when the punctuation is escapable.
+                    escapablePunctuationRegex.test(trailingPunctuation[0]) &&
                     escapedTrailingBackslashRegex.test(
                       lastChildText.slice(0, -trailingPunctuation.length),
                     ),
