@@ -1164,6 +1164,24 @@ ruleTester('no-trailing-heading-punctuation', rule, {
         },
       ],
     },
+    {
+      name: 'ATX: Heading with a literal backslash before configured trailing full-width question mark',
+      code: '# Hello\\？',
+      output: '# Hello\\',
+      options: [{ punctuation: ['？'] }],
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
+          data: {
+            punctuation: '？',
+          },
+        },
+      ],
+    },
 
     {
       name: 'ATX: Heading with an escaped configured trailing question mark',
@@ -1179,24 +1197,6 @@ ruleTester('no-trailing-heading-punctuation', rule, {
           endColumn: 10,
           data: {
             punctuation: '?',
-          },
-        },
-      ],
-    },
-    {
-      name: 'ATX: Heading with a literal backslash before configured trailing full-width question mark',
-      code: '# Hello\\？',
-      output: '# Hello\\',
-      options: [{ punctuation: ['？'] }],
-      errors: [
-        {
-          messageId: 'noTrailingHeadingPunctuation',
-          line: 1,
-          column: 9,
-          endLine: 1,
-          endColumn: 10,
-          data: {
-            punctuation: '？',
           },
         },
       ],
