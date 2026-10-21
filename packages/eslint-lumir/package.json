@@ -140,7 +140,7 @@
     }
   },
   "dependencies": {
-    "@eslint-react/eslint-plugin": "^5.28.3",
+    "@eslint-react/eslint-plugin": "^5.28.4",
     "@eslint/json": "^2.1.1",
     "@eslint/markdown": "^8.0.3",
     "@typescript-eslint/eslint-plugin": "^8.72.0",
