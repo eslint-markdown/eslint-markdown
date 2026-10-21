@@ -57,7 +57,7 @@
   },
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "tsc -b tsconfig.build.json && node ../../scripts/build-config.js && tsc -b tsconfig.build.json && node ../../scripts/cp.js ../../README.md README.md",
+    "build": "tsc -b tsconfig.build.json && node ../../scripts/build-config.js && tsc -b tsconfig.build.json",
     "test": "npm run test:types && npm run test:unit",
     "test:types": "tsc -b ./tsconfig.test-d.json",
     "test:unit": "vitest run"
@@ -79,7 +79,7 @@
     "@eslint/markdown": "^8.0.3",
     "@types/mdast": "^4.0.4",
     "@types/unist": "^3.0.3",
-    "eslint": "^9.39.5",
+    "eslint": "^10.13.0",
     "vitest": "^4.1.9"
   }
 }
