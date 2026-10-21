@@ -1113,24 +1113,6 @@ ruleTester('no-trailing-heading-punctuation', rule, {
       ],
     },
     {
-      name: 'ATX: Heading with a literal backslash before configured trailing non-ASCII punctuation',
-      code: '# Hello\\、',
-      output: '# Hello\\',
-      options: [{ punctuation: ['、'] }],
-      errors: [
-        {
-          messageId: 'noTrailingHeadingPunctuation',
-          line: 1,
-          column: 9,
-          endLine: 1,
-          endColumn: 10,
-          data: {
-            punctuation: '、',
-          },
-        },
-      ],
-    },
-    {
       name: 'ATX: Heading with a literal backslash before trailing full-width and ASCII punctuation',
       code: '# Hello\\！!',
       output: '# Hello\\',
@@ -1165,6 +1147,25 @@ ruleTester('no-trailing-heading-punctuation', rule, {
       ],
     },
     {
+      name: 'ATX: Heading with a literal backslash before configured trailing non-ASCII punctuation',
+      code: '# Hello\\、',
+      output: '# Hello\\',
+      options: [{ punctuation: ['、'] }],
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
+          data: {
+            punctuation: '、',
+          },
+        },
+      ],
+    },
+
+    {
       name: 'ATX: Heading with an escaped configured trailing question mark',
       code: '# Hello\\?',
       output: '# Hello',
@@ -1196,6 +1197,42 @@ ruleTester('no-trailing-heading-punctuation', rule, {
           endColumn: 10,
           data: {
             punctuation: '？',
+          },
+        },
+      ],
+    },
+    {
+      name: 'ATX: Heading with an escaped configured trailing asterisk',
+      code: '# Hello\\*',
+      output: '# Hello',
+      options: [{ punctuation: ['*'] }],
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
+          data: {
+            punctuation: '*',
+          },
+        },
+      ],
+    },
+    {
+      name: 'ATX: Heading with three backslashes before a configured trailing hyphen preserves two backslashes',
+      code: `# Hello${'\\'.repeat(3)}-`,
+      output: `# Hello${'\\'.repeat(2)}`,
+      options: [{ punctuation: ['-'] }],
+      errors: [
+        {
+          messageId: 'noTrailingHeadingPunctuation',
+          line: 1,
+          column: 11,
+          endLine: 1,
+          endColumn: 12,
+          data: {
+            punctuation: '-',
           },
         },
       ],
