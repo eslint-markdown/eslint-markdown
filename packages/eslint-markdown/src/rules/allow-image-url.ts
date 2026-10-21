@@ -76,7 +76,7 @@ export default {
             items: {
               oneOf: [
                 { type: 'object', additionalProperties: false },
-                { type: 'string' },
+                { type: 'string', minLength: 1 },
               ],
             },
             uniqueItems: true,
@@ -86,7 +86,7 @@ export default {
             items: {
               oneOf: [
                 { type: 'object', additionalProperties: false },
-                { type: 'string' },
+                { type: 'string', minLength: 1 },
               ],
             },
             uniqueItems: true,

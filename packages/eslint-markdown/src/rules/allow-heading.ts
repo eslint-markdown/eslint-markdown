@@ -45,14 +45,20 @@ const headingOptionsSchema = {
     allow: {
       type: 'array',
       items: {
-        oneOf: [{ type: 'object', additionalProperties: false }, { type: 'string' }],
+        oneOf: [
+          { type: 'object', additionalProperties: false },
+          { type: 'string', minLength: 1 },
+        ],
       },
       uniqueItems: true,
     },
     disallow: {
       type: 'array',
       items: {
-        oneOf: [{ type: 'object', additionalProperties: false }, { type: 'string' }],
+        oneOf: [
+          { type: 'object', additionalProperties: false },
+          { type: 'string', minLength: 1 },
+        ],
       },
       uniqueItems: true,
     },
