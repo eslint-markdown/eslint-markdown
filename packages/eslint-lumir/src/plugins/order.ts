@@ -1359,7 +1359,6 @@ function getAlphabetizeConfig(options: Options): AlphabetizeOptions {
   return { order, orderImportKind, caseInsensitive };
 }
 
-// TODO, semver-major: Change the default of "distinctGroup" from true to false
 const defaultDistinctGroup = true;
 
 export interface Options {

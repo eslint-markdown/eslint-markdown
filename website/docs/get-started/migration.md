@@ -30,8 +30,6 @@ You can find more information on using `@eslint/markdown` together with `eslint-
 
 If you are a user of [`markdownlint`](https://github.com/DavidAnson/markdownlint), [`markdownlint-cli`](https://github.com/igorshubovych/markdownlint-cli), or [`markdownlint-cli2`](https://github.com/DavidAnson/markdownlint-cli2), this section will guide you through migrating your existing configuration to `eslint-markdown` and `@eslint/markdown`.
 
-<!-- TODO -->
-
 ::: warning :construction: This section is a work in progress :construction:
 
 This section is currently under construction and will be updated soon.
@@ -63,8 +61,6 @@ This section is currently under construction and will be updated soon.
 
 If you are a user of [`remark-lint`](https://github.com/remarkjs/remark-lint#readme), this section will guide you through migrating your existing configuration to `eslint-markdown` and `@eslint/markdown`.
 
-<!-- TODO -->
-
 ::: warning :construction: This section is a work in progress :construction:
 
 This section is currently under construction and will be updated soon.
@@ -92,8 +88,6 @@ This section is currently under construction and will be updated soon.
 ## Migrating from [`textlint`](https://github.com/textlint/textlint#readme)
 
 If you are a user of [`textlint`](https://github.com/textlint/textlint#readme), this section will guide you through migrating your existing configuration to `eslint-markdown` and `@eslint/markdown`.
-
-<!-- TODO -->
 
 ::: warning :construction: This section is a work in progress :construction:
 
