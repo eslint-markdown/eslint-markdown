@@ -41,6 +41,9 @@ For full documentation, see the [official documentation of the `eslint-markdown`
 - [Installation](https://eslint-markdown.lumir.page/docs/get-started/installation)
 - [Configurations](https://eslint-markdown.lumir.page/docs/get-started/configurations)
 - [Migration Guide](https://eslint-markdown.lumir.page/docs/get-started/migration)
+  - [Migrating from `markdownlint`](https://eslint-markdown.lumir.page/docs/get-started/migration#migrating-from-markdownlint)
+  - [Migrating from `remark-lint`](https://eslint-markdown.lumir.page/docs/get-started/migration#migrating-from-remark-lint)
+  - [Migrating from `textlint`](https://eslint-markdown.lumir.page/docs/get-started/migration#migrating-from-textlint)
 - [Rules](https://eslint-markdown.lumir.page/docs/rules)
 - [Packages](https://eslint-markdown.lumir.page/docs/packages)
   - [`eslint-markdown`](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown)
@@ -58,9 +61,7 @@ This repository is maintained as a monorepo and includes the following two packa
 
 > [!IMPORTANT]
 >
-> #### Compatibility
->
-> This [`eslint-markdown`](https://github.com/eslint-markdown/eslint-markdown#readme) plugin does not include any rules that overlap with ESLint's built-in Markdown rules provided by [`@eslint/markdown`](https://github.com/eslint/markdown#readme).
+> **Compatibility**: This [`eslint-markdown`](https://github.com/eslint-markdown/eslint-markdown#readme) plugin does not include any rules that overlap with ESLint's built-in Markdown rules provided by [`@eslint/markdown`](https://github.com/eslint/markdown#readme).
 >
 > So, we **highly recommend** using the `eslint-markdown` plugin alongside ESLint's built-in Markdown support, `@eslint/markdown`.
 
@@ -71,6 +72,10 @@ Lint your Markdown with ESLint. Additional rules for use with `@eslint/markdown`
 [![npm package eslint-lumir latest version](https://img.shields.io/npm/v/eslint-lumir?label=eslint-lumir@latest&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-lumir)
 [![npm package eslint-lumir next version](https://img.shields.io/npm/v/eslint-lumir/next?label=eslint-lumir@next&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-lumir)
 [![npm package eslint-lumir downloads per month](https://img.shields.io/npm/dm/eslint-lumir?label=downloads&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-lumir)
+
+> [!NOTE]
+> 
+> This package is currently marked as private and excluded from npm publishing. It will be made public once it's ready for release.
 
 Lumir's ESLint config preset.
 
