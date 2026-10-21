@@ -164,8 +164,8 @@ export default {
         const masked = text.split('');
 
         // Match the original text and mask without changing source offsets.
-        for (const pattern of [gemojiRegex, htmlEntityRegex, ...allowTerms]) {
-          for (const match of text.matchAll(pattern)) {
+        for (const regex of [gemojiRegex, htmlEntityRegex, ...allowTerms]) {
+          for (const match of text.matchAll(regex)) {
             masked.fill(' ', match.index, match.index + match[0].length);
           }
         }
