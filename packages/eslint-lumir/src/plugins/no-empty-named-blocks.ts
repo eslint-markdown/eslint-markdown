@@ -31,7 +31,6 @@
 /* eslint-disable
   typescript/ban-ts-comment,
   typescript/no-shadow,
-  prefer-destructuring
 */
 // @ts-nocheck -- TODO: Code was simply copied and pasted. Type annotations will be modified later.
 
@@ -59,7 +58,7 @@ function getEmptyBlockRange(tokens: TSESTree.Token[], index: number) {
     prevToken.value === 'type' ||
     prevToken.value === 'typeof'
   ) {
-    start = prevToken.range[0];
+    [start] = prevToken.range;
   }
 
   return [start, end] as const;
@@ -73,7 +72,6 @@ const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
-      category: 'Helpful warnings',
       description: 'Forbid empty named import blocks.',
       url: 'https://github.com/un-ts/eslint-plugin-import-x/blob/v4.17.1/docs/rules/no-empty-named-blocks.md',
     },

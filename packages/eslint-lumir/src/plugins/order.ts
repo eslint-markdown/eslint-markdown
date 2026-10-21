@@ -31,11 +31,7 @@
 /* eslint-disable
   typescript/ban-ts-comment,
   typescript/no-shadow,
-  consistent-return,
-  no-restricted-properties,
-  no-useless-return,
-  prefer-destructuring,
-  prefer-exponentiation-operator
+  consistent-return
 */
 // @ts-nocheck -- TODO: Code was simply copied and pasted. Type annotations will be modified later.
 
@@ -623,11 +619,11 @@ function canCrossNodeWhileReorder(node: TSESTree.Node) {
 }
 
 function canReorderItems(firstNode: TSESTree.Node, secondNode: TSESTree.Node) {
-  const parent = firstNode.parent;
+  const { parent } = firstNode;
   if (!parent || !('body' in parent) || !Array.isArray(parent.body)) {
     return false;
   }
-  const body: TSESTree.Node[] = parent.body;
+  const { body } = parent;
   const [firstIndex, secondIndex] = [
     body.indexOf(firstNode),
     body.indexOf(secondNode),
@@ -844,7 +840,7 @@ const RELATIVE_DOTS = new Set(['.', '..']);
 
 function getSorter(alphabetizeOptions: AlphabetizeOptions) {
   const multiplier = alphabetizeOptions.order === 'asc' ? 1 : -1;
-  const orderImportKind = alphabetizeOptions.orderImportKind;
+  const { orderImportKind } = alphabetizeOptions;
   const multiplierImportKind =
     orderImportKind !== 'ignore' &&
     (alphabetizeOptions.orderImportKind === 'asc' ? 1 : -1);
@@ -1143,7 +1139,7 @@ function convertPathGroupsForRanks(pathGroups: PathGroup[]) {
 
   return {
     pathGroups: transformed,
-    maxPosition: maxPosition > 10 ? Math.pow(10, Math.ceil(Math.log10(maxPosition))) : 10,
+    maxPosition: maxPosition > 10 ? 10 ** Math.ceil(Math.log10(maxPosition)) : 10,
   };
 }
 
@@ -1157,7 +1153,7 @@ function fixNewLineAfterImport(context: RuleContext, previousImport: ImportEntry
 
   let endOfLine = prevRoot.range[1];
   if (tokensToEndOfLine.length > 0) {
-    endOfLine = tokensToEndOfLine[tokensToEndOfLine.length - 1].range[1];
+    [, endOfLine] = tokensToEndOfLine[tokensToEndOfLine.length - 1].range;
   }
   return (fixer: TSESLint.RuleFixer) =>
     fixer.insertTextAfterRange([prevRoot.range[0], endOfLine], '\n');
@@ -1178,7 +1174,6 @@ function removeNewLineAfterImport(
   if (/^\s*$/.test(sourceCode.text.slice(rangeToRemove[0], rangeToRemove[1]))) {
     return (fixer: TSESLint.RuleFixer) => fixer.removeRange(rangeToRemove);
   }
-  return;
 }
 
 function makeNewlinesBetweenReport(
@@ -1395,7 +1390,6 @@ const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
-      category: 'Style guide',
       description: 'Enforce a convention in module import order.',
       url: 'https://github.com/un-ts/eslint-plugin-import-x/blob/v4.17.1/docs/rules/order.md',
     },
@@ -1566,7 +1560,7 @@ const rule: Rule.RuleModule = {
       options.pathGroupsExcludedImportTypes ||
         (['builtin', 'external', 'object'] as const),
     );
-    const sortTypesGroup = options.sortTypesGroup;
+    const { sortTypesGroup } = options;
     const consolidateIslands = options.consolidateIslands || 'never';
 
     const named: NamedOptions = {

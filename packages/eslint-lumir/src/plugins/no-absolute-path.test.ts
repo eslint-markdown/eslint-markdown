@@ -83,27 +83,6 @@ ruleTester.run('no-absolute-path', rule, {
     tValid({ code: 'var events = require("events")' }),
     tValid({ code: 'var path = require("path")' }),
     tValid({ code: 'import path from "path";import events from "events"' }),
-
-    // still works if only `amd: true` is provided
-    tValid({
-      code: 'import path from "path"',
-      options: [{ amd: true }],
-    }),
-
-    // amd not enabled by default
-    tValid({ code: 'require(["/some/path"], function (f) { /* ... */ })' }),
-    tValid({
-      code: 'define(["/some/path"], function (f) { /* ... */ })',
-      languageOptions: {},
-    }),
-    tValid({
-      code: 'require(["./some/path"], function (f) { /* ... */ })',
-      options: [{ amd: true }],
-    }),
-    tValid({
-      code: 'define(["./some/path"], function (f) { /* ... */ })',
-      options: [{ amd: true }],
-    }),
   ],
   invalid: [
     tInvalid({
@@ -131,13 +110,6 @@ ruleTester.run('no-absolute-path', rule, {
       output: 'import f from "../../some/path"',
     }),
     tInvalid({
-      code: `import f from "/some/path"`,
-      filename: '/foo/bar/index.js',
-      options: [{ amd: true }],
-      errors: [ABSOLUTE_ERROR],
-      output: 'import f from "../../some/path"',
-    }),
-    tInvalid({
       code: `var f = require("/foo")`,
       filename: '/foo/bar/index.js',
       errors: [ABSOLUTE_ERROR],
@@ -154,29 +126,6 @@ ruleTester.run('no-absolute-path', rule, {
       filename: '/foo/bar/index.js',
       errors: [ABSOLUTE_ERROR],
       output: 'var f = require("../../some/path")',
-    }),
-    tInvalid({
-      code: `var f = require("/some/path")`,
-      filename: '/foo/bar/index.js',
-      options: [{ amd: true }],
-      errors: [ABSOLUTE_ERROR],
-      output: 'var f = require("../../some/path")',
-    }),
-    // validate amd
-    tInvalid({
-      code: `require(["/some/path"], function (f) { /* ... */ })`,
-      filename: '/foo/bar/index.js',
-      options: [{ amd: true }],
-      errors: [ABSOLUTE_ERROR],
-      output: 'require(["../../some/path"], function (f) { /* ... */ })',
-    }),
-    tInvalid({
-      code: `define(["/some/path"], function (f) { /* ... */ })`,
-      filename: '/foo/bar/index.js',
-      languageOptions: {},
-      options: [{ amd: true }],
-      errors: [ABSOLUTE_ERROR],
-      output: 'define(["../../some/path"], function (f) { /* ... */ })',
     }),
   ],
 });

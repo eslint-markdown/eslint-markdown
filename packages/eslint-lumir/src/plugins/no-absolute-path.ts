@@ -28,14 +28,6 @@
  * SOFTWARE.
  */
 
-/* eslint-disable
-  typescript/array-type,
-  typescript/ban-ts-comment,
-  func-names,
-  prefer-destructuring
-*/
-// @ts-nocheck -- TODO: Code was simply copied and pasted. Type annotations will be modified later.
-
 // --------------------------------------------------------------------------------
 // Import
 // --------------------------------------------------------------------------------
@@ -57,15 +49,13 @@ type Visitor = (
     | TSESTree.ExportNamedDeclaration
     | TSESTree.ExportAllDeclaration
     | TSESTree.CallExpression
-    | TSESTree.ImportExpression
-    | TSESTree.StringLiteral,
+    | TSESTree.ImportExpression,
 ) => void;
 
 interface ModuleOptions {
-  amd?: boolean;
   commonjs?: boolean;
   esmodule?: boolean;
-  ignore?: Array<RegExp | string>;
+  ignore?: (RegExp | string)[];
 }
 
 // --------------------------------------------------------------------------------
@@ -79,7 +69,6 @@ interface ModuleOptions {
  */
 function moduleVisitor(visitor: Visitor, options?: ModuleOptions) {
   const ignore = options?.ignore;
-  const amd = !!options?.amd;
   const commonjs = !!options?.commonjs;
   // if esmodule is not explicitly disabled, it is assumed to be enabled
   const esmodule = !!{ esmodule: true, ...options }.esmodule;
@@ -93,8 +82,7 @@ function moduleVisitor(visitor: Visitor, options?: ModuleOptions) {
       | TSESTree.ExportNamedDeclaration
       | TSESTree.ExportAllDeclaration
       | TSESTree.CallExpression
-      | TSESTree.ImportExpression
-      | TSESTree.StringLiteral,
+      | TSESTree.ImportExpression,
   ) {
     if (source == null) {
       return;
@@ -134,7 +122,7 @@ function moduleVisitor(visitor: Visitor, options?: ModuleOptions) {
         return;
       }
 
-      modulePath = node.arguments[0];
+      [modulePath] = node.arguments;
     } else {
       throw new TypeError('this should be unreachable');
     }
@@ -175,43 +163,6 @@ function moduleVisitor(visitor: Visitor, options?: ModuleOptions) {
     checkSourceValue(modulePath, call);
   }
 
-  function checkAMD(call: TSESTree.CallExpression) {
-    if (call.callee.type !== 'Identifier') {
-      return;
-    }
-    if (call.callee.name !== 'require' && call.callee.name !== 'define') {
-      return;
-    }
-    if (call.arguments.length !== 2) {
-      return;
-    }
-
-    const modules = call.arguments[0];
-    if (modules.type !== 'ArrayExpression') {
-      return;
-    }
-
-    for (const element of modules.elements) {
-      if (!element) {
-        continue;
-      }
-
-      if (element.type !== 'Literal') {
-        continue;
-      }
-
-      if (typeof element.value !== 'string') {
-        continue;
-      }
-
-      if (element.value === 'require' || element.value === 'exports') {
-        continue; // magic modules: https://github.com/requirejs/requirejs/wiki/Differences-between-the-simplified-CommonJS-wrapper-and-standard-AMD-define#magic-modules
-      }
-
-      checkSourceValue(element, element);
-    }
-  }
-
   const visitors = {} as TSESLint.RuleListener;
 
   if (esmodule) {
@@ -224,18 +175,13 @@ function moduleVisitor(visitor: Visitor, options?: ModuleOptions) {
     });
   }
 
-  if (commonjs || amd) {
+  if (commonjs) {
     const currentCallExpression = visitors.CallExpression;
-    visitors.CallExpression = function (call) {
+    visitors.CallExpression = call => {
       if (currentCallExpression) {
         currentCallExpression(call);
       }
-      if (commonjs) {
-        checkCommon(call);
-      }
-      if (amd) {
-        checkAMD(call);
-      }
+      checkCommon(call);
     };
   }
 
@@ -249,46 +195,56 @@ function moduleVisitor(visitor: Visitor, options?: ModuleOptions) {
 const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
+
     docs: {
-      category: 'Static analysis',
       description: 'Forbid import of modules using absolute paths.',
       url: 'https://github.com/un-ts/eslint-plugin-import-x/blob/v4.17.1/docs/rules/no-absolute-path.md',
     },
+
     fixable: 'code',
+
     schema: [
       {
         type: 'object',
         properties: {
           commonjs: { type: 'boolean' },
-          amd: { type: 'boolean' },
           esmodule: { type: 'boolean' },
           ignore: { type: 'array', minItems: 1, uniqueItems: true },
         },
         additionalProperties: false,
       },
     ],
+
     messages: {
       absolute: 'Do not import modules using an absolute path',
     },
   },
+
+  // @ts-expect-error -- Type annotations will be modified later
   create(context) {
     const options = { esmodule: true, commonjs: true, ...context.options[0] };
+
     return moduleVisitor(source => {
       if (typeof source.value !== 'string' || !path.isAbsolute(source.value)) {
         return;
       }
+
       context.report({
         node: source,
+
         messageId: 'absolute',
+
         fix(fixer) {
           // node.js and web imports work with posix style paths ("/")
           let relativePath = path.posix.relative(
             path.dirname(context.physicalFilename),
             source.value,
           );
+
           if (!relativePath.startsWith('.')) {
             relativePath = `./${relativePath}`;
           }
+
           return fixer.replaceText(source, JSON.stringify(relativePath));
         },
       });
