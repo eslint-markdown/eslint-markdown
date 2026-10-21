@@ -70,6 +70,33 @@ ruleTester('no-double-punctuation', rule, {
       ],
     },
 
+    // `allowTerms` option
+    {
+      code: 'foo, bar, baz, etc.; foo bar baz',
+      options: [{ allowTerms: [/etc\.;/u] }],
+    },
+    {
+      code: 'ETC.; etc.;\n\n**Etc.;**',
+      options: [{ allowTerms: [/etc\.;/giu] }],
+    },
+    {
+      code: 'ETC.; etc.;',
+      options: [{ allowTerms: [/etc\.;/iu] }],
+    },
+    {
+      code: 'etc;; etc.;',
+      options: [{ allowTerms: ['etc.;'] }],
+    },
+    {
+      code: 'etc.; e.g.,',
+      options: [{ allowTerms: ['etc\\.;', /e\.g\.,/u] }],
+    },
+    {
+      // Overlapping allowed terms should not prevent each other from matching
+      code: 'foo!! bar??',
+      options: [{ allowTerms: [/foo!! bar/u, /bar\?\?/u] }],
+    },
+
     // `punctuation` option
     {
       code: 'Foo?!',
@@ -656,6 +683,132 @@ Baz:`,
                 punctuation: '?!',
                 rightPunctuation: '!',
               },
+            },
+          ],
+        },
+      ],
+    },
+
+    // `allowTerms` option
+    {
+      code: 'a!! longer!! typo??',
+      output: 'a!! longer!! typo?',
+      options: [{ allowTerms: [/\w+!!/u] }],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 18,
+          endLine: 1,
+          endColumn: 20,
+          data: {
+            punctuation: '??',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'etc;;',
+      output: 'etc;',
+      options: [{ allowTerms: [/(?=etc)/u] }],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: ';;',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'etc;;',
+      output: 'etc;',
+      options: [{ allowTerms: ['etc\\.;'] }],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: ';;',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'etc.;',
+      output: null,
+      options: [{ allowTerms: ['etc'] }],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: '.;',
+          },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: '.;',
+                leftPunctuation: '.',
+              },
+              output: 'etc.',
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: '.;',
+                rightPunctuation: ';',
+              },
+              output: 'etc;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'etc.; typo.;',
+      output: null,
+      options: [{ allowTerms: ['etc\\.;'] }],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 11,
+          endLine: 1,
+          endColumn: 13,
+          data: {
+            punctuation: '.;',
+          },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: '.;',
+                leftPunctuation: '.',
+              },
+              output: 'etc.; typo.',
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: '.;',
+                rightPunctuation: ';',
+              },
+              output: 'etc.; typo;',
             },
           ],
         },
