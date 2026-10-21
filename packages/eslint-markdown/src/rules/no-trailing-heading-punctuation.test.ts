@@ -7,12 +7,48 @@
 // Import
 // --------------------------------------------------------------------------------
 
+import { assert, describe, it } from 'vitest';
+import { Linter } from 'eslint/universal';
+import markdown from '@eslint/markdown';
+import md from '../index.js';
 import ruleTester from '../tests/rule-tester.js';
 import rule from './no-trailing-heading-punctuation.js';
 
 // --------------------------------------------------------------------------------
 // Test
 // --------------------------------------------------------------------------------
+
+describe('no-trailing-heading-punctuation option validation', () => {
+  function verifyPunctuation(punctuation: string[]) {
+    return new Linter().verify('# Heading', {
+      language: 'markdown/commonmark',
+      plugins: { markdown, md },
+      rules: {
+        'md/no-trailing-heading-punctuation': ['error', { punctuation }],
+      },
+    });
+  }
+
+  it('rejects a space in the punctuation option', () => {
+    assert.throws(() => verifyPunctuation([' ']), /should match pattern/);
+  });
+
+  it('rejects a tab in the punctuation option', () => {
+    assert.throws(() => verifyPunctuation(['\t']), /should match pattern/);
+  });
+
+  it('rejects a line feed in the punctuation option', () => {
+    assert.throws(() => verifyPunctuation(['\n']), /should match pattern/);
+  });
+
+  it('rejects a carriage return in the punctuation option', () => {
+    assert.throws(() => verifyPunctuation(['\r']), /should match pattern/);
+  });
+
+  it('rejects a backslash alongside allowed punctuation', () => {
+    assert.throws(() => verifyPunctuation(['.', '\\']), /should match pattern/);
+  });
+});
 
 ruleTester('no-trailing-heading-punctuation', rule, {
   valid: [
