@@ -1,6 +1,6 @@
 # Migration Guide
 
-This chapter provides guidance for migrating to [`eslint-markdown`](https://github.com/lumirlumir/npm-eslint-markdown) and [`@eslint/markdown`](https://github.com/eslint/markdown) from other Markdown linting tools like [`markdownlint`](https://github.com/DavidAnson/markdownlint), [`remark-lint`](https://github.com/remarkjs/remark-lint#readme), and [`textlint`](https://github.com/textlint/textlint#readme).
+This chapter provides guidance for migrating to [`eslint-markdown`](https://github.com/eslint-markdown/eslint-markdown) and [`@eslint/markdown`](https://github.com/eslint/markdown) from other Markdown linting tools like [`markdownlint`](https://github.com/DavidAnson/markdownlint), [`remark-lint`](https://github.com/remarkjs/remark-lint#readme), and [`textlint`](https://github.com/textlint/textlint#readme).
 
 | Emoji              | Compatibility        |
 | :----------------: | :------------------: |
@@ -30,8 +30,6 @@ You can find more information on using `@eslint/markdown` together with `eslint-
 
 If you are a user of [`markdownlint`](https://github.com/DavidAnson/markdownlint), [`markdownlint-cli`](https://github.com/igorshubovych/markdownlint-cli), or [`markdownlint-cli2`](https://github.com/DavidAnson/markdownlint-cli2), this section will guide you through migrating your existing configuration to `eslint-markdown` and `@eslint/markdown`.
 
-<!-- TODO -->
-
 ::: warning :construction: This section is a work in progress :construction:
 
 This section is currently under construction and will be updated soon.
@@ -41,10 +39,15 @@ This section is currently under construction and will be updated soon.
 | `markdownlint` | `eslint-markdown` or `@eslint/markdown` |
 | :------------- | :-------------------------------------- |
 | [`MD001` - Heading levels should only increment by one level at a time](https://github.com/DavidAnson/markdownlint/blob/main/doc/md001.md#md001---heading-levels-should-only-increment-by-one-level-at-a-time) :white_check_mark: | [`markdown/heading-increment`](https://github.com/eslint/markdown/blob/main/docs/rules/heading-increment.md#heading-increment) |
+| [`MD003` - Heading style](https://github.com/DavidAnson/markdownlint/blob/main/doc/md003.md#md003---heading-style) :white_check_mark: | [`md/consistent-heading-style`](../rules/consistent-heading-style.md) |
 | [`MD004` - Unordered list style](https://github.com/DavidAnson/markdownlint/blob/main/doc/md004.md#md004---unordered-list-style) :white_check_mark: | [`md/consistent-unordered-list-style`](../rules/consistent-unordered-list-style.md) |
 | [`MD010` - Hard tabs](https://github.com/DavidAnson/markdownlint/blob/main/doc/md010.md#md010---hard-tabs) :white_check_mark: | [`md/no-tab`](../rules/no-tab.md) |
 | [`MD012` - Multiple consecutive blank lines](https://github.com/DavidAnson/markdownlint/blob/main/doc/md012.md#md012---multiple-consecutive-blank-lines) :white_check_mark: | [`md/no-consecutive-blank-line`](../rules/no-consecutive-blank-line.md) |
+| [`MD014` - Dollar signs used before commands without showing output](https://github.com/DavidAnson/markdownlint/blob/main/doc/md014.md#md014---dollar-signs-used-before-commands-without-showing-output) :white_check_mark: | [`md/no-shell-dollar`](../rules/no-shell-dollar.md) |
+| [`MD019` - Multiple spaces after hash on atx style heading](https://github.com/DavidAnson/markdownlint/blob/main/doc/md019.md#md019---multiple-spaces-after-hash-on-atx-style-heading) :white_check_mark: | [`md/no-multiple-atx-heading-space`](../rules/no-multiple-atx-heading-space.md) |
+| [`MD021` - Multiple spaces inside hashes on closed atx style heading](https://github.com/DavidAnson/markdownlint/blob/main/doc/md021.md#md021---multiple-spaces-inside-hashes-on-closed-atx-style-heading) :white_check_mark: | [`md/no-multiple-atx-heading-space`](../rules/no-multiple-atx-heading-space.md) |
 | [`MD026` - Trailing punctuation in heading](https://github.com/DavidAnson/markdownlint/blob/main/doc/md026.md#md026---trailing-punctuation-in-heading) :white_check_mark: | [`md/no-trailing-heading-punctuation`](../rules/no-trailing-heading-punctuation.md) |
+| [`MD029` - Ordered list item prefix](https://github.com/DavidAnson/markdownlint/blob/main/doc/md029.md#md029---ordered-list-item-prefix) :warning: | [`md/consistent-ordered-list-style`](../rules/consistent-ordered-list-style.md) |
 | [`MD031` - Fenced code blocks should be surrounded by blank lines](https://github.com/DavidAnson/markdownlint/blob/main/doc/md031.md#md031---fenced-code-blocks-should-be-surrounded-by-blank-lines) :warning: | [`md/consistent-code-style`](../rules/consistent-code-style.md) |
 | [`MD035` - Horizontal rule style](https://github.com/DavidAnson/markdownlint/blob/main/doc/md035.md#md035---horizontal-rule-style) :white_check_mark: | [`md/consistent-thematic-break-style`](../rules/consistent-thematic-break-style.md) |
 | [`MD038` - Spaces inside code span elements](https://github.com/DavidAnson/markdownlint/blob/main/doc/md038.md#md038---spaces-inside-code-span-elements) :white_check_mark: | [`md/consistent-inline-code-style`](../rules/consistent-inline-code-style.md) |
@@ -58,8 +61,6 @@ This section is currently under construction and will be updated soon.
 
 If you are a user of [`remark-lint`](https://github.com/remarkjs/remark-lint#readme), this section will guide you through migrating your existing configuration to `eslint-markdown` and `@eslint/markdown`.
 
-<!-- TODO -->
-
 ::: warning :construction: This section is a work in progress :construction:
 
 This section is currently under construction and will be updated soon.
@@ -70,11 +71,15 @@ This section is currently under construction and will be updated soon.
 | :------------ | :-------------------------------------- |
 | [`remark-lint-code-block-style`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-code-block-style#remark-lint-code-block-style) :warning: | [`md/consistent-code-style`](../rules/consistent-code-style.md) |
 | [`remark-lint-emphasis-marker`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-emphasis-marker#remark-lint-emphasis-marker) :white_check_mark: | [`md/consistent-emphasis-style`](../rules/consistent-emphasis-style.md) |
+| [`remark-lint-heading-style`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-heading-style#remark-lint-heading-style) :warning: | [`md/consistent-heading-style`](../rules/consistent-heading-style.md) |
 | [`remark-lint-fenced-code-marker`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-fenced-code-marker#remark-lint-fenced-code-marker) :warning: | [`md/consistent-code-style`](../rules/consistent-code-style.md) |
 | [`remark-lint-no-consecutive-blank-lines`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-consecutive-blank-lines#remark-lint-no-consecutive-blank-lines) :white_check_mark: | [`md/no-consecutive-blank-line`](../rules/no-consecutive-blank-line.md) |
+| [`remark-lint-no-heading-content-indent`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-content-indent#remark-lint-no-heading-content-indent) :warning: | [`md/no-multiple-atx-heading-space`](../rules/no-multiple-atx-heading-space.md) |
 | [`remark-lint-no-heading-punctuation`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-punctuation#remark-lint-no-heading-punctuation) :warning: | [`md/no-trailing-heading-punctuation`](../rules/no-trailing-heading-punctuation.md) |
+| [`remark-lint-no-shell-dollars`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-shell-dollars#remark-lint-no-shell-dollars) :warning: | [`md/no-shell-dollar`](../rules/no-shell-dollar.md) |
 | [`remark-lint-no-tabs`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-tabs#remark-lint-no-tabs) :white_check_mark: | [`md/no-tab`](../rules/no-tab.md) |
 | [`remark-lint-no-url-trailing-slash`](https://github.com/vhf/remark-lint-no-url-trailing-slash) :white_check_mark: | [`md/no-url-trailing-slash`](../rules/no-url-trailing-slash.md) |
+| [`remark-lint-ordered-list-marker-value`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-ordered-list-marker-value#remark-lint-ordered-list-marker-value) :warning: | [`md/consistent-ordered-list-style`](../rules/consistent-ordered-list-style.md) |
 | [`remark-lint-rule-style`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-rule-style#remark-lint-rule-style) :white_check_mark: | [`md/consistent-thematic-break-style`](../rules/consistent-thematic-break-style.md) |
 | [`remark-lint-strikethrough-marker`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-strikethrough-marker#remark-lint-strikethrough-marker) :white_check_mark: | [`md/consistent-delete-style`](../rules/consistent-delete-style.md) |
 | [`remark-lint-strong-marker`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-strong-marker#remark-lint-strong-marker) :white_check_mark: | [`md/consistent-strong-style`](../rules/consistent-strong-style.md) |
@@ -83,8 +88,6 @@ This section is currently under construction and will be updated soon.
 ## Migrating from [`textlint`](https://github.com/textlint/textlint#readme)
 
 If you are a user of [`textlint`](https://github.com/textlint/textlint#readme), this section will guide you through migrating your existing configuration to `eslint-markdown` and `@eslint/markdown`.
-
-<!-- TODO -->
 
 ::: warning :construction: This section is a work in progress :construction:
 

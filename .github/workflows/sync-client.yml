@@ -9,6 +9,8 @@ permissions:
 
 jobs:
   sync-client:
+    if: github.repository_owner == 'eslint-markdown' || github.repository_owner == 'lumirlumir'
+
     runs-on: ubuntu-slim
 
     steps:

@@ -43,11 +43,11 @@
   "homepage": "https://eslint-markdown.lumir.page",
   "repository": {
     "type": "github",
-    "url": "git+https://github.com/lumirlumir/npm-eslint-markdown.git",
+    "url": "git+https://github.com/eslint-markdown/eslint-markdown.git",
     "directory": "packages/parser"
   },
   "bugs": {
-    "url": "https://github.com/lumirlumir/npm-eslint-markdown/issues"
+    "url": "https://github.com/eslint-markdown/eslint-markdown/issues"
   },
   "engines": {
     "node": "^20.19.0 || ^22.13.0 || >=24.0.0"
@@ -58,7 +58,7 @@
   },
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "tsc -b tsconfig.build.json && node ../../scripts/cp.js ../../LICENSE.md LICENSE.md ../../README.md README.md",
+    "build": "tsc -b tsconfig.build.json",
     "test": "npm run test:types && npm run test:unit",
     "test:types": "tsc -b ./tsconfig.json",
     "test:unit": "vitest run"
@@ -68,8 +68,8 @@
     "satteri": "^0.10.5"
   },
   "devDependencies": {
-    "@eslint/markdown": "^7.5.1",
-    "eslint": "^9.39.5",
+    "@eslint/markdown": "^8.0.3",
+    "eslint": "^10.13.0",
     "vitest": "^4.1.9"
   }
 }

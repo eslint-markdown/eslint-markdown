@@ -19,7 +19,3 @@ next-env.d.ts
 
 # tests
 coverage
-
-# packages
-packages/*/LICENSE.md
-packages/*/README.md

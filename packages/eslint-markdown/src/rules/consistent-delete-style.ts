@@ -14,8 +14,26 @@ import type { RuleModule } from '../core/types.js';
 // Typedef
 // --------------------------------------------------------------------------------
 
-type RuleOptions = [{ style: 'consistent' | '~' | '~~' }];
+type DeleteStyle = (typeof DELETE_STYLE)[number];
+/**
+ * Options for the `consistent-delete-style` rule.
+ */
+type RuleOptions = [
+  {
+    /**
+     * When `style` is set to `'consistent'`, the rule enforces that all deletes in the document use the same style as the first one encountered.
+     * @default 'consistent'
+     */
+    style: 'consistent' | DeleteStyle;
+  },
+];
 type MessageIds = 'style';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
+
+const DELETE_STYLE = ['~', '~~'] as const;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -39,7 +57,7 @@ export default {
         type: 'object',
         properties: {
           style: {
-            enum: ['consistent', '~', '~~'],
+            enum: ['consistent', ...DELETE_STYLE],
           },
         },
         additionalProperties: false,
@@ -65,7 +83,7 @@ export default {
     const { sourceCode } = context;
     const [{ style }] = context.options;
 
-    let deleteStyle: string | null = style === 'consistent' ? null : style;
+    let deleteStyle: DeleteStyle | null = style === 'consistent' ? null : style;
 
     /**
      * @param startOffset Start offset of the style marker.

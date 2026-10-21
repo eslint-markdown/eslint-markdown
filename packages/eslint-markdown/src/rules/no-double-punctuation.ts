@@ -7,14 +7,33 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import { URL_RULE_DOCS } from '../core/constants.js';
+import { escapeStringRegexp } from '../core/utils/index.js';
+import {
+  URL_RULE_DOCS,
+  asciiPunctuationWithQuestionMark,
+  gemojiRegex as originalGemojiRegex,
+  htmlEntityRegex as originalHtmlEntityRegex,
+} from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
 // Typedef
 // --------------------------------------------------------------------------------
 
-type RuleOptions = [{ allow: string[] }];
+/**
+ * Options for the `no-double-punctuation` rule.
+ */
+type RuleOptions = [
+  {
+    /**
+     * When `allow` is specified, the listed two-character punctuation patterns are ignored by this rule.
+     *
+     * This is useful when punctuation such as `!!` or `?!` is intentionally used for tone or emphasis instead of being treated as a typo.
+     * @default []
+     */
+    allow: string[];
+  },
+];
 type MessageIds =
   'noDoublePunctuation' | 'suggestReplaceWithLeft' | 'suggestReplaceWithRight';
 
@@ -22,11 +41,22 @@ type MessageIds =
 // Helper
 // --------------------------------------------------------------------------------
 
+const escapedAsciiPunctuationWithQuestionMark = escapeStringRegexp(
+  asciiPunctuationWithQuestionMark.join(''),
+);
+
+const gemojiRegex = new RegExp(originalGemojiRegex.source, 'g');
+
+const htmlEntityRegex = new RegExp(originalHtmlEntityRegex.source, 'g');
+
 /**
  * This pattern is based on the punctuation list used by `remark-lint`.
  * @see https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-punctuation#parameters
  */
-const doublePunctuationRegex = /(?:^|(?<=[^!,.:;?]))[!,.:;?]{2}(?:$|(?=[^!,.:;?]))/g;
+const doublePunctuationRegex = new RegExp(
+  `(?:^|(?<=[^${escapedAsciiPunctuationWithQuestionMark}]))[${escapedAsciiPunctuationWithQuestionMark}]{2}(?:$|(?=[^${escapedAsciiPunctuationWithQuestionMark}]))`,
+  'g',
+);
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -57,7 +87,7 @@ export default {
               type: 'string',
               minLength: 2,
               maxLength: 2,
-              pattern: '^[!,.:;?]{2}$',
+              pattern: `^[${escapedAsciiPunctuationWithQuestionMark}]{2}$`,
             },
             uniqueItems: true,
           },
@@ -92,7 +122,11 @@ export default {
     return {
       text(node) {
         const [nodeStartOffset] = sourceCode.getRange(node);
-        const matches = sourceCode.getText(node).matchAll(doublePunctuationRegex);
+        const matches = sourceCode
+          .getText(node) // Mask HTML entities and gemoji without changing their offsets in the original text.
+          .replace(gemojiRegex, match => ' '.repeat(match.length))
+          .replace(htmlEntityRegex, match => ' '.repeat(match.length))
+          .matchAll(doublePunctuationRegex);
 
         for (const match of matches) {
           const punctuation = match[0];

@@ -80,6 +80,38 @@ ruleTester('require-image-title', rule, {
 </div>
 `,
     },
+    {
+      name: 'Html node without any attributes',
+      code: '<img>',
+    },
+    {
+      name: 'Html node without src, srcset, or alt attribute',
+      code: '<img id="1">',
+    },
+    {
+      name: 'Html node with lone alt attribute',
+      code: '<img alt>',
+    },
+    {
+      name: 'Html node with empty alt attribute and without src or srcset attribute',
+      code: '<img alt="">',
+    },
+    {
+      name: 'Html node with empty alt attribute',
+      code: '<img src="https://example.com/image.jpg" alt="">',
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to true',
+      code: '<img src="https://example.com/image.jpg" aria-hidden="true">',
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to mixed-case true',
+      code: '<img src="https://example.com/image.jpg" aria-hidden="TrUe">',
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to uppercase true',
+      code: '<img src="https://example.com/image.jpg" aria-hidden="TRUE">',
+    },
 
     // Options
     {
@@ -305,6 +337,116 @@ ruleTester('require-image-title', rule, {
           column: 1,
           endLine: 1,
           endColumn: 51,
+        },
+      ],
+    },
+    {
+      name: 'Html node with empty src attribute and without title attribute',
+      code: '<img src="">',
+      errors: [
+        {
+          messageId: 'requireImageTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 13,
+        },
+      ],
+    },
+    {
+      name: 'Html node with srcset attribute and without title attribute',
+      code: '<img srcset="https://example.com/image.jpg">',
+      errors: [
+        {
+          messageId: 'requireImageTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      name: 'Html node with non-empty alt attribute and without title attribute',
+      code: '<img alt="Alt text">',
+      errors: [
+        {
+          messageId: 'requireImageTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 21,
+        },
+      ],
+    },
+    {
+      name: 'Html node with lone aria-hidden attribute',
+      code: '<img src="https://example.com/image.jpg" aria-hidden>',
+      errors: [
+        {
+          messageId: 'requireImageTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 54,
+        },
+      ],
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to false',
+      code: '<img src="https://example.com/image.jpg" aria-hidden="false">',
+      errors: [
+        {
+          messageId: 'requireImageTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 62,
+        },
+      ],
+    },
+    {
+      name: 'Html node with aria-hidden attribute containing true',
+      code: '<img src="https://example.com/image.jpg" aria-hidden="untrues">',
+      errors: [
+        {
+          messageId: 'requireImageTitle',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 64,
+        },
+      ],
+    },
+    {
+      name: 'Html node with aria-hidden attribute set to true followed by a line feed',
+      code: '<img src="https://example.com/image.jpg" aria-hidden="true\n">',
+      errors: [
+        {
+          messageId: 'requireImageTitle',
+          line: 1,
+          column: 1,
+          endLine: 2,
+          endColumn: 3,
+        },
+      ],
+    },
+    {
+      name: 'Nested Html node with ignored images followed by image without title attribute',
+      code: `
+<div>
+  <img id="1">
+  <img src="https://example.com/image.jpg" alt="">
+  <img src="https://example.com/image.jpg" aria-hidden="true">
+  <img src="https://example.com/image.jpg">
+</div>`,
+      errors: [
+        {
+          messageId: 'requireImageTitle',
+          line: 6,
+          column: 3,
+          endLine: 6,
+          endColumn: 44,
         },
       ],
     },

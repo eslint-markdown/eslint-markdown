@@ -16,6 +16,9 @@ import type { RuleModule } from '../core/types.js';
 // Typedef
 // --------------------------------------------------------------------------------
 
+/**
+ * Options for the `no-url-trailing-slash` rule.
+ */
 type RuleOptions = [];
 type MessageIds = 'noUrlTrailingSlash';
 
@@ -55,7 +58,7 @@ function hasTrailingSlash(url: string): boolean {
      *     -------------------------------------------------^
      */
     if (hash) {
-      urlWithoutSearchAndHash = urlWithoutSearchAndHash.slice(0, url.indexOf(hash));
+      urlWithoutSearchAndHash = urlWithoutSearchAndHash.slice(0, url.indexOf('#'));
     } else if (urlWithoutSearchAndHash.endsWith('#')) {
       urlWithoutSearchAndHash = urlWithoutSearchAndHash.slice(0, -1);
     }
@@ -73,7 +76,7 @@ function hasTrailingSlash(url: string): boolean {
      *     ------------------------------------^
      */
     if (search) {
-      urlWithoutSearchAndHash = urlWithoutSearchAndHash.slice(0, url.indexOf(search));
+      urlWithoutSearchAndHash = urlWithoutSearchAndHash.slice(0, url.indexOf('?'));
     } else if (urlWithoutSearchAndHash.endsWith('?')) {
       urlWithoutSearchAndHash = urlWithoutSearchAndHash.slice(0, -1);
     }

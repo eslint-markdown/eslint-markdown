@@ -15,8 +15,39 @@ import type { RuleModule } from '../core/types.js';
 // Typedef
 // --------------------------------------------------------------------------------
 
+/**
+ * Options for the `no-irregular-whitespace` rule.
+ */
 type RuleOptions = [
-  { allow: string[]; skipCode: boolean | string[]; skipInlineCode: boolean },
+  {
+    /**
+     * When specified, specific irregular whitespaces are allowed if they match one of the characters in this array.
+     *
+     * This is useful for ignoring certain irregular whitespaces that are intentionally used in the document.
+     * @default []
+     */
+    allow: string[];
+    /**
+     * `true` allows irregular whitespaces in all code blocks, while `string[]` allows irregular whitespaces only in code blocks for the specified languages.
+     * @default true
+     */
+    skipCode: boolean | string[];
+    /**
+     * `true` allows irregular whitespaces in all inline code.
+     * @default true
+     */
+    skipInlineCode: boolean;
+    /**
+     * `true` allows irregular whitespaces in all math blocks.
+     * @default true
+     */
+    skipMath: boolean;
+    /**
+     * `true` allows irregular whitespaces in all inline math.
+     * @default true
+     */
+    skipInlineMath: boolean;
+  },
 ];
 type MessageIds = 'noIrregularWhitespace';
 
@@ -70,6 +101,12 @@ export default {
           skipInlineCode: {
             type: 'boolean',
           },
+          skipMath: {
+            type: 'boolean',
+          },
+          skipInlineMath: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -80,6 +117,8 @@ export default {
         allow: [],
         skipCode: true,
         skipInlineCode: true,
+        skipMath: true,
+        skipInlineMath: true,
       },
     ],
 
@@ -95,7 +134,8 @@ export default {
 
   create(context) {
     const { sourceCode } = context;
-    const [{ allow, skipCode, skipInlineCode }] = context.options;
+    const [{ allow, skipCode, skipInlineCode, skipMath, skipInlineMath }] =
+      context.options;
 
     const skipRanges = new SkipRanges();
 
@@ -109,6 +149,14 @@ export default {
 
       inlineCode(node) {
         if (skipInlineCode) skipRanges.push(sourceCode.getRange(node)); // Store range information of `InlineCode`.
+      },
+
+      math(node) {
+        if (skipMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `Math`.
+      },
+
+      inlineMath(node) {
+        if (skipInlineMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `InlineMath`.
       },
 
       'root:exit'() {

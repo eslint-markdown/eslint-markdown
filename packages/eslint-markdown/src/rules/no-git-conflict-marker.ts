@@ -15,7 +15,23 @@ import type { RuleModule } from '../core/types.js';
 // Typedef
 // --------------------------------------------------------------------------------
 
-type RuleOptions = [{ skipCode: boolean | string[] }];
+/**
+ * Options for the `no-git-conflict-marker` rule.
+ */
+type RuleOptions = [
+  {
+    /**
+     * `true` allows Git conflict markers in all code blocks, while `string[]` allows Git conflict markers only in code blocks for the specified languages.
+     * @default true
+     */
+    skipCode: boolean | string[];
+    /**
+     * `true` allows Git conflict markers in all math blocks.
+     * @default true
+     */
+    skipMath: boolean;
+  },
+];
 type MessageIds = 'noGitConflictMarker';
 
 // --------------------------------------------------------------------------------
@@ -60,6 +76,9 @@ export default {
               },
             ],
           },
+          skipMath: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -68,6 +87,7 @@ export default {
     defaultOptions: [
       {
         skipCode: true,
+        skipMath: true,
       },
     ],
 
@@ -83,7 +103,7 @@ export default {
 
   create(context) {
     const { sourceCode } = context;
-    const [{ skipCode }] = context.options;
+    const [{ skipCode, skipMath }] = context.options;
 
     const skipRanges = new SkipRanges();
 
@@ -93,6 +113,10 @@ export default {
           Array.isArray(skipCode) ? node.lang && skipCode.includes(node.lang) : skipCode
         )
           skipRanges.push(sourceCode.getRange(node)); // Store range information of `Code`.
+      },
+
+      math(node) {
+        if (skipMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `Math`.
       },
 
       'root:exit'() {

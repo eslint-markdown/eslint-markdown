@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -94,7 +94,7 @@ The configured array replaces the default punctuation characters. Each item must
 
 This rule fixes trailing punctuation by removing it and any whitespace immediately before it.
 
-For example, `# Heading !` is fixed to `# Heading`.
+For example, `# Heading !` is fixed to `# Heading`. An escape backslash immediately before ASCII punctuation is also removed, so `# Heading\!` is fixed to `# Heading`.
 
 ## When Not To Use It
 

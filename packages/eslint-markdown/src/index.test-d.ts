@@ -27,6 +27,7 @@ plugin satisfies ESLint.Plugin;
 // #region meta
 
 plugin.meta.name satisfies 'eslint-markdown';
+plugin.meta.namespace satisfies 'md';
 plugin.meta.version satisfies string;
 
 // #endregion meta
@@ -47,12 +48,19 @@ type RuleName = keyof typeof plugin.rules;
   string
 >;
 
+// @ts-expect-error -- Rule message IDs should remain specific to each rule.
+plugin.rules['no-emoji'].meta.messages.unknownMessage;
+
+'allow-heading' satisfies RuleName;
 'allow-image-url' satisfies RuleName;
 'allow-link-url' satisfies RuleName;
 'code-lang-shorthand' satisfies RuleName;
 'consistent-code-style' satisfies RuleName;
 'consistent-delete-style' satisfies RuleName;
 'consistent-emphasis-style' satisfies RuleName;
+'consistent-heading-style' satisfies RuleName;
+'consistent-inline-code-style' satisfies RuleName;
+'consistent-ordered-list-style' satisfies RuleName;
 'consistent-strong-style' satisfies RuleName;
 'consistent-thematic-break-style' satisfies RuleName;
 'consistent-unordered-list-style' satisfies RuleName;
@@ -65,10 +73,16 @@ type RuleName = keyof typeof plugin.rules;
 'no-git-conflict-marker' satisfies RuleName;
 'no-irregular-dash' satisfies RuleName;
 'no-irregular-whitespace' satisfies RuleName;
+'no-multiple-atx-heading-space' satisfies RuleName;
 'no-tab' satisfies RuleName;
+'no-trailing-heading-punctuation' satisfies RuleName;
 'no-url-trailing-slash' satisfies RuleName;
+'require-heading-id' satisfies RuleName;
 'require-image-title' satisfies RuleName;
 'require-link-title' satisfies RuleName;
+
+// @ts-expect-error -- Unknown rule names should remain invalid.
+'unknown-rule' satisfies RuleName;
 
 // #endregion rules
 // --------------------------------------------------------------------------------
@@ -83,12 +97,16 @@ plugin.configs.all.rules satisfies Linter.RulesRecord;
 
 type AllConfigRuleName = keyof typeof plugin.configs.all.rules;
 
+'md/allow-heading' satisfies AllConfigRuleName;
 'md/allow-image-url' satisfies AllConfigRuleName;
 'md/allow-link-url' satisfies AllConfigRuleName;
 'md/code-lang-shorthand' satisfies AllConfigRuleName;
 'md/consistent-code-style' satisfies AllConfigRuleName;
 'md/consistent-delete-style' satisfies AllConfigRuleName;
 'md/consistent-emphasis-style' satisfies AllConfigRuleName;
+'md/consistent-heading-style' satisfies AllConfigRuleName;
+'md/consistent-inline-code-style' satisfies AllConfigRuleName;
+'md/consistent-ordered-list-style' satisfies AllConfigRuleName;
 'md/consistent-strong-style' satisfies AllConfigRuleName;
 'md/consistent-thematic-break-style' satisfies AllConfigRuleName;
 'md/consistent-unordered-list-style' satisfies AllConfigRuleName;
@@ -101,8 +119,11 @@ type AllConfigRuleName = keyof typeof plugin.configs.all.rules;
 'md/no-git-conflict-marker' satisfies AllConfigRuleName;
 'md/no-irregular-dash' satisfies AllConfigRuleName;
 'md/no-irregular-whitespace' satisfies AllConfigRuleName;
+'md/no-multiple-atx-heading-space' satisfies AllConfigRuleName;
 'md/no-tab' satisfies AllConfigRuleName;
+'md/no-trailing-heading-punctuation' satisfies AllConfigRuleName;
 'md/no-url-trailing-slash' satisfies AllConfigRuleName;
+'md/require-heading-id' satisfies AllConfigRuleName;
 'md/require-image-title' satisfies AllConfigRuleName;
 'md/require-link-title' satisfies AllConfigRuleName;
 
@@ -137,11 +158,16 @@ type StylisticConfigRuleName = keyof typeof plugin.configs.stylistic.rules;
 'md/consistent-code-style' satisfies StylisticConfigRuleName;
 'md/consistent-delete-style' satisfies StylisticConfigRuleName;
 'md/consistent-emphasis-style' satisfies StylisticConfigRuleName;
+'md/consistent-heading-style' satisfies StylisticConfigRuleName;
+'md/consistent-inline-code-style' satisfies StylisticConfigRuleName;
+'md/consistent-ordered-list-style' satisfies StylisticConfigRuleName;
 'md/consistent-strong-style' satisfies StylisticConfigRuleName;
 'md/consistent-thematic-break-style' satisfies StylisticConfigRuleName;
 'md/consistent-unordered-list-style' satisfies StylisticConfigRuleName;
 'md/no-consecutive-blank-line' satisfies StylisticConfigRuleName;
+'md/no-multiple-atx-heading-space' satisfies StylisticConfigRuleName;
 'md/no-tab' satisfies StylisticConfigRuleName;
+'md/no-trailing-heading-punctuation' satisfies StylisticConfigRuleName;
 
 // #endregion configs
 // --------------------------------------------------------------------------------

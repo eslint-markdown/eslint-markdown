@@ -390,7 +390,7 @@ code block 2
           messageId: 'style',
           line: 4,
           column: 1,
-          endLine: 6,
+          endLine: 4,
           endColumn: 4,
           data: { style: 'indent' },
         },
@@ -409,7 +409,7 @@ code block 2
           messageId: 'style',
           line: 4,
           column: 1,
-          endLine: 6,
+          endLine: 4,
           endColumn: 4,
           data: { style: 'indent' },
         },
@@ -449,7 +449,7 @@ code block 2
           messageId: 'style',
           line: 6,
           column: 1,
-          endLine: 8,
+          endLine: 6,
           endColumn: 4,
           data: { style: 'fence-backtick' },
         },
@@ -489,7 +489,7 @@ code block 2
           messageId: 'style',
           line: 6,
           column: 1,
-          endLine: 8,
+          endLine: 6,
           endColumn: 4,
           data: { style: 'fence-tilde' },
         },
@@ -513,7 +513,7 @@ code block 2
           messageId: 'style',
           line: 2,
           column: 1,
-          endLine: 4,
+          endLine: 2,
           endColumn: 4,
           data: { style: 'indent' },
         },
@@ -521,8 +521,80 @@ code block 2
           messageId: 'style',
           line: 6,
           column: 1,
-          endLine: 8,
+          endLine: 6,
           endColumn: 4,
+          data: { style: 'indent' },
+        },
+      ],
+    },
+    {
+      name: '`indent` style - fenced code with language and meta',
+      code: `
+\`\`\` js meta
+code block 1
+\`\`\``,
+      options: [{ style: 'indent' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 4,
+          data: { style: 'indent' },
+        },
+      ],
+    },
+    {
+      name: '`indent` style - tilde-fenced code with tilde language',
+      code: `
+~~~ ~
+code block 1
+~~~`,
+      options: [{ style: 'indent' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 4,
+          data: { style: 'indent' },
+        },
+      ],
+    },
+    {
+      name: '`indent` style - fenced code with an HTML entity language',
+      code: `
+~~~ &amp; meta
+code block 1
+~~~`,
+      options: [{ style: 'indent' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 4,
+          data: { style: 'indent' },
+        },
+      ],
+    },
+    {
+      name: '`indent` style - blockquoted fenced code with an HTML entity language',
+      code: `
+> ~~~ &amp; meta
+> code block 1
+> ~~~`,
+      options: [{ style: 'indent' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 3,
+          endLine: 2,
+          endColumn: 6,
           data: { style: 'indent' },
         },
       ],
@@ -551,8 +623,25 @@ code block 2
           messageId: 'style',
           line: 4,
           column: 1,
-          endLine: 6,
+          endLine: 4,
           endColumn: 4,
+          data: { style: 'fence-backtick' },
+        },
+      ],
+    },
+    {
+      name: '`fence-backtick` style - multiline indented code',
+      code: `
+    code block 1
+    code block 2`,
+      options: [{ style: 'fence-backtick' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 17,
           data: { style: 'fence-backtick' },
         },
       ],
@@ -581,7 +670,7 @@ code block 2
           messageId: 'style',
           line: 4,
           column: 1,
-          endLine: 6,
+          endLine: 4,
           endColumn: 4,
           data: { style: 'fence-tilde' },
         },
@@ -601,7 +690,7 @@ code block 1
           messageId: 'blankLineAbove',
           line: 2,
           column: 1,
-          endLine: 4,
+          endLine: 2,
           endColumn: 4,
           data: { blankLineAbove: 1 },
         },
@@ -619,14 +708,34 @@ code block 1
           messageId: 'blankLineAbove',
           line: 2,
           column: 1,
-          endLine: 4,
+          endLine: 2,
           endColumn: 4,
           data: { blankLineAbove: 3 },
         },
       ],
     },
+    {
+      name: '`blankLineAbove` option - fenced code with language',
+      code: `Paragraph
+\`\`\`js
+code block 1
+\`\`\``,
+      options: [{ blankLineAbove: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineAbove',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 4,
+          data: { blankLineAbove: 1 },
+        },
+      ],
+    },
 
     // option: `blankLineBelow`
+    // Report the last line of the code block, as highlighting only the trailing
+    // code fence characters involves many edge cases that cannot be handled reliably.
     {
       name: '`blankLineBelow` option',
       code: `\`\`\`
@@ -637,7 +746,7 @@ Paragraph`,
       errors: [
         {
           messageId: 'blankLineBelow',
-          line: 1,
+          line: 3,
           column: 1,
           endLine: 3,
           endColumn: 4,
@@ -655,11 +764,238 @@ Paragraph`,
       errors: [
         {
           messageId: 'blankLineBelow',
-          line: 1,
+          line: 3,
           column: 1,
           endLine: 3,
           endColumn: 4,
           data: { blankLineBelow: 3 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - empty code block',
+      code: `~~~
+~~~
+Paragraph`,
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 4,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - indented last line',
+      code: '```\ncode block 1\n   ```\nParagraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 7,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - one trailing space',
+      code: '```\ncode block 1\n``` \nParagraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 5,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - three trailing spaces',
+      code: '```\ncode block 1\n```   \nParagraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 7,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - one trailing tab',
+      code: '```\ncode block 1\n```\t\nParagraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 5,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - two trailing tabs',
+      code: '```\ncode block 1\n```\t\t\nParagraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 6,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - mixed trailing spaces and tabs',
+      code: '```\ncode block 1\n``` \t  \t\nParagraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 9,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - tilde-fenced code with trailing spaces',
+      code: '~~~\ncode block 1\n~~~   \nParagraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 7,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - longer tilde fence with trailing tabs',
+      code: '~~~\ncode block 1\n~~~~~\t\t\nParagraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 8,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - blockquoted code with trailing tabs and spaces',
+      code: '> ```\n> code block 1\n> ```\t \t  \n> Paragraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 11,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - unclosed blockquoted code',
+      code: '> ~~~\n> code\nParagraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 7,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - unclosed blockquoted code with CRLF line endings',
+      code: '> ~~~\r\n> code\r\nParagraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 7,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - unclosed blockquoted code containing a tilde',
+      code: '> ~~~\n> code ~ content\nParagraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 17,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - unclosed code in a list',
+      code: '- ~~~\n  code\n\nParagraph',
+      options: [{ blankLineBelow: 2 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 1,
+          data: { blankLineBelow: 2 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineBelow` option - empty unclosed blockquoted code',
+      code: '> ~~~\nParagraph',
+      options: [{ blankLineBelow: 1 }],
+      errors: [
+        {
+          messageId: 'blankLineBelow',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 6,
+          data: { blankLineBelow: 1 },
         },
       ],
     },
@@ -683,13 +1019,13 @@ Paragraph`,
           messageId: 'blankLineAbove',
           line: 2,
           column: 1,
-          endLine: 4,
+          endLine: 2,
           endColumn: 4,
           data: { blankLineAbove: 1 },
         },
         {
           messageId: 'blankLineBelow',
-          line: 2,
+          line: 4,
           column: 1,
           endLine: 4,
           endColumn: 4,
@@ -717,13 +1053,13 @@ Paragraph`,
           messageId: 'blankLineAbove',
           line: 3,
           column: 1,
-          endLine: 5,
+          endLine: 3,
           endColumn: 4,
           data: { blankLineAbove: 2 },
         },
         {
           messageId: 'blankLineBelow',
-          line: 3,
+          line: 5,
           column: 1,
           endLine: 5,
           endColumn: 4,
@@ -750,7 +1086,7 @@ Paragraph`,
           messageId: 'blankLineAbove',
           line: 2,
           column: 3,
-          endLine: 4,
+          endLine: 2,
           endColumn: 6,
           data: { blankLineAbove: 1 },
         },
@@ -772,10 +1108,42 @@ Paragraph`,
       errors: [
         {
           messageId: 'blankLineBelow',
-          line: 2,
-          column: 3,
+          line: 4,
+          column: 1,
           endLine: 4,
           endColumn: 6,
+          data: { blankLineBelow: 1 },
+        },
+      ],
+    },
+    {
+      name: '`blankLineAbove` and `blankLineBelow` options - with a tilde fence',
+      code: `Paragraph
+~~~
+const value = 1;
+~~~
+Paragraph`,
+      options: [
+        {
+          blankLineAbove: 1,
+          blankLineBelow: 1,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'blankLineAbove',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 4,
+          data: { blankLineAbove: 1 },
+        },
+        {
+          messageId: 'blankLineBelow',
+          line: 4,
+          column: 1,
+          endLine: 4,
+          endColumn: 4,
           data: { blankLineBelow: 1 },
         },
       ],

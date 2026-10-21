@@ -9,6 +9,7 @@
 import type {
   MarkdownRuleDefinition,
   MarkdownRuleDefinitionTypeOptions,
+  MarkdownRuleVisitor,
 } from '@eslint/markdown';
 
 // --------------------------------------------------------------------------------
@@ -16,14 +17,23 @@ import type {
 // --------------------------------------------------------------------------------
 
 /**
+ * Keeps inferred context types nameable without exposing Markdown's internal types.
+ *
+ * NOTE: This type supports compatibility with ESLint v9 and v10.
+ * Reevaluate whether it is still needed when ESLint v9 support is dropped.
+ */
+export type RuleContext<Options extends Partial<MarkdownRuleDefinitionTypeOptions>> =
+  Omit<Parameters<MarkdownRuleDefinition<Options>['create']>[0], never>;
+
+/**
  * Represents a rule module with specific rule options and message IDs.
  * @template RuleOptions The rule options.
  * @template MessageIds The message IDs.
  */
-export type RuleModule<
+export interface RuleModule<
   RuleOptions extends MarkdownRuleDefinitionTypeOptions['RuleOptions'],
   MessageIds extends MarkdownRuleDefinitionTypeOptions['MessageIds'],
-> = MarkdownRuleDefinition<{
+> extends MarkdownRuleDefinition<{
   RuleOptions: RuleOptions;
   MessageIds: MessageIds;
   ExtRuleDocs: Partial<{
@@ -32,4 +42,13 @@ export type RuleModule<
      */
     stylistic: boolean;
   }>;
-}>;
+}> {
+  create(
+    context: RuleContext<{ RuleOptions: RuleOptions; MessageIds: MessageIds }>,
+  ): MarkdownRuleVisitor;
+}
+
+/**
+ * Represents a range of characters in the source.
+ */
+export type SourceRange = [number, number];

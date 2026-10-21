@@ -22,14 +22,35 @@ import type { RuleModule } from '../core/types.js';
 // Typedef
 // --------------------------------------------------------------------------------
 
+/**
+ * Options for the `allow-image-url` rule.
+ */
 type RuleOptions = [
   {
+    /**
+     * Allowed URLs act like a ***whitelist***.
+     *
+     * Only those written on the whitelist **can** pass through.
+     * @default [new RegExp('.*', 'u')] // But as a regex literal.
+     */
     allowUrls: (RegExp | string)[];
+    /**
+     * On the contrary, disallowed URLs act like a ***blacklist***.
+     *
+     * Only those written on the blacklist **cannot** pass through.
+     * @default []
+     */
     disallowUrls: (RegExp | string)[];
+    /**
+     * When specified, specific definitions are allowed if they match one of the identifiers in this array.
+     *
+     * This is useful for ignoring definitions that are intentionally left, such as comments or placeholders.
+     * @default ['//']
+     */
     allowDefinitions: string[];
   },
 ];
-type MessageIds = 'allowImageUrl' | 'disallowImageUrl';
+type MessageIds = 'allowImageUrl' | 'disallowImageUrl' | 'emptyAllowImageUrl';
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -95,6 +116,8 @@ export default {
         'The URL `{{ url }}` is not in the list of allowed URLs. (Allow: {{ patterns }}).',
       disallowImageUrl:
         'The URL `{{ url }}` is in the list of disallowed URLs. (Disallow: {{ patterns }}).',
+      emptyAllowImageUrl:
+        'The URL `{{ url }}` is not allowed because the list of allowed URLs is empty.',
     },
 
     language: 'markdown',
@@ -182,7 +205,15 @@ export default {
          */
 
         for (const { loc, url } of images) {
-          if (!allowUrls.some(regex => testRegexStateless(regex, url))) {
+          if (allowUrls.length === 0) {
+            context.report({
+              loc,
+              messageId: 'emptyAllowImageUrl',
+              data: {
+                url,
+              },
+            });
+          } else if (!allowUrls.some(regex => testRegexStateless(regex, url))) {
             context.report({
               loc,
               messageId: 'allowImageUrl',

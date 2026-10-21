@@ -1,23 +1,38 @@
-# eslint-markdown
+<!-- eslint-disable markdown/no-html -->
 
-[![ci](https://img.shields.io/github/actions/workflow/status/lumirlumir/npm-eslint-markdown/ci.yml?label=ci&color=6358d4&labelColor=333333&logo=github)](https://github.com/lumirlumir/npm-eslint-markdown/actions/workflows/ci.yml)
-[![test](https://img.shields.io/github/actions/workflow/status/lumirlumir/npm-eslint-markdown/test.yml?label=test&color=6358d4&labelColor=333333&logo=github)](https://github.com/lumirlumir/npm-eslint-markdown/actions/workflows/test.yml)
-[![codecov](https://img.shields.io/codecov/c/gh/lumirlumir/npm-eslint-markdown?token=LJMUst9eR3&label=Codecov&color=6358d4&labelColor=333333&logo=codecov)](https://codecov.io/gh/lumirlumir/npm-eslint-markdown)
-![Node Current](https://img.shields.io/node/v/eslint-markdown?color=6358d4&labelColor=333333&logo=node.js)
+<p align="center">
+  <img alt="ESLint Markdown Logo" src="https://eslint-markdown.lumir.page/logo.svg" width="150">
+</p>
 
-[![npm package eslint-markdown latest version](https://img.shields.io/npm/v/eslint-markdown?label=eslint-markdown@latest&color=6358d4&labelColor=333333&logo=npm)](https://www.npmjs.com/package/eslint-markdown)
-[![npm package eslint-markdown next version](https://img.shields.io/npm/v/eslint-markdown/next?label=eslint-markdown@next&color=6358d4&labelColor=333333&logo=npm)](https://www.npmjs.com/package/eslint-markdown)
-[![npm package eslint-markdown downloads per month](https://img.shields.io/npm/dm/eslint-markdown?label=downloads&color=6358d4&labelColor=333333&logo=npm)](https://www.npmjs.com/package/eslint-markdown)
+<h1 align="center">ESLint Markdown</h1>
+
+<p align="center">
+  <a href="https://eslint-markdown.lumir.page">Documentation</a> |
+  <a href="https://eslint-markdown.lumir.page/docs/rules/">Rules</a> |
+  <a href="https://eslint-markdown.lumir.page/docs/get-started/configurations">Configurations</a> |
+  <a href="https://eslint-markdown.lumir.page/docs/get-started/migration">Migration</a> |
+  <a href="https://eslint-markdown.lumir.page/docs/packages">Packages</a> |
+  <a href="https://github.com/eslint-markdown/eslint-markdown">Repository</a> |
+  <a href="https://github.com/eslint-markdown/eslint-markdown/discussions">Discussions</a>
+</p>
+
+<p align="center">
+  Community-Maintained ESLint Tools, Rules, and Configurations for High-Quality and Performant Markdown Linting.
+</p>
+
+<p align="center">
+  <a href="https://github.com/eslint-markdown/eslint-markdown/actions/workflows/ci.yml"><img alt="ci" src="https://img.shields.io/github/actions/workflow/status/eslint-markdown/eslint-markdown/ci.yml?label=ci&color=341bab&labelColor=1a1a1a&logo=github"></a>
+  <a href="https://github.com/eslint-markdown/eslint-markdown/actions/workflows/test.yml"><img alt="test" src="https://img.shields.io/github/actions/workflow/status/eslint-markdown/eslint-markdown/test.yml?label=test&color=341bab&labelColor=1a1a1a&logo=github"></a>
+  <a href="https://codecov.io/gh/eslint-markdown/eslint-markdown"><img alt="codecov" src="https://img.shields.io/codecov/c/gh/eslint-markdown/eslint-markdown?token=LJMUst9eR3&label=Codecov&color=341bab&labelColor=1a1a1a&logo=codecov"></a>
+  <img alt="Node Current" src="https://img.shields.io/node/v/eslint-markdown?color=341bab&labelColor=1a1a1a&logo=node.js">
+</p>
+
+<!-- eslint-enable markdown/no-html -->
 
 > [!IMPORTANT]
 >
-> If you like this package, please give it a star on [GitHub](https://github.com/lumirlumir/npm-eslint-markdown)!⭐<br/>
+> If you like this package, please give it a star on [GitHub](https://github.com/eslint-markdown/eslint-markdown)!⭐<br/>
 > Your support helps us improve and maintain the project.
-
-Lint your Markdown with ESLint.
-
-- Additional rules for use with `@eslint/markdown`.🛠️
-- A blazing fast Markdown parser for ESLint.⚡
 
 ## Documentation
 
@@ -26,33 +41,56 @@ For full documentation, see the [official documentation of the `eslint-markdown`
 - [Installation](https://eslint-markdown.lumir.page/docs/get-started/installation)
 - [Configurations](https://eslint-markdown.lumir.page/docs/get-started/configurations)
 - [Migration Guide](https://eslint-markdown.lumir.page/docs/get-started/migration)
+  - [Migrating from `markdownlint`](https://eslint-markdown.lumir.page/docs/get-started/migration#migrating-from-markdownlint)
+  - [Migrating from `remark-lint`](https://eslint-markdown.lumir.page/docs/get-started/migration#migrating-from-remark-lint)
+  - [Migrating from `textlint`](https://eslint-markdown.lumir.page/docs/get-started/migration#migrating-from-textlint)
 - [Rules](https://eslint-markdown.lumir.page/docs/rules)
-
-## Compatibility
-
-This [`eslint-markdown`](https://github.com/lumirlumir/npm-eslint-markdown#readme) plugin does not include any rules that overlap with ESLint's built-in Markdown rules provided by [`@eslint/markdown`](https://github.com/eslint/markdown#readme).
-
-So, we **highly recommend** using the `eslint-markdown` plugin alongside ESLint's built-in Markdown support, `@eslint/markdown`.
+- [Packages](https://eslint-markdown.lumir.page/docs/packages)
+  - [`eslint-markdown`](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown)
+  - [`@eslint-markdown/parser`](https://eslint-markdown.lumir.page/docs/packages/parser)
+  - [`eslint-lumir`](https://eslint-markdown.lumir.page/docs/packages/eslint-lumir)
 
 ## Included Packages
 
-This repository is maintained as a monorepo and includes the following two packages.
+This repository is maintained as a monorepo and includes the following three packages.
 
 ### `eslint-markdown` - [Docs](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown) | [Repository](https://github.com/lumirlumir/npm-eslint-markdown/tree/main/packages/eslint-markdown) | [npm](https://www.npmjs.com/package/eslint-markdown)
 
+[![npm package eslint-markdown latest version](https://img.shields.io/npm/v/eslint-markdown?label=eslint-markdown@latest&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-markdown)
+[![npm package eslint-markdown next version](https://img.shields.io/npm/v/eslint-markdown/next?label=eslint-markdown@next&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-markdown)
+[![npm package eslint-markdown downloads per month](https://img.shields.io/npm/dm/eslint-markdown?label=downloads&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-markdown)
+
+> [!IMPORTANT]
+>
+> **Compatibility**: This [`eslint-markdown`](https://github.com/eslint-markdown/eslint-markdown#readme) plugin does not include any rules that overlap with ESLint's built-in Markdown rules provided by [`@eslint/markdown`](https://github.com/eslint/markdown#readme).
+>
+> So, we **highly recommend** using the `eslint-markdown` plugin alongside ESLint's built-in Markdown support, `@eslint/markdown`.
+
 Lint your Markdown with ESLint. Additional rules for use with `@eslint/markdown`.🛠️
 
-### `@eslint-markdown/parser` - [Docs](https://eslint-markdown.lumir.page/docs/packages/parser) | [Repository](https://github.com/lumirlumir/npm-eslint-markdown/tree/main/packages/parser) | [npm](https://www.npmjs.com/package/@eslint-markdown/parser)
+### `eslint-lumir` - [Docs](https://eslint-markdown.lumir.page/docs/packages/eslint-lumir) | [Repository](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir) | [npm](https://www.npmjs.com/package/eslint-lumir)
+
+[![npm package eslint-lumir latest version](https://img.shields.io/npm/v/eslint-lumir?label=eslint-lumir@latest&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-lumir)
+[![npm package eslint-lumir next version](https://img.shields.io/npm/v/eslint-lumir/next?label=eslint-lumir@next&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-lumir)
+[![npm package eslint-lumir downloads per month](https://img.shields.io/npm/dm/eslint-lumir?label=downloads&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-lumir)
+
+> [!NOTE]
+>
+> This package is currently marked as private and excluded from npm publishing. It will be made public once it's ready for release.
+
+Lumir's ESLint config preset.
+
+### `@eslint-markdown/parser` - [Docs](https://eslint-markdown.lumir.page/docs/packages/parser) | [Repository](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/parser) | [npm](https://www.npmjs.com/package/@eslint-markdown/parser)
 
 A blazing fast Markdown parser for ESLint.⚡
 
 ## Code of Conduct
 
-See [Code of Conduct](https://github.com/lumirlumir/.github/blob/main/CODE_OF_CONDUCT.md#contributor-covenant-code-of-conduct).
+See [Code of Conduct](https://github.com/eslint-markdown/eslint-markdown/blob/main/CODE_OF_CONDUCT.md).
 
 ## Change Log
 
-See [Change Log](https://github.com/lumirlumir/npm-eslint-markdown/blob/main/CHANGELOG.md).
+See [Change Log](https://github.com/eslint-markdown/eslint-markdown/blob/main/CHANGELOG.md).
 
 ## Versioning
 
@@ -60,8 +98,8 @@ See [Versioning](https://eslint-markdown.lumir.page/docs/get-started/versioning)
 
 ## Security
 
-See [Security](https://github.com/lumirlumir/.github/blob/main/SECURITY.md#security).
+See [Security](https://github.com/eslint-markdown/eslint-markdown/blob/main/SECURITY.md).
 
 ## License
 
-[MIT](https://github.com/lumirlumir/npm-eslint-markdown/blob/main/LICENSE.md)
+[MIT](https://github.com/eslint-markdown/eslint-markdown/blob/main/LICENSE.md)
