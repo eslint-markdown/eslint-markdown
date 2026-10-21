@@ -92,9 +92,14 @@ ruleTester('no-double-punctuation', rule, {
       options: [{ allowTerms: ['etc\\.;', /e\.g\.,/u] }],
     },
     {
-      // Overlapping allowed terms should not prevent each other from matching
+      // Overlapping allowed terms should not prevent each other from matching.
       code: 'foo!! bar??',
       options: [{ allowTerms: [/foo!! bar/u, /bar\?\?/u] }],
+    },
+    {
+      // Allows terms containing emoji shortcodes and HTML entities.
+      code: ':smile:!! &copy;!!',
+      options: [{ allowTerms: [/:smile:!!/u, /&copy;!!/u] }],
     },
 
     // `punctuation` option

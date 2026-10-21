@@ -160,14 +160,12 @@ export default {
     return {
       text(node) {
         const [nodeStartOffset] = sourceCode.getRange(node);
-        const text = sourceCode
-          .getText(node) // Mask HTML entities and gemoji without changing their offsets in the original text.
-          .replace(gemojiRegex, match => ' '.repeat(match.length))
-          .replace(htmlEntityRegex, match => ' '.repeat(match.length));
+        const text = sourceCode.getText(node);
         const masked = text.split('');
 
-        for (const term of allowTerms) {
-          for (const match of text.matchAll(term)) {
+        // Match the original text and mask without changing source offsets.
+        for (const pattern of [gemojiRegex, htmlEntityRegex, ...allowTerms]) {
+          for (const match of text.matchAll(pattern)) {
             masked.fill(' ', match.index, match.index + match[0].length);
           }
         }
