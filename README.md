@@ -47,11 +47,12 @@ For full documentation, see the [official documentation of the `eslint-markdown`
 - [Rules](https://eslint-markdown.lumir.page/docs/rules)
 - [Packages](https://eslint-markdown.lumir.page/docs/packages)
   - [`eslint-markdown`](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown)
+  - [`@eslint-markdown/parser`](https://eslint-markdown.lumir.page/docs/packages/parser)
   - [`eslint-lumir`](https://eslint-markdown.lumir.page/docs/packages/eslint-lumir)
 
 ## Included Packages
 
-This repository is maintained as a monorepo and includes the following two packages.
+This repository is maintained as a monorepo and includes the following three packages.
 
 ### `eslint-markdown` - [Docs](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown) | [Repository](https://github.com/lumirlumir/npm-eslint-markdown/tree/main/packages/eslint-markdown) | [npm](https://www.npmjs.com/package/eslint-markdown)
 
@@ -74,10 +75,14 @@ Lint your Markdown with ESLint. Additional rules for use with `@eslint/markdown`
 [![npm package eslint-lumir downloads per month](https://img.shields.io/npm/dm/eslint-lumir?label=downloads&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-lumir)
 
 > [!NOTE]
-> 
+>
 > This package is currently marked as private and excluded from npm publishing. It will be made public once it's ready for release.
 
 Lumir's ESLint config preset.
+
+### `@eslint-markdown/parser` - [Docs](https://eslint-markdown.lumir.page/docs/packages/parser) | [Repository](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/parser) | [npm](https://www.npmjs.com/package/@eslint-markdown/parser)
+
+A blazing fast Markdown parser for ESLint.⚡
 
 ## Code of Conduct
 

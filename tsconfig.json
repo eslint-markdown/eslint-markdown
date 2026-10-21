@@ -6,6 +6,9 @@
     },
     {
       "path": "./packages/eslint-markdown/tsconfig.json"
+    },
+    {
+      "path": "./packages/parser/tsconfig.json"
     }
   ]
 }

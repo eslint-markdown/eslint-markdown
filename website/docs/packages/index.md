@@ -21,3 +21,11 @@ Lumir's ESLint configuration presets for JavaScript, TypeScript, React, Next.js,
 - [Documentation](eslint-lumir)
 - [GitHub](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir)
 - [npm](https://npmx.dev/package/eslint-lumir)
+
+## `@eslint-markdown/parser`
+
+A blazing fast Markdown parser for ESLint that produces an mdast syntax tree, with support for CommonMark, GFM, front matter, and math.
+
+- [Documentation](parser)
+- [GitHub](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/parser)
+- [npm](https://npmx.dev/package/@eslint-markdown/parser)
