@@ -57,6 +57,7 @@ export default {
 
     docs: {
       description: 'Enforce the use of heading IDs',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('require-heading-id'),
       recommended: false,
       stylistic: false,
@@ -105,8 +106,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

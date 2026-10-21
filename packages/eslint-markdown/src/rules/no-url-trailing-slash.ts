@@ -97,6 +97,7 @@ export default {
 
     docs: {
       description: 'Disallow URL trailing slash',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-url-trailing-slash'),
       recommended: false,
       stylistic: false,
@@ -107,8 +108,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

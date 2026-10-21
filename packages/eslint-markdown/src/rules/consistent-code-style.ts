@@ -70,6 +70,7 @@ export default {
 
     docs: {
       description: 'Enforce consistent code style',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('consistent-code-style'),
       recommended: false,
       stylistic: true,
@@ -130,8 +131,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

@@ -70,6 +70,7 @@ export default {
 
     docs: {
       description: 'Enforce the use of allowed or disallowed headings',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('allow-heading'),
       recommended: false,
       stylistic: false,
@@ -111,8 +112,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

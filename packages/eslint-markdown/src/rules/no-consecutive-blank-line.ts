@@ -52,6 +52,7 @@ export default {
 
     docs: {
       description: 'Disallow consecutive blank lines',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-consecutive-blank-line'),
       recommended: false,
       stylistic: true,
@@ -103,8 +104,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

@@ -60,6 +60,7 @@ export default {
 
     docs: {
       description: 'Enforce consistent ordered list style',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('consistent-ordered-list-style'),
       recommended: false,
       stylistic: true,
@@ -88,8 +89,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {
