@@ -6,8 +6,8 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "eslint-lumir": "^0.19.0",
-    "eslint-markdown": "^0.19.0",
+    "eslint-lumir": "^0.19.1",
+    "eslint-markdown": "^0.19.1",
     "vitest": "^4.1.9"
   }
 }
