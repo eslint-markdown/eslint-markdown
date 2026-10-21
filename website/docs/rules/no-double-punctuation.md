@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -30,6 +30,15 @@ Maybe this..
 Wait,. what about this?
 ```
 
+#### With `{ punctuation: ['.', '!'] }` Option
+
+```md eslint-check
+<!-- eslint md/no-double-punctuation: ['error', { punctuation: ['.', '!'] }] -->
+
+This usually means a typo!.
+Maybe this..
+```
+
 ### :white_check_mark: Correct {#correct}
 
 Examples of **correct** code for this rule:
@@ -54,11 +63,21 @@ Really!!
 Are you sure?!
 ```
 
+#### With `{ punctuation: ['.', '!'] }` Option
+
+```md eslint-check
+<!-- eslint md/no-double-punctuation: ['error', { punctuation: ['.', '!'] }] -->
+
+Is this correct?
+Did you mean this?!
+```
+
 ## Options
 
 ```js
 'md/no-double-punctuation': ['error', {
   allow: [],
+  punctuation: ['.', ',', ';', ':', '!', '?'],
 }]
 ```
 
@@ -67,6 +86,22 @@ Are you sure?!
 > Type: `string[]` / Default: `[]`
 
 When `allow` is specified, the listed two-character punctuation patterns are ignored by this rule. This is useful when punctuation such as `!!` or `?!` is intentionally used for tone or emphasis instead of being treated as a typo.
+
+::: warning
+
+Patterns in [`allow`](#allow) containing characters outside [`punctuation`](#punctuation) are silently ignored.
+
+:::
+
+### `punctuation`
+
+> Type: `string[]` / Default: `['.', ',', ';', ':', '!', '?']`
+
+Specifies the characters that are treated as punctuation by this rule.
+
+The configured array replaces the default punctuation characters. Each item must be a single character, and at least one character is required.
+
+NOTE: Spaces, tabs, line feeds, carriage returns, and backslashes are not allowed.
 
 ## Fix
 

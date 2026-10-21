@@ -23,6 +23,7 @@ import { createTwoslasher } from 'twoslash-eslint';
 
 import {
   CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
+  CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
   vitePluginCodecov,
   vitePluginConfigInspector,
 } from './plugins/index.js';
@@ -36,7 +37,7 @@ const PKG_NAME = packageJson.name;
 const PKG_DESCRIPTION = packageJson.description;
 const PKG_AUTHOR = 'lumir';
 const URL_HOMEPAGE = packageJson.homepage;
-const URL_GITHUB = `https://github.com/lumirlumir/npm-${PKG_NAME}`;
+const URL_GITHUB = `https://github.com/${PKG_NAME}/${PKG_NAME}`;
 const URL_RULE_SRC = `${URL_GITHUB}/tree/main/packages/${PKG_NAME}/src/rules`;
 
 // --------------------------------------------------------------------------------
@@ -100,7 +101,10 @@ export default defineConfig({
 
   /* Routing */
   cleanUrls: true,
-  ignoreDeadLinks: [CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH],
+  ignoreDeadLinks: [
+    CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
+    CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
+  ],
 
   /* Build */
   outDir: 'build',
@@ -137,7 +141,7 @@ export default defineConfig({
           },
           {
             text: 'Packages',
-            link: '/docs/packages/eslint-markdown',
+            link: '/docs/packages',
             activeMatch: '/docs/packages',
           },
           {
@@ -163,6 +167,11 @@ export default defineConfig({
           {
             text: 'eslint-markdown',
             link: CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
+            target: '_self',
+          },
+          {
+            text: 'eslint-lumir',
+            link: CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
             target: '_self',
           },
         ],
@@ -216,11 +225,16 @@ export default defineConfig({
         {
           base: '/docs/packages/',
           text: 'Packages',
+          link: '/',
           collapsed: false,
           items: [
             {
               text: 'eslint-markdown',
               link: 'eslint-markdown',
+            },
+            {
+              text: 'eslint-lumir',
+              link: 'eslint-lumir',
             },
           ],
         },

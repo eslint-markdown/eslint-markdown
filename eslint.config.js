@@ -1,10 +1,10 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
-import js from 'eslint-config-bananass/js';
-import ts from 'eslint-config-bananass/ts';
-import json from 'eslint-config-bananass/json';
-import jsonc from 'eslint-config-bananass/jsonc';
-import json5 from 'eslint-config-bananass/json5';
-import md from 'eslint-markdown';
+import js from 'eslint-lumir/js';
+import ts from 'eslint-lumir/ts';
+import json from 'eslint-lumir/json';
+import jsonc from 'eslint-lumir/jsonc';
+import json5 from 'eslint-lumir/json5';
+import md from 'eslint-lumir/md';
 
 export default defineConfig([
   globalIgnores(
@@ -17,26 +17,17 @@ export default defineConfig([
   json,
   jsonc,
   json5,
-  md.configs.recommended,
-  md.configs.stylistic,
+  md,
 
   // js
-  {
-    name: 'js/global',
-    rules: {
-      'import/no-cycle': 'off', // Too computationally expensive. TODO: Remove this in shared config.
-      'import/no-extraneous-dependencies': 'off', // Too computationally expensive. TODO: Remove this in shared config.
-      'import/prefer-default-export': 'off', // Personal preference. TODO: Remove this in shared config.
-    },
-  },
   {
     name: 'js/global/test-d',
     files: ['**/*.test-d.{ts,mts,cts,tsx}'],
     rules: {
       'no-useless-assignment': 'off',
       'prefer-const': 'off',
-      '@typescript-eslint/no-unsafe-function-type': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
+      'typescript/no-unsafe-function-type': 'off',
+      'typescript/no-unused-vars': 'off',
     },
   },
   {
@@ -87,22 +78,10 @@ export default defineConfig([
 
   // md
   {
-    name: 'md/global',
-    files: ['**/*.md'],
-    rules: {
-      'md/allow-link-url': [
-        'error',
-        {
-          disallowUrls: [/^\.\//],
-        },
-      ],
-    },
-  },
-  {
     name: 'md/website',
     files: ['website/docs/**/*.md'],
     rules: {
-      'md/no-emoji': 'error',
+      'md/no-emoji': ['error', { style: 'emoji' }],
     },
   },
   {

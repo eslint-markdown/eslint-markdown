@@ -31,6 +31,16 @@ type RuleOptions = [
      */
     skipInlineCode: boolean;
     /**
+     * `true` allows tabs in all math blocks.
+     * @default true
+     */
+    skipMath: boolean;
+    /**
+     * `true` allows tabs in all inline math.
+     * @default true
+     */
+    skipInlineMath: boolean;
+    /**
      * Number of spaces to replace each tab with when applying an autofix.
      * @default 4
      */
@@ -86,6 +96,12 @@ export default {
           skipInlineCode: {
             type: 'boolean',
           },
+          skipMath: {
+            type: 'boolean',
+          },
+          skipInlineMath: {
+            type: 'boolean',
+          },
           tabWidth: {
             type: 'integer',
             minimum: 1,
@@ -99,6 +115,8 @@ export default {
       {
         skipCode: true,
         skipInlineCode: true,
+        skipMath: true,
+        skipInlineMath: true,
         tabWidth: 4,
       },
     ],
@@ -110,7 +128,8 @@ export default {
 
   create(context) {
     const { sourceCode } = context;
-    const [{ skipCode, skipInlineCode, tabWidth }] = context.options;
+    const [{ skipCode, skipInlineCode, skipMath, skipInlineMath, tabWidth }] =
+      context.options;
 
     const skipRanges = new SkipRanges();
 
@@ -124,6 +143,14 @@ export default {
 
       inlineCode(node) {
         if (skipInlineCode) skipRanges.push(sourceCode.getRange(node)); // Store range information of `InlineCode`.
+      },
+
+      math(node) {
+        if (skipMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `Math`.
+      },
+
+      inlineMath(node) {
+        if (skipInlineMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `InlineMath`.
       },
 
       'root:exit'() {

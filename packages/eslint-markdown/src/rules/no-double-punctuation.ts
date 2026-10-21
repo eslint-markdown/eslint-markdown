@@ -7,7 +7,13 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import { URL_RULE_DOCS } from '../core/constants.js';
+import { escapeStringRegexp } from '../core/utils/index.js';
+import {
+  URL_RULE_DOCS,
+  asciiPunctuationWithQuestionMark,
+  gemojiRegex as originalGemojiRegex,
+  htmlEntityRegex as originalHtmlEntityRegex,
+} from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
@@ -26,6 +32,15 @@ type RuleOptions = [
      * @default []
      */
     allow: string[];
+    /**
+     * Specifies the characters that are treated as punctuation by this rule.
+     *
+     * The configured array replaces the default punctuation characters. Each item must be a single character, and at least one character is required.
+     *
+     * NOTE: Spaces, tabs, line feeds, carriage returns, and backslashes are not allowed.
+     * @default ['.', ',', ';', ':', '!', '?']
+     */
+    punctuation: string[];
   },
 ];
 type MessageIds =
@@ -35,11 +50,9 @@ type MessageIds =
 // Helper
 // --------------------------------------------------------------------------------
 
-/**
- * This pattern is based on the punctuation list used by `remark-lint`.
- * @see https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-punctuation#parameters
- */
-const doublePunctuationRegex = /(?:^|(?<=[^!,.:;?]))[!,.:;?]{2}(?:$|(?=[^!,.:;?]))/g;
+const gemojiRegex = new RegExp(originalGemojiRegex.source, 'g');
+
+const htmlEntityRegex = new RegExp(originalHtmlEntityRegex.source, 'g');
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -73,8 +86,18 @@ export default {
               type: 'string',
               minLength: 2,
               maxLength: 2,
-              pattern: '^[!,.:;?]{2}$',
             },
+            uniqueItems: true,
+          },
+          punctuation: {
+            type: 'array',
+            items: {
+              type: 'string',
+              minLength: 1,
+              maxLength: 1,
+              pattern: String.raw`^[^ \t\r\n\\]+$`,
+            },
+            minItems: 1,
             uniqueItems: true,
           },
         },
@@ -85,6 +108,7 @@ export default {
     defaultOptions: [
       {
         allow: [],
+        punctuation: [...asciiPunctuationWithQuestionMark],
       },
     ],
 
@@ -99,22 +123,32 @@ export default {
 
   create(context) {
     const { sourceCode } = context;
-    const [{ allow }] = context.options;
+    const [{ allow, punctuation }] = context.options;
+
+    const escapedPunctuation = escapeStringRegexp(punctuation.join(''));
+    const doublePunctuationRegex = new RegExp(
+      `(?:^|(?<=[^${escapedPunctuation}]))[${escapedPunctuation}]{2}(?:$|(?=[^${escapedPunctuation}]))`,
+      'gu',
+    );
 
     return {
       text(node) {
         const [nodeStartOffset] = sourceCode.getRange(node);
-        const matches = sourceCode.getText(node).matchAll(doublePunctuationRegex);
+        const matches = sourceCode
+          .getText(node) // Mask HTML entities and gemoji without changing their offsets in the original text.
+          .replace(gemojiRegex, match => ' '.repeat(match.length))
+          .replace(htmlEntityRegex, match => ' '.repeat(match.length))
+          .matchAll(doublePunctuationRegex);
 
         for (const match of matches) {
-          const punctuation = match[0];
+          const matchedPunctuation = match[0];
 
           const startOffset = nodeStartOffset + match.index;
-          const endOffset = startOffset + punctuation.length;
+          const endOffset = startOffset + matchedPunctuation.length;
 
-          if (allow.includes(punctuation)) continue;
+          if (allow.includes(matchedPunctuation)) continue;
 
-          const [leftPunctuation, rightPunctuation] = punctuation;
+          const [leftPunctuation, rightPunctuation] = matchedPunctuation;
           const violation = {
             loc: {
               start: sourceCode.getLocFromIndex(startOffset),
@@ -122,7 +156,7 @@ export default {
             },
 
             data: {
-              punctuation,
+              punctuation: matchedPunctuation,
             },
 
             messageId: 'noDoublePunctuation',
@@ -145,7 +179,7 @@ export default {
                   messageId: 'suggestReplaceWithLeft',
 
                   data: {
-                    punctuation,
+                    punctuation: matchedPunctuation,
                     leftPunctuation,
                   },
 
@@ -160,7 +194,7 @@ export default {
                   messageId: 'suggestReplaceWithRight',
 
                   data: {
-                    punctuation,
+                    punctuation: matchedPunctuation,
                     rightPunctuation,
                   },
 

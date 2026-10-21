@@ -11,7 +11,10 @@ import { escapeStringRegexp } from '../core/utils/index.js';
 import {
   URL_RULE_DOCS,
   punctuation as defaultPunctuation,
+  asciiPunctuationRegex,
+  escapedTrailingBackslashRegex,
   gemojiRegex,
+  htmlEntityRegex,
 } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -26,6 +29,8 @@ type RuleOptions = [
   {
     /**
      * Specifies the characters that are not allowed at the end of headings.
+     *
+     * NOTE: Spaces, tabs, line feeds, carriage returns, and backslashes are not allowed.
      * @default ['.', ',', ';', ':', '!', '。', '，', '；', '：', '！']
      */
     punctuation: string[];
@@ -37,18 +42,12 @@ type MessageIds = 'noTrailingHeadingPunctuation';
 // Helper
 // --------------------------------------------------------------------------------
 
-/**
- * Regular expression for identifying a GitHub emoji code at the end of a line.
- */
 const trailingGemojiRegex = new RegExp(`${gemojiRegex.source}$`, gemojiRegex.flags);
 
-/**
- * Regular expression for identifying an HTML entity at the end of a line.
- * - NOTE: These patterns are based on the `markdownlint`.
- * @see https://github.com/DavidAnson/markdownlint/blob/v0.41.1/helpers/helpers.cjs#L32-L34
- */
-const trailingHtmlEntityRegex =
-  /&(?:#\d+|#[xX][\da-fA-F]+|[a-zA-Z]{2,31}|blk\d{2}|emsp1[34]|frac\d{2}|sup\d|there4);$/;
+const trailingHtmlEntityRegex = new RegExp(
+  `${htmlEntityRegex.source}$`,
+  htmlEntityRegex.flags,
+);
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -80,6 +79,7 @@ export default {
               type: 'string',
               minLength: 1,
               maxLength: 1,
+              pattern: String.raw`^[^ \t\r\n\\]+$`,
             },
             minItems: 1,
             uniqueItems: true,
@@ -106,7 +106,7 @@ export default {
     const [{ punctuation }] = context.options;
 
     const trailingPunctuationRegex = new RegExp(
-      `[ \\t\\r\\n]*[${escapeStringRegexp(punctuation.join(''))}]+$`,
+      `(?<leadingSpaces>[ \\t\\r\\n]*)[${escapeStringRegexp(punctuation.join(''))}]+$`,
     );
 
     return {
@@ -174,9 +174,11 @@ export default {
         const lastChildText = sourceCode.getText(lastChildNode);
         const match = trailingPunctuationRegex.exec(lastChildText);
 
-        if (!match) {
+        if (!match || !match.groups) {
           return;
         }
+
+        const { leadingSpaces } = match.groups;
 
         let trailingPunctuation = match[0];
 
@@ -236,7 +238,19 @@ export default {
           messageId: 'noTrailingHeadingPunctuation',
 
           fix(fixer) {
-            return fixer.removeRange([startOffset, endOffset]);
+            return fixer.removeRange([
+              startOffset -
+                Number(
+                  // When `leadingSpaces` is `''` (empty string), check for an escaped trailing backslash.
+                  !leadingSpaces &&
+                    // The preceding backslash is an escape only when the punctuation is escapable.
+                    asciiPunctuationRegex.test(trailingPunctuation[0]) &&
+                    escapedTrailingBackslashRegex.test(
+                      lastChildText.slice(0, -trailingPunctuation.length),
+                    ),
+                ),
+              endOffset,
+            ]);
           },
         });
       },

@@ -5,20 +5,24 @@
   "scripts": {
     "dev": "npm-run-all -c -l -p dev:*",
     "dev:vp": "vitepress --open --host",
-    "dev:em": "eslint-config-inspector --config ./configs/eslint-markdown.js --no-open",
-    "build": "npm run build:vp && npm run build:em",
+    "dev:el": "eslint-config-inspector --config ./configs/eslint-lumir.js --port 7778 --no-open",
+    "dev:em": "eslint-config-inspector --config ./configs/eslint-markdown.js --port 7777 --no-open",
+    "build": "npm run build:vp && npm-run-all -l -p build:em build:el",
     "build:vp": "vitepress build --outDir build",
+    "build:el": "eslint-config-inspector build --config ./configs/eslint-lumir.js --base /inspector/eslint-lumir/ --outDir ./build/inspector/eslint-lumir",
     "build:em": "eslint-config-inspector build --config ./configs/eslint-markdown.js --base /inspector/eslint-markdown/ --outDir ./build/inspector/eslint-markdown",
     "start:vp": "vitepress preview"
   },
   "devDependencies": {
     "@codecov/bundler-plugin-core": "^2.0.1",
-    "@eslint/config-inspector": "^3.4.0",
+    "@eslint/config-inspector": "^3.5.0",
+    "@next/eslint-plugin-next": "^16.4.2",
     "@shikijs/transformers": "^3.20.0",
     "@shikijs/vitepress-twoslash": "^3.20.0",
-    "eslint-markdown": "^0.14.1",
+    "eslint-lumir": "^0.19.1",
+    "eslint-markdown": "^0.19.1",
     "twoslash-eslint": "^0.3.4",
     "vitepress": "2.0.0-alpha.17",
-    "vitepress-plugin-group-icons": "^1.7.6"
+    "vitepress-plugin-group-icons": "^1.8.1"
   }
 }

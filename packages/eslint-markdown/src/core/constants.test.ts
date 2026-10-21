@@ -9,9 +9,17 @@
 import { assert, describe, it } from 'vitest';
 import {
   URL_RULE_DOCS,
+  asciiPunctuation,
+  asciiPunctuationWithQuestionMark,
+  nonAsciiPunctuation,
+  nonAsciiPunctuationWithQuestionMark,
   punctuation,
   punctuationWithQuestionMark,
+  asciiPunctuationRegex,
+  escapedTrailingBackslashRegex,
   gemojiRegex,
+  htmlEntityRegex,
+  trailingAtxHeadingHashRegex,
 } from './constants.js';
 
 // --------------------------------------------------------------------------------
@@ -36,6 +44,44 @@ describe('constants', () => {
   });
 
   describe('array', () => {
+    describe('asciiPunctuation', () => {
+      it('should contain the ASCII punctuation characters', () => {
+        assert.deepStrictEqual(asciiPunctuation, ['.', ',', ';', ':', '!']);
+      });
+    });
+
+    describe('asciiPunctuationWithQuestionMark', () => {
+      it('should contain the ASCII punctuation characters including the question mark', () => {
+        assert.deepStrictEqual(asciiPunctuationWithQuestionMark, [
+          '.',
+          ',',
+          ';',
+          ':',
+          '!',
+          '?',
+        ]);
+      });
+    });
+
+    describe('nonAsciiPunctuation', () => {
+      it('should contain the full-width punctuation characters', () => {
+        assert.deepStrictEqual(nonAsciiPunctuation, ['。', '，', '；', '：', '！']);
+      });
+    });
+
+    describe('nonAsciiPunctuationWithQuestionMark', () => {
+      it('should contain the full-width punctuation characters including the question mark', () => {
+        assert.deepStrictEqual(nonAsciiPunctuationWithQuestionMark, [
+          '。',
+          '，',
+          '；',
+          '：',
+          '！',
+          '？',
+        ]);
+      });
+    });
+
     describe('punctuation', () => {
       it('should contain the default normal and full-width punctuation characters', () => {
         assert.deepStrictEqual(punctuation, [
@@ -55,12 +101,90 @@ describe('constants', () => {
 
     describe('punctuationWithQuestionMark', () => {
       it('should extend punctuation with normal and full-width question marks', () => {
-        assert.deepStrictEqual(punctuationWithQuestionMark, [...punctuation, '?', '？']);
+        assert.deepStrictEqual(punctuationWithQuestionMark, [
+          '.',
+          ',',
+          ';',
+          ':',
+          '!',
+          '?',
+          '。',
+          '，',
+          '；',
+          '：',
+          '！',
+          '？',
+        ]);
       });
     });
   });
 
   describe('regex', () => {
+    describe('asciiPunctuationRegex', () => {
+      it('should match all 32 ASCII punctuation characters defined by CommonMark', () => {
+        const characters = [
+          '!',
+          '"',
+          '#',
+          '$',
+          '%',
+          '&',
+          "'",
+          '(',
+          ')',
+          '*',
+          '+',
+          ',',
+          '-',
+          '.',
+          '/',
+          ':',
+          ';',
+          '<',
+          '=',
+          '>',
+          '?',
+          '@',
+          '[',
+          '\\',
+          ']',
+          '^',
+          '_',
+          '`',
+          '{',
+          '|',
+          '}',
+          '~',
+        ];
+
+        for (const character of characters) {
+          assert.match(character, asciiPunctuationRegex);
+        }
+      });
+    });
+
+    describe('escapedTrailingBackslashRegex', () => {
+      it('should match one trailing backslash because the run length is odd', () => {
+        assert.match('text\\', escapedTrailingBackslashRegex);
+      });
+
+      it('should not match two trailing backslashes because the run length is even', () => {
+        assert.notMatch(`text${'\\'.repeat(2)}`, escapedTrailingBackslashRegex);
+      });
+
+      it('should match three trailing backslashes because the run length is odd', () => {
+        assert.match(`text${'\\'.repeat(3)}`, escapedTrailingBackslashRegex);
+      });
+
+      it('should not match four trailing backslashes because the run length is even', () => {
+        assert.notMatch(`text${'\\'.repeat(4)}`, escapedTrailingBackslashRegex);
+      });
+
+      it('should not match a backslash before the end of a line', () => {
+        assert.notMatch('text\\more', escapedTrailingBackslashRegex);
+      });
+    });
+
     describe('gemojiRegex', () => {
       describe('valid gemoji', () => {
         it('should match supported single-letter names', () => {
@@ -168,6 +292,129 @@ describe('constants', () => {
         it('should not match unsupported Unicode button names', () => {
           assert.notMatch(':u9999:', gemojiRegex);
         });
+      });
+    });
+
+    describe('htmlEntityRegex', () => {
+      describe('valid HTML entities', () => {
+        it('should match decimal numeric entities', () => {
+          assert.match('&#9;', htmlEntityRegex);
+          assert.match('&#169;', htmlEntityRegex);
+        });
+
+        it('should match lowercase and uppercase hexadecimal numeric entities', () => {
+          assert.match('&#x1f600;', htmlEntityRegex);
+          assert.match('&#XA9;', htmlEntityRegex);
+        });
+
+        it('should match alphabetic named entities at the allowed length boundaries', () => {
+          assert.match('&GT;', htmlEntityRegex);
+          assert.match('&CounterClockwiseContourIntegral;', htmlEntityRegex);
+        });
+
+        it('should match blk entities containing two digits', () => {
+          assert.match('&blk12;', htmlEntityRegex);
+          assert.match('&blk34;', htmlEntityRegex);
+        });
+
+        it('should match emsp13 and emsp14 entities', () => {
+          assert.match('&emsp13;', htmlEntityRegex);
+          assert.match('&emsp14;', htmlEntityRegex);
+        });
+
+        it('should match frac entities containing two digits', () => {
+          assert.match('&frac12;', htmlEntityRegex);
+        });
+
+        it('should match sup entities containing one digit', () => {
+          assert.match('&sup2;', htmlEntityRegex);
+        });
+
+        it('should match the there4 entity', () => {
+          assert.match('&there4;', htmlEntityRegex);
+        });
+
+        it('should match an HTML entity within surrounding text', () => {
+          assert.match('Copyright &copy; notice', htmlEntityRegex);
+        });
+
+        it('should match an HTML entity preceded by an even number of backslashes', () => {
+          assert.match(`${'\\'.repeat(2)}&copy;`, htmlEntityRegex);
+          assert.match(`${'\\'.repeat(4)}&copy;`, htmlEntityRegex);
+        });
+      });
+
+      describe('invalid HTML entities', () => {
+        it('should not match an entity without both delimiters', () => {
+          assert.notMatch('copy;', htmlEntityRegex);
+          assert.notMatch('&copy', htmlEntityRegex);
+        });
+
+        it('should not match malformed decimal numeric entities', () => {
+          assert.notMatch('&#;', htmlEntityRegex);
+          assert.notMatch('&#12a;', htmlEntityRegex);
+        });
+
+        it('should not match malformed hexadecimal numeric entities', () => {
+          assert.notMatch('&#x;', htmlEntityRegex);
+          assert.notMatch('&#XG;', htmlEntityRegex);
+        });
+
+        it('should not match alphabetic named entities outside the allowed length boundaries', () => {
+          assert.notMatch('&a;', htmlEntityRegex);
+          assert.notMatch('&abcdefghijklmnopqrstuvwxyzABCDEF;', htmlEntityRegex);
+        });
+
+        it('should not match digit-suffixed entities with unsupported digit counts or values', () => {
+          assert.notMatch('&blk1;', htmlEntityRegex);
+          assert.notMatch('&blk123;', htmlEntityRegex);
+          assert.notMatch('&emsp12;', htmlEntityRegex);
+          assert.notMatch('&emsp15;', htmlEntityRegex);
+          assert.notMatch('&frac1;', htmlEntityRegex);
+          assert.notMatch('&frac123;', htmlEntityRegex);
+          assert.notMatch('&sup12;', htmlEntityRegex);
+          assert.notMatch('&there3;', htmlEntityRegex);
+          assert.notMatch('&there44;', htmlEntityRegex);
+        });
+
+        it('should not match unsupported alphanumeric named entities', () => {
+          assert.notMatch('&copy1;', htmlEntityRegex);
+        });
+
+        it('should not match an HTML entity preceded by an odd number of backslashes', () => {
+          assert.notMatch(`\\&copy;`, htmlEntityRegex);
+          assert.notMatch(`${'\\'.repeat(3)}&copy;`, htmlEntityRegex);
+        });
+      });
+    });
+
+    describe('trailingAtxHeadingHashRegex', () => {
+      it('should match closing hashes preceded by a space', () => {
+        assert.match('## Heading ##', trailingAtxHeadingHashRegex);
+      });
+
+      it('should match closing hashes preceded by a tab', () => {
+        assert.match('## Heading\t##', trailingAtxHeadingHashRegex);
+      });
+
+      it('should match closing hashes preceded by a space with trailing tabs', () => {
+        assert.match('## Heading ##\t\t', trailingAtxHeadingHashRegex);
+      });
+
+      it('should match closing hashes preceded by a tab with trailing spaces', () => {
+        assert.match('## Heading\t##  ', trailingAtxHeadingHashRegex);
+      });
+
+      it('should not match a hash without separating whitespace', () => {
+        assert.notMatch('## Heading#', trailingAtxHeadingHashRegex);
+      });
+
+      it('should not match an escaped trailing hash', () => {
+        assert.notMatch('## Heading \\#', trailingAtxHeadingHashRegex);
+      });
+
+      it('should not match hashes followed by heading content', () => {
+        assert.notMatch('## Heading ## more', trailingAtxHeadingHashRegex);
       });
     });
   });
