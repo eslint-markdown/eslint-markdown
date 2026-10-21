@@ -119,7 +119,7 @@ export const mdRules = {
    * Disallow double consecutive punctuation in text.
    * @see https://eslint-markdown.lumir.page/docs/rules/no-double-punctuation
    */
-  'md/no-double-punctuation': ['error', { allow: ['.,'] }],
+  'md/no-double-punctuation': ['error', { allowTerms: [/\be\.g\.,/u, /\bi\.e\.,/u] }],
 
   /**
    * Disallow double or multiple consecutive spaces in text, except for leading and trailing spaces.
