@@ -59,6 +59,7 @@ export default {
 
     docs: {
       description: 'Disallow trailing punctuation in headings',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-trailing-heading-punctuation'),
       recommended: false,
       stylistic: true,
@@ -98,8 +99,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

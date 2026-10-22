@@ -71,6 +71,7 @@ export default {
 
     docs: {
       description: 'Disallow double consecutive punctuation in text',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-double-punctuation'),
       recommended: false,
       stylistic: false,
@@ -136,8 +137,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

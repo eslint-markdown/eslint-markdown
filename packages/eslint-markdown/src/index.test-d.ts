@@ -40,6 +40,9 @@ type RuleName = keyof typeof plugin.rules;
 
 ({}) as (typeof plugin.rules)[RuleName]['meta']['type'] satisfies 'problem' | 'layout';
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['description'] satisfies `${'Enforce' | 'Require' | 'Disallow'} ${string}`;
+({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['dialects'] satisfies (
+  'CommonMark' | 'GFM'
+)[];
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['url'] satisfies string;
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['recommended'] satisfies boolean;
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['stylistic'] satisfies boolean;
@@ -50,6 +53,8 @@ type RuleName = keyof typeof plugin.rules;
 
 // @ts-expect-error -- Rule message IDs should remain specific to each rule.
 plugin.rules['no-emoji'].meta.messages.unknownMessage;
+// @ts-expect-error -- Dialects belong in `meta.docs`.
+plugin.rules['no-emoji'].meta.dialects;
 
 'allow-heading' satisfies RuleName;
 'allow-image-url' satisfies RuleName;
