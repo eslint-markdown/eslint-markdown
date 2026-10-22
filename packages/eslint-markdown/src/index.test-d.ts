@@ -56,6 +56,8 @@ type RuleName = keyof typeof plugin.rules;
 
 // @ts-expect-error -- Rule message IDs should remain specific to each rule.
 plugin.rules['no-emoji'].meta.messages.unknownMessage;
+// @ts-expect-error -- Dialects belong in `meta.docs`.
+plugin.rules['no-emoji'].meta.dialects;
 
 'allow-heading' satisfies RuleName;
 'allow-image-url' satisfies RuleName;
