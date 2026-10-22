@@ -44,6 +44,7 @@ export default {
 
     docs: {
       description: 'Enforce the use of title attribute for images',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('require-image-title'),
       recommended: false,
       stylistic: false,
@@ -76,8 +77,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

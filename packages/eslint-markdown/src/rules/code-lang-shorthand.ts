@@ -130,6 +130,7 @@ export default {
 
     docs: {
       description: 'Enforce the use of shorthand for code block language identifiers',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('code-lang-shorthand'),
       recommended: true,
       stylistic: false,
@@ -171,8 +172,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

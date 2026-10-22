@@ -62,6 +62,7 @@ export default {
 
     docs: {
       description: 'Enforce the use of allowed or disallowed URLs for images',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('allow-image-url'),
       recommended: false,
       stylistic: false,
@@ -121,8 +122,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {
