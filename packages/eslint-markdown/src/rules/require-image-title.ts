@@ -42,6 +42,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce the use of title attribute for images',
       dialects: ['CommonMark', 'GFM'],
@@ -75,8 +77,6 @@ export default {
     messages: {
       requireImageTitle: 'Images should have a title attribute.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

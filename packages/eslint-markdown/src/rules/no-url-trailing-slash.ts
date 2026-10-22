@@ -95,6 +95,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Disallow URL trailing slash',
       dialects: ['CommonMark', 'GFM'],
@@ -106,8 +108,6 @@ export default {
     messages: {
       noUrlTrailingSlash: 'URL trailing slash is not allowed.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

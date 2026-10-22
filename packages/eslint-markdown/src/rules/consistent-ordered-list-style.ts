@@ -58,6 +58,8 @@ export default {
   meta: {
     type: 'layout',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce consistent ordered list style',
       dialects: ['CommonMark', 'GFM'],
@@ -87,8 +89,6 @@ export default {
     messages: {
       style: 'Ordered list style should be `{{ style }}`.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

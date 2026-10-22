@@ -73,6 +73,18 @@ export default function ruleTester(
         assert.ok(meta?.type);
       });
 
+      it('`meta.languages` should list the supported Markdown language identifiers', () => {
+        assert.ok(meta?.languages);
+        assert.ok(meta.languages.length > 0);
+        meta.languages.forEach(language => {
+          assert.match(language, /^markdown\/(?:commonmark|gfm)$/);
+        });
+        assert.deepStrictEqual(
+          meta.languages,
+          meta.docs?.dialects.map(dialect => `markdown/${dialect.toLowerCase()}`),
+        );
+      });
+
       it('`meta.docs` should exist', () => {
         assert.ok(meta?.docs);
       });
@@ -107,24 +119,20 @@ export default function ruleTester(
         });
       });
 
-      it("`meta.language` should exist and be `'markdown'`", () => {
-        assert.ok(meta?.language);
-        assert.match(meta?.language, /^markdown$/);
-      });
-
-      it('should omit the legacy `meta.dialects` property', () => {
+      it('should omit legacy `meta.language` and `meta.dialects` properties', () => {
+        assert.notProperty(meta, 'language');
         assert.notProperty(meta, 'dialects');
       });
     });
 
     describe('rule', () => {
-      if (meta?.docs?.dialects?.includes('CommonMark')) {
+      if (meta?.languages.includes('markdown/commonmark')) {
         describe('commonmark', () => {
           ruleTesterCommonmark.run(ruleName, rule, tests);
         });
       }
 
-      if (meta?.docs?.dialects?.includes('GFM')) {
+      if (meta?.languages.includes('markdown/gfm')) {
         describe('gfm', () => {
           ruleTesterGfm.run(ruleName, rule, tests);
         });
