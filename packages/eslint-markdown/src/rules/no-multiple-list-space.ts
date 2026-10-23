@@ -42,6 +42,7 @@ export default {
 
     docs: {
       description: 'Enforce spaces after list markers',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-multiple-list-space'),
       recommended: false,
       stylistic: true,
@@ -89,8 +90,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {
