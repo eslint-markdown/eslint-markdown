@@ -36,6 +36,7 @@ export default function stylistic(plugin: ESLint.Plugin) {
       'md/consistent-inline-code-style': 'error',
       'md/consistent-ordered-list-style': 'error',
       'md/consistent-strong-style': 'error',
+      'md/consistent-table-style': 'error',
       'md/consistent-thematic-break-style': 'error',
       'md/consistent-unordered-list-style': 'error',
       'md/no-consecutive-blank-line': 'error',
