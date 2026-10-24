@@ -15,6 +15,8 @@ This rule intentionally skips reporting on empty headings, such as `#`, `##`, or
 
 :::
 
+HTML headings (`<h1>` through `<h6>`) are also checked. In `'always'` mode, they require a nonempty `id` attribute; in `'never'` mode, any `id` attribute is disallowed. The `allowDepths` option applies to both Markdown and HTML headings.
+
 ## Examples
 
 ### :x: Incorrect
@@ -87,6 +89,12 @@ If a custom heading ID is wrapped in `emphasis`, it won't be recognized as valid
 # Heading **{#id}**
 
 If a custom heading ID is wrapped in `strong`, it won't be recognized as valid.
+
+<!-- HTML Headings -->
+
+<h1>Heading 1</h1>
+
+<h6 id="">Heading 6</h6>
 ```
 
 #### With `'never'` First Option
@@ -137,6 +145,10 @@ Heading 2 {#heading-2}
 Heading 2
 Multiple Lines {#heading-2}
 ---------
+
+<!-- HTML Headings -->
+
+<h2 id="heading-2">Heading 2</h2>
 ```
 
 #### With `'never'` First Option and `{ leftDelimiter: '[', rightDelimiter: ']' }` Second Option
@@ -241,6 +253,10 @@ Heading 2 {#heading-2}
 Heading 2
 Multiple Lines {#heading-2}
 ---------
+
+<!-- HTML Headings -->
+
+<h1 id="heading-1">Heading 1</h1>
 ```
 
 #### With `'never'` First Option
@@ -291,6 +307,10 @@ Heading 2
 Heading 2
 Multiple Lines
 ---------
+
+<!-- HTML Headings -->
+
+<h2>Heading 2</h2>
 ```
 
 ## Options
