@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig.base.test.json",
+  "compilerOptions": {
+    /* Modules */
+    "types": ["node"]
+  }
+}

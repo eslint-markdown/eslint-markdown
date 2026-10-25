@@ -9,7 +9,7 @@
 import { assert, describe, it } from 'vitest';
 import eslintLumir from 'eslint-lumir/package.json' with { type: 'json' };
 import eslintMarkdown from 'eslint-markdown/package.json' with { type: 'json' };
-import monorepo from '../package.json' with { type: 'json' };
+import monorepo from '../../package.json' with { type: 'json' };
 
 // --------------------------------------------------------------------------------
 // Test

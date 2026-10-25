@@ -3,11 +3,13 @@
   "name": "tests",
   "type": "module",
   "scripts": {
-    "test": "vitest run"
+    "test": "npm run test:types && npm run test:unit",
+    "test:types": "tsc -b tsconfig.json",
+    "test:unit": "vitest run"
   },
   "devDependencies": {
-    "eslint-lumir": "^0.19.1",
-    "eslint-markdown": "^0.19.1",
+    "eslint-lumir": "^0.20.0",
+    "eslint-markdown": "^0.20.0",
     "vitest": "^4.1.9"
   }
 }

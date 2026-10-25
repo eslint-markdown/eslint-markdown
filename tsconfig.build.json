@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/eslint-lumir/tsconfig.build.json"
+    },
+    {
+      "path": "./packages/eslint-markdown/tsconfig.build.json"
+    }
+  ]
+}
