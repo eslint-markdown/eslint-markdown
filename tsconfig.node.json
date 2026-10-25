@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "**/*.config.js",
+    "**/*.config.mjs",
+    "**/*.config.cjs",
+    "**/*.config.ts",
+    "**/*.config.mts",
+    "**/*.config.cts",
+    "**/scripts/**/*.js",
+    "**/scripts/**/*.mjs",
+    "**/scripts/**/*.cjs",
+    "**/scripts/**/*.ts",
+    "**/scripts/**/*.mts",
+    "**/scripts/**/*.cts"
+  ],
+  "compilerOptions": {
+    /* Modules */
+    "rootDir": ".",
+    "types": ["node"],
+
+    /* Emit */
+    "noEmit": true
+  }
+}
