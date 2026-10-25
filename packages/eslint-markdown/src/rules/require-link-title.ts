@@ -42,6 +42,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce the use of title attribute for links',
       dialects: ['CommonMark', 'GFM'],
@@ -75,8 +77,6 @@ export default {
     messages: {
       requireLinkTitle: 'Links should have a title attribute.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

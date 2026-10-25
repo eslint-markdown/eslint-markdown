@@ -67,6 +67,8 @@ export default {
   meta: {
     type: 'layout',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce consistent heading style',
       dialects: ['CommonMark', 'GFM'],
@@ -102,8 +104,6 @@ export default {
       suggestAtxToSetext: 'Replace ATX heading with a Setext heading.',
       suggestAtxClosedToSetext: 'Replace ATX closed heading with a Setext heading.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

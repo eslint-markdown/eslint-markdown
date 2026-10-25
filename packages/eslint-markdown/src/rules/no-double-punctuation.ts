@@ -69,6 +69,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Disallow double consecutive punctuation in text',
       dialects: ['CommonMark', 'GFM'],
@@ -135,8 +137,6 @@ export default {
       suggestReplaceWithRight:
         'Replace `{{ punctuation }}` with the right punctuation mark `{{ rightPunctuation }}`.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

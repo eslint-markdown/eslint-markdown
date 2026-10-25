@@ -74,6 +74,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce the use of allowed or disallowed headings',
       dialects: ['CommonMark', 'GFM'],
@@ -116,8 +118,6 @@ export default {
       emptyAllowHeading:
         'No level {{ depth }} headings are allowed because the list of allowed headings is empty.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

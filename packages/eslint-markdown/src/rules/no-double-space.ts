@@ -44,6 +44,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description:
         'Disallow double or multiple consecutive spaces in text, except for leading and trailing spaces',
@@ -79,8 +81,6 @@ export default {
       noMultipleSpace:
         'Multiple spaces are not allowed except for leading and trailing spaces.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

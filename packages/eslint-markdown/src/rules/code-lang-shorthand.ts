@@ -128,6 +128,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce the use of shorthand for code block language identifiers',
       dialects: ['CommonMark', 'GFM'],
@@ -170,8 +172,6 @@ export default {
     messages: {
       codeLangShorthand: '`{{ lang }}` should be shortened to `{{ langShorthand }}`.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

@@ -40,6 +40,8 @@ export default {
   meta: {
     type: 'layout',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce consistent inline code style',
       dialects: ['CommonMark', 'GFM'],
@@ -53,8 +55,6 @@ export default {
     messages: {
       style: 'Inline code should not have extra spaces or tabs next to backticks.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {
