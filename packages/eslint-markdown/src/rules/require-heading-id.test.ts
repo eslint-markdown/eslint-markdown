@@ -393,6 +393,13 @@ ruleTester('require-heading-id', rule, {
       code: '<H6 ID="heading-6">Heading 6</H6>',
       options: ['never', { allowDepths: [6] }],
     },
+
+    // `checkHtml` option
+    {
+      name: 'HTML: ignore HTML headings when `checkHtml` is `false`',
+      code: '<h1>Heading</h1>',
+      options: ['always', { checkHtml: false }],
+    },
   ],
 
   invalid: [
@@ -1761,6 +1768,40 @@ ruleTester('require-heading-id', rule, {
           column: 1,
           endLine: 3,
           endColumn: 5,
+        },
+      ],
+    },
+
+    // `checkHtml` option
+    {
+      name: 'HTML: require only Markdown IDs when `checkHtml` is `false`',
+      code: '# Heading\n\n<h1>Heading</h1>',
+      options: ['always', { checkHtml: false }],
+      errors: [
+        {
+          messageId: 'headingIdAlways',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
+        },
+      ],
+    },
+    {
+      name: 'HTML: remove only Markdown IDs when `checkHtml` is `false`',
+      code: '# Heading {#heading}\n\n<h1 id="heading">Heading</h1>',
+      output: '# Heading\n\n<h1 id="heading">Heading</h1>',
+      options: ['never', { checkHtml: false }],
+      errors: [
+        {
+          messageId: 'headingIdNever',
+          data: {
+            headingId: '{#heading}',
+          },
+          line: 1,
+          column: 11,
+          endLine: 1,
+          endColumn: 21,
         },
       ],
     },
