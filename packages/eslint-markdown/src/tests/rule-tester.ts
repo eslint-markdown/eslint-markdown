@@ -59,7 +59,7 @@ const ruleTesterGfm = new RuleTester({
 export default function ruleTester(
   ruleName: string,
   rule: RuleModule<RuleOptions, MessageIds>,
-  tests: Tests,
+  tests: Omit<Tests, 'assertionOptions'>,
 ) {
   const { meta } = rule;
   const testsWithAssertions: Tests = {
