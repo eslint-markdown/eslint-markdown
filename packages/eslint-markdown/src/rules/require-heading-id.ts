@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------
 
 import type { Heading } from 'mdast';
-import { escapeStringRegexp } from '../core/utils/index.js';
+import { escapeStringRegexp, getElementsByTagName } from '../core/utils/index.js';
 import { URL_RULE_DOCS } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -46,6 +46,12 @@ type RuleOptions = [
   },
 ];
 type MessageIds = 'headingIdAlways' | 'headingIdNever';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
+
+const headingTagNameRegex = /^h[1-6]$/i;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -256,6 +262,78 @@ export default {
               );
             },
           });
+        }
+      },
+
+      html(node) {
+        const [nodeStartOffset] = sourceCode.getRange(node);
+        const html = sourceCode.getText(node);
+
+        for (const { tagName, attrs, sourceCodeLocation } of getElementsByTagName(
+          html,
+          headingTagNameRegex,
+        )) {
+          const depth = Number(tagName[1]) as Heading['depth'];
+
+          if (
+            allowDepths.includes(depth) ||
+            !sourceCodeLocation ||
+            !sourceCodeLocation.startTag
+          ) {
+            continue;
+          }
+
+          const id = attrs.find(attribute => attribute.name === 'id');
+          const startTagStartOffset =
+            nodeStartOffset + sourceCodeLocation.startTag.startOffset;
+          const startTagEndOffset =
+            nodeStartOffset + sourceCodeLocation.startTag.endOffset;
+
+          if (mode === 'always' && !id?.value) {
+            context.report({
+              loc: {
+                start: sourceCode.getLocFromIndex(startTagStartOffset),
+                end: sourceCode.getLocFromIndex(startTagEndOffset),
+              },
+
+              messageId: 'headingIdAlways',
+            });
+          } else if (mode === 'never' && id && sourceCodeLocation.attrs?.id) {
+            const idStartOffset =
+              nodeStartOffset + sourceCodeLocation.attrs.id.startOffset;
+            const idEndOffset = nodeStartOffset + sourceCodeLocation.attrs.id.endOffset;
+
+            context.report({
+              loc: {
+                start: sourceCode.getLocFromIndex(idStartOffset),
+                end: sourceCode.getLocFromIndex(idEndOffset),
+              },
+
+              data: {
+                headingId: sourceCode.text.slice(idStartOffset, idEndOffset),
+              },
+
+              messageId: 'headingIdNever',
+
+              fix(fixer) {
+                let leadingSpaces = 0;
+
+                for (
+                  let index = idStartOffset - 1;
+                  startTagStartOffset <= index;
+                  index--
+                ) {
+                  if (sourceCode.text[index] !== ' ' && sourceCode.text[index] !== '\t') {
+                    break;
+                  } else {
+                    leadingSpaces++;
+                  }
+                }
+
+                return fixer.removeRange([idStartOffset - leadingSpaces, idEndOffset]);
+              },
+            });
+          }
         }
       },
     };
