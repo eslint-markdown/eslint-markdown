@@ -62,6 +62,14 @@ export default function ruleTester(
   tests: Tests,
 ) {
   const { meta } = rule;
+  const testsWithAssertions: Tests = {
+    ...tests,
+    assertionOptions: {
+      requireMessage: 'messageId',
+      requireLocation: true,
+      requireData: true,
+    },
+  };
 
   describe(ruleName, () => {
     describe('meta', () => {
@@ -120,13 +128,13 @@ export default function ruleTester(
     describe('rule', () => {
       if (meta?.docs?.dialects?.includes('CommonMark')) {
         describe('commonmark', () => {
-          ruleTesterCommonmark.run(ruleName, rule, tests);
+          ruleTesterCommonmark.run(ruleName, rule, testsWithAssertions);
         });
       }
 
       if (meta?.docs?.dialects?.includes('GFM')) {
         describe('gfm', () => {
-          ruleTesterGfm.run(ruleName, rule, tests);
+          ruleTesterGfm.run(ruleName, rule, testsWithAssertions);
         });
       }
     });
