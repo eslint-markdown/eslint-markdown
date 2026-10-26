@@ -7,7 +7,7 @@
 // --------------------------------------------------------------------------------
 
 import { assert, describe, it } from 'vitest';
-import { RuleTester } from 'eslint';
+import { RuleTester, type Linter } from 'eslint';
 import markdown, { type MarkdownRuleDefinitionTypeOptions } from '@eslint/markdown';
 import type { RuleModule } from '../core/types.js';
 
@@ -17,7 +17,12 @@ import type { RuleModule } from '../core/types.js';
 
 type RuleOptions = MarkdownRuleDefinitionTypeOptions['RuleOptions'];
 type MessageIds = MarkdownRuleDefinitionTypeOptions['MessageIds'];
-type Tests = Parameters<RuleTester['run']>[2];
+// ESLint v9 supports `language` at runtime but omits it from its test case types.
+// TODO: Remove this once support for ESLint v9 is dropped.
+type Tests = Omit<Parameters<RuleTester['run']>[2], 'valid' | 'invalid'> & {
+  valid: (string | (RuleTester.ValidTestCase & Pick<Linter.Config, 'language'>))[];
+  invalid: (RuleTester.InvalidTestCase & Pick<Linter.Config, 'language'>)[];
+};
 
 // --------------------------------------------------------------------------------
 // Helper
