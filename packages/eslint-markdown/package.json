@@ -59,7 +59,7 @@
     "prepublishOnly": "npm run build",
     "build": "tsc -b tsconfig.build.json && node ../../scripts/build-config.js && tsc -b tsconfig.build.json",
     "test": "npm run test:types && npm run test:unit",
-    "test:types": "tsc -b ./tsconfig.test-d.json",
+    "test:types": "tsc -b tsconfig.json",
     "test:unit": "vitest run"
   },
   "peerDependencies": {
