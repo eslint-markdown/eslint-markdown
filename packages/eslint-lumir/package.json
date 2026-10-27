@@ -153,7 +153,7 @@
     "minimatch": "^10.2.6"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^16.4.2",
+    "@next/eslint-plugin-next": "^16.4.3",
     "@typescript-eslint/utils": "^8.72.0",
     "eslint": "^10.13.0"
   }
