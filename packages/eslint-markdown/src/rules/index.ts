@@ -13,6 +13,7 @@ import consistentHeadingStyle from './consistent-heading-style.js';
 import consistentInlineCodeStyle from './consistent-inline-code-style.js';
 import consistentOrderedListStyle from './consistent-ordered-list-style.js';
 import consistentStrongStyle from './consistent-strong-style.js';
+import consistentTableStyle from './consistent-table-style.js';
 import consistentThematicBreakStyle from './consistent-thematic-break-style.js';
 import consistentUnorderedListStyle from './consistent-unordered-list-style.js';
 // import enCapitalization from './en-capitalization.js';
@@ -46,6 +47,7 @@ export default {
   'consistent-inline-code-style': consistentInlineCodeStyle,
   'consistent-ordered-list-style': consistentOrderedListStyle,
   'consistent-strong-style': consistentStrongStyle,
+  'consistent-table-style': consistentTableStyle,
   'consistent-thematic-break-style': consistentThematicBreakStyle,
   'consistent-unordered-list-style': consistentUnorderedListStyle,
   // 'en-capitalization': enCapitalization,
