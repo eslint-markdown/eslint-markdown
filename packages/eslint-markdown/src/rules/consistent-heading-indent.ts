@@ -115,7 +115,7 @@ export default {
 
       const groups = firstLine.slice(start.column - 1).match(listItemMarkerRegex)?.groups;
 
-      if (!groups?.marker || groups.spaces === undefined) {
+      if (!groups) {
         return getColumnAfter(firstLine.slice(0, start.column - 1));
       }
 
@@ -149,7 +149,7 @@ export default {
 
         while (indentationIndex < linePrefix.length) {
           const nextColumn = getColumnAfter(
-            linePrefix[indentationIndex] ?? '',
+            linePrefix[indentationIndex],
             indentationColumn,
           );
 

@@ -65,6 +65,10 @@ ruleTester('consistent-heading-indent', rule, {
       code: '> # Heading in Block Quote',
     },
     {
+      name: 'Heading inside a block quote without a space after the marker',
+      code: '># Heading',
+    },
+    {
       name: 'Heading in a nested block quote',
       code: '> > # Heading',
     },
