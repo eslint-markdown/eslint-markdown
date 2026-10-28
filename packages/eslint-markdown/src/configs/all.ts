@@ -39,6 +39,7 @@ export default function all(plugin: ESLint.Plugin) {
       'md/consistent-heading-indent': 'error',
       'md/consistent-heading-style': 'error',
       'md/consistent-inline-code-style': 'error',
+      'md/consistent-ordered-list-style': 'error',
       'md/consistent-strong-style': 'error',
       'md/consistent-thematic-break-style': 'error',
       'md/consistent-unordered-list-style': 'error',

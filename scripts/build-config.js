@@ -71,9 +71,13 @@ export default function ${configName}(plugin: ESLint.Plugin) {
 // Script
 // --------------------------------------------------------------------------------
 
+/** @type {Record<string, string>} */
 const allRules = {};
+/** @type {Record<string, string>} */
 const baseRules = {};
+/** @type {Record<string, string>} */
 const recommendedRules = {};
+/** @type {Record<string, string>} */
 const stylisticRules = {};
 
 for (const [ruleName, rule] of Object.entries(markdown.rules)) {

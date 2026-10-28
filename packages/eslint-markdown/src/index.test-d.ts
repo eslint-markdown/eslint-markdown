@@ -40,6 +40,9 @@ type RuleName = keyof typeof plugin.rules;
 
 ({}) as (typeof plugin.rules)[RuleName]['meta']['type'] satisfies 'problem' | 'layout';
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['description'] satisfies `${'Enforce' | 'Require' | 'Disallow'} ${string}`;
+({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['dialects'] satisfies (
+  'CommonMark' | 'GFM'
+)[];
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['url'] satisfies string;
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['recommended'] satisfies boolean;
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['stylistic'] satisfies boolean;
@@ -50,6 +53,8 @@ type RuleName = keyof typeof plugin.rules;
 
 // @ts-expect-error -- Rule message IDs should remain specific to each rule.
 plugin.rules['no-emoji'].meta.messages.unknownMessage;
+// @ts-expect-error -- Dialects belong in `meta.docs`.
+plugin.rules['no-emoji'].meta.dialects;
 
 'allow-heading' satisfies RuleName;
 'allow-image-url' satisfies RuleName;
@@ -61,6 +66,7 @@ plugin.rules['no-emoji'].meta.messages.unknownMessage;
 'consistent-heading-indent' satisfies RuleName;
 'consistent-heading-style' satisfies RuleName;
 'consistent-inline-code-style' satisfies RuleName;
+'consistent-ordered-list-style' satisfies RuleName;
 'consistent-strong-style' satisfies RuleName;
 'consistent-thematic-break-style' satisfies RuleName;
 'consistent-unordered-list-style' satisfies RuleName;
@@ -107,6 +113,7 @@ type AllConfigRuleName = keyof typeof plugin.configs.all.rules;
 'md/consistent-heading-indent' satisfies AllConfigRuleName;
 'md/consistent-heading-style' satisfies AllConfigRuleName;
 'md/consistent-inline-code-style' satisfies AllConfigRuleName;
+'md/consistent-ordered-list-style' satisfies AllConfigRuleName;
 'md/consistent-strong-style' satisfies AllConfigRuleName;
 'md/consistent-thematic-break-style' satisfies AllConfigRuleName;
 'md/consistent-unordered-list-style' satisfies AllConfigRuleName;
@@ -161,6 +168,7 @@ type StylisticConfigRuleName = keyof typeof plugin.configs.stylistic.rules;
 'md/consistent-heading-indent' satisfies StylisticConfigRuleName;
 'md/consistent-heading-style' satisfies StylisticConfigRuleName;
 'md/consistent-inline-code-style' satisfies StylisticConfigRuleName;
+'md/consistent-ordered-list-style' satisfies StylisticConfigRuleName;
 'md/consistent-strong-style' satisfies StylisticConfigRuleName;
 'md/consistent-thematic-break-style' satisfies StylisticConfigRuleName;
 'md/consistent-unordered-list-style' satisfies StylisticConfigRuleName;

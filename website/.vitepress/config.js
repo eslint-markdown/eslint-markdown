@@ -23,6 +23,7 @@ import { createTwoslasher } from 'twoslash-eslint';
 
 import {
   CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
+  CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
   vitePluginCodecov,
   vitePluginConfigInspector,
 } from './plugins/index.js';
@@ -100,7 +101,10 @@ export default defineConfig({
 
   /* Routing */
   cleanUrls: true,
-  ignoreDeadLinks: [CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH],
+  ignoreDeadLinks: [
+    CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
+    CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
+  ],
 
   /* Build */
   outDir: 'build',
@@ -137,7 +141,7 @@ export default defineConfig({
           },
           {
             text: 'Packages',
-            link: '/docs/packages/eslint-markdown',
+            link: '/docs/packages',
             activeMatch: '/docs/packages',
           },
           {
@@ -163,6 +167,11 @@ export default defineConfig({
           {
             text: 'eslint-markdown',
             link: CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
+            target: '_self',
+          },
+          {
+            text: 'eslint-lumir',
+            link: CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
             target: '_self',
           },
         ],
@@ -216,11 +225,16 @@ export default defineConfig({
         {
           base: '/docs/packages/',
           text: 'Packages',
+          link: '/',
           collapsed: false,
           items: [
             {
               text: 'eslint-markdown',
               link: 'eslint-markdown',
+            },
+            {
+              text: 'eslint-lumir',
+              link: 'eslint-lumir',
             },
           ],
         },
@@ -347,8 +361,8 @@ export default defineConfig({
   ${(rule.meta.docs.stylistic ?? false) ? '<code class="rule-emoji">🎨 Stylistic</code>' : ''}
   ${(rule.meta.fixable ?? false) ? '<code class="rule-emoji">🔧 Fixable</code>' : ''}
   ${(rule.meta.hasSuggestions ?? false) ? '<code class="rule-emoji">💡 Suggestion</code>' : ''}
-  ${(rule.meta.dialects.includes('commonmark') ?? false) ? '<code class="rule-emoji">⭐ CommonMark</code>' : ''}
-  ${(rule.meta.dialects.includes('gfm') ?? false) ? '<code class="rule-emoji">🌟 GFM</code>' : ''}
+  ${(rule.meta.docs.dialects.includes('CommonMark') ?? false) ? '<code class="rule-emoji">⭐ CommonMark</code>' : ''}
+  ${(rule.meta.docs.dialects.includes('GFM') ?? false) ? '<code class="rule-emoji">🌟 GFM</code>' : ''}
 </p>
 <p>
   <code class="rule-emoji">🔗 <a target="_blank" href="${URL_RULE_SRC}/${ruleName}.ts">Rule Source</a></code>
@@ -366,7 +380,8 @@ export default defineConfig({
 </p>
 
 ${
-  !rule.meta.dialects.includes('commonmark') && rule.meta.dialects.includes('gfm')
+  !rule.meta.docs.dialects.includes('CommonMark') &&
+  rule.meta.docs.dialects.includes('GFM')
     ? '<div class="caution custom-block github-alert" bis_skin_checked="1"><p class="custom-block-title">GFM Only</p><p></p><p>This rule applies only when GFM (GitHub Flavored Markdown) is enabled by setting the <code>language</code> mode to <code>markdown/gfm</code>.</p></div>'
     : ''
 }

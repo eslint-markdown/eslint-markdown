@@ -70,6 +70,7 @@ export default {
 
     docs: {
       description: 'Enforce consistent code style',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('consistent-code-style'),
       recommended: false,
       stylistic: true,
@@ -130,8 +131,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {
@@ -159,6 +158,27 @@ export default {
         const currentCodeStyle = getCodeStyle(currentCodeFenceChar);
         const nodeStartLineIndex = start.line - 1;
         const nodeEndLineIndex = end.line - 1;
+        const nodeStartLineText = lines[nodeStartLineIndex];
+        const nodeEndLineText = lines[nodeEndLineIndex];
+        const leadingCodeFenceLoc = {
+          start,
+          end: {
+            line: start.line,
+            column: (() => {
+              if (currentCodeStyle === 'indent') {
+                return nodeStartLineText.length + 1;
+              }
+
+              let { column } = start;
+
+              while (nodeStartLineText[column - 1] === currentCodeFenceChar) {
+                column++;
+              }
+
+              return column;
+            })(),
+          },
+        } as const;
 
         if (codeStyle === null) {
           codeStyle = currentCodeStyle;
@@ -166,27 +186,7 @@ export default {
 
         if (codeStyle !== currentCodeStyle) {
           context.report({
-            loc: {
-              start,
-              end: {
-                line: start.line,
-                column: (() => {
-                  const nodeStartLineText = lines[nodeStartLineIndex];
-
-                  if (currentCodeStyle === 'indent') {
-                    return nodeStartLineText.length + 1;
-                  }
-
-                  let { column } = start;
-
-                  while (nodeStartLineText[column - 1] === currentCodeFenceChar) {
-                    column++;
-                  }
-
-                  return column;
-                })(),
-              },
-            },
+            loc: leadingCodeFenceLoc,
 
             messageId: 'style',
 
@@ -220,7 +220,7 @@ export default {
             }
 
             context.report({
-              node,
+              loc: leadingCodeFenceLoc,
 
               messageId: 'blankLineAbove',
 
@@ -258,7 +258,18 @@ export default {
             }
 
             context.report({
-              node,
+              // Report the last line of the code block, as highlighting only the trailing
+              // code fence characters involves many edge cases that cannot be handled reliably.
+              loc: {
+                start: {
+                  line: end.line,
+                  column: 1,
+                },
+                end: {
+                  line: end.line,
+                  column: nodeEndLineText.length + 1,
+                },
+              },
 
               messageId: 'blankLineBelow',
 

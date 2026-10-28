@@ -7,7 +7,7 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import { escapeStringRegexp } from '../core/utils/index.js';
+import { escapeStringRegexp, normalizeRegexPattern } from '../core/utils/index.js';
 import {
   URL_RULE_DOCS,
   asciiPunctuationWithQuestionMark,
@@ -32,6 +32,22 @@ type RuleOptions = [
      * @default []
      */
     allow: string[];
+    /**
+     * When `allowTerms` is specified, text matching the listed patterns is ignored by this rule.
+     * This is useful when terms such as `etc.;` are intentionally used instead of being treated as a typo.
+     * String patterns must be non-empty.
+     * @default []
+     */
+    allowTerms: (RegExp | string)[];
+    /**
+     * Specifies the characters that are treated as punctuation by this rule.
+     *
+     * The configured array replaces the default punctuation characters. Each item must be a single character, and at least one character is required.
+     *
+     * NOTE: Spaces, tabs, line feeds, carriage returns, and backslashes are not allowed.
+     * @default ['.', ',', ';', ':', '!', '?']
+     */
+    punctuation: string[];
   },
 ];
 type MessageIds =
@@ -41,22 +57,9 @@ type MessageIds =
 // Helper
 // --------------------------------------------------------------------------------
 
-const escapedAsciiPunctuationWithQuestionMark = escapeStringRegexp(
-  asciiPunctuationWithQuestionMark.join(''),
-);
-
 const gemojiRegex = new RegExp(originalGemojiRegex.source, 'g');
 
 const htmlEntityRegex = new RegExp(originalHtmlEntityRegex.source, 'g');
-
-/**
- * This pattern is based on the punctuation list used by `remark-lint`.
- * @see https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-punctuation#parameters
- */
-const doublePunctuationRegex = new RegExp(
-  `(?:^|(?<=[^${escapedAsciiPunctuationWithQuestionMark}]))[${escapedAsciiPunctuationWithQuestionMark}]{2}(?:$|(?=[^${escapedAsciiPunctuationWithQuestionMark}]))`,
-  'g',
-);
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -68,6 +71,7 @@ export default {
 
     docs: {
       description: 'Disallow double consecutive punctuation in text',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-double-punctuation'),
       recommended: false,
       stylistic: false,
@@ -87,8 +91,28 @@ export default {
               type: 'string',
               minLength: 2,
               maxLength: 2,
-              pattern: `^[${escapedAsciiPunctuationWithQuestionMark}]{2}$`,
             },
+            uniqueItems: true,
+          },
+          allowTerms: {
+            type: 'array',
+            items: {
+              oneOf: [
+                { type: 'object', additionalProperties: false },
+                { type: 'string', minLength: 1 },
+              ],
+            },
+            uniqueItems: true,
+          },
+          punctuation: {
+            type: 'array',
+            items: {
+              type: 'string',
+              minLength: 1,
+              maxLength: 1,
+              pattern: String.raw`^[^ \t\r\n\\]+$`,
+            },
+            minItems: 1,
             uniqueItems: true,
           },
         },
@@ -99,6 +123,8 @@ export default {
     defaultOptions: [
       {
         allow: [],
+        allowTerms: [],
+        punctuation: [...asciiPunctuationWithQuestionMark],
       },
     ],
 
@@ -111,22 +137,39 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {
     const { sourceCode } = context;
-    const [{ allow }] = context.options;
+    const [{ allow, allowTerms: allowTermsOption, punctuation: punctuationOption }] =
+      context.options;
+    const allowTerms = allowTermsOption.map(pattern => {
+      const regex = normalizeRegexPattern(pattern);
+      return new RegExp(
+        regex.source,
+        regex.flags.includes('g') ? regex.flags : `${regex.flags}g`,
+      );
+    });
+    const escapedPunctuation = escapeStringRegexp(punctuationOption.join(''));
+    const doublePunctuationRegex = new RegExp(
+      `(?:^|(?<=[^${escapedPunctuation}]))[${escapedPunctuation}]{2}(?:$|(?=[^${escapedPunctuation}]))`,
+      'gu',
+    );
 
     return {
       text(node) {
         const [nodeStartOffset] = sourceCode.getRange(node);
-        const matches = sourceCode
-          .getText(node) // Mask HTML entities and gemoji without changing their offsets in the original text.
-          .replace(gemojiRegex, match => ' '.repeat(match.length))
-          .replace(htmlEntityRegex, match => ' '.repeat(match.length))
-          .matchAll(doublePunctuationRegex);
+        const text = sourceCode.getText(node);
+        const masked = text.split('');
+
+        // Match the original text and mask without changing source offsets.
+        for (const regex of [gemojiRegex, htmlEntityRegex, ...allowTerms]) {
+          for (const match of text.matchAll(regex)) {
+            masked.fill(' ', match.index, match.index + match[0].length);
+          }
+        }
+
+        const matches = masked.join('').matchAll(doublePunctuationRegex);
 
         for (const match of matches) {
           const punctuation = match[0];

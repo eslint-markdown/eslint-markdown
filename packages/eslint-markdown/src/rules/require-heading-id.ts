@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------
 
 import type { Heading } from 'mdast';
-import { escapeStringRegexp } from '../core/utils/index.js';
+import { escapeStringRegexp, getElementsByTagName } from '../core/utils/index.js';
 import { URL_RULE_DOCS } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -43,9 +43,21 @@ type RuleOptions = [
      * @default []
      */
     allowDepths: Heading['depth'][];
+    /**
+     * Set to `false` to skip HTML headings (`<h1>` through `<h6>`) in both modes.
+     * Markdown headings are still checked.
+     * @default true
+     */
+    checkHtml: boolean;
   },
 ];
 type MessageIds = 'headingIdAlways' | 'headingIdNever';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
+
+const headingTagNameRegex = /^h[1-6]$/i;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -57,6 +69,7 @@ export default {
 
     docs: {
       description: 'Enforce the use of heading IDs',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('require-heading-id'),
       recommended: false,
       stylistic: false,
@@ -84,6 +97,9 @@ export default {
             },
             uniqueItems: true,
           },
+          checkHtml: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -95,6 +111,7 @@ export default {
         leftDelimiter: '{',
         rightDelimiter: '}',
         allowDepths: [],
+        checkHtml: true,
       },
     ],
 
@@ -105,13 +122,12 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {
     const { sourceCode } = context;
-    const [mode, { leftDelimiter, rightDelimiter, allowDepths }] = context.options;
+    const [mode, { leftDelimiter, rightDelimiter, allowDepths, checkHtml }] =
+      context.options;
 
     const escapedLeftDelimiter = escapeStringRegexp(leftDelimiter);
     const escapedRightDelimiter = escapeStringRegexp(rightDelimiter);
@@ -257,6 +273,82 @@ export default {
               );
             },
           });
+        }
+      },
+
+      html(node) {
+        if (!checkHtml) {
+          return;
+        }
+
+        const [nodeStartOffset] = sourceCode.getRange(node);
+        const html = sourceCode.getText(node);
+
+        for (const { tagName, attrs, sourceCodeLocation } of getElementsByTagName(
+          html,
+          headingTagNameRegex,
+        )) {
+          const depth = Number(tagName[1]) as Heading['depth'];
+
+          if (
+            allowDepths.includes(depth) ||
+            !sourceCodeLocation ||
+            !sourceCodeLocation.startTag
+          ) {
+            continue;
+          }
+
+          const id = attrs.find(attribute => attribute.name === 'id');
+          const startTagStartOffset =
+            nodeStartOffset + sourceCodeLocation.startTag.startOffset;
+          const startTagEndOffset =
+            nodeStartOffset + sourceCodeLocation.startTag.endOffset;
+
+          if (mode === 'always' && !id?.value) {
+            context.report({
+              loc: {
+                start: sourceCode.getLocFromIndex(startTagStartOffset),
+                end: sourceCode.getLocFromIndex(startTagEndOffset),
+              },
+
+              messageId: 'headingIdAlways',
+            });
+          } else if (mode === 'never' && id && sourceCodeLocation.attrs?.id) {
+            const idStartOffset =
+              nodeStartOffset + sourceCodeLocation.attrs.id.startOffset;
+            const idEndOffset = nodeStartOffset + sourceCodeLocation.attrs.id.endOffset;
+
+            context.report({
+              loc: {
+                start: sourceCode.getLocFromIndex(idStartOffset),
+                end: sourceCode.getLocFromIndex(idEndOffset),
+              },
+
+              data: {
+                headingId: sourceCode.text.slice(idStartOffset, idEndOffset),
+              },
+
+              messageId: 'headingIdNever',
+
+              fix(fixer) {
+                let leadingSpaces = 0;
+
+                for (
+                  let index = idStartOffset - 1;
+                  startTagStartOffset <= index;
+                  index--
+                ) {
+                  if (sourceCode.text[index] !== ' ' && sourceCode.text[index] !== '\t') {
+                    break;
+                  } else {
+                    leadingSpaces++;
+                  }
+                }
+
+                return fixer.removeRange([idStartOffset - leadingSpaces, idEndOffset]);
+              },
+            });
+          }
         }
       },
     };

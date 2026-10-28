@@ -65,6 +65,12 @@ export const punctuationWithQuestionMark = [
 // #region regex
 
 /**
+ * Matches a single ASCII punctuation character as defined by CommonMark.
+ * @see https://spec.commonmark.org/0.31.2/#ascii-punctuation-character
+ */
+export const asciiPunctuationRegex = /^[\x21-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E]$/;
+
+/**
  * Regular expression for identifying an odd-length run of backslashes at the end of a string.
  */
 export const escapedTrailingBackslashRegex = /(?<=(?<!\\)(?:\\{2})*)\\$/u;

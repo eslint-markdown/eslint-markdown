@@ -28,10 +28,10 @@
 
 ## Test/Build/Lint Workflow (required before finalizing)
 
-Run from repo root:
+Run from repo root in this order (tests and lint load built workspace exports):
 
-- `npm run test`
 - `npm run build`
+- `npm run test`
 - `npm run lint`
 
 Sandbox note:
@@ -56,7 +56,7 @@ Use this guide when preparing any PR in this repository.
 ### 1. PR Title (required)
 
 - Title format is validated by `.github/workflows/pull-request.yml`.
-- Use Conventional Commits: `<type>[scope]: <description>`
+- Use Conventional Commits: `<type>(<scope>): <description>`
 
 #### `type` rules
 
@@ -65,7 +65,7 @@ Use this guide when preparing any PR in this repository.
 #### `scope` rules
 
 - For AI-generated changes, use:
-  - `eslint-markdown` for package-specific changes, or
+  - `eslint-markdown` or `eslint-lumir` for changes specific to that package, or
   - `*` for repo-wide/docs/tooling changes.
 
 #### `description` rules
@@ -82,9 +82,9 @@ Use this guide when preparing any PR in this repository.
 
 ### 2. PR Description (required)
 
-Follow the repository PR template exactly and keep content concise.
+Follow `.github/PULL_REQUEST_TEMPLATE.md` exactly and keep content concise. Complete its AI acknowledgment section, including the model used.
 
-Include:
+Use the existing template sections to include:
 
 - **summary**: what changed and why
 - **scope**: affected packages/directories (e.g., `packages/...`, `website/...`)
@@ -119,3 +119,7 @@ Include:
 - Treat typos and grammar issues in docs as P1.
 - Flag missing documentation as P1.
 - Flag missing tests for behavior changes as P1.
+
+## Cleanup
+
+- If you worked in a worktree, remove it after creating the PR.

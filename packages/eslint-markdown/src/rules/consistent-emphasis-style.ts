@@ -45,6 +45,7 @@ export default {
 
     docs: {
       description: 'Enforce consistent emphasis style',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('consistent-emphasis-style'),
       recommended: false,
       stylistic: true,
@@ -75,8 +76,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

@@ -31,7 +31,7 @@ const lowercaseRegex = /^[a-z]/u;
  * Traverses the Markdown AST using a DFS pre-order approach to find the first text node.
  * @param node The node to start searching from.
  * @returns The first text node, if present.
- */ // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: This rule is not fully migrated to TypeScript yet.
+ */ // eslint-disable-next-line typescript/no-explicit-any -- TODO: This rule is not fully migrated to TypeScript yet.
 function findFirstLeafTextNode(node: any): Text | null {
   // Base case: if this is a text node, return it
   if (node.type === 'text') return node;
@@ -59,6 +59,7 @@ export default {
 
     docs: {
       description: 'Enforce the use of capital letters at the beginning of sentences',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('en-capitalization'),
       recommended: false,
       stylistic: false,
@@ -93,8 +94,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

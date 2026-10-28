@@ -90,6 +90,8 @@ Specifies the characters that are not allowed at the end of headings.
 
 The configured array replaces the default punctuation characters. Each item must be a single character, and at least one character is required.
 
+NOTE: Spaces, tabs, line feeds, carriage returns, and backslashes are not allowed.
+
 ## Fix
 
 This rule fixes trailing punctuation by removing it and any whitespace immediately before it.

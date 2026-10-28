@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.build.json",
+  "references": [
+    {
+      "path": "../eslint-markdown/tsconfig.build.json"
+    }
+  ],
+  "compilerOptions": {
+    /* Modules */
+    "types": ["node"]
+  }
+}

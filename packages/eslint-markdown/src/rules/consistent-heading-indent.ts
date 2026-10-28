@@ -64,6 +64,7 @@ export default {
 
     docs: {
       description: 'Disallow heading indentation',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('consistent-heading-indent'),
       recommended: false,
       stylistic: true,
@@ -76,8 +77,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

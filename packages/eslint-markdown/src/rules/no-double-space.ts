@@ -47,6 +47,7 @@ export default {
     docs: {
       description:
         'Disallow double or multiple consecutive spaces in text, except for leading and trailing spaces',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-double-space'),
       recommended: true,
       stylistic: false,
@@ -80,8 +81,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

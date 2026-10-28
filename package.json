@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "eslint-markdown-monorepo",
-  "version": "0.18.1",
+  "version": "0.20.0",
   "type": "module",
   "packageManager": "npm@10.9.2",
   "engines": {
@@ -21,6 +21,7 @@
   },
   "workspaces": [
     "packages/*",
+    "tests",
     "website"
   ],
   "scripts": {
@@ -31,15 +32,19 @@
     "test:coverage": "npm run test:types && vitest run --coverage",
     "test:types": "tsc -b",
     "test:unit": "vitest run",
+    "test:pkg:el": "npm run test -w packages/eslint-lumir",
     "test:pkg:em": "npm run test -w packages/eslint-markdown",
-    "build": "npm run build:pkg:em && npm run build:w",
+    "build": "npm run build:pkg:em && npm run build:pkg:el && npm run build:w",
+    "build:pkg:el": "npm run build -w packages/eslint-lumir",
     "build:pkg:em": "npm run build -w packages/eslint-markdown",
     "build:w": "npm run build -w website",
     "build:w:vp": "npm run build:vp -w website",
+    "build:w:el": "npm run build:el -w website",
     "build:w:em": "npm run build:em -w website",
     "dev": "npm run dev -w website",
     "dev:w": "npm run dev -w website",
     "dev:w:vp": "npm run dev:vp -w website",
+    "dev:w:el": "npm run dev:el -w website",
     "dev:w:em": "npm run dev:em -w website",
     "start": "npm run start:vp -w website",
     "start:w": "npm run start:vp -w website",
@@ -56,16 +61,16 @@
     "esbuild": true
   },
   "devDependencies": {
-    "@types/node": "^20.19.43",
+    "@types/node": "~20.19.43",
     "@vitest/coverage-v8": "^4.1.11",
     "editorconfig-checker": "^6.2.0",
-    "eslint": "^9.39.5",
-    "eslint-config-bananass": "^0.8.0",
+    "eslint": "^10.13.0",
+    "eslint-lumir": "file:packages/eslint-lumir",
     "eslint-markdown": "file:packages/eslint-markdown",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "npm-run-all2": "^8.0.4",
-    "prettier": "^3.9.9",
+    "prettier": "^3.9.10",
     "typescript": "^6.0.3",
     "vitest": "^4.1.9"
   }

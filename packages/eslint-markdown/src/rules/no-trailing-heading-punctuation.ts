@@ -11,6 +11,7 @@ import { escapeStringRegexp } from '../core/utils/index.js';
 import {
   URL_RULE_DOCS,
   punctuation as defaultPunctuation,
+  asciiPunctuationRegex,
   escapedTrailingBackslashRegex,
   gemojiRegex,
   htmlEntityRegex,
@@ -28,6 +29,8 @@ type RuleOptions = [
   {
     /**
      * Specifies the characters that are not allowed at the end of headings.
+     *
+     * NOTE: Spaces, tabs, line feeds, carriage returns, and backslashes are not allowed.
      * @default ['.', ',', ';', ':', '!', '。', '，', '；', '：', '！']
      */
     punctuation: string[];
@@ -56,6 +59,7 @@ export default {
 
     docs: {
       description: 'Disallow trailing punctuation in headings',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-trailing-heading-punctuation'),
       recommended: false,
       stylistic: true,
@@ -73,6 +77,7 @@ export default {
               type: 'string',
               minLength: 1,
               maxLength: 1,
+              pattern: String.raw`^[^ \t\r\n\\]+$`,
             },
             minItems: 1,
             uniqueItems: true,
@@ -94,8 +99,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {
@@ -240,6 +243,8 @@ export default {
                 Number(
                   // When `leadingSpaces` is `''` (empty string), check for an escaped trailing backslash.
                   !leadingSpaces &&
+                    // The preceding backslash is an escape only when the punctuation is escapable.
+                    asciiPunctuationRegex.test(trailingPunctuation[0]) &&
                     escapedTrailingBackslashRegex.test(
                       lastChildText.slice(0, -trailingPunctuation.length),
                     ),
