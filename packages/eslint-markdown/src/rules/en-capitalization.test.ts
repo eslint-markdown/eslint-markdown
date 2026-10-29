@@ -137,6 +137,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 1,
           endLine: 1,
@@ -151,6 +152,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 2,
           endLine: 1,
@@ -165,6 +167,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 3,
           endLine: 1,
@@ -179,6 +182,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 4,
           endLine: 1,
@@ -193,6 +197,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 4,
           endLine: 1,
@@ -210,6 +215,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 3,
           endLine: 1,
@@ -225,6 +231,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 4,
           endLine: 1,
@@ -240,6 +247,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 5,
           endLine: 1,
@@ -255,6 +263,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 6,
           endLine: 1,
@@ -270,6 +279,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 6,
           endLine: 1,
@@ -287,6 +297,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 3,
           endLine: 1,
@@ -302,6 +313,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 4,
           endLine: 1,
@@ -317,6 +329,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 5,
           endLine: 1,
@@ -332,6 +345,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 6,
           endLine: 1,
@@ -347,6 +361,7 @@ ruleTester('en-capitalization', rule, {
       errors: [
         {
           messageId: 'enCapitalization',
+          data: { lowercase: 'h' },
           line: 1,
           column: 6,
           endLine: 1,
