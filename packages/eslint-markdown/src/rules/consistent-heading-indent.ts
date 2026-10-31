@@ -113,21 +113,18 @@ export default {
           : getColumnAfter(firstLine.slice(0, start.column - 1)) + 4;
       }
 
-      const groups = firstLine.slice(start.column - 1).match(listItemMarkerRegex)?.groups;
-
-      if (!groups) {
-        return getColumnAfter(firstLine.slice(0, start.column - 1));
-      }
+      const [, marker, spaces, rest] = firstLine
+        .slice(start.column - 1)
+        .match(listItemMarkerRegex)!;
 
       // Columns are measured with tabs expanded, because a tab after the marker can span several columns.
       const markerEndColumn = getColumnAfter(
-        firstLine.slice(0, start.column - 1) + groups.marker,
+        firstLine.slice(0, start.column - 1) + marker,
       );
-      const spacesWidth =
-        getColumnAfter(groups.spaces, markerEndColumn) - markerEndColumn;
+      const spacesWidth = getColumnAfter(spaces, markerEndColumn) - markerEndColumn;
 
       // An empty first line or more than four columns after the marker puts the content one column after the marker.
-      return !groups.rest || spacesWidth > 4
+      return !rest || spacesWidth > 4
         ? markerEndColumn + 1
         : markerEndColumn + spacesWidth;
     }
