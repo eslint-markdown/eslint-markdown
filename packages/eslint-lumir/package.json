@@ -150,7 +150,7 @@
     "eslint-plugin-jsx-a11y-x": "^0.2.0",
     "eslint-plugin-n": "^18.5.0",
     "globals": "^17.13.0",
-    "minimatch": "^10.2.6"
+    "minimatch": "^11.0.1"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^16.4.3",
