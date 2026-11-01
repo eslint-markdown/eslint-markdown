@@ -7,6 +7,12 @@ This rule enforces a single, consistent style for ordered list item prefixes in 
 
 Ordered list items can use the same number for every item or increase sequentially. The less common style of starting with `0` is also supported.
 
+This rule supports autofixing incorrect numbers. Like `markdownlint`'s `MD029` rule, it preserves the marker width when all list item prefixes, including their delimiters and following padding, end in the same column. Fixes use leading zeros when a list with multiple items begins with a zero-prefixed number, and leading spaces otherwise. For example, `01. First` followed by `03. Second` is fixed to `01. First` followed by `02. Second`.
+
+When prefixes are not aligned, fixes replace incorrect numbers without padding. Delimiters, following whitespace, and item contents are left unchanged.
+
+Unlike `markdownlint`, this rule withholds fixes when space padding could turn a list item into an indented code block. Existing indentation is taken into account, and space-padding fixes are withheld when tabs in the enclosing indentation make the result uncertain. For example, `12345. Item` is reported but not autofixed.
+
 ## Examples
 
 ### :x: Incorrect {#incorrect}
