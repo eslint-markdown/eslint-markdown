@@ -28,10 +28,7 @@
  * SOFTWARE.
  */
 
-/* eslint-disable
-  typescript/ban-ts-comment,
-  typescript/no-shadow,
-*/
+// eslint-disable-next-line typescript/ban-ts-comment
 // @ts-nocheck -- TODO: Code was simply copied and pasted. Type annotations will be modified later.
 
 // --------------------------------------------------------------------------------
@@ -1643,7 +1640,7 @@ const rule: Rule.RuleModule = {
       return blockExports;
     }
 
-    function makeNamedOrderReport(context: RuleContext, namedImports: ImportEntry[]) {
+    function makeNamedOrderReport(namedImports: ImportEntry[]) {
       if (namedImports.length > 1) {
         const imports = namedImports.map(namedImport => {
           const kind = namedImport.kind || 'value';
@@ -1688,7 +1685,6 @@ const rule: Rule.RuleModule = {
 
           if (named.import) {
             makeNamedOrderReport(
-              context,
               node.specifiers
                 .filter(specifier => specifier.type === 'ImportSpecifier')
                 .map(specifier => ({
@@ -1777,7 +1773,6 @@ const rule: Rule.RuleModule = {
               }
             }
             makeNamedOrderReport(
-              context,
               node.id.properties.map(prop_ => {
                 const prop = prop_ as TSESTree.Property;
                 const key = prop.key as TSESTree.Identifier;
@@ -1798,7 +1793,6 @@ const rule: Rule.RuleModule = {
       ...(named.export && {
         ExportNamedDeclaration(node) {
           makeNamedOrderReport(
-            context,
             node.specifiers.map(specifier => ({
               node: specifier,
               value: getValue(specifier.local),
@@ -1828,7 +1822,6 @@ const rule: Rule.RuleModule = {
                 }
 
                 makeNamedOrderReport(
-                  context,
                   properties.map(prop_ => {
                     const prop = prop_ as TSESTree.Property;
                     const key = prop.key as TSESTree.Identifier;
