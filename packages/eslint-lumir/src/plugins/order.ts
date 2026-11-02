@@ -31,7 +31,6 @@
 /* eslint-disable
   typescript/ban-ts-comment,
   typescript/no-shadow,
-  consistent-return
 */
 // @ts-nocheck -- TODO: Code was simply copied and pasted. Type annotations will be modified later.
 
@@ -580,18 +579,19 @@ function isCJSExports(context: RuleContext, node: TSESTree.Expression) {
       .getScope(node)
       .variables.some(variable => variable.name === 'exports');
   }
+  return undefined;
 }
 
 function getNamedCJSExports(context: RuleContext, node: TSESTree.Node) {
   if (node.type !== 'MemberExpression') {
-    return;
+    return undefined;
   }
   const result: string[] = [];
   let root: TSESTree.Expression = node;
   let parent!: TSESTree.Expression;
   while (root.type === 'MemberExpression') {
     if (root.property.type !== 'Identifier') {
-      return;
+      return undefined;
     }
     result.unshift(root.property.name);
     parent = root;
@@ -605,6 +605,7 @@ function getNamedCJSExports(context: RuleContext, node: TSESTree.Node) {
   if (isCJSExports(context, parent)) {
     return result.slice(1);
   }
+  return undefined;
 }
 
 function canCrossNodeWhileReorder(node: TSESTree.Node) {
@@ -946,6 +947,7 @@ function computePathRank(
       return ranks[group] + position / maxPosition;
     }
   }
+  return undefined;
 }
 
 function computeRank(
@@ -1049,6 +1051,7 @@ function getRequireBlock(node: TSESTree.Node) {
   ) {
     return n.parent.parent.parent;
   }
+  return undefined;
 }
 
 const types: ImportType[] = [
@@ -1171,6 +1174,7 @@ function removeNewLineAfterImport(
   if (/^\s*$/.test(sourceCode.text.slice(rangeToRemove[0], rangeToRemove[1]))) {
     return (fixer: TSESLint.RuleFixer) => fixer.removeRange(rangeToRemove);
   }
+  return undefined;
 }
 
 function makeNewlinesBetweenReport(
