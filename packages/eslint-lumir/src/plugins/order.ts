@@ -44,7 +44,6 @@ import { createRequire, isBuiltin } from 'node:module';
 import path from 'node:path';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { Rule } from 'eslint';
-import { minimatch, type MinimatchOptions } from 'minimatch';
 
 // --------------------------------------------------------------------------------
 // Typedef
@@ -74,7 +73,6 @@ type RuleContext<TMessageIds extends string = string> = TSESLint.RuleContext<
 interface PathGroup {
   pattern: string;
   group: ImportType;
-  patternOptions?: MinimatchOptions;
   position?: 'before' | 'after';
 }
 
@@ -119,7 +117,6 @@ interface ImportEntryWithRank extends ImportEntry {
 
 interface RanksPathGroup {
   pattern: string;
-  patternOptions?: MinimatchOptions;
   group: string;
   position?: number;
 }
@@ -941,11 +938,11 @@ function mutateRanksToAlphabetize(
 function computePathRank(
   ranks: RanksGroups,
   pathGroups: RanksPathGroup[],
-  path: string,
+  importPath: string,
   maxPosition: number,
 ) {
-  for (const { pattern, patternOptions, group, position = 1 } of pathGroups) {
-    if (minimatch(path, pattern, patternOptions || { nocomment: true })) {
+  for (const { pattern, group, position = 1 } of pathGroups) {
+    if (path.matchesGlob(importPath, pattern)) {
       return ranks[group] + position / maxPosition;
     }
   }
@@ -1415,9 +1412,6 @@ const rule: Rule.RuleModule = {
               properties: {
                 pattern: {
                   type: 'string',
-                },
-                patternOptions: {
-                  type: 'object',
                 },
                 group: {
                   type: 'string',
