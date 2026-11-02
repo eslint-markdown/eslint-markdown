@@ -37,7 +37,7 @@
 
 import { existsSync } from 'node:fs';
 import { createRequire, isBuiltin } from 'node:module';
-import path from 'node:path';
+import { dirname, isAbsolute, join, matchesGlob, relative, resolve } from 'node:path';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { Rule } from 'eslint';
 
@@ -146,9 +146,9 @@ function getContextPackagePath(context: RuleContext): string {
   if (directory) {
     return directory;
   }
-  directory = path.dirname(path.resolve(context.cwd, context.physicalFilename));
-  while (!existsSync(path.join(directory, 'package.json'))) {
-    const parent = path.dirname(directory);
+  directory = dirname(resolve(context.cwd, context.physicalFilename));
+  while (!existsSync(join(directory, 'package.json'))) {
+    const parent = dirname(directory);
     if (parent === directory) {
       directory = context.cwd;
       break;
@@ -199,7 +199,7 @@ function resolveImport(name: string, context: RuleContext): string | null | unde
     return null;
   }
   try {
-    return createRequire(path.resolve(context.cwd, physicalFilename)).resolve(name);
+    return createRequire(resolve(context.cwd, physicalFilename)).resolve(name);
   } catch {
     return undefined;
   }
@@ -217,7 +217,7 @@ function importType(name: LiteralNodeValue, context: RuleContext): ImportType {
     if (internalScope && new RegExp(internalScope).test(name)) {
       return 'internal';
     }
-    if (path.isAbsolute(name)) {
+    if (isAbsolute(name)) {
       return 'absolute';
     }
     const base = /^@[^/]+\/?[^/]+/.test(name)
@@ -239,13 +239,12 @@ function importType(name: LiteralNodeValue, context: RuleContext): ImportType {
   }
   if (modulePath) {
     const packagePath = getContextPackagePath(context);
-    const relativePath = path.relative(packagePath, modulePath);
+    const relativePath = relative(packagePath, modulePath);
     const folders = settings['import/external-module-folders'] || ['node_modules'];
     if (
       relativePath.startsWith('..') ||
       folders.some(
-        folder =>
-          !path.relative(path.resolve(packagePath, folder), modulePath).startsWith('..'),
+        folder => !relative(resolve(packagePath, folder), modulePath).startsWith('..'),
       )
     ) {
       return 'external';
@@ -940,7 +939,7 @@ function computePathRank(
   maxPosition: number,
 ) {
   for (const { pattern, group, position = 1 } of pathGroups) {
-    if (path.matchesGlob(importPath, pattern)) {
+    if (matchesGlob(importPath, pattern)) {
       return ranks[group] + position / maxPosition;
     }
   }
