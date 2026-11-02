@@ -339,13 +339,7 @@ export default defineConfig({
 
   transformPageData(pageData) {
     // Process only the files inside `docs/rules/`, excluding `index.md`.
-    if (
-      /^docs\/rules\/(?!index).+/.test(pageData.relativePath) &&
-      !/en-capitalization\.md$/.test(
-        // TODO: Remove this exclusion when the rule is stabilized.
-        pageData.relativePath,
-      )
-    ) {
+    if (/^docs\/rules\/(?!index).+/.test(pageData.relativePath)) {
       const ruleName = parse(pageData.relativePath).name;
       const rule = md.rules[ruleName];
 

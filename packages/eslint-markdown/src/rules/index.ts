@@ -1,7 +1,5 @@
 /* eslint sort-imports: 'error', sort-keys: 'error' */
 
-// TODO: Re-enable the commented-out rules once they stabilize.
-
 import allowHeading from './allow-heading.js';
 import allowImageUrl from './allow-image-url.js';
 import allowLinkUrl from './allow-link-url.js';
@@ -15,7 +13,6 @@ import consistentOrderedListStyle from './consistent-ordered-list-style.js';
 import consistentStrongStyle from './consistent-strong-style.js';
 import consistentThematicBreakStyle from './consistent-thematic-break-style.js';
 import consistentUnorderedListStyle from './consistent-unordered-list-style.js';
-// import enCapitalization from './en-capitalization.js';
 import noConsecutiveBlankLine from './no-consecutive-blank-line.js';
 import noControlCharacter from './no-control-character.js';
 import noCurlyQuote from './no-curly-quote.js';
@@ -48,7 +45,6 @@ export default {
   'consistent-strong-style': consistentStrongStyle,
   'consistent-thematic-break-style': consistentThematicBreakStyle,
   'consistent-unordered-list-style': consistentUnorderedListStyle,
-  // 'en-capitalization': enCapitalization,
   'no-consecutive-blank-line': noConsecutiveBlankLine,
   'no-control-character': noControlCharacter,
   'no-curly-quote': noCurlyQuote,
