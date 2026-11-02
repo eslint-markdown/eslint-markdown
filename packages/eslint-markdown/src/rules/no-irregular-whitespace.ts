@@ -1,0 +1,190 @@
+/**
+ * @fileoverview Rule to disallow irregular whitespace.
+ * @author lumir(lumirlumir)
+ */
+
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
+import { SkipRanges } from '../core/utils/index.js';
+import { URL_RULE_DOCS } from '../core/constants.js';
+import type { RuleModule } from '../core/types.js';
+
+// --------------------------------------------------------------------------------
+// Typedef
+// --------------------------------------------------------------------------------
+
+/**
+ * Options for the `no-irregular-whitespace` rule.
+ */
+type RuleOptions = [
+  {
+    /**
+     * When specified, specific irregular whitespaces are allowed if they match one of the characters in this array.
+     *
+     * This is useful for ignoring certain irregular whitespaces that are intentionally used in the document.
+     * @default []
+     */
+    allow: string[];
+    /**
+     * `true` allows irregular whitespaces in all code blocks, while `string[]` allows irregular whitespaces only in code blocks for the specified languages.
+     * @default true
+     */
+    skipCode: boolean | string[];
+    /**
+     * `true` allows irregular whitespaces in all inline code.
+     * @default true
+     */
+    skipInlineCode: boolean;
+    /**
+     * `true` allows irregular whitespaces in all math blocks.
+     * @default true
+     */
+    skipMath: boolean;
+    /**
+     * `true` allows irregular whitespaces in all inline math.
+     * @default true
+     */
+    skipInlineMath: boolean;
+  },
+];
+type MessageIds = 'noIrregularWhitespace';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
+
+const irregularWhitespaceRegex =
+  /[\v\f\u0085\u00A0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u200B\u2028\u2029\u202F\u205F\u3000\uFEFF]/gu;
+
+// --------------------------------------------------------------------------------
+// Rule Definition
+// --------------------------------------------------------------------------------
+
+export default {
+  meta: {
+    type: 'problem',
+
+    docs: {
+      description: 'Disallow irregular whitespace',
+      dialects: ['CommonMark', 'GFM'],
+      url: URL_RULE_DOCS('no-irregular-whitespace'),
+      recommended: true,
+      stylistic: false,
+    },
+
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allow: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+            uniqueItems: true,
+          },
+          skipCode: {
+            oneOf: [
+              {
+                type: 'boolean',
+              },
+              {
+                type: 'array',
+                items: {
+                  type: 'string',
+                },
+                uniqueItems: true,
+              },
+            ],
+          },
+          skipInlineCode: {
+            type: 'boolean',
+          },
+          skipMath: {
+            type: 'boolean',
+          },
+          skipInlineMath: {
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
+
+    defaultOptions: [
+      {
+        allow: [],
+        skipCode: true,
+        skipInlineCode: true,
+        skipMath: true,
+        skipInlineMath: true,
+      },
+    ],
+
+    messages: {
+      noIrregularWhitespace:
+        'Irregular whitespace `{{ irregularWhitespace }}` is not allowed.',
+    },
+
+    language: 'markdown',
+  },
+
+  create(context) {
+    const { sourceCode } = context;
+    const [{ allow, skipCode, skipInlineCode, skipMath, skipInlineMath }] =
+      context.options;
+
+    const skipRanges = new SkipRanges();
+
+    return {
+      code(node) {
+        if (
+          Array.isArray(skipCode) ? node.lang && skipCode.includes(node.lang) : skipCode
+        )
+          skipRanges.push(sourceCode.getRange(node)); // Store range information of `Code`.
+      },
+
+      inlineCode(node) {
+        if (skipInlineCode) skipRanges.push(sourceCode.getRange(node)); // Store range information of `InlineCode`.
+      },
+
+      math(node) {
+        if (skipMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `Math`.
+      },
+
+      inlineMath(node) {
+        if (skipInlineMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `InlineMath`.
+      },
+
+      'root:exit'() {
+        const matches = sourceCode.text.matchAll(irregularWhitespaceRegex);
+
+        for (const match of matches) {
+          const irregularWhitespace = match[0];
+
+          if (allow.includes(irregularWhitespace)) continue;
+
+          const startOffset = match.index;
+          const endOffset = startOffset + irregularWhitespace.length;
+
+          if (skipRanges.includes(startOffset)) continue;
+
+          context.report({
+            loc: {
+              start: sourceCode.getLocFromIndex(startOffset),
+              end: sourceCode.getLocFromIndex(endOffset),
+            },
+
+            data: {
+              irregularWhitespace: `U+${irregularWhitespace.codePointAt(0)?.toString(16).toUpperCase().padStart(4, '0')}`,
+            },
+
+            messageId: 'noIrregularWhitespace',
+          });
+        }
+      },
+    };
+  },
+} as const satisfies RuleModule<RuleOptions, MessageIds>;

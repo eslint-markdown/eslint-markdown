@@ -1,0 +1,95 @@
+<!-- eslint-disable-next-line markdown/no-html -->
+<header v-html="$frontmatter.rule"></header>
+
+## Rule Details
+
+This rule disallows multiple consecutive spaces or tabs around the hash characters (`#`) of ATX headings.
+
+By default, the rule checks the whitespace after the opening hash characters and before the closing hash characters in closed ATX headings. Set [`checkClosedHeading`](#checkclosedheading) to `false` to disable checks before the closing hash characters.
+
+::: warning NOTE
+This rule does not enforce missing spaces. Use [`markdown/no-missing-atx-heading-space`](https://github.com/eslint/markdown/blob/main/docs/rules/no-missing-atx-heading-space.md#no-missing-atx-heading-space) to check missing spaces, and enable its [`checkClosedHeadings`](https://github.com/eslint/markdown/blob/main/docs/rules/no-missing-atx-heading-space.md#options) option to check closed ATX headings.
+:::
+
+## Examples
+
+### :x: Incorrect {#incorrect}
+
+Examples of **incorrect** code for this rule:
+
+#### Default
+
+```md eslint-check
+<!-- eslint md/no-multiple-atx-heading-space: 'error' -->
+
+#  ATX heading 1
+
+##  ATX Heading 2
+
+#  Closed ATX heading 1 #
+
+## Closed ATX heading 2   ##
+```
+
+### :white_check_mark: Correct {#correct}
+
+Examples of **correct** code for this rule:
+
+#### Default
+
+```md eslint-check
+<!-- eslint md/no-multiple-atx-heading-space: 'error' -->
+
+# ATX heading 1
+
+## ATX Heading 2
+
+# Closed ATX heading 1 #
+
+## Closed ATX heading 2 ##
+
+Setext heading
+---------------
+```
+
+#### With `{ checkClosedHeading: false }` Option
+
+```md eslint-check
+<!-- eslint md/no-multiple-atx-heading-space: ['error', { checkClosedHeading: false }] -->
+
+# Closed ATX heading 1  #
+
+## Closed ATX heading 2   ##
+```
+
+## Options
+
+```js
+'md/no-multiple-atx-heading-space': ['error', {
+  checkClosedHeading: true,
+}]
+```
+
+### `checkClosedHeading`
+
+> Type: `boolean` / Default: `true`
+
+When `checkClosedHeading` is set to `false`, this rule stops checking for multiple consecutive spaces or tabs before the closing hash characters in closed ATX headings.
+
+## Fix
+
+This rule fixes multiple consecutive spaces or tabs by keeping the first whitespace character and removing the rest.
+
+For example, `#  Heading 1` is fixed to `# Heading 1`. `##  Heading 2  ##` is fixed to `## Heading 2 ##`.
+
+When the heading has neither content nor a closing sequence, all of the whitespace is removed.
+
+## When Not To Use It
+
+If you intentionally use multiple spaces or tabs next to ATX heading markers, you can disable this rule.
+
+## Prior Art
+
+- [`MD019` - Multiple spaces after hash on atx style heading](https://github.com/DavidAnson/markdownlint/blob/main/doc/md019.md#md019---multiple-spaces-after-hash-on-atx-style-heading)
+- [`MD021` - Multiple spaces inside hashes on closed atx style heading](https://github.com/DavidAnson/markdownlint/blob/main/doc/md021.md#md021---multiple-spaces-inside-hashes-on-closed-atx-style-heading)
+- [`remark-lint-no-heading-content-indent`](https://github.com/remarkjs/remark-lint/tree/main/packages/remark-lint-no-heading-content-indent#remark-lint-no-heading-content-indent)

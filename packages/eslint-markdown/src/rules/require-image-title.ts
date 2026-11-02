@@ -1,0 +1,171 @@
+/**
+ * @fileoverview Rule to enforce the use of title attribute for images.
+ * @author lumir(lumirlumir)
+ */
+
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
+import type { Definition } from 'mdast';
+import { normalizeIdentifier } from 'micromark-util-normalize-identifier';
+import type { Position } from 'unist';
+import { getElementsByTagName } from '../core/utils/index.js';
+import { URL_RULE_DOCS } from '../core/constants.js';
+import type { RuleModule } from '../core/types.js';
+
+// --------------------------------------------------------------------------------
+// Typedef
+// --------------------------------------------------------------------------------
+
+/**
+ * Options for the `require-image-title` rule.
+ */
+type RuleOptions = [
+  {
+    /**
+     * When specified, specific definitions are allowed if they match one of the identifiers in this array.
+     *
+     * This is useful for ignoring definitions that are intentionally left without titles, such as comments or placeholders.
+     * @default ['//']
+     */
+    allowDefinitions: string[];
+  },
+];
+type MessageIds = 'requireImageTitle';
+
+// --------------------------------------------------------------------------------
+// Rule Definition
+// --------------------------------------------------------------------------------
+
+export default {
+  meta: {
+    type: 'problem',
+
+    docs: {
+      description: 'Enforce the use of title attribute for images',
+      dialects: ['CommonMark', 'GFM'],
+      url: URL_RULE_DOCS('require-image-title'),
+      recommended: false,
+      stylistic: false,
+    },
+
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowDefinitions: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+            uniqueItems: true,
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
+
+    defaultOptions: [
+      {
+        allowDefinitions: ['//'],
+      },
+    ],
+
+    messages: {
+      requireImageTitle: 'Images should have a title attribute.',
+    },
+
+    language: 'markdown',
+  },
+
+  create(context) {
+    const { sourceCode } = context;
+    const allowDefinitions = new Set(
+      context.options[0].allowDefinitions.map(identifier =>
+        normalizeIdentifier(identifier).toLowerCase(),
+      ),
+    );
+
+    const imageReferenceIdentifiers = new Set<string>();
+    const definitions = new Set<Definition>();
+
+    /** @param loc Location to report. */
+    function report(loc: Position) {
+      context.report({
+        loc,
+        messageId: 'requireImageTitle',
+      });
+    }
+
+    return {
+      image(node) {
+        if (!node.title) report(sourceCode.getLoc(node));
+      },
+
+      html(node) {
+        const [nodeStartOffset] = sourceCode.getRange(node);
+        const html = sourceCode.getText(node);
+
+        for (const { attrs, sourceCodeLocation } of getElementsByTagName(html, 'img')) {
+          if (
+            !sourceCodeLocation ||
+            (!sourceCodeLocation.attrs?.src &&
+              !sourceCodeLocation.attrs?.srcset &&
+              !sourceCodeLocation.attrs?.alt)
+          ) {
+            continue;
+          }
+
+          let needsTitle = true;
+
+          for (const { name, value } of attrs) {
+            if (name === 'title' && value) {
+              needsTitle = false;
+              break;
+            }
+
+            if (name === 'alt' && !value) {
+              needsTitle = false;
+              break;
+            }
+
+            if (name === 'aria-hidden' && value.toLowerCase() === 'true') {
+              needsTitle = false;
+              break;
+            }
+          }
+
+          if (needsTitle) {
+            report({
+              start: sourceCode.getLocFromIndex(
+                nodeStartOffset + sourceCodeLocation.startOffset,
+              ),
+              end: sourceCode.getLocFromIndex(
+                nodeStartOffset + sourceCodeLocation.endOffset,
+              ),
+            });
+          }
+        }
+      },
+
+      imageReference(node) {
+        imageReferenceIdentifiers.add(node.identifier);
+      },
+
+      definition(node) {
+        if (allowDefinitions.has(node.identifier)) return;
+
+        definitions.add(node);
+      },
+
+      'root:exit'() {
+        for (const definition of definitions) {
+          if (imageReferenceIdentifiers.has(definition.identifier) && !definition.title) {
+            report(sourceCode.getLoc(definition));
+          }
+        }
+      },
+    };
+  },
+} as const satisfies RuleModule<RuleOptions, MessageIds>;

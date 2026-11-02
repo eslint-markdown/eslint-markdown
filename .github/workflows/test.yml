@@ -14,6 +14,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ !contains(github.ref, 'main') }}
 
+env:
+  HUSKY: 0 # Skip Husky during CI: https://typicode.github.io/husky/how-to.html#ci-server-and-docker
+
 jobs:
   cross-platform:
     strategy:
@@ -24,21 +27,32 @@ jobs:
           - ubuntu-latest
           - windows-latest
         node-version:
+          - 26.x
           - 24.x
           - 22.x
           - 22.13.0
           - 20.x
           - 20.19.0
         eslint-version:
-          - 10.0.0-rc.0
+          - 10.x
           - 9.x
-          - 9.31.0
+        eslint-markdown-version:
+          - 8.x
+        include:
+          - runner-image: ubuntu-latest
+            node-version: 26.x # TODO: Temporary fix for `latest` tag
+            eslint-version: 10.0.0
+            eslint-markdown-version: 8.0.3
+          - runner-image: ubuntu-latest
+            node-version: 26.x # TODO: Temporary fix for `latest` tag
+            eslint-version: 9.39.0
+            eslint-markdown-version: 8.0.3
 
     runs-on: ${{ matrix.runner-image }}
 
     steps:
       - name: Set up checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up node
         uses: actions/setup-node@v6
@@ -47,10 +61,13 @@ jobs:
           cache: npm # https://github.com/actions/setup-node#caching-global-packages-data
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --no-audit --no-fund --prefer-offline
 
       - name: Install ESLint
-        run: npm install -D eslint@${{ matrix.eslint-version }} -w packages/eslint-markdown
+        run: npm install --no-audit --no-fund -D eslint@${{ matrix.eslint-version }} -w packages/eslint-markdown
+
+      - name: Install ESLint Markdown
+        run: npm install --no-audit --no-fund -D @eslint/markdown@${{ matrix.eslint-markdown-version }} -w packages/eslint-markdown
 
       - name: Build
         run: npm run build --if-present

@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -14,8 +14,6 @@ A code block is defined as either an indented code block (4 spaces or 1 tab), a 
 Examples of **incorrect** code for this rule:
 
 #### Default
-
-<!-- TODO: The fenced code block span range is incorrect. This is a bug in `twoslash-eslint` -->
 
 ````md eslint-check
 <!-- eslint md/consistent-code-style: 'error' -->

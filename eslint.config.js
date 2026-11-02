@@ -1,61 +1,103 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
-import bananass from 'eslint-config-bananass';
-import md from 'eslint-markdown';
+import js from 'eslint-lumir/js';
+import ts from 'eslint-lumir/ts';
+import json from 'eslint-lumir/json';
+import jsonc from 'eslint-lumir/jsonc';
+import json5 from 'eslint-lumir/json5';
+import md from 'eslint-lumir/md';
 
-/** @type {import("eslint").Linter.Config[]} */
 export default defineConfig([
   globalIgnores(
     ['**/build/', '**/coverage/', '**/.vitepress/.temp/', '**/.vitepress/cache/'],
     'global/ignores',
   ),
 
-  bananass.configs.js,
-  bananass.configs.ts,
-  bananass.configs.json,
-  bananass.configs.jsonc,
-  bananass.configs.json5,
-  md.configs.recommended,
-  md.configs.stylistic,
+  js,
+  ts,
+  json,
+  jsonc,
+  json5,
+  md,
 
+  // js
   {
-    name: 'md/global',
-    files: ['**/*.md'],
+    name: 'js/global/test-d',
+    files: ['**/*.test-d.{ts,mts,cts,tsx}'],
     rules: {
-      'md/allow-link-url': [
+      'no-useless-assignment': 'off',
+      'prefer-const': 'off',
+      'typescript/no-unsafe-function-type': 'off',
+      'typescript/no-unused-vars': 'off',
+    },
+  },
+  {
+    name: 'js/eslint-markdown/rules',
+    files: ['packages/eslint-markdown/src/rules/*.ts'],
+    ignores: ['packages/eslint-markdown/src/rules/*.test.ts'],
+    rules: {
+      'no-restricted-imports': [
         'error',
         {
-          disallowUrls: [/^\.\//],
+          patterns: [
+            {
+              regex: '^\\.\\./core/utils(?:$|/(?!index\\.js$))',
+              message: "Import utilities from '../core/utils/index.js' instead.",
+            },
+          ],
+        },
+      ],
+      'import/order': [
+        'error',
+        {
+          groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
+          pathGroups: [
+            {
+              pattern: '../core/utils/index.js',
+              group: 'parent',
+              position: 'before',
+            },
+            {
+              pattern: '../core/constants.js',
+              group: 'parent',
+              position: 'before',
+            },
+            {
+              pattern: '../core/types.js',
+              group: 'parent',
+              position: 'before',
+            },
+          ],
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
         },
       ],
     },
   },
+
+  // md
   {
     name: 'md/website',
     files: ['website/docs/**/*.md'],
     rules: {
-      'md/no-emoji': 'error',
+      'md/no-emoji': ['error', { style: 'emoji' }],
     },
   },
   {
     name: 'md/website/rules',
     files: ['website/docs/rules/**/*.md'],
     rules: {
-      /* TODO: Turn this back on when `allow-heading` rule is stabilized.
       'md/allow-heading': [
         'error',
         {
-          h2: [
-            'Rule Details',
-            'Examples',
-            'Options',
-            'Fix',
-            'Limitations',
-            'When Not To Use It',
-            'Prior Art',
-          ],
+          h2: {
+            allow: [
+              /^## (?:Rule Details|Examples|Options|Fix|Suggestion|Limitations|When Not To Use It|Further Reading|Prior Art)$/u,
+            ],
+          },
         },
       ],
-      */
     },
   },
 ]);

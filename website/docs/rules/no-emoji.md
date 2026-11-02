@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -25,6 +25,8 @@ Platforms like [GitHub](https://github.com) and Markdown plugins such as [`remar
 
 Examples of **incorrect** code for this rule:
 
+#### Default
+
 ```md eslint-check
 <!-- eslint md/no-emoji: 'error' -->
 
@@ -33,9 +35,21 @@ Unicorn 🦄
 +1 👍
 ```
 
+#### With `{ style: 'gemoji' }` Option
+
+```md eslint-check
+<!-- eslint md/no-emoji: ['error', { style: 'gemoji' }] -->
+
+Smiley :smiley:
+Unicorn :unicorn:
++1 :+1:
+```
+
 ### :white_check_mark: Correct {#correct}
 
 Examples of **correct** code for this rule:
+
+#### Default
 
 ```md eslint-check
 <!-- eslint md/no-emoji: 'error' -->
@@ -43,6 +57,16 @@ Examples of **correct** code for this rule:
 Smiley :smiley:
 Unicorn :unicorn:
 +1 :+1:
+```
+
+#### With `{ style: 'gemoji' }` Option
+
+```md eslint-check
+<!-- eslint md/no-emoji: ['error', { style: 'gemoji' }] -->
+
+Smiley 😃
+Unicorn 🦄
++1 👍
 ```
 
 #### With `{ allow: ['😃', '🦄'] }` Option
@@ -55,11 +79,21 @@ Unicorn 🦄
 +1 :+1:
 ```
 
+#### With `{ style: 'gemoji', allow: [':unicorn:'] }` Option
+
+```md eslint-check
+<!-- eslint md/no-emoji: ['error', { style: 'gemoji', allow: [':unicorn:'] }] -->
+
+Smiley 😃
+Unicorn :unicorn:
+```
+
 ## Options
 
 ```js
 'md/no-emoji': ['error', {
   allow: [],
+  style: 'emoji',
 }]
 ```
 
@@ -67,8 +101,19 @@ Unicorn 🦄
 
 > Type: `string[]` / Default: `[]`
 
-When specified, specific emoji sequences are allowed if they match one of the strings in this array. This is useful when a document intentionally uses a small set of raw Unicode emojis while still disallowing all others.
+When specified, specific emoji sequences are allowed if they match one of the strings in this array. This is useful when a document intentionally uses a small set of raw Unicode emojis or shortcode style emojis while still disallowing all others. When [`style`](#style) is `'gemoji'`, list shortcodes instead (e.g. `':smiley:'`).
+
+### `style`
+
+> Type: `'emoji' | 'gemoji'` / Default: `'emoji'`
+
+Specifies which style of emojis to disallow.
+
+- `'emoji'`: Disallows raw Unicode emojis (e.g. `😃`).
+- `'gemoji'`: Disallows shortcode style emojis (e.g. `:smiley:`).
 
 ## Limitations
 
-This rule uses `/\p{RGI_Emoji}/gv` internally to match emojis. Unicode property escapes rely on the Unicode data/version supported by the runtime, so matches can vary across environments. Also, `RGI_Emoji` targets only Unicode's "Recommended for General Interchange" emoji set, so it may not match some non-RGI or emoji-like sequences.
+The `'emoji'` style uses `/\p{RGI_Emoji}/gv` internally to match emojis. Unicode property escapes rely on the Unicode data/version supported by the runtime, so matches can vary across environments. Also, `RGI_Emoji` targets only Unicode's "Recommended for General Interchange" emoji set, so it may not match some non-RGI or emoji-like sequences.
+
+The `'gemoji'` style matches the `:name:` pattern instead of checking against an actual list of emoji names. As a result, text that merely looks like a shortcode, such as `:min:` in `hour:min:sec`, is also reported.

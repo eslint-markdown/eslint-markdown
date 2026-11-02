@@ -1,8 +1,8 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build --prefix ..",
   "cleanUrls": true,
   "framework": "vitepress",
   "ignoreCommand": "node ../scripts/vercel-ignore-command.js",
-  "installCommand": "npm install --prefix ..",
+  "installCommand": "npm install --no-audit --no-fund --prefer-offline --prefix ..",
   "outputDirectory": "build"
 }

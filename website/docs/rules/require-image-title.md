@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -10,6 +10,12 @@ The rule examines all image elements in a Markdown document and reports any imag
 - Standard Markdown image syntax: `![alt text](url "title")`
 - Image reference definitions: `[ref]: url "title"`
 - HTML image tags: `<img src="url" alt="alt text" title="title">`
+
+::: tip NOTE
+
+HTML `<img>` elements without any of the `src`, `srcset`, or `alt` attributes, as well as elements with an empty `alt` attribute or `aria-hidden="true"` (case-insensitive), are ignored.
+
+:::
 
 ## Examples
 
@@ -47,6 +53,12 @@ Examples of **correct** code for this rule:
 ![Alt text](https://example.com/image.png "Image title")
 
 <img src="https://example.com/image.png" alt="Alt text" title="Image title">
+
+<img id="placeholder">
+
+<img src="https://example.com/image.png" alt="">
+
+<img src="https://example.com/image.png" aria-hidden="true">
 
 <div>
   <img src="https://example.com/image.png" alt="Alt text" title="Image title">

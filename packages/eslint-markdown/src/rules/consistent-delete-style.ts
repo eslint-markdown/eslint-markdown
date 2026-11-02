@@ -1,0 +1,131 @@
+/**
+ * @fileoverview Rule to enforce consistent delete style.
+ * @author lumir(lumirlumir)
+ */
+
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
+import { URL_RULE_DOCS } from '../core/constants.js';
+import type { RuleModule } from '../core/types.js';
+
+// --------------------------------------------------------------------------------
+// Typedef
+// --------------------------------------------------------------------------------
+
+type DeleteStyle = (typeof DELETE_STYLE)[number];
+/**
+ * Options for the `consistent-delete-style` rule.
+ */
+type RuleOptions = [
+  {
+    /**
+     * When `style` is set to `'consistent'`, the rule enforces that all deletes in the document use the same style as the first one encountered.
+     * @default 'consistent'
+     */
+    style: 'consistent' | DeleteStyle;
+  },
+];
+type MessageIds = 'style';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
+
+const DELETE_STYLE = ['~', '~~'] as const;
+
+// --------------------------------------------------------------------------------
+// Rule Definition
+// --------------------------------------------------------------------------------
+
+export default {
+  meta: {
+    type: 'layout',
+
+    docs: {
+      description: 'Enforce consistent delete style',
+      dialects: ['GFM'],
+      url: URL_RULE_DOCS('consistent-delete-style'),
+      recommended: false,
+      stylistic: true,
+    },
+
+    fixable: 'code',
+
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          style: {
+            enum: ['consistent', ...DELETE_STYLE],
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
+
+    defaultOptions: [
+      {
+        style: 'consistent',
+      },
+    ],
+
+    messages: {
+      style: 'Delete style should be `{{ style }}`.',
+    },
+
+    language: 'markdown',
+  },
+
+  create(context) {
+    const { sourceCode } = context;
+    const [{ style }] = context.options;
+
+    let deleteStyle: DeleteStyle | null = style === 'consistent' ? null : style;
+
+    /**
+     * @param startOffset Start offset of the style marker.
+     * @param endOffset End offset of the style marker.
+     */
+    function reportStyle(startOffset: number, endOffset: number) {
+      const stringifiedDeleteStyle = String(deleteStyle);
+
+      context.report({
+        loc: {
+          start: sourceCode.getLocFromIndex(startOffset),
+          end: sourceCode.getLocFromIndex(endOffset),
+        },
+
+        messageId: 'style',
+
+        data: {
+          style: stringifiedDeleteStyle,
+        },
+
+        fix(fixer) {
+          return fixer.replaceTextRange([startOffset, endOffset], stringifiedDeleteStyle);
+        },
+      });
+    }
+
+    return {
+      delete(node) {
+        const [nodeStartOffset, nodeEndOffset] = sourceCode.getRange(node);
+        const currentDeleteStyle =
+          sourceCode.text[nodeStartOffset] === sourceCode.text[nodeStartOffset + 1]
+            ? '~~'
+            : '~';
+
+        if (deleteStyle === null) {
+          deleteStyle = currentDeleteStyle;
+        }
+
+        if (deleteStyle !== currentDeleteStyle) {
+          reportStyle(nodeStartOffset, nodeStartOffset + currentDeleteStyle.length);
+          reportStyle(nodeEndOffset - currentDeleteStyle.length, nodeEndOffset);
+        }
+      },
+    };
+  },
+} as const satisfies RuleModule<RuleOptions, MessageIds>;

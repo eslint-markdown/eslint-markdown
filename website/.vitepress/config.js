@@ -11,10 +11,8 @@ import { parse } from 'node:path';
 
 import md from 'eslint-markdown';
 import packageJson from 'eslint-markdown/package.json' with { type: 'json' };
-
 import { defineConfig } from 'vitepress';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
-import { codecovVitePlugin } from '@codecov/vite-plugin';
 import {
   transformerNotationWordHighlight,
   transformerMetaWordHighlight,
@@ -23,16 +21,23 @@ import {
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash';
 import { createTwoslasher } from 'twoslash-eslint';
 
+import {
+  CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
+  CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
+  vitePluginCodecov,
+  vitePluginConfigInspector,
+} from './plugins/index.js';
+
 // --------------------------------------------------------------------------------
-// Constant
+// Helper
 // --------------------------------------------------------------------------------
 
 const GOOGLE_GA_ID = 'G-9KLYX5PTLT';
 const PKG_NAME = packageJson.name;
 const PKG_DESCRIPTION = packageJson.description;
-const PKG_AUTHOR = '루밀LuMir';
+const PKG_AUTHOR = 'lumir';
 const URL_HOMEPAGE = packageJson.homepage;
-const URL_GITHUB = `https://github.com/lumirlumir/npm-${PKG_NAME}`;
+const URL_GITHUB = `https://github.com/${PKG_NAME}/${PKG_NAME}`;
 const URL_RULE_SRC = `${URL_GITHUB}/tree/main/packages/${PKG_NAME}/src/rules`;
 
 // --------------------------------------------------------------------------------
@@ -96,6 +101,10 @@ export default defineConfig({
 
   /* Routing */
   cleanUrls: true,
+  ignoreDeadLinks: [
+    CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
+    CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
+  ],
 
   /* Build */
   outDir: 'build',
@@ -123,12 +132,17 @@ export default defineConfig({
     nav: [
       {
         text: 'Get Started',
-        activeMatch: '/docs/(?:get-started|community)',
+        activeMatch: '/docs/(?:get-started|packages|community)',
         items: [
           {
             text: 'Get Started',
             link: '/docs/get-started',
             activeMatch: '/docs/get-started',
+          },
+          {
+            text: 'Packages',
+            link: '/docs/packages',
+            activeMatch: '/docs/packages',
           },
           {
             text: 'Community',
@@ -146,6 +160,21 @@ export default defineConfig({
         text: 'Configs',
         link: '/docs/get-started/configurations',
         activeMatch: '/docs/get-started/configurations',
+      },
+      {
+        text: 'Inspector',
+        items: [
+          {
+            text: 'eslint-markdown',
+            link: CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
+            target: '_self',
+          },
+          {
+            text: 'eslint-lumir',
+            link: CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
+            target: '_self',
+          },
+        ],
       },
     ],
 
@@ -189,6 +218,23 @@ export default defineConfig({
             {
               text: 'Versioning',
               link: 'versioning',
+            },
+          ],
+        },
+
+        {
+          base: '/docs/packages/',
+          text: 'Packages',
+          link: '/',
+          collapsed: false,
+          items: [
+            {
+              text: 'eslint-markdown',
+              link: 'eslint-markdown',
+            },
+            {
+              text: 'eslint-lumir',
+              link: 'eslint-lumir',
             },
           ],
         },
@@ -265,7 +311,14 @@ export default defineConfig({
         errorRendering: 'hover',
         explicitTrigger: /\beslint-check\b/,
         twoslasher: createTwoslasher({
-          eslintConfig: [md.configs.base],
+          eslintConfig: [
+            md.configs.base,
+            {
+              languageOptions: {
+                math: true,
+              },
+            },
+          ],
         }),
       }),
     ],
@@ -274,7 +327,8 @@ export default defineConfig({
   vite: {
     plugins: [
       groupIconVitePlugin(),
-      codecovVitePlugin({
+      vitePluginConfigInspector(),
+      vitePluginCodecov({
         // Put the Codecov vite plugin after all other plugins
         enableBundleAnalysis: process.env.CODECOV !== undefined, // Enable bundle analysis when CODECOV environment variable is defined
         bundleName: 'website',
@@ -285,13 +339,7 @@ export default defineConfig({
 
   transformPageData(pageData) {
     // Process only the files inside `docs/rules/`, excluding `index.md`.
-    if (
-      /^docs\/rules\/(?!index).+/.test(pageData.relativePath) &&
-      !/(?:allow-heading|heading-id|no-bold-paragraph)\.md$/.test(
-        // TODO: Remove this exclusion when the rules are stabilized.
-        pageData.relativePath,
-      )
-    ) {
+    if (/^docs\/rules\/(?!index).+/.test(pageData.relativePath)) {
       const ruleName = parse(pageData.relativePath).name;
       const rule = md.rules[ruleName];
 
@@ -306,13 +354,13 @@ export default defineConfig({
   ${(rule.meta.docs.recommended ?? false) ? '<code class="rule-emoji">✅ Recommended</code>' : ''}
   ${(rule.meta.docs.stylistic ?? false) ? '<code class="rule-emoji">🎨 Stylistic</code>' : ''}
   ${(rule.meta.fixable ?? false) ? '<code class="rule-emoji">🔧 Fixable</code>' : ''}
-  ${(rule.meta.docs.suggestion ?? false) ? '<code class="rule-emoji">💡 Suggestion</code>' : ''}
-  ${(rule.meta.dialects.includes('commonmark') ?? false) ? '<code class="rule-emoji">⭐ CommonMark</code>' : ''}
-  ${(rule.meta.dialects.includes('gfm') ?? false) ? '<code class="rule-emoji">🌟 GFM</code>' : ''}
+  ${(rule.meta.hasSuggestions ?? false) ? '<code class="rule-emoji">💡 Suggestion</code>' : ''}
+  ${(rule.meta.docs.dialects.includes('CommonMark') ?? false) ? '<code class="rule-emoji">⭐ CommonMark</code>' : ''}
+  ${(rule.meta.docs.dialects.includes('GFM') ?? false) ? '<code class="rule-emoji">🌟 GFM</code>' : ''}
 </p>
 <p>
-  <code class="rule-emoji">🔗 <a target="_blank" href="${URL_RULE_SRC}/${ruleName}.js">Rule Source</a></code>
-  <code class="rule-emoji">🔗 <a target="_blank" href="${URL_RULE_SRC}/${ruleName}.test.js">Test Source</a></code>
+  <code class="rule-emoji">🔗 <a target="_blank" href="${URL_RULE_SRC}/${ruleName}.ts">Rule Source</a></code>
+  <code class="rule-emoji">🔗 <a target="_blank" href="${URL_RULE_SRC}/${ruleName}.test.ts">Test Source</a></code>
 </p>
 <p>
   ${(rule.meta.docs.description ?? '')
@@ -326,7 +374,8 @@ export default defineConfig({
 </p>
 
 ${
-  !rule.meta.dialects.includes('commonmark') && rule.meta.dialects.includes('gfm')
+  !rule.meta.docs.dialects.includes('CommonMark') &&
+  rule.meta.docs.dialects.includes('GFM')
     ? '<div class="caution custom-block github-alert" bis_skin_checked="1"><p class="custom-block-title">GFM Only</p><p></p><p>This rule applies only when GFM (GitHub Flavored Markdown) is enabled by setting the <code>language</code> mode to <code>markdown/gfm</code>.</p></div>'
     : ''
 }

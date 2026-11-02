@@ -1,136 +1,701 @@
 /**
- * @fileoverview Type test for `index.js`.
+ * @fileoverview Test for `index.ts`.
+ * @author lumir(lumirlumir)
  */
-
-/* eslint-disable -- Type test */
 
 // --------------------------------------------------------------------------------
 // Import
 // --------------------------------------------------------------------------------
 
-import plugin from 'eslint-markdown';
-import type { ESLint, Linter } from 'eslint';
+import { createRequire } from 'node:module';
+
+import { assert, describe, it } from 'vitest';
+import { defineConfig } from 'eslint/config';
+import { Linter } from 'eslint/universal';
+import markdown from '@eslint/markdown';
+
+import md from './index.js';
+import packageJson from '../package.json' with { type: 'json' };
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
+
+const require = createRequire(import.meta.url);
 
 // --------------------------------------------------------------------------------
 // Test
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// #region plugin
+describe('index', () => {
+  describe('package.json', () => {
+    it('should have `sideEffects: false`', () => {
+      assert.strictEqual(packageJson.sideEffects, false);
+    });
+  });
 
-plugin satisfies ESLint.Plugin;
+  describe('CommonJS', () => {
+    // See: https://github.com/eslint-markdown/eslint-markdown/pull/711#pullrequestreview-5190550194
 
-// #endregion plugin
-// --------------------------------------------------------------------------------
+    it('should expose the plugin through `default`', () => {
+      const commonJsModule = require('eslint-markdown') as typeof import('./index.js');
 
-// --------------------------------------------------------------------------------
-// #region meta
+      assert.strictEqual(commonJsModule.default.meta.name, md.meta.name);
+      assert.strictEqual(commonJsModule.default.meta.namespace, md.meta.namespace);
+    });
 
-plugin.meta.name satisfies 'eslint-markdown';
-plugin.meta.version satisfies string;
+    it('should fail to access plugin properties without `default`', () => {
+      const commonJsModule = require('eslint-markdown') as typeof import('./index.js');
 
-// #endregion meta
-// --------------------------------------------------------------------------------
+      // @ts-expect-error -- Accessing CommonJS module without `default` should fail.
+      assert.throws(() => commonJsModule.meta.name, TypeError);
+      // @ts-expect-error -- Accessing CommonJS module without `default` should fail.
+      assert.throws(() => commonJsModule.meta.namespace, TypeError);
+      // @ts-expect-error -- Accessing CommonJS module without `default` should fail.
+      assert.throws(() => commonJsModule.configs.recommended, TypeError);
+    });
+  });
 
-// --------------------------------------------------------------------------------
-// #region rules
+  describe('Basic', () => {
+    it('should have correct meta information', () => {
+      assert.strictEqual(md.meta.name, 'eslint-markdown');
+      assert.strictEqual(md.meta.namespace, 'md');
+      assert.strictEqual(typeof md.meta.version, 'string');
+    });
 
-type RuleName = keyof typeof plugin.rules;
+    it('should have rules', () => {
+      assert.ok(md.rules);
+      assert.strictEqual(typeof md.rules, 'object');
+      assert.strictEqual(Object.keys(md.rules).length > 0, true);
+    });
 
-'allow-image-url' satisfies RuleName;
-'allow-link-url' satisfies RuleName;
-'code-lang-shorthand' satisfies RuleName;
-'consistent-code-style' satisfies RuleName;
-'consistent-delete-style' satisfies RuleName;
-'consistent-emphasis-style' satisfies RuleName;
-'consistent-strong-style' satisfies RuleName;
-'consistent-thematic-break-style' satisfies RuleName;
-'consistent-unordered-list-style' satisfies RuleName;
-'no-control-character' satisfies RuleName;
-'no-curly-quote' satisfies RuleName;
-'no-double-punctuation' satisfies RuleName;
-'no-double-space' satisfies RuleName;
-'no-emoji' satisfies RuleName;
-'no-git-conflict-marker' satisfies RuleName;
-'no-irregular-dash' satisfies RuleName;
-'no-irregular-whitespace' satisfies RuleName;
-'no-tab' satisfies RuleName;
-'no-url-trailing-slash' satisfies RuleName;
-'require-capitalization' satisfies RuleName;
-'require-image-title' satisfies RuleName;
-'require-link-title' satisfies RuleName;
+    it('should have configs', () => {
+      assert.ok(md.configs);
+      assert.ok(md.configs.all);
+      assert.ok(md.configs.base);
+      assert.ok(md.configs.recommended);
+      assert.ok(md.configs.stylistic);
+      assert.strictEqual(typeof md.configs, 'object');
+      assert.strictEqual(Object.keys(md.configs).length > 0, true);
+    });
+  });
 
-// #endregion rules
-// --------------------------------------------------------------------------------
+  describe('Config rules should use `md/` prefix', () => {
+    it('`all` configuration', () => {
+      for (const allConfigRuleName of Object.keys(md.configs.all.rules)) {
+        assert.strictEqual(allConfigRuleName.startsWith('md/'), true);
+      }
+    });
 
-// --------------------------------------------------------------------------------
-// #region configs
+    it('`recommended` configuration', () => {
+      for (const recommendedConfigRuleName of Object.keys(md.configs.recommended.rules)) {
+        assert.strictEqual(recommendedConfigRuleName.startsWith('md/'), true);
+      }
+    });
 
-plugin.configs.all satisfies Linter.Config;
-plugin.configs.all.name satisfies 'md/all';
-plugin.configs.all.language satisfies 'markdown/gfm';
-plugin.configs.all.rules satisfies Linter.RulesRecord;
+    it('`stylistic` configuration', () => {
+      for (const stylisticConfigRuleName of Object.keys(md.configs.stylistic.rules)) {
+        assert.strictEqual(stylisticConfigRuleName.startsWith('md/'), true);
+      }
+    });
+  });
 
-type AllConfigRuleName = keyof typeof plugin.configs.all.rules;
+  describe('Custom namespaces in extends style configurations', () => {
+    it('should report the custom rule ID when extending the exported plugin', () => {
+      const linter = new Linter();
+      const config = defineConfig([
+        {
+          files: ['**/*.md'],
+          plugins: {
+            custommd: md,
+          },
+          extends: ['custommd/recommended'],
+        },
+      ]);
+      const messages = linter.verify('12  34', config, { filename: 'test.md' });
 
-'md/allow-image-url' satisfies AllConfigRuleName;
-'md/allow-link-url' satisfies AllConfigRuleName;
-'md/code-lang-shorthand' satisfies AllConfigRuleName;
-'md/consistent-code-style' satisfies AllConfigRuleName;
-'md/consistent-delete-style' satisfies AllConfigRuleName;
-'md/consistent-emphasis-style' satisfies AllConfigRuleName;
-'md/consistent-strong-style' satisfies AllConfigRuleName;
-'md/consistent-thematic-break-style' satisfies AllConfigRuleName;
-'md/consistent-unordered-list-style' satisfies AllConfigRuleName;
-'md/no-control-character' satisfies AllConfigRuleName;
-'md/no-curly-quote' satisfies AllConfigRuleName;
-'md/no-double-punctuation' satisfies AllConfigRuleName;
-'md/no-double-space' satisfies AllConfigRuleName;
-'md/no-emoji' satisfies AllConfigRuleName;
-'md/no-git-conflict-marker' satisfies AllConfigRuleName;
-'md/no-irregular-dash' satisfies AllConfigRuleName;
-'md/no-irregular-whitespace' satisfies AllConfigRuleName;
-'md/no-tab' satisfies AllConfigRuleName;
-'md/no-url-trailing-slash' satisfies AllConfigRuleName;
-'md/require-capitalization' satisfies AllConfigRuleName;
-'md/require-image-title' satisfies AllConfigRuleName;
-'md/require-link-title' satisfies AllConfigRuleName;
+      assert.strictEqual(messages.length, 1);
+      assert.strictEqual(messages[0].ruleId, 'custommd/no-double-space');
+      assert.strictEqual(messages[0].messageId, 'noDoubleSpace');
+      assert.strictEqual(messages[0].severity, 2);
+    });
 
-plugin.configs.base satisfies Linter.Config;
-plugin.configs.base.name satisfies 'md/base';
-plugin.configs.base.language satisfies 'markdown/gfm';
-// @ts-expect-error -- `rules` should not exist in base config.
-plugin.configs.base.rules;
+    it('should disable the inherited rule through the custom namespace of the exported plugin', () => {
+      const linter = new Linter();
+      const config = defineConfig([
+        {
+          files: ['**/*.md'],
+          plugins: {
+            custommd: md,
+          },
+          extends: ['custommd/recommended'],
+          rules: {
+            'custommd/no-double-space': 'off',
+          },
+        },
+      ]);
+      const messages = linter.verify('12  34', config, { filename: 'test.md' });
 
-plugin.configs.recommended satisfies Linter.Config;
-plugin.configs.recommended.name satisfies 'md/recommended';
-plugin.configs.recommended.language satisfies 'markdown/gfm';
-plugin.configs.recommended.rules satisfies Linter.RulesRecord;
+      assert.deepStrictEqual(messages, []);
+    });
+  });
 
-type RecommendedConfigRuleName = keyof typeof plugin.configs.recommended.rules;
+  describe('Extends style configuration should work correctly', () => {
+    it('`all` configuration', () => {
+      const linter = new Linter();
+      const extendsStyleConfig = defineConfig([
+        {
+          files: ['**/*.md'],
+          plugins: {
+            md,
+          },
+          extends: ['md/all'],
+        },
+      ]);
+      const extendsStyleConfigResult = linter.verify('12  34', extendsStyleConfig, {
+        filename: 'test.md',
+      });
 
-'md/code-lang-shorthand' satisfies RecommendedConfigRuleName;
-'md/no-control-character' satisfies RecommendedConfigRuleName;
-'md/no-curly-quote' satisfies RecommendedConfigRuleName;
-'md/no-double-space' satisfies RecommendedConfigRuleName;
-'md/no-git-conflict-marker' satisfies RecommendedConfigRuleName;
-'md/no-irregular-dash' satisfies RecommendedConfigRuleName;
-'md/no-irregular-whitespace' satisfies RecommendedConfigRuleName;
+      assert.strictEqual(extendsStyleConfigResult.length, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(extendsStyleConfigResult[0].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[0].line, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].column, 3);
+      assert.strictEqual(extendsStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].endColumn, 5);
+    });
 
-plugin.configs.stylistic satisfies Linter.Config;
-plugin.configs.stylistic.name satisfies 'md/stylistic';
-plugin.configs.stylistic.language satisfies 'markdown/gfm';
-plugin.configs.stylistic.rules satisfies Linter.RulesRecord;
+    it('`all` configuration with `@eslint/markdown` plugin', () => {
+      const linter = new Linter();
+      const extendsStyleConfig = defineConfig([
+        {
+          files: ['**/*.md'],
+          plugins: {
+            markdown,
+            md,
+          },
+          extends: ['markdown/recommended', 'md/all'],
+        },
+      ]);
+      const extendsStyleConfigResult = linter.verify(
+        '12  34\n\n[foo]: bar',
+        extendsStyleConfig,
+        {
+          filename: 'test.md',
+        },
+      );
 
-type StylisticConfigRuleName = keyof typeof plugin.configs.stylistic.rules;
+      assert.strictEqual(extendsStyleConfigResult.length, 2);
+      assert.strictEqual(extendsStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(extendsStyleConfigResult[0].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[0].line, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].column, 3);
+      assert.strictEqual(extendsStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].endColumn, 5);
+      assert.strictEqual(
+        extendsStyleConfigResult[1].ruleId,
+        'markdown/no-unused-definitions',
+      );
+      assert.strictEqual(extendsStyleConfigResult[1].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[1].line, 3);
+      assert.strictEqual(extendsStyleConfigResult[1].column, 1);
+      assert.strictEqual(extendsStyleConfigResult[1].endLine, 3);
+      assert.strictEqual(extendsStyleConfigResult[1].endColumn, 11);
+    });
 
-'md/consistent-code-style' satisfies StylisticConfigRuleName;
-'md/consistent-delete-style' satisfies StylisticConfigRuleName;
-'md/consistent-emphasis-style' satisfies StylisticConfigRuleName;
-'md/consistent-strong-style' satisfies StylisticConfigRuleName;
-'md/consistent-thematic-break-style' satisfies StylisticConfigRuleName;
-'md/consistent-unordered-list-style' satisfies StylisticConfigRuleName;
-'md/no-tab' satisfies StylisticConfigRuleName;
+    it('`base` configuration', () => {
+      const linter = new Linter();
+      const extendsStyleConfig = defineConfig([
+        {
+          files: ['**/*.md'],
+          plugins: {
+            md,
+          },
+          extends: ['md/base'],
+          rules: {
+            'md/no-double-space': 'error',
+          },
+        },
+      ]);
+      const extendsStyleConfigResult = linter.verify('12  34', extendsStyleConfig, {
+        filename: 'test.md',
+      });
 
-// #endregion configs
-// --------------------------------------------------------------------------------
+      assert.strictEqual(extendsStyleConfigResult.length, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(extendsStyleConfigResult[0].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[0].line, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].column, 3);
+      assert.strictEqual(extendsStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].endColumn, 5);
+    });
+
+    it('`base` configuration with `@eslint/markdown` plugin', () => {
+      const linter = new Linter();
+      const extendsStyleConfig = defineConfig([
+        {
+          files: ['**/*.md'],
+          plugins: {
+            markdown,
+            md,
+          },
+          extends: ['markdown/recommended', 'md/base'],
+          rules: {
+            'md/no-double-space': 'error',
+          },
+        },
+      ]);
+      const extendsStyleConfigResult = linter.verify(
+        '12  34\n\n[foo]: bar',
+        extendsStyleConfig,
+        {
+          filename: 'test.md',
+        },
+      );
+
+      assert.strictEqual(extendsStyleConfigResult.length, 2);
+      assert.strictEqual(extendsStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(extendsStyleConfigResult[0].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[0].line, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].column, 3);
+      assert.strictEqual(extendsStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].endColumn, 5);
+      assert.strictEqual(
+        extendsStyleConfigResult[1].ruleId,
+        'markdown/no-unused-definitions',
+      );
+      assert.strictEqual(extendsStyleConfigResult[1].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[1].line, 3);
+      assert.strictEqual(extendsStyleConfigResult[1].column, 1);
+      assert.strictEqual(extendsStyleConfigResult[1].endLine, 3);
+      assert.strictEqual(extendsStyleConfigResult[1].endColumn, 11);
+    });
+
+    it('`recommended` configuration', () => {
+      const linter = new Linter();
+      const extendsStyleConfig = defineConfig([
+        {
+          files: ['**/*.md'],
+          plugins: {
+            md,
+          },
+          extends: ['md/recommended'],
+        },
+      ]);
+      const extendsStyleConfigResult = linter.verify('12  34', extendsStyleConfig, {
+        filename: 'test.md',
+      });
+
+      assert.strictEqual(extendsStyleConfigResult.length, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(extendsStyleConfigResult[0].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[0].line, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].column, 3);
+      assert.strictEqual(extendsStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].endColumn, 5);
+    });
+
+    it('`recommended` configuration with `@eslint/markdown` plugin', () => {
+      const linter = new Linter();
+      const extendsStyleConfig = defineConfig([
+        {
+          files: ['**/*.md'],
+          plugins: {
+            markdown,
+            md,
+          },
+          extends: ['markdown/recommended', 'md/recommended'],
+        },
+      ]);
+      const extendsStyleConfigResult = linter.verify(
+        '12  34\n\n[foo]: bar',
+        extendsStyleConfig,
+        {
+          filename: 'test.md',
+        },
+      );
+
+      assert.strictEqual(extendsStyleConfigResult.length, 2);
+      assert.strictEqual(extendsStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(extendsStyleConfigResult[0].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[0].line, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].column, 3);
+      assert.strictEqual(extendsStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].endColumn, 5);
+      assert.strictEqual(
+        extendsStyleConfigResult[1].ruleId,
+        'markdown/no-unused-definitions',
+      );
+      assert.strictEqual(extendsStyleConfigResult[1].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[1].line, 3);
+      assert.strictEqual(extendsStyleConfigResult[1].column, 1);
+      assert.strictEqual(extendsStyleConfigResult[1].endLine, 3);
+      assert.strictEqual(extendsStyleConfigResult[1].endColumn, 11);
+    });
+
+    it('`stylistic` configuration', () => {
+      const linter = new Linter();
+      const extendsStyleConfig = defineConfig([
+        {
+          files: ['**/*.md'],
+          plugins: {
+            md,
+          },
+          extends: ['md/stylistic'],
+        },
+      ]);
+      const extendsStyleConfigResult = linter.verify('---\n\n___', extendsStyleConfig, {
+        filename: 'test.md',
+      });
+
+      assert.strictEqual(extendsStyleConfigResult.length, 1);
+      assert.strictEqual(
+        extendsStyleConfigResult[0].ruleId,
+        'md/consistent-thematic-break-style',
+      );
+      assert.strictEqual(extendsStyleConfigResult[0].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[0].line, 3);
+      assert.strictEqual(extendsStyleConfigResult[0].column, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].endLine, 3);
+      assert.strictEqual(extendsStyleConfigResult[0].endColumn, 4);
+    });
+
+    it('`stylistic` configuration with `@eslint/markdown` plugin', () => {
+      const linter = new Linter();
+      const extendsStyleConfig = defineConfig([
+        {
+          files: ['**/*.md'],
+          plugins: {
+            markdown,
+            md,
+          },
+          extends: ['markdown/recommended', 'md/stylistic'],
+        },
+      ]);
+      const extendsStyleConfigResult = linter.verify(
+        '---\n\n___\n\n[foo]: bar',
+        extendsStyleConfig,
+        {
+          filename: 'test.md',
+        },
+      );
+
+      assert.strictEqual(extendsStyleConfigResult.length, 2);
+      assert.strictEqual(
+        extendsStyleConfigResult[0].ruleId,
+        'md/consistent-thematic-break-style',
+      );
+      assert.strictEqual(extendsStyleConfigResult[0].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[0].line, 3);
+      assert.strictEqual(extendsStyleConfigResult[0].column, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].endLine, 3);
+      assert.strictEqual(extendsStyleConfigResult[0].endColumn, 4);
+      assert.strictEqual(
+        extendsStyleConfigResult[1].ruleId,
+        'markdown/no-unused-definitions',
+      );
+      assert.strictEqual(extendsStyleConfigResult[1].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[1].line, 5);
+      assert.strictEqual(extendsStyleConfigResult[1].column, 1);
+      assert.strictEqual(extendsStyleConfigResult[1].endLine, 5);
+      assert.strictEqual(extendsStyleConfigResult[1].endColumn, 11);
+    });
+
+    it('Mixed configuration', () => {
+      const linter = new Linter();
+      const extendsStyleConfig = defineConfig([
+        {
+          files: ['**/*.md'],
+          plugins: {
+            markdown,
+            md,
+          },
+          extends: ['markdown/recommended', 'md/recommended', 'md/stylistic'],
+        },
+      ]);
+      const extendsStyleConfigResult = linter.verify(
+        '12  34\n\n---\n\n___\n\n[foo]: bar',
+        extendsStyleConfig,
+        {
+          filename: 'test.md',
+        },
+      );
+
+      assert.strictEqual(extendsStyleConfigResult.length, 3);
+      assert.strictEqual(extendsStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(extendsStyleConfigResult[0].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[0].line, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].column, 3);
+      assert.strictEqual(extendsStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(extendsStyleConfigResult[0].endColumn, 5);
+      assert.strictEqual(
+        extendsStyleConfigResult[1].ruleId,
+        'md/consistent-thematic-break-style',
+      );
+      assert.strictEqual(extendsStyleConfigResult[1].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[1].line, 5);
+      assert.strictEqual(extendsStyleConfigResult[1].column, 1);
+      assert.strictEqual(extendsStyleConfigResult[1].endLine, 5);
+      assert.strictEqual(extendsStyleConfigResult[1].endColumn, 4);
+      assert.strictEqual(
+        extendsStyleConfigResult[2].ruleId,
+        'markdown/no-unused-definitions',
+      );
+      assert.strictEqual(extendsStyleConfigResult[2].severity, 2);
+      assert.strictEqual(extendsStyleConfigResult[2].line, 7);
+      assert.strictEqual(extendsStyleConfigResult[2].column, 1);
+      assert.strictEqual(extendsStyleConfigResult[2].endLine, 7);
+      assert.strictEqual(extendsStyleConfigResult[2].endColumn, 11);
+    });
+  });
+
+  describe('Cascading style configuration should work correctly', () => {
+    it('`all` configuration', () => {
+      const linter = new Linter();
+      const cascadingStyleConfig = defineConfig([md.configs.all]);
+      const cascadingStyleConfigResult = linter.verify('12  34', cascadingStyleConfig, {
+        filename: 'test.md',
+      });
+
+      assert.strictEqual(cascadingStyleConfigResult.length, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(cascadingStyleConfigResult[0].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[0].line, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].column, 3);
+      assert.strictEqual(cascadingStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].endColumn, 5);
+    });
+
+    it('`all` configuration with `@eslint/markdown` plugin', () => {
+      const linter = new Linter();
+      const cascadingStyleConfig = defineConfig([
+        markdown.configs.recommended,
+        md.configs.all,
+      ]);
+      const cascadingStyleConfigResult = linter.verify(
+        '12  34\n\n[foo]: bar',
+        cascadingStyleConfig,
+        {
+          filename: 'test.md',
+        },
+      );
+
+      assert.strictEqual(cascadingStyleConfigResult.length, 2);
+      assert.strictEqual(cascadingStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(cascadingStyleConfigResult[0].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[0].line, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].column, 3);
+      assert.strictEqual(cascadingStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].endColumn, 5);
+      assert.strictEqual(
+        cascadingStyleConfigResult[1].ruleId,
+        'markdown/no-unused-definitions',
+      );
+      assert.strictEqual(cascadingStyleConfigResult[1].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[1].line, 3);
+      assert.strictEqual(cascadingStyleConfigResult[1].column, 1);
+      assert.strictEqual(cascadingStyleConfigResult[1].endLine, 3);
+      assert.strictEqual(cascadingStyleConfigResult[1].endColumn, 11);
+    });
+
+    it('`base` configuration', () => {
+      const linter = new Linter();
+      const cascadingStyleConfig = defineConfig([
+        md.configs.base,
+        { rules: { 'md/no-double-space': 'error' } },
+      ]);
+      const cascadingStyleConfigResult = linter.verify('12  34', cascadingStyleConfig, {
+        filename: 'test.md',
+      });
+
+      assert.strictEqual(cascadingStyleConfigResult.length, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(cascadingStyleConfigResult[0].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[0].line, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].column, 3);
+      assert.strictEqual(cascadingStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].endColumn, 5);
+    });
+
+    it('`base` configuration with `@eslint/markdown` plugin', () => {
+      const linter = new Linter();
+      const cascadingStyleConfig = defineConfig([
+        markdown.configs.recommended,
+        md.configs.base,
+        { rules: { 'md/no-double-space': 'error' } },
+      ]);
+      const cascadingStyleConfigResult = linter.verify(
+        '12  34\n\n[foo]: bar',
+        cascadingStyleConfig,
+        {
+          filename: 'test.md',
+        },
+      );
+
+      assert.strictEqual(cascadingStyleConfigResult.length, 2);
+      assert.strictEqual(cascadingStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(cascadingStyleConfigResult[0].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[0].line, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].column, 3);
+      assert.strictEqual(cascadingStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].endColumn, 5);
+      assert.strictEqual(
+        cascadingStyleConfigResult[1].ruleId,
+        'markdown/no-unused-definitions',
+      );
+      assert.strictEqual(cascadingStyleConfigResult[1].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[1].line, 3);
+      assert.strictEqual(cascadingStyleConfigResult[1].column, 1);
+      assert.strictEqual(cascadingStyleConfigResult[1].endLine, 3);
+      assert.strictEqual(cascadingStyleConfigResult[1].endColumn, 11);
+    });
+
+    it('`recommended` configuration', () => {
+      const linter = new Linter();
+      const cascadingStyleConfig = defineConfig([md.configs.recommended]);
+      const cascadingStyleConfigResult = linter.verify('12  34', cascadingStyleConfig, {
+        filename: 'test.md',
+      });
+
+      assert.strictEqual(cascadingStyleConfigResult.length, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(cascadingStyleConfigResult[0].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[0].line, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].column, 3);
+      assert.strictEqual(cascadingStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].endColumn, 5);
+    });
+
+    it('`recommended` configuration with `@eslint/markdown` plugin', () => {
+      const linter = new Linter();
+      const cascadingStyleConfig = defineConfig([
+        markdown.configs.recommended,
+        md.configs.recommended,
+      ]);
+      const cascadingStyleConfigResult = linter.verify(
+        '12  34\n\n[foo]: bar',
+        cascadingStyleConfig,
+        {
+          filename: 'test.md',
+        },
+      );
+
+      assert.strictEqual(cascadingStyleConfigResult.length, 2);
+      assert.strictEqual(cascadingStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(cascadingStyleConfigResult[0].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[0].line, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].column, 3);
+      assert.strictEqual(cascadingStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].endColumn, 5);
+      assert.strictEqual(
+        cascadingStyleConfigResult[1].ruleId,
+        'markdown/no-unused-definitions',
+      );
+      assert.strictEqual(cascadingStyleConfigResult[1].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[1].line, 3);
+      assert.strictEqual(cascadingStyleConfigResult[1].column, 1);
+      assert.strictEqual(cascadingStyleConfigResult[1].endLine, 3);
+      assert.strictEqual(cascadingStyleConfigResult[1].endColumn, 11);
+    });
+
+    it('`stylistic` configuration', () => {
+      const linter = new Linter();
+      const cascadingStyleConfig = defineConfig([md.configs.stylistic]);
+      const cascadingStyleConfigResult = linter.verify(
+        '---\n\n___',
+        cascadingStyleConfig,
+        {
+          filename: 'test.md',
+        },
+      );
+
+      assert.strictEqual(cascadingStyleConfigResult.length, 1);
+      assert.strictEqual(
+        cascadingStyleConfigResult[0].ruleId,
+        'md/consistent-thematic-break-style',
+      );
+      assert.strictEqual(cascadingStyleConfigResult[0].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[0].line, 3);
+      assert.strictEqual(cascadingStyleConfigResult[0].column, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].endLine, 3);
+      assert.strictEqual(cascadingStyleConfigResult[0].endColumn, 4);
+    });
+
+    it('`stylistic` configuration with `@eslint/markdown` plugin', () => {
+      const linter = new Linter();
+      const cascadingStyleConfig = defineConfig([
+        markdown.configs.recommended,
+        md.configs.stylistic,
+      ]);
+      const cascadingStyleConfigResult = linter.verify(
+        '---\n\n___\n\n[foo]: bar',
+        cascadingStyleConfig,
+        {
+          filename: 'test.md',
+        },
+      );
+
+      assert.strictEqual(cascadingStyleConfigResult.length, 2);
+      assert.strictEqual(
+        cascadingStyleConfigResult[0].ruleId,
+        'md/consistent-thematic-break-style',
+      );
+      assert.strictEqual(cascadingStyleConfigResult[0].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[0].line, 3);
+      assert.strictEqual(cascadingStyleConfigResult[0].column, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].endLine, 3);
+      assert.strictEqual(cascadingStyleConfigResult[0].endColumn, 4);
+      assert.strictEqual(
+        cascadingStyleConfigResult[1].ruleId,
+        'markdown/no-unused-definitions',
+      );
+      assert.strictEqual(cascadingStyleConfigResult[1].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[1].line, 5);
+      assert.strictEqual(cascadingStyleConfigResult[1].column, 1);
+      assert.strictEqual(cascadingStyleConfigResult[1].endLine, 5);
+      assert.strictEqual(cascadingStyleConfigResult[1].endColumn, 11);
+    });
+
+    it('Mixed configuration', () => {
+      const linter = new Linter();
+      const cascadingStyleConfig = defineConfig([
+        markdown.configs.recommended,
+        md.configs.recommended,
+        md.configs.stylistic,
+      ]);
+      const cascadingStyleConfigResult = linter.verify(
+        '12  34\n\n---\n\n___\n\n[foo]: bar',
+        cascadingStyleConfig,
+        {
+          filename: 'test.md',
+        },
+      );
+
+      assert.strictEqual(cascadingStyleConfigResult.length, 3);
+      assert.strictEqual(cascadingStyleConfigResult[0].ruleId, 'md/no-double-space');
+      assert.strictEqual(cascadingStyleConfigResult[0].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[0].line, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].column, 3);
+      assert.strictEqual(cascadingStyleConfigResult[0].endLine, 1);
+      assert.strictEqual(cascadingStyleConfigResult[0].endColumn, 5);
+      assert.strictEqual(
+        cascadingStyleConfigResult[1].ruleId,
+        'md/consistent-thematic-break-style',
+      );
+      assert.strictEqual(cascadingStyleConfigResult[1].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[1].line, 5);
+      assert.strictEqual(cascadingStyleConfigResult[1].column, 1);
+      assert.strictEqual(cascadingStyleConfigResult[1].endLine, 5);
+      assert.strictEqual(cascadingStyleConfigResult[1].endColumn, 4);
+      assert.strictEqual(
+        cascadingStyleConfigResult[2].ruleId,
+        'markdown/no-unused-definitions',
+      );
+      assert.strictEqual(cascadingStyleConfigResult[2].severity, 2);
+      assert.strictEqual(cascadingStyleConfigResult[2].line, 7);
+      assert.strictEqual(cascadingStyleConfigResult[2].column, 1);
+      assert.strictEqual(cascadingStyleConfigResult[2].endLine, 7);
+      assert.strictEqual(cascadingStyleConfigResult[2].endColumn, 11);
+    });
+  });
+});

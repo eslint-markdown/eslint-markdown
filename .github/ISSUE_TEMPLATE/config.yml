@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🐛 Report a Parsing Error (JavaScript Parser `mdast-util-from-markdown`)
+    url: https://github.com/syntax-tree/mdast-util-from-markdown/issues/new/choose
+    about: File an issue with the parser that this plugin uses.
+  - name: 🐛 Report a Parsing Error (Rust Parser `satteri`)
+    url: https://github.com/bruits/satteri/issues/new/choose
+    about: File an issue with the parser that this plugin uses.
+  - name: 🎨 Contact the Author
+    url: https://github.com/lumirlumir
+    about: Please check the GitHub user profile for a contact email or any relevant links.

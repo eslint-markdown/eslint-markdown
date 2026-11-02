@@ -1,0 +1,471 @@
+/**
+ * @fileoverview Test for `consistent-ordered-list-style.ts`.
+ * @author Ga eun Lee
+ */
+
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
+import ruleTester from '../tests/rule-tester.js';
+import rule from './consistent-ordered-list-style.js';
+
+// --------------------------------------------------------------------------------
+// Test
+// --------------------------------------------------------------------------------
+
+ruleTester('consistent-ordered-list-style', rule, {
+  valid: [
+    {
+      name: 'Empty',
+      code: '',
+    },
+    {
+      name: 'Empty string',
+      code: '  ',
+    },
+
+    // `one-or-ordered` style
+    {
+      name: '`one-or-ordered` style - single item',
+      code: '1. First',
+    },
+    {
+      name: '`one-or-ordered` style - all prefixes are `1` (`.` delimiters)',
+      code: `1. First
+1. Second
+1. Third`,
+    },
+    {
+      name: '`one-or-ordered` style - all prefixes are `1` (`)` delimiters)',
+      code: `1) First
+1) Second
+1) Third`,
+    },
+    {
+      name: '`one-or-ordered` style - all prefixes have leading zeros',
+      code: `01. First
+01. Second
+01. Third`,
+    },
+    {
+      name: '`one-or-ordered` style - prefixes increase from `1`',
+      code: `1. First
+2. Second
+3. Third`,
+    },
+    {
+      name: '`one-or-ordered` style - prefixes increase from `0`',
+      code: `0. First
+1. Second
+2. Third`,
+    },
+    {
+      name: '`one-or-ordered` style - all prefixes have leading zeros increasing from `00`',
+      code: `00. First
+01. Second
+02. Third`,
+    },
+
+    {
+      name: '`one-or-ordered` style - nested ordered lists use independent prefix sequences',
+      code: `1. Outer first
+    1. Nested first
+    2. Nested second
+1. Outer second`,
+    },
+    {
+      name: '`one-or-ordered` style - ordered list in a blockquote',
+      code: `> 1. First
+> 1. Second`,
+    },
+    {
+      name: '`one-or-ordered` style - separate ordered lists use independent prefix sequences',
+      code: `1. First
+2. Second
+
+Paragraph
+
+1. First
+1. Second`,
+    },
+    {
+      name: '`one-or-ordered` style - unordered lists are ignored',
+      code: `- First
+- Second
+
+1. First
+1. Second`,
+    },
+
+    // `one` style
+    {
+      name: '`one` style - single item',
+      code: '1. First',
+      options: [{ style: 'one' }],
+    },
+    {
+      name: '`one` style - all prefixes are `1`',
+      code: `1. First
+1. Second
+1. Third`,
+      options: [{ style: 'one' }],
+    },
+
+    // `ordered` style
+    {
+      name: '`ordered` style - single item',
+      code: '1. First',
+      options: [{ style: 'ordered' }],
+    },
+    {
+      name: '`ordered` style - prefixes increase from `1`',
+      code: `1. First
+2. Second
+3. Third`,
+      options: [{ style: 'ordered' }],
+    },
+    {
+      name: '`ordered` style - prefixes increase from `0`',
+      code: `0. First
+1. Second
+2. Third`,
+      options: [{ style: 'ordered' }],
+    },
+
+    // `zero` style
+    {
+      name: '`zero` style - single item',
+      code: '0. First',
+      options: [{ style: 'zero' }],
+    },
+    {
+      name: '`zero` style - all prefixes are `0`',
+      code: `0. First
+0. Second
+0. Third`,
+      options: [{ style: 'zero' }],
+    },
+  ],
+
+  invalid: [
+    // `one-or-ordered` style
+    {
+      name: '`one-or-ordered` style - single item does not start with `1`',
+      code: '2. First',
+      errors: [
+        {
+          messageId: 'style',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 2,
+          data: { style: 'one' },
+        },
+      ],
+    },
+    {
+      name: '`one-or-ordered` style - infers `one` from the second prefix',
+      code: `2. First
+1. Second`,
+      errors: [
+        {
+          messageId: 'style',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 2,
+          data: { style: 'one' },
+        },
+      ],
+    },
+    {
+      name: '`one-or-ordered` style - infers `ordered` from a zero prefix',
+      code: `0. First
+0. Second
+0. Third`,
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 2,
+          data: { style: 'ordered' },
+        },
+        {
+          messageId: 'style',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 2,
+          data: { style: 'ordered' },
+        },
+      ],
+    },
+    {
+      name: '`one-or-ordered` style - prefixes do not increase sequentially',
+      code: `1. First
+3. Second
+4. Third`,
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 2,
+          data: { style: 'ordered' },
+        },
+        {
+          messageId: 'style',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 2,
+          data: { style: 'ordered' },
+        },
+      ],
+    },
+    {
+      name: '`one-or-ordered` style - prefixes do not remain `1`',
+      code: `1. First
+1. Second
+2. Third`,
+      errors: [
+        {
+          messageId: 'style',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 2,
+          data: { style: 'one' },
+        },
+      ],
+    },
+    {
+      name: '`one-or-ordered` style - infers nested list styles independently of the outer list',
+      code: `1. Outer first
+    1. Nested first
+    3. Nested second
+1. Outer second`,
+      errors: [
+        {
+          messageId: 'style',
+          line: 3,
+          column: 5,
+          endLine: 3,
+          endColumn: 6,
+          data: { style: 'ordered' },
+        },
+      ],
+    },
+
+    // `one` style
+    {
+      name: '`one` style - single item does not start with `1`',
+      code: '2. First',
+      options: [{ style: 'one' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 2,
+          data: { style: 'one' },
+        },
+      ],
+    },
+    {
+      name: '`one` style - prefixes are not all `1`',
+      code: `1. First
+2. Second
+3. Third`,
+      options: [{ style: 'one' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 2,
+          data: { style: 'one' },
+        },
+        {
+          messageId: 'style',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 2,
+          data: { style: 'one' },
+        },
+      ],
+    },
+    {
+      name: '`one` style - multi-digit prefixes report the entire number',
+      code: `1. First
+10. Second`,
+      options: [{ style: 'one' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 3,
+          data: { style: 'one' },
+        },
+      ],
+    },
+
+    // `ordered` style
+    {
+      name: '`ordered` style - single item does not start with `1`',
+      code: '0. First',
+      options: [{ style: 'ordered' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 2,
+          data: { style: 'ordered' },
+        },
+      ],
+    },
+    {
+      name: '`ordered` style - prefixes do not increase',
+      code: `1. First
+1. Second
+1. Third`,
+      options: [{ style: 'ordered' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 2,
+          data: { style: 'ordered' },
+        },
+        {
+          messageId: 'style',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 2,
+          data: { style: 'ordered' },
+        },
+      ],
+    },
+    {
+      name: '`ordered` style - single item does not start with `1`',
+      code: `2. hi
+3. hi`,
+      options: [{ style: 'ordered' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 2,
+          data: { style: 'ordered' },
+        },
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 2,
+          data: { style: 'ordered' },
+        },
+      ],
+    },
+    {
+      name: '`ordered` style - nested ordered lists report their own prefix sequence',
+      code: `1. Outer first
+    1. Nested first
+    3. Nested second
+1. Outer second`,
+      options: [{ style: 'ordered' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 3,
+          column: 5,
+          endLine: 3,
+          endColumn: 6,
+          data: { style: 'ordered' },
+        },
+        {
+          messageId: 'style',
+          line: 4,
+          column: 1,
+          endLine: 4,
+          endColumn: 2,
+          data: { style: 'ordered' },
+        },
+      ],
+    },
+    {
+      name: '`ordered` style - Ordered lists in blockquotes report the prefix location',
+      code: `> 1. First
+> 3. Second`,
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 3,
+          endLine: 2,
+          endColumn: 4,
+          data: { style: 'ordered' },
+        },
+      ],
+    },
+
+    // `zero` style
+    {
+      name: '`zero` style - single item does not start with `0`',
+      code: '1. First',
+      options: [{ style: 'zero' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 2,
+          data: { style: 'zero' },
+        },
+      ],
+    },
+    {
+      name: '`zero` style - prefixes are not all `0`',
+      code: `0. First
+1. Second
+2. Third`,
+      options: [{ style: 'zero' }],
+      errors: [
+        {
+          messageId: 'style',
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 2,
+          data: { style: 'zero' },
+        },
+        {
+          messageId: 'style',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 2,
+          data: { style: 'zero' },
+        },
+      ],
+    },
+  ],
+});

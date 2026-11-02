@@ -9,11 +9,13 @@ permissions:
 
 jobs:
   sync-client:
+    if: github.repository_owner == 'eslint-markdown' || github.repository_owner == 'lumirlumir'
+
     runs-on: ubuntu-slim
 
     steps:
       - name: Set up checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up environment variables
         run: echo "SHORT_SHA=${GITHUB_SHA:0:7}" >> $GITHUB_ENV

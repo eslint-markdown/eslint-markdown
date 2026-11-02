@@ -1,0 +1,186 @@
+/**
+ * @fileoverview Rule to disallow tab characters.
+ * @author lumir(lumirlumir)
+ */
+
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
+import { SkipRanges } from '../core/utils/index.js';
+import { URL_RULE_DOCS } from '../core/constants.js';
+import type { RuleModule } from '../core/types.js';
+
+// --------------------------------------------------------------------------------
+// Typedef
+// --------------------------------------------------------------------------------
+
+/**
+ * Options for the `no-tab` rule.
+ */
+type RuleOptions = [
+  {
+    /**
+     * `true` allows tabs in all code blocks, while `string[]` allows tabs only in code blocks for the specified languages.
+     * @default true
+     */
+    skipCode: boolean | string[];
+    /**
+     * `true` allows tabs in all inline code.
+     * @default true
+     */
+    skipInlineCode: boolean;
+    /**
+     * `true` allows tabs in all math blocks.
+     * @default true
+     */
+    skipMath: boolean;
+    /**
+     * `true` allows tabs in all inline math.
+     * @default true
+     */
+    skipInlineMath: boolean;
+    /**
+     * Number of spaces to replace each tab with when applying an autofix.
+     * @default 4
+     */
+    tabWidth: number;
+  },
+];
+type MessageIds = 'noTab';
+
+// --------------------------------------------------------------------------------
+// Helper
+// --------------------------------------------------------------------------------
+
+const tabRegex = /\t/gu;
+
+// --------------------------------------------------------------------------------
+// Rule Definition
+// --------------------------------------------------------------------------------
+
+export default {
+  meta: {
+    type: 'problem',
+
+    docs: {
+      description: 'Disallow tab characters',
+      dialects: ['CommonMark', 'GFM'],
+      url: URL_RULE_DOCS('no-tab'),
+      recommended: false,
+      stylistic: true,
+    },
+
+    fixable: 'whitespace',
+
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          skipCode: {
+            oneOf: [
+              {
+                type: 'boolean',
+              },
+              {
+                type: 'array',
+                items: {
+                  type: 'string',
+                },
+                uniqueItems: true,
+              },
+            ],
+          },
+          skipInlineCode: {
+            type: 'boolean',
+          },
+          skipMath: {
+            type: 'boolean',
+          },
+          skipInlineMath: {
+            type: 'boolean',
+          },
+          tabWidth: {
+            type: 'integer',
+            minimum: 1,
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
+
+    defaultOptions: [
+      {
+        skipCode: true,
+        skipInlineCode: true,
+        skipMath: true,
+        skipInlineMath: true,
+        tabWidth: 4,
+      },
+    ],
+
+    messages: {
+      noTab: 'Tab character is not allowed. Please use spaces instead.',
+    },
+
+    language: 'markdown',
+  },
+
+  create(context) {
+    const { sourceCode } = context;
+    const [{ skipCode, skipInlineCode, skipMath, skipInlineMath, tabWidth }] =
+      context.options;
+
+    const skipRanges = new SkipRanges();
+
+    return {
+      code(node) {
+        if (
+          Array.isArray(skipCode) ? node.lang && skipCode.includes(node.lang) : skipCode
+        )
+          skipRanges.push(sourceCode.getRange(node)); // Store range information of `Code`.
+      },
+
+      inlineCode(node) {
+        if (skipInlineCode) skipRanges.push(sourceCode.getRange(node)); // Store range information of `InlineCode`.
+      },
+
+      math(node) {
+        if (skipMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `Math`.
+      },
+
+      inlineMath(node) {
+        if (skipInlineMath) skipRanges.push(sourceCode.getRange(node)); // Store range information of `InlineMath`.
+      },
+
+      'root:exit'() {
+        const matches = sourceCode.text.matchAll(tabRegex);
+
+        for (const match of matches) {
+          const tab = match[0];
+
+          const startOffset = match.index;
+          const endOffset = startOffset + tab.length;
+
+          if (skipRanges.includes(startOffset)) continue;
+
+          context.report({
+            loc: {
+              start: sourceCode.getLocFromIndex(startOffset),
+              end: sourceCode.getLocFromIndex(endOffset),
+            },
+
+            messageId: 'noTab',
+
+            fix(fixer) {
+              return fixer.replaceTextRange(
+                [startOffset, endOffset],
+                ' '.repeat(tabWidth),
+              );
+            },
+          });
+        }
+      },
+    };
+  },
+} as const satisfies RuleModule<RuleOptions, MessageIds>;

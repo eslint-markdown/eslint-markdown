@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-next-line no-inline-html first-line-h1 -->
+<!-- eslint-disable-next-line markdown/no-html -->
 <header v-html="$frontmatter.rule"></header>
 
 ## Rule Details
@@ -163,19 +163,31 @@ Please note that this rule doesn't report definition-style comments (e.g., `[//]
 
 ### `allowUrls`
 
-> Type: `RegExp[]` / Default: `[/.*/u]`
+> Type: `(RegExp | string)[]` / Default: `[/.*/u]`
+> > This option accepts `RegExp` objects and string patterns.  
+> > String patterns must be non-empty and are compiled with the `u` flag.
 
 Allowed URLs act like a ***whitelist***. Only those written on the whitelist **can** pass through.
 
 For example, if you pass an empty array to the option, it allows nothing. i.e. Every **link** will be detected.
 
+::: warning Escaping special characters
+Regular expression special characters must be escaped when matched literally. For example, to match `image.png`, use `/^image\.png$/u` or `'^image\\.png$'`.
+:::
+
 ### `disallowUrls`
 
-> Type: `RegExp[]` / Default: `[]`
+> Type: `(RegExp | string)[]` / Default: `[]`
+> > This option accepts `RegExp` objects and string patterns.  
+> > String patterns must be non-empty and are compiled with the `u` flag.
 
 On the contrary, disallowed URLs act like a ***blacklist***. Only those written on the blacklist **cannot** pass through.
 
 For example, if you pass an empty array to the option, it allows everything. i.e. no **link** will be detected.
+
+::: warning Escaping special characters
+Regular expression special characters must be escaped when matched literally. For example, to match `image.png`, use `/^image\.png$/u` or `'^image\\.png$'`.
+:::
 
 ### `allowDefinitions`
 

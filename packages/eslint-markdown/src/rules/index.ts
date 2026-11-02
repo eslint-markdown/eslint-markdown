@@ -1,0 +1,69 @@
+/* eslint sort-imports: 'error', sort-keys: 'error' */
+
+// TODO: Re-enable the commented-out rules once they stabilize.
+
+import allowHeading from './allow-heading.js';
+import allowImageUrl from './allow-image-url.js';
+import allowLinkUrl from './allow-link-url.js';
+import codeLangShorthand from './code-lang-shorthand.js';
+import consistentCodeStyle from './consistent-code-style.js';
+import consistentDeleteStyle from './consistent-delete-style.js';
+import consistentEmphasisStyle from './consistent-emphasis-style.js';
+import consistentHeadingStyle from './consistent-heading-style.js';
+import consistentInlineCodeStyle from './consistent-inline-code-style.js';
+import consistentOrderedListStyle from './consistent-ordered-list-style.js';
+import consistentStrongStyle from './consistent-strong-style.js';
+import consistentThematicBreakStyle from './consistent-thematic-break-style.js';
+import consistentUnorderedListStyle from './consistent-unordered-list-style.js';
+import noConsecutiveBlankLine from './no-consecutive-blank-line.js';
+import noControlCharacter from './no-control-character.js';
+import noCurlyQuote from './no-curly-quote.js';
+import noDoublePunctuation from './no-double-punctuation.js';
+import noDoubleSpace from './no-double-space.js';
+import noEmoji from './no-emoji.js';
+import noGitConflictMarker from './no-git-conflict-marker.js';
+import noIrregularDash from './no-irregular-dash.js';
+import noIrregularWhitespace from './no-irregular-whitespace.js';
+import noMultipleAtxHeadingSpace from './no-multiple-atx-heading-space.js';
+import noShellDollar from './no-shell-dollar.js';
+import noTab from './no-tab.js';
+import noTrailingHeadingPunctuation from './no-trailing-heading-punctuation.js';
+import noUrlTrailingSlash from './no-url-trailing-slash.js';
+import requireCapitalization from './require-capitalization.js';
+import requireHeadingId from './require-heading-id.js';
+import requireImageTitle from './require-image-title.js';
+import requireLinkTitle from './require-link-title.js';
+
+export default {
+  'allow-heading': allowHeading,
+  'allow-image-url': allowImageUrl,
+  'allow-link-url': allowLinkUrl,
+  'code-lang-shorthand': codeLangShorthand,
+  'consistent-code-style': consistentCodeStyle,
+  'consistent-delete-style': consistentDeleteStyle,
+  'consistent-emphasis-style': consistentEmphasisStyle,
+  'consistent-heading-style': consistentHeadingStyle,
+  'consistent-inline-code-style': consistentInlineCodeStyle,
+  'consistent-ordered-list-style': consistentOrderedListStyle,
+  'consistent-strong-style': consistentStrongStyle,
+  'consistent-thematic-break-style': consistentThematicBreakStyle,
+  'consistent-unordered-list-style': consistentUnorderedListStyle,
+  'no-consecutive-blank-line': noConsecutiveBlankLine,
+  'no-control-character': noControlCharacter,
+  'no-curly-quote': noCurlyQuote,
+  'no-double-punctuation': noDoublePunctuation,
+  'no-double-space': noDoubleSpace,
+  'no-emoji': noEmoji,
+  'no-git-conflict-marker': noGitConflictMarker,
+  'no-irregular-dash': noIrregularDash,
+  'no-irregular-whitespace': noIrregularWhitespace,
+  'no-multiple-atx-heading-space': noMultipleAtxHeadingSpace,
+  'no-shell-dollar': noShellDollar,
+  'no-tab': noTab,
+  'no-trailing-heading-punctuation': noTrailingHeadingPunctuation,
+  'no-url-trailing-slash': noUrlTrailingSlash,
+  'require-capitalization': requireCapitalization,
+  'require-heading-id': requireHeadingId,
+  'require-image-title': requireImageTitle,
+  'require-link-title': requireLinkTitle,
+};

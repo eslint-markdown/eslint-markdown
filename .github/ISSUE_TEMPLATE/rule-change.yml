@@ -1,0 +1,69 @@
+name: "\U0001F4DD Request a rule change"
+description: 'Request a change to an existing rule'
+title: 'Rule Change: (fill in)'
+body:
+  - type: input
+    attributes:
+      label: What rule do you want to change?
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: What change do you want to make?
+      options:
+        - Generate more warnings
+        - Generate fewer warnings
+        - Implement autofix
+        - Implement suggestions
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: How do you think the change should be implemented?
+      options:
+        - A new option
+        - A new default behavior
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Example code
+      description: Please provide some example code that this change will affect.
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What does the rule currently do for this code?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What will the rule do after it's changed?
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: Participation
+      options:
+        - label: I am willing to submit a pull request to implement this change.
+          required: false
+  - type: markdown
+    attributes:
+      value: Please **do not** open a pull request until this issue has been accepted by the team.
+  - type: checkboxes
+    attributes:
+      label: AI acknowledgment
+      description: Please select one option and, if yes, briefly describe how AI was used (e.g., code, tests, docs) and which tool(s) you used.
+      options:
+        - label: No - I did not use AI to generate this issue report.
+          required: false
+        - label: Yes - minimal assistance (e.g., IDE autocomplete, small code completions, grammar fixes).
+          required: false
+        - label: Yes - substantive assistance (AI-generated non-trivial portions of code, tests, or documentation).
+          required: false
+  - type: textarea
+    attributes:
+      label: Additional comments
+      description: Is there anything else that's important for the team to know?

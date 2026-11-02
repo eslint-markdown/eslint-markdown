@@ -1,0 +1,240 @@
+/**
+ * @fileoverview Rule to enforce the use of allowed or disallowed URLs for images.
+ * @author lumir(lumirlumir)
+ */
+
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
+import type { Definition } from 'mdast';
+import { normalizeIdentifier } from 'micromark-util-normalize-identifier';
+import type { Position } from 'unist';
+import {
+  getElementsByTagName,
+  normalizeRegexPattern,
+  testRegexStateless,
+} from '../core/utils/index.js';
+import { URL_RULE_DOCS } from '../core/constants.js';
+import type { RuleModule } from '../core/types.js';
+
+// --------------------------------------------------------------------------------
+// Typedef
+// --------------------------------------------------------------------------------
+
+/**
+ * Options for the `allow-image-url` rule.
+ */
+type RuleOptions = [
+  {
+    /**
+     * Allowed URLs act like a ***whitelist***.
+     *
+     * Only those written on the whitelist **can** pass through.
+     * @default [new RegExp('.*', 'u')] // But as a regex literal.
+     */
+    allowUrls: (RegExp | string)[];
+    /**
+     * On the contrary, disallowed URLs act like a ***blacklist***.
+     *
+     * Only those written on the blacklist **cannot** pass through.
+     * @default []
+     */
+    disallowUrls: (RegExp | string)[];
+    /**
+     * When specified, specific definitions are allowed if they match one of the identifiers in this array.
+     *
+     * This is useful for ignoring definitions that are intentionally left, such as comments or placeholders.
+     * @default ['//']
+     */
+    allowDefinitions: string[];
+  },
+];
+type MessageIds = 'allowImageUrl' | 'disallowImageUrl' | 'emptyAllowImageUrl';
+
+// --------------------------------------------------------------------------------
+// Rule Definition
+// --------------------------------------------------------------------------------
+
+export default {
+  meta: {
+    type: 'problem',
+
+    docs: {
+      description: 'Enforce the use of allowed or disallowed URLs for images',
+      dialects: ['CommonMark', 'GFM'],
+      url: URL_RULE_DOCS('allow-image-url'),
+      recommended: false,
+      stylistic: false,
+    },
+
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowUrls: {
+            type: 'array',
+            items: {
+              oneOf: [
+                { type: 'object', additionalProperties: false },
+                { type: 'string', minLength: 1 },
+              ],
+            },
+            uniqueItems: true,
+          },
+          disallowUrls: {
+            type: 'array',
+            items: {
+              oneOf: [
+                { type: 'object', additionalProperties: false },
+                { type: 'string', minLength: 1 },
+              ],
+            },
+            uniqueItems: true,
+          },
+          allowDefinitions: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+            uniqueItems: true,
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
+
+    defaultOptions: [
+      {
+        allowUrls: [/.*/u],
+        disallowUrls: [],
+        allowDefinitions: ['//'],
+      },
+    ],
+
+    messages: {
+      allowImageUrl:
+        'The URL `{{ url }}` is not in the list of allowed URLs. (Allow: {{ patterns }}).',
+      disallowImageUrl:
+        'The URL `{{ url }}` is in the list of disallowed URLs. (Disallow: {{ patterns }}).',
+      emptyAllowImageUrl:
+        'The URL `{{ url }}` is not allowed because the list of allowed URLs is empty.',
+    },
+
+    language: 'markdown',
+  },
+
+  create(context) {
+    const { sourceCode } = context;
+    const [
+      {
+        allowUrls: allowUrlsOption,
+        disallowUrls: disallowUrlsOption,
+        allowDefinitions: allowDefinitionsOption,
+      },
+    ] = context.options;
+
+    const allowUrls = allowUrlsOption.map(normalizeRegexPattern);
+    const disallowUrls = disallowUrlsOption.map(normalizeRegexPattern);
+    const allowDefinitions = new Set(
+      allowDefinitionsOption.map(identifier =>
+        normalizeIdentifier(identifier).toLowerCase(),
+      ),
+    );
+
+    const images = new Set<{ loc: Position; url: string }>();
+    const imageReferenceIdentifiers = new Set<string>();
+    const definitions = new Set<Definition>();
+
+    return {
+      image(node) {
+        images.add({
+          loc: sourceCode.getLoc(node),
+          url: node.url,
+        });
+      },
+
+      html(node) {
+        const [nodeStartOffset] = sourceCode.getRange(node);
+        const html = sourceCode.getText(node);
+
+        for (const { attrs, sourceCodeLocation } of getElementsByTagName(html, 'img')) {
+          for (const { name, value } of attrs) {
+            if (name === 'src' && sourceCodeLocation?.attrs) {
+              images.add({
+                loc: {
+                  start: sourceCode.getLocFromIndex(
+                    nodeStartOffset + sourceCodeLocation.attrs.src.startOffset,
+                  ),
+                  end: sourceCode.getLocFromIndex(
+                    nodeStartOffset + sourceCodeLocation.attrs.src.endOffset,
+                  ),
+                },
+                url: value,
+              });
+            }
+          }
+        }
+      },
+
+      imageReference(node) {
+        imageReferenceIdentifiers.add(node.identifier);
+      },
+
+      definition(node) {
+        if (allowDefinitions.has(node.identifier)) return;
+
+        definitions.add(node);
+      },
+
+      'root:exit'() {
+        for (const definition of definitions) {
+          if (imageReferenceIdentifiers.has(definition.identifier)) {
+            images.add({
+              loc: sourceCode.getLoc(definition),
+              url: definition.url,
+            });
+          }
+        }
+
+        /*
+         * The `some` method returns `true` if any element in the array satisfies the given condition.
+         * In the case of an empty array, there are no elements to satisfy the condition, so the method returns `false`.
+         * Therefore, calling the `some` method on an empty array will always return `false`.
+         */
+
+        for (const { loc, url } of images) {
+          if (allowUrls.length === 0) {
+            context.report({
+              loc,
+              messageId: 'emptyAllowImageUrl',
+              data: {
+                url,
+              },
+            });
+          } else if (!allowUrls.some(regex => testRegexStateless(regex, url))) {
+            context.report({
+              loc,
+              messageId: 'allowImageUrl',
+              data: {
+                url,
+                patterns: allowUrls.map(regex => `\`${regex}\``).join(', '),
+              },
+            });
+          }
+
+          if (disallowUrls.some(regex => testRegexStateless(regex, url))) {
+            context.report({
+              loc,
+              messageId: 'disallowImageUrl',
+              data: {
+                url,
+                patterns: disallowUrls.map(regex => `\`${regex}\``).join(', '),
+              },
+            });
+          }
+        }
+      },
+    };
+  },
+} as const satisfies RuleModule<RuleOptions, MessageIds>;

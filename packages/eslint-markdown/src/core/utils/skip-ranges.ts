@@ -1,0 +1,48 @@
+/**
+ * @fileoverview Class to manage skip ranges.
+ */
+
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
+import type { SourceRange } from '../types.js';
+
+// --------------------------------------------------------------------------------
+// Export
+// --------------------------------------------------------------------------------
+
+/**
+ * Class to manage skip ranges.
+ */
+export class SkipRanges {
+  // ------------------------------------------------------------------------------
+  // Private Property
+  // ------------------------------------------------------------------------------
+
+  #skipRanges: SourceRange[] = [];
+
+  // ------------------------------------------------------------------------------
+  // Public Method
+  // ------------------------------------------------------------------------------
+
+  /**
+   * Push a `range` to the list of skip ranges. (Method chaining supported.)
+   * @param range Source range to skip.
+   */
+  push(range: SourceRange): this {
+    this.#skipRanges.push(range);
+
+    return this;
+  }
+
+  /**
+   * Check whether the `offset` is included in any skip ranges.
+   * @param offset Offset to check.
+   */
+  includes(offset: number): boolean {
+    return this.#skipRanges.some(
+      skipRange => skipRange[0] <= offset && offset < skipRange[1], // Since `skipRange[1]` is an open interval, we use `<`.
+    );
+  }
+}
