@@ -3,6 +3,11 @@
  * @author lumir(lumirlumir)
  */
 
+/*
+ * NOTE: By default, this rule reports only ASCII punctuation and does not support
+ * reporting non-ASCII punctuation such as `。`, `，`, `；`, `：`, `！`, and `？`.
+ */
+
 // --------------------------------------------------------------------------------
 // Import
 // --------------------------------------------------------------------------------
