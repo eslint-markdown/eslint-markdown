@@ -249,9 +249,7 @@ function importType(name: LiteralNodeValue, context: RuleContext): ImportType {
     ) {
       return 'external';
     }
-    if (!relativePath.startsWith('../')) {
-      return 'internal';
-    }
+    return 'internal';
   }
   if (typeof name === 'string' && (/^\w/.test(name) || /^@[^/]+\/?[^/]+/.test(name))) {
     return 'external';
@@ -640,10 +638,6 @@ function makeImportDescription(node: ImportEntry) {
   }
   if (node.node.importKind === 'type') {
     return 'type import';
-  }
-  // @ts-expect-error - flow type
-  if (node.node.importKind === 'typeof') {
-    return 'typeof import';
   }
   return 'import';
 }
