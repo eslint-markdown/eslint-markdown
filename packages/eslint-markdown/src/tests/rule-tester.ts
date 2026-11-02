@@ -75,9 +75,17 @@ const ruleTesterGfm = new RuleTester({
 export default function ruleTester(
   ruleName: string,
   rule: RuleModule<RuleOptions, MessageIds>,
-  tests: Tests,
+  tests: Omit<Tests, 'assertionOptions'>,
 ) {
   const { meta } = rule;
+  const testsWithAssertions = {
+    ...tests,
+    assertionOptions: {
+      requireMessage: 'messageId',
+      requireLocation: true,
+      requireData: true,
+    },
+  } as const;
 
   describe(ruleName, () => {
     describe('meta', () => {
@@ -141,7 +149,7 @@ export default function ruleTester(
           ruleTesterCommonmark.run(
             ruleName,
             rule as unknown as Parameters<RuleTester['run']>[1],
-            tests as Parameters<RuleTester['run']>[2],
+            testsWithAssertions as Parameters<RuleTester['run']>[2],
           );
         });
       }
@@ -153,7 +161,7 @@ export default function ruleTester(
           ruleTesterGfm.run(
             ruleName,
             rule as unknown as Parameters<RuleTester['run']>[1],
-            tests as Parameters<RuleTester['run']>[2],
+            testsWithAssertions as Parameters<RuleTester['run']>[2],
           );
         });
       }

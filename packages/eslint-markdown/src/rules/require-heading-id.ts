@@ -43,6 +43,12 @@ type RuleOptions = [
      * @default []
      */
     allowDepths: Heading['depth'][];
+    /**
+     * Set to `false` to skip HTML headings (`<h1>` through `<h6>`) in both modes.
+     * Markdown headings are still checked.
+     * @default true
+     */
+    checkHtml: boolean;
   },
 ];
 type MessageIds = 'headingIdAlways' | 'headingIdNever';
@@ -91,6 +97,9 @@ export default {
             },
             uniqueItems: true,
           },
+          checkHtml: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -102,6 +111,7 @@ export default {
         leftDelimiter: '{',
         rightDelimiter: '}',
         allowDepths: [],
+        checkHtml: true,
       },
     ],
 
@@ -116,7 +126,8 @@ export default {
 
   create(context) {
     const { sourceCode } = context;
-    const [mode, { leftDelimiter, rightDelimiter, allowDepths }] = context.options;
+    const [mode, { leftDelimiter, rightDelimiter, allowDepths, checkHtml }] =
+      context.options;
 
     const escapedLeftDelimiter = escapeStringRegexp(leftDelimiter);
     const escapedRightDelimiter = escapeStringRegexp(rightDelimiter);
@@ -266,6 +277,10 @@ export default {
       },
 
       html(node) {
+        if (!checkHtml) {
+          return;
+        }
+
         const [nodeStartOffset] = sourceCode.getRange(node);
         const html = sourceCode.getText(node);
 

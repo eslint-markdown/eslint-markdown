@@ -322,6 +322,7 @@ Multiple Lines
     leftDelimiter: '{',
     rightDelimiter: '}',
     allowDepths: [],
+    checkHtml: true,
   }
 ]
 ```
@@ -353,6 +354,12 @@ The right delimiter to use for heading IDs.
 > Type: `Array<1 | 2 | 3 | 4 | 5 | 6>` / Default: `[]`
 
 An array of heading depths to ignore. For example, `[1, 2]` would ignore level 1 and level 2 headings.
+
+#### `checkHtml`
+
+> Type: `boolean` / Default: `true`
+
+Set to `false` to skip HTML headings (`<h1>` through `<h6>`) in both modes. Markdown headings are still checked.
 
 ## Prior Art
 
