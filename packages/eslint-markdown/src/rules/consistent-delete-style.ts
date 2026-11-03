@@ -45,6 +45,7 @@ export default {
 
     docs: {
       description: 'Enforce consistent delete style',
+      dialects: ['GFM'],
       url: URL_RULE_DOCS('consistent-delete-style'),
       recommended: false,
       stylistic: true,
@@ -75,8 +76,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['gfm'],
   },
 
   create(context) {

@@ -68,6 +68,7 @@ export default {
 
     docs: {
       description: 'Disallow irregular whitespace',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-irregular-whitespace'),
       recommended: true,
       stylistic: false,
@@ -128,8 +129,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

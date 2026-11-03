@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.test.json",
+  "files": ["src/tests/rule-tester.ts"],
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    }
+  ],
+  "compilerOptions": {
+    /* Modules */
+    "types": ["node"]
+  }
+}

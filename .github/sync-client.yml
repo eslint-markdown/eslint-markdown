@@ -30,8 +30,6 @@ lumirlumir/lumirlumir:
   - source: ./.vscode/settings.json
     dest: ./configs/.vscode/settings.json
   # ./scripts
-  - source: ./scripts/cp.js
-    dest: ./configs/scripts/cp.js
   - source: ./scripts/vercel-ignore-command.js
     dest: ./configs/scripts/vercel-ignore-command.js
   - source: ./scripts/version.js
@@ -47,8 +45,6 @@ lumirlumir/lumirlumir:
     dest: ./configs/.nvmrc
   - source: ./.prettierignore
     dest: ./configs/.prettierignore
-  - source: ./LICENSE.md
-    dest: ./configs/LICENSE.md
   - source: ./VScode.code-workspace
     dest: ./configs/VScode.code-workspace
   - source: ./lint-staged.config.js
@@ -59,6 +55,8 @@ lumirlumir/lumirlumir:
     dest: ./configs/tsconfig.base.json
   # LICENSE.md
   - source: ./LICENSE.md
+    dest: ./configs/LICENSE.md
+  - source: ./packages/eslint-lumir/LICENSE.md
     dest: ./configs/LICENSE.md
   - source: ./packages/eslint-markdown/LICENSE.md
     dest: ./configs/LICENSE.md

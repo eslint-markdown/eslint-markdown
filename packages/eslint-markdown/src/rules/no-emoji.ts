@@ -56,6 +56,7 @@ export default {
 
     docs: {
       description: 'Disallow emojis in text',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-emoji'),
       recommended: false,
       stylistic: false,
@@ -92,8 +93,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

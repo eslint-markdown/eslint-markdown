@@ -1,0 +1,617 @@
+/**
+ * @fileoverview This file follows:
+ *
+ * - The rules listed on `eslint-plugin-react-hooks`.
+ *   - @see https://react.dev/reference/eslint-plugin-react-hooks
+ *
+ * - The rules listed on `@eslint-react/eslint-plugin`.
+ *   - @see https://eslint-react.xyz/docs/rules
+ */
+
+// --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
+import type { ESLint, Linter } from 'eslint';
+import reactPluginModule from '@eslint-react/eslint-plugin';
+
+// --------------------------------------------------------------------------------
+// Export
+// --------------------------------------------------------------------------------
+
+export const reactPlugin: { 'react-x': ESLint.Plugin } = {
+  'react-x': reactPluginModule,
+};
+
+export const reactRules = {
+  // ------------------------------------------------------------------------------
+  // #region X Rules
+
+  /**
+   * Validates usage of Error Boundaries instead of `try`/`catch` for errors in child components.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/error-boundaries
+   * @see https://eslint-react.xyz/docs/rules/error-boundaries
+   */
+  'react-x/error-boundaries': 'error',
+
+  /**
+   * Verifies the list of dependencies for Hooks like `useEffect` and similar.
+   * (Validates that dependency arrays for React hooks contain all necessary dependencies.)
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/exhaustive-deps
+   * @see https://eslint-react.xyz/docs/rules/exhaustive-deps
+   * @see https://github.com/facebook/react/issues/14920
+   */
+  'react-x/exhaustive-deps': 'error',
+
+  /**
+   * Validates against assignment/mutation of globals during render,
+   * part of ensuring that side effects must run outside of render.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/globals
+   * @see https://eslint-react.xyz/docs/rules/globals
+   */
+  'react-x/globals': 'error',
+
+  /**
+   * Validates against mutating props, state, and other immutable values, including through functions
+   * passed into frozen contexts such as JSX props, hook arguments, and hook return values.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/immutability
+   * @see https://eslint-react.xyz/docs/rules/immutability
+   */
+  'react-x/immutability': 'error',
+
+  /**
+   * Disallows accessing `this.state` inside `setState` calls.
+   * @see https://eslint-react.xyz/docs/rules/no-access-state-in-setstate
+   */
+  'react-x/no-access-state-in-setstate': 'error',
+
+  /**
+   * Disallows using an item's index in the array as its key.
+   * @see https://eslint-react.xyz/docs/rules/no-array-index-key
+   */
+  'react-x/no-array-index-key': 'error',
+
+  /**
+   * Disallows the use of `Children.count` from the `react` package.
+   * @see https://eslint-react.xyz/docs/rules/no-children-count
+   */
+  'react-x/no-children-count': 'error',
+
+  /**
+   * Disallows the use of `Children.forEach` from the `react` package.
+   * @see https://eslint-react.xyz/docs/rules/no-children-for-each
+   */
+  'react-x/no-children-for-each': 'error',
+
+  /**
+   * Disallows the use of `Children.map` from the `react` package.
+   * @see https://eslint-react.xyz/docs/rules/no-children-map
+   */
+  'react-x/no-children-map': 'error',
+
+  /**
+   * Disallows the use of `Children.only` from the `react` package.
+   * @see https://eslint-react.xyz/docs/rules/no-children-only
+   */
+  'react-x/no-children-only': 'error',
+
+  /**
+   * Disallows the use of `Children.toArray` from the `react` package.
+   * @see https://eslint-react.xyz/docs/rules/no-children-to-array
+   */
+  'react-x/no-children-to-array': 'error',
+
+  /**
+   * Disallows class components except for error boundaries.
+   * @see https://eslint-react.xyz/docs/rules/no-class-component
+   */
+  'react-x/no-class-component': 'error',
+
+  /**
+   * Disallows `cloneElement`.
+   * @see https://eslint-react.xyz/docs/rules/no-clone-element
+   */
+  'react-x/no-clone-element': 'error',
+
+  /**
+   * Replaces usage of `componentWillMount` with `UNSAFE_componentWillMount`.
+   * @see https://eslint-react.xyz/docs/rules/no-component-will-mount
+   */
+  'react-x/no-component-will-mount': 'error',
+
+  /**
+   * Replaces usage of `componentWillReceiveProps` with `UNSAFE_componentWillReceiveProps`.
+   * @see https://eslint-react.xyz/docs/rules/no-component-will-receive-props
+   */
+  'react-x/no-component-will-receive-props': 'error',
+
+  /**
+   * Replaces usage of `componentWillUpdate` with `UNSAFE_componentWillUpdate`.
+   * @see https://eslint-react.xyz/docs/rules/no-component-will-update
+   */
+  'react-x/no-component-will-update': 'error',
+
+  /**
+   * Replaces usage of `<Context.Provider>` with `<Context>`.
+   * @see https://eslint-react.xyz/docs/rules/no-context-provider
+   */
+  'react-x/no-context-provider': 'error',
+
+  /**
+   * Disallows `createRef` in function components and Hooks.
+   * @see https://eslint-react.xyz/docs/rules/no-create-ref
+   */
+  'react-x/no-create-ref': 'error',
+
+  /**
+   * Disallows direct mutation of `this.state`.
+   * @see https://eslint-react.xyz/docs/rules/no-direct-mutation-state
+   */
+  'react-x/no-direct-mutation-state': 'error',
+
+  /**
+   * Prevents duplicate `key` props on sibling elements when rendering lists.
+   * @see https://eslint-react.xyz/docs/rules/no-duplicate-key
+   */
+  'react-x/no-duplicate-key': 'error',
+
+  /**
+   * Replaces usage of `forwardRef` with passing `ref` as a prop.
+   * @see https://eslint-react.xyz/docs/rules/no-forward-ref
+   */
+  'react-x/no-forward-ref': 'error',
+
+  /**
+   * Prevents implicitly passing the `children` prop to components.
+   * @description Disabled because this configuration does not enable TypeScript type-aware linting.
+   * @see https://eslint-react.xyz/docs/rules/no-implicit-children
+   */
+  'react-x/no-implicit-children': 'off',
+
+  /**
+   * Prevents implicitly passing the `key` prop to components.
+   * @description Disabled because this configuration does not enable TypeScript type-aware linting.
+   * @see https://eslint-react.xyz/docs/rules/no-implicit-key
+   */
+  'react-x/no-implicit-key': 'off',
+
+  /**
+   * Prevents implicitly passing the `ref` prop to components.
+   * @description Disabled because this configuration does not enable TypeScript type-aware linting.
+   * @see https://eslint-react.xyz/docs/rules/no-implicit-ref
+   */
+  'react-x/no-implicit-ref': 'off',
+
+  /**
+   * Prevents problematic leaked values from being rendered.
+   * @description Disabled because this configuration does not enable TypeScript type-aware linting.
+   * @see https://eslint-react.xyz/docs/rules/no-leaked-conditional-rendering
+   */
+  'react-x/no-leaked-conditional-rendering': 'off',
+
+  /**
+   * Enforces that all components have a `displayName` that can be used in DevTools.
+   * @see https://eslint-react.xyz/docs/rules/no-missing-component-display-name
+   */
+  'react-x/no-missing-component-display-name': 'error',
+
+  /**
+   * Enforces that all contexts have a `displayName` that can be used in DevTools.
+   * @see https://eslint-react.xyz/docs/rules/no-missing-context-display-name
+   */
+  'react-x/no-missing-context-display-name': 'error',
+
+  /**
+   * Disallows missing `key` on items in list rendering.
+   * @see https://eslint-react.xyz/docs/rules/no-missing-key
+   */
+  'react-x/no-missing-key': 'error',
+
+  /**
+   * Prevents incorrect usage of `captureOwnerStack`.
+   * @see https://eslint-react.xyz/docs/rules/no-misused-capture-owner-stack
+   */
+  'react-x/no-misused-capture-owner-stack': 'error',
+
+  /**
+   * Disallows nesting component definitions inside other components.
+   * @see https://eslint-react.xyz/docs/rules/no-nested-component-definitions
+   */
+  'react-x/no-nested-component-definitions': 'error',
+
+  /**
+   * Disallows nesting lazy component declarations inside other components or hooks.
+   * @see https://eslint-react.xyz/docs/rules/no-nested-lazy-component-declarations
+   */
+  'react-x/no-nested-lazy-component-declarations': 'error',
+
+  /**
+   * Disallows calling `this.setState` in `componentDidMount` outside functions such as callbacks.
+   * @see https://eslint-react.xyz/docs/rules/no-set-state-in-component-did-mount
+   */
+  'react-x/no-set-state-in-component-did-mount': 'error',
+
+  /**
+   * Disallows calling `this.setState` in `componentDidUpdate` outside functions such as callbacks.
+   * @see https://eslint-react.xyz/docs/rules/no-set-state-in-component-did-update
+   */
+  'react-x/no-set-state-in-component-did-update': 'error',
+
+  /**
+   * Disallows calling `this.setState` in `componentWillUpdate` outside functions such as callbacks.
+   * @see https://eslint-react.xyz/docs/rules/no-set-state-in-component-will-update
+   */
+  'react-x/no-set-state-in-component-will-update': 'error',
+
+  /**
+   * Enforces that a function with the `use` prefix uses at least one Hook inside it.
+   * @see https://eslint-react.xyz/docs/rules/no-unnecessary-use-prefix
+   */
+  'react-x/no-unnecessary-use-prefix': 'error',
+
+  /**
+   * Warns about the use of `UNSAFE_componentWillMount` in class components.
+   * @see https://eslint-react.xyz/docs/rules/no-unsafe-component-will-mount
+   */
+  'react-x/no-unsafe-component-will-mount': 'error',
+
+  /**
+   * Warns about the use of `UNSAFE_componentWillReceiveProps` in class components.
+   * @see https://eslint-react.xyz/docs/rules/no-unsafe-component-will-receive-props
+   */
+  'react-x/no-unsafe-component-will-receive-props': 'error',
+
+  /**
+   * Warns about the use of `UNSAFE_componentWillUpdate` in class components.
+   * @see https://eslint-react.xyz/docs/rules/no-unsafe-component-will-update
+   */
+  'react-x/no-unsafe-component-will-update': 'error',
+
+  /**
+   * Prevents non-stable values (i.e., object literals) from being used as a value for `Context.Provider`.
+   * @see https://eslint-react.xyz/docs/rules/no-unstable-context-value
+   */
+  'react-x/no-unstable-context-value': 'error',
+
+  /**
+   * Prevents using referential-type values as default props in object destructuring.
+   * @see https://eslint-react.xyz/docs/rules/no-unstable-default-props
+   */
+  'react-x/no-unstable-default-props': 'error',
+
+  /**
+   * Warns about unused class component methods and properties.
+   * @see https://eslint-react.xyz/docs/rules/no-unused-class-component-members
+   */
+  'react-x/no-unused-class-component-members': 'error',
+
+  /**
+   * Warns about component props that are defined but never used.
+   * @description Disabled because this configuration does not enable TypeScript type-aware linting.
+   * @see https://eslint-react.xyz/docs/rules/no-unused-props
+   */
+  'react-x/no-unused-props': 'off',
+
+  /**
+   * Warns about state variables that are defined but never used.
+   * @see https://eslint-react.xyz/docs/rules/no-unused-state
+   */
+  'react-x/no-unused-state': 'error',
+
+  /**
+   * Replaces usage of `useContext` with `use`.
+   * @see https://eslint-react.xyz/docs/rules/no-use-context
+   */
+  'react-x/no-use-context': 'error',
+
+  /**
+   * Validates that components and hooks are pure by checking that they do not call known-impure functions during render.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/purity
+   * @see https://eslint-react.xyz/docs/rules/purity
+   */
+  'react-x/purity': 'error',
+
+  /**
+   * Validates correct usage of refs by checking that `ref.current` is not read or written during render.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/refs
+   * @see https://eslint-react.xyz/docs/rules/refs
+   */
+  'react-x/refs': 'error',
+
+  /**
+   * Validates that components and hooks follow the Rules of Hooks.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/rules-of-hooks
+   * @see https://eslint-react.xyz/docs/rules/rules-of-hooks
+   * @see https://react.dev/reference/rules/rules-of-hooks
+   */
+  'react-x/rules-of-hooks': 'error',
+
+  /**
+   * Validates against calling `setState` synchronously in an effect, which can lead to re-renders that degrade performance.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/set-state-in-effect
+   * @see https://eslint-react.xyz/docs/rules/set-state-in-effect
+   */
+  'react-x/set-state-in-effect': 'error',
+
+  /**
+   * Validates against unconditionally setting state during render, which can trigger additional renders and potential infinite render loops.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/set-state-in-render
+   * @see https://eslint-react.xyz/docs/rules/set-state-in-render
+   */
+  'react-x/set-state-in-render': 'error',
+
+  /**
+   * Validates that components are static, not recreated every render.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/static-components
+   * @see https://eslint-react.xyz/docs/rules/static-components
+   */
+  'react-x/static-components': 'error',
+
+  /**
+   * Validates against syntax that React Compiler does not support.
+   * If you need to, you can still use this syntax outside of React,
+   * such as in a standalone utility function.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/unsupported-syntax
+   * @see https://eslint-react.xyz/docs/rules/unsupported-syntax
+   */
+  'react-x/unsupported-syntax': 'error',
+
+  /**
+   * Validates that `useMemo` is called with a callback that returns a value.
+   * @see https://react.dev/reference/eslint-plugin-react-hooks/lints/use-memo
+   * @see https://eslint-react.xyz/docs/rules/use-memo
+   */
+  'react-x/use-memo': 'error',
+
+  /**
+   * Enforces correct usage of `useState`, including destructuring, symmetric naming of the value and setter,
+   * and wrapping expensive initializers in a lazy initializer function.
+   * @see https://eslint-react.xyz/docs/rules/use-state
+   */
+  'react-x/use-state': [
+    'error',
+    {
+      enforceAssignment: true,
+      enforceSetterName: true,
+      enforceLazyInitialization: true,
+    },
+  ],
+
+  // #endregion X Rules
+  // ------------------------------------------------------------------------------
+
+  // ------------------------------------------------------------------------------
+  // #region JSX Rules
+
+  /**
+   * Disallows passing `children` as a prop.
+   * @see https://eslint-react.xyz/docs/rules/jsx-no-children-prop
+   */
+  'react-x/jsx-no-children-prop': 'error',
+
+  /**
+   * Disallows passing `children` as a prop when children are also passed as nested content.
+   * @see https://eslint-react.xyz/docs/rules/jsx-no-children-prop-with-children
+   */
+  'react-x/jsx-no-children-prop-with-children': 'error',
+
+  /**
+   * Prevents comment strings from being accidentally inserted into a JSX element's text nodes.
+   * @see https://eslint-react.xyz/docs/rules/jsx-no-comment-textnodes
+   */
+  'react-x/jsx-no-comment-textnodes': 'error',
+
+  /**
+   * Prevent patterns that cause deoptimization when using the automatic JSX runtime.
+   * @see https://eslint-react.xyz/docs/rules/jsx-no-key-after-spread
+   */
+  'react-x/jsx-no-key-after-spread': 'error',
+
+  /**
+   * Catches `$` before `{expr}` in JSX — typically from template literal `${expr}` being copy-pasted into JSX without removing the `$`. The `$` "leaks" into the rendered output.
+   * @see https://eslint-react.xyz/docs/rules/jsx-no-leaked-dollar
+   */
+  'react-x/jsx-no-leaked-dollar': 'error',
+
+  /**
+   * Catches `;` at the start of JSX text nodes — typically from accidentally placing a statement-ending `;` inside JSX. The `;` "leaks" into the rendered output.
+   * @see https://eslint-react.xyz/docs/rules/jsx-no-leaked-semicolon
+   */
+  'react-x/jsx-no-leaked-semicolon': 'error',
+
+  /**
+   * Disallow JSX namespace syntax, as React does not support them.
+   * @see https://eslint-react.xyz/docs/rules/jsx-no-namespace
+   */
+  'react-x/jsx-no-namespace': 'error',
+
+  /**
+   * Disallows useless fragment elements.
+   * @see https://eslint-react.xyz/docs/rules/jsx-no-useless-fragment
+   */
+  'react-x/jsx-no-useless-fragment': 'error',
+
+  // #endregion JSX Rules
+  // ------------------------------------------------------------------------------
+
+  // ------------------------------------------------------------------------------
+  // #region RSC Rules
+
+  /**
+   * Validates and transforms React Client/Server Function definitions.
+   * @see https://eslint-react.xyz/docs/rules/rsc-function-definition
+   */
+  'react-x/rsc-function-definition': 'error',
+
+  // #endregion RSC Rules
+  // ------------------------------------------------------------------------------
+
+  // ------------------------------------------------------------------------------
+  // #region DOM Rules
+
+  /**
+   * Disallows DOM elements from using `dangerouslySetInnerHTML`.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-dangerously-set-innerhtml
+   */
+  'react-x/dom-no-dangerously-set-innerhtml': 'error',
+
+  /**
+   * Disallows DOM elements from using `dangerouslySetInnerHTML` and `children` at the same time.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-dangerously-set-innerhtml-with-children
+   */
+  'react-x/dom-no-dangerously-set-innerhtml-with-children': 'error',
+
+  /**
+   * Disallows `findDOMNode`.
+   * @description `findDOMNode` is now fully removed(deprecated) since `react@19`.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-find-dom-node
+   */
+  'react-x/dom-no-find-dom-node': 'off',
+
+  /**
+   * Disallows `flushSync`.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-flush-sync
+   */
+  'react-x/dom-no-flush-sync': 'error',
+
+  /**
+   * Replaces usage of `ReactDOM.hydrate()` with `hydrateRoot()`.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-hydrate
+   */
+  'react-x/dom-no-hydrate': 'error',
+
+  /**
+   * Enforces an explicit `type` attribute for `button` elements.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-missing-button-type
+   */
+  'react-x/dom-no-missing-button-type': 'error',
+
+  /**
+   * Enforces an explicit `sandbox` attribute for `iframe` elements.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-missing-iframe-sandbox
+   */
+  'react-x/dom-no-missing-iframe-sandbox': 'error',
+
+  /**
+   * Replaces usage of `ReactDOM.render()` with `createRoot(node).render()`.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-render
+   */
+  'react-x/dom-no-render': 'error',
+
+  /**
+   * Disallows the return value of `ReactDOM.render`.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-render-return-value
+   */
+  'react-x/dom-no-render-return-value': 'error',
+
+  /**
+   * Disallows `javascript:` URLs as attribute values.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-script-url
+   */
+  'react-x/dom-no-script-url': 'error',
+
+  /**
+   * Disallows the use of string style prop in JSX. Use an object instead.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-string-style-prop
+   */
+  'react-x/dom-no-string-style-prop': 'error',
+
+  /**
+   * Disallows unknown `DOM` properties.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-unknown-property
+   */
+  'react-x/dom-no-unknown-property': ['error', { requireDataLowercase: true }],
+
+  /**
+   * Enforces that the `sandbox` attribute for `iframe` elements is not set to unsafe combinations.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-unsafe-iframe-sandbox
+   */
+  'react-x/dom-no-unsafe-iframe-sandbox': 'error',
+
+  /**
+   * Disallows `target="_blank"` without `rel="noreferrer noopener"`.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-unsafe-target-blank
+   */
+  'react-x/dom-no-unsafe-target-blank': 'error',
+
+  /**
+   * Replaces usage of `useFormState` with `useActionState`.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-use-form-state
+   */
+  'react-x/dom-no-use-form-state': 'error',
+
+  /**
+   * Disallows `children` in void DOM elements.
+   * @see https://eslint-react.xyz/docs/rules/dom-no-void-elements-with-children
+   */
+  'react-x/dom-no-void-elements-with-children': 'error',
+
+  // #endregion DOM Rules
+  // ------------------------------------------------------------------------------
+
+  // ------------------------------------------------------------------------------
+  // #region Web API Rules
+
+  /**
+   * Enforces that every `addEventListener` in a component or custom hook has a corresponding `removeEventListener`.
+   * @see https://eslint-react.xyz/docs/rules/web-api-no-leaked-event-listener
+   */
+  'react-x/web-api-no-leaked-event-listener': 'error',
+
+  /**
+   * Enforces that every `fetch` in a component or custom hook has a corresponding `AbortController` abort in the cleanup function.
+   * @see https://eslint-react.xyz/docs/rules/web-api-no-leaked-fetch
+   */
+  'react-x/web-api-no-leaked-fetch': 'error',
+
+  /**
+   * Enforces that every `IntersectionObserver` created in a component or custom hook has a corresponding `IntersectionObserver.disconnect()`.
+   * @see https://eslint-react.xyz/docs/rules/web-api-no-leaked-intersection-observer
+   */
+  'react-x/web-api-no-leaked-intersection-observer': 'error',
+
+  /**
+   * Enforces that every `setInterval` in a component or custom hook has a corresponding `clearInterval`.
+   * @see https://eslint-react.xyz/docs/rules/web-api-no-leaked-interval
+   */
+  'react-x/web-api-no-leaked-interval': 'error',
+
+  /**
+   * Enforces that every `ResizeObserver` created in a component or custom hook has a corresponding `ResizeObserver.disconnect()`.
+   * @see https://eslint-react.xyz/docs/rules/web-api-no-leaked-resize-observer
+   */
+  'react-x/web-api-no-leaked-resize-observer': 'error',
+
+  /**
+   * Enforces that every `setTimeout` in a component or custom hook has a corresponding `clearTimeout`.
+   * @see https://eslint-react.xyz/docs/rules/web-api-no-leaked-timeout
+   */
+  'react-x/web-api-no-leaked-timeout': 'error',
+
+  // #endregion Web API Rules
+  // ------------------------------------------------------------------------------
+
+  // ------------------------------------------------------------------------------
+  // #region Naming Convention Rules
+
+  /**
+   * Enforces identifier names assigned from `createContext` calls to be a valid component name with the suffix `Context`.
+   * @see https://eslint-react.xyz/docs/rules/naming-convention-context-name
+   */
+  'react-x/naming-convention-context-name': 'error',
+
+  /**
+   * Enforces identifier names assigned from `useId` calls to be either `id` or end with `Id`.
+   * @see https://eslint-react.xyz/docs/rules/naming-convention-id-name
+   */
+  'react-x/naming-convention-id-name': 'error',
+
+  /**
+   * Enforces identifier names assigned from `useRef` calls to be either `ref` or end with `Ref`.
+   * @see https://eslint-react.xyz/docs/rules/naming-convention-ref-name
+   */
+  'react-x/naming-convention-ref-name': 'error',
+
+  // #endregion Naming Convention Rules
+  // ------------------------------------------------------------------------------
+} as const satisfies Linter.RulesRecord;

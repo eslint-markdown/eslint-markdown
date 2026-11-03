@@ -42,6 +42,7 @@ export default {
 
     docs: {
       description: 'Disallow multiple spaces around link text',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-multiple-link-space'),
       recommended: false,
       stylistic: true,
@@ -54,8 +55,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

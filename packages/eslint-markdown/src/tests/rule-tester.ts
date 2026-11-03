@@ -7,7 +7,7 @@
 // --------------------------------------------------------------------------------
 
 import { assert, describe, it } from 'vitest';
-import { RuleTester } from 'eslint';
+import { RuleTester, type Linter } from 'eslint';
 import markdown, { type MarkdownRuleDefinitionTypeOptions } from '@eslint/markdown';
 import type { RuleModule } from '../core/types.js';
 
@@ -17,7 +17,23 @@ import type { RuleModule } from '../core/types.js';
 
 type RuleOptions = MarkdownRuleDefinitionTypeOptions['RuleOptions'];
 type MessageIds = MarkdownRuleDefinitionTypeOptions['MessageIds'];
-type Tests = Parameters<RuleTester['run']>[2];
+// ESLint v9 supports `language` and suggestion counts at runtime but omits them from its types.
+// TODO: Remove this once support for ESLint v9 is dropped.
+type Tests = Omit<Parameters<RuleTester['run']>[2], 'valid' | 'invalid'> & {
+  valid: (string | (RuleTester.ValidTestCase & Pick<Linter.Config, 'language'>))[];
+  invalid: (Omit<RuleTester.InvalidTestCase, 'errors'> &
+    Pick<Linter.Config, 'language'> & {
+      errors:
+        | number
+        | (
+            | string
+            | RegExp
+            | (Omit<RuleTester.TestCaseError, 'suggestions'> & {
+                suggestions?: RuleTester.TestCaseError['suggestions'] | number;
+              })
+          )[];
+    })[];
+};
 
 // --------------------------------------------------------------------------------
 // Helper
@@ -59,9 +75,17 @@ const ruleTesterGfm = new RuleTester({
 export default function ruleTester(
   ruleName: string,
   rule: RuleModule<RuleOptions, MessageIds>,
-  tests: Tests,
+  tests: Omit<Tests, 'assertionOptions'>,
 ) {
   const { meta } = rule;
+  const testsWithAssertions = {
+    ...tests,
+    assertionOptions: {
+      requireMessage: 'messageId',
+      requireLocation: true,
+      requireData: true,
+    },
+  } as const;
 
   describe(ruleName, () => {
     describe('meta', () => {
@@ -80,6 +104,14 @@ export default function ruleTester(
       it('`meta.docs.description` should exist and follow the convention', () => {
         assert.ok(meta?.docs?.description);
         assert.match(meta?.docs?.description, /^(?:Enforce|Require|Disallow) .+[^. ]$/);
+      });
+
+      it("`meta.docs.dialects` should exist and be `'CommonMark'` or `'GFM'`", () => {
+        assert.ok(meta?.docs?.dialects);
+        assert.ok(meta.docs.dialects.length > 0);
+        meta.docs.dialects.forEach(dialect => {
+          assert.match(dialect, /^(?:CommonMark|GFM)$/);
+        });
       });
 
       it('`meta.docs.url` should exist and end with the rule name', () => {
@@ -104,25 +136,33 @@ export default function ruleTester(
         assert.match(meta?.language, /^markdown$/);
       });
 
-      it("`meta.dialects` should exist and be `'commonmark'` or `'gfm'`", () => {
-        assert.ok(meta?.dialects);
-        assert.ok(meta?.dialects.length > 0);
-        meta?.dialects.forEach(dialect => {
-          assert.match(dialect, /^(?:commonmark|gfm)$/);
-        });
+      it('should omit the legacy `meta.dialects` property', () => {
+        assert.notProperty(meta, 'dialects');
       });
     });
 
     describe('rule', () => {
-      if (meta?.dialects?.includes('commonmark')) {
+      if (meta?.docs?.dialects?.includes('CommonMark')) {
         describe('commonmark', () => {
-          ruleTesterCommonmark.run(ruleName, rule, tests);
+          // ESLint v9's run types do not fully support Markdown rules or suggestion counts.
+          // TODO: Remove this once support for ESLint v9 is dropped.
+          ruleTesterCommonmark.run(
+            ruleName,
+            rule as unknown as Parameters<RuleTester['run']>[1],
+            testsWithAssertions as Parameters<RuleTester['run']>[2],
+          );
         });
       }
 
-      if (meta?.dialects?.includes('gfm')) {
+      if (meta?.docs?.dialects?.includes('GFM')) {
         describe('gfm', () => {
-          ruleTesterGfm.run(ruleName, rule, tests);
+          // ESLint v9's run types do not fully support Markdown rules or suggestion counts.
+          // TODO: Remove this once support for ESLint v9 is dropped.
+          ruleTesterGfm.run(
+            ruleName,
+            rule as unknown as Parameters<RuleTester['run']>[1],
+            testsWithAssertions as Parameters<RuleTester['run']>[2],
+          );
         });
       }
     });

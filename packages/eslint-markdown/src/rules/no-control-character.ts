@@ -68,6 +68,7 @@ export default {
 
     docs: {
       description: 'Disallow control character',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-control-character'),
       recommended: true,
       stylistic: false,
@@ -130,8 +131,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {
