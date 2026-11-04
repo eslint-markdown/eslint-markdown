@@ -13,7 +13,11 @@ It reports cases where exactly two of the following punctuation marks appear in 
 
 For example, `!!`, `?!`, `..`, `::`, `??`, and `;:` are reported, whereas `...`, `!!!`, `?!?`, and `,.;` are not.
 
-Pairs containing backslash-escaped punctuation, such as `\!!`, `!\!`, and `\!\!`, are ignored. An odd number of immediately preceding backslashes escapes ASCII punctuation; an even number represents literal backslashes and does not suppress reporting. Non-ASCII punctuation cannot be backslash-escaped.
+::: tip NOTE
+
+You can use a backslash to escape ASCII punctuation, such as `\!!`, to avoid reporting.
+
+:::
 
 ## Examples
 
