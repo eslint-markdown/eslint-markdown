@@ -15,8 +15,8 @@
 import { escapeStringRegexp, normalizeRegexPattern } from '../core/utils/index.js';
 import {
   URL_RULE_DOCS,
-  asciiPunctuationRegex,
   asciiPunctuationWithQuestionMark,
+  asciiPunctuationRegex,
   escapedTrailingBackslashRegex,
   gemojiRegex as originalGemojiRegex,
   htmlEntityRegex as originalHtmlEntityRegex,
@@ -180,21 +180,19 @@ export default {
 
         for (const match of matches) {
           const punctuation = match[0];
+          const [leftPunctuation, rightPunctuation] = punctuation;
 
-          const startOffset = nodeStartOffset + match.index;
-          const endOffset = startOffset + punctuation.length;
-
-          if (allow.includes(punctuation)) continue;
-
-          // The preceding backslash is an escape only when the punctuation is escapable.
           if (
-            asciiPunctuationRegex.test(punctuation[0]) &&
-            escapedTrailingBackslashRegex.test(text.slice(0, match.index))
+            allow.includes(punctuation) ||
+            // The preceding backslash is an escape only when the punctuation is escapable.
+            (asciiPunctuationRegex.test(leftPunctuation) &&
+              escapedTrailingBackslashRegex.test(text.slice(0, match.index)))
           ) {
             continue;
           }
 
-          const [leftPunctuation, rightPunctuation] = punctuation;
+          const startOffset = nodeStartOffset + match.index;
+          const endOffset = startOffset + punctuation.length;
           const violation = {
             loc: {
               start: sourceCode.getLocFromIndex(startOffset),
