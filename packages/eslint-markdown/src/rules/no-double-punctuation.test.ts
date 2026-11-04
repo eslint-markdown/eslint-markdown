@@ -44,6 +44,37 @@ ruleTester('no-double-punctuation', rule, {
     'Copyright &copy;.',
     'Copyright &copy;! All rights reserved.',
 
+    // Escaped punctuation
+    {
+      name: 'Ignore a pair with an escaped first punctuation mark',
+      code: 'Foo\\!!',
+    },
+    {
+      name: 'Ignore a mixed pair with an escaped first punctuation mark',
+      code: 'Foo\\?!',
+    },
+    {
+      name: 'Ignore a pair with an escaped second punctuation mark',
+      code: 'Foo!\\!',
+    },
+    {
+      name: 'Ignore a pair with both punctuation marks escaped',
+      code: 'Foo\\!\\!',
+    },
+    {
+      name: 'Ignore a pair after three backslashes',
+      code: `Foo${'\\'.repeat(3)}!!`,
+    },
+    {
+      name: 'Ignore a pair whose escaped first mark follows another punctuation mark',
+      code: 'Foo!\\!!',
+    },
+    {
+      name: 'Ignore an escaped configured ASCII punctuation mark',
+      code: 'Foo\\++',
+      options: [{ punctuation: ['+'] }],
+    },
+
     // `allow` option
     {
       code: 'Foo!!',
@@ -166,6 +197,82 @@ ruleTester('no-double-punctuation', rule, {
   ],
 
   invalid: [
+    {
+      name: 'Report a pair after two backslashes and preserve the backslashes in the fix',
+      code: 'Foo\\\\!!',
+      output: 'Foo\\\\!',
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 6,
+          endLine: 1,
+          endColumn: 8,
+          data: { punctuation: '!!' },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      name: 'Report a mixed pair after four backslashes and preserve them in suggestions',
+      code: `Foo${'\\'.repeat(4)}?!`,
+      output: null,
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 8,
+          endLine: 1,
+          endColumn: 10,
+          data: { punctuation: '?!' },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: { punctuation: '?!', leftPunctuation: '?' },
+              output: `Foo${'\\'.repeat(4)}?`,
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: { punctuation: '?!', rightPunctuation: '!' },
+              output: `Foo${'\\'.repeat(4)}!`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Report configured non-ASCII punctuation after a literal backslash',
+      code: 'Foo\\！！',
+      output: 'Foo\\！',
+      options: [{ punctuation: ['！'] }],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 5,
+          endLine: 1,
+          endColumn: 7,
+          data: { punctuation: '！！' },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      name: 'Report an unescaped pair after ignoring an escaped pair',
+      code: 'Foo\\!! Bar!!',
+      output: 'Foo\\!! Bar!',
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 11,
+          endLine: 1,
+          endColumn: 13,
+          data: { punctuation: '!!' },
+          suggestions: undefined,
+        },
+      ],
+    },
     {
       code: '!!',
       output: '!',

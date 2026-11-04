@@ -15,7 +15,9 @@
 import { escapeStringRegexp, normalizeRegexPattern } from '../core/utils/index.js';
 import {
   URL_RULE_DOCS,
+  asciiPunctuationRegex,
   asciiPunctuationWithQuestionMark,
+  escapedTrailingBackslashRegex,
   gemojiRegex as originalGemojiRegex,
   htmlEntityRegex as originalHtmlEntityRegex,
 } from '../core/constants.js';
@@ -183,6 +185,14 @@ export default {
           const endOffset = startOffset + punctuation.length;
 
           if (allow.includes(punctuation)) continue;
+
+          // The preceding backslash is an escape only when the punctuation is escapable.
+          if (
+            asciiPunctuationRegex.test(punctuation[0]) &&
+            escapedTrailingBackslashRegex.test(text.slice(0, match.index))
+          ) {
+            continue;
+          }
 
           const [leftPunctuation, rightPunctuation] = punctuation;
           const violation = {
