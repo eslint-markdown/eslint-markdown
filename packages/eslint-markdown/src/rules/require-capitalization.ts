@@ -26,8 +26,8 @@ type RuleOptions = (
        */
       selector: string;
       /**
-       * A custom message to report when the selected node requires capitalization.
-       * When omitted or empty, the default capitalization message is used.
+       * A non-empty custom message to report when the selected node requires capitalization.
+       * When omitted, the default capitalization message is used.
        */
       message?: string;
     }
@@ -84,12 +84,13 @@ export default {
         oneOf: [
           {
             type: 'string',
+            minLength: 1,
           },
           {
             type: 'object',
             properties: {
-              selector: { type: 'string' },
-              message: { type: 'string' },
+              selector: { type: 'string', minLength: 1 },
+              message: { type: 'string', minLength: 1 },
             },
             required: ['selector'],
             additionalProperties: false,
