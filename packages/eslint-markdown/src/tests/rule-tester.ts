@@ -127,7 +127,10 @@ export default function ruleTester(
         // @ts-expect-error -- Required for testing.
         Object.values(meta.messages).forEach(message => {
           assert.ok(message);
-          assert.match(message, /^[^a-z].*\.$/);
+          // Custom messages may use user-defined capitalization and punctuation.
+          if (message !== '{{ message }}') {
+            assert.match(message, /^[^a-z].*\.$/);
+          }
         });
       });
 

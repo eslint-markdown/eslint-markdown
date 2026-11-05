@@ -25,327 +25,323 @@ ruleTester('require-capitalization', rule, {
       code: '  ',
     },
 
-    // Options: Blockquote
+    // `blockquote`
     {
-      name: 'Should not detect blockquotes when `skipBlockquote` is `true`',
+      name: 'Blockquote: Skips capitalization checks when no selectors are provided',
       code: '> hello world!',
-      options: [{ skipBlockquote: true }],
+      options: [],
     },
-
     {
       name: 'Blockquote: Empty',
       code: '> ',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote'],
     },
     {
       name: 'Blockquote: 1 level depth',
       code: '> Hello World!',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote'],
     },
     {
       name: 'Blockquote: 2 level depth - em',
       code: '> *Hello* World!',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote'],
     },
     {
       name: 'Blockquote: 2 level depth - strong',
       code: '> **Hello** World!',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote'],
     },
     {
       name: 'Blockquote: 3 level depth - em + strong - 1',
       code: '> ***Hello*** World!',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote'],
     },
     {
       name: 'Blockquote: 3 level depth - em + strong - 2',
       code: '> _**Hello**_ _World!_',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote'],
     },
     {
-      name: 'Blockquote: A text node with leading spaces should not be detected - 1',
+      name: 'Blockquote: Should not report text starting with a space after inline code',
       code: '> `code` hello world!',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote'],
     },
     {
-      name: 'Blockquote: A text node with leading spaces should not be detected - 2',
+      name: 'Blockquote: Should not report text starting with a space after an image',
       code: '> ![alt](image.png) hello world!',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote'],
     },
 
-    // Options: FootnoteDefinition
+    // `footnoteDefinition`
     {
-      name: 'Should not detect footnote definitions when `skipFootnoteDefinition` is `true`',
+      name: 'FootnoteDefinition: Skips capitalization checks when no selectors are provided',
       code: '[^1]: hello world!',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: true }],
+      options: [],
     },
-
     {
       name: 'FootnoteDefinition: Empty',
       code: '[^1]:',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition'],
     },
     {
       name: 'FootnoteDefinition: 1 level depth',
       code: '[^1]: Hello World!',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition'],
     },
     {
       name: 'FootnoteDefinition: 2 level depth - em',
       code: '[^1]: *Hello* World!',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition'],
     },
     {
       name: 'FootnoteDefinition: 2 level depth - strong',
       code: '[^1]: **Hello** World!',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition'],
     },
     {
       name: 'FootnoteDefinition: 3 level depth - em + strong - 1',
       code: '[^1]: ***Hello*** World!',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition'],
     },
     {
       name: 'FootnoteDefinition: 3 level depth - em + strong - 2',
       code: '[^1]: _**Hello**_ _World!_',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition'],
     },
     {
-      name: 'FootnoteDefinition: A text node with leading spaces should not be detected - 1',
+      name: 'FootnoteDefinition: Should not report text starting with a space after inline code',
       code: '[^1]: `code` hello world!',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition'],
     },
     {
-      name: 'FootnoteDefinition: A text node with leading spaces should not be detected - 2',
+      name: 'FootnoteDefinition: Should not report text starting with a space after an image',
       code: '[^1]: ![alt](image.png) hello world!',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition'],
     },
 
-    // Options: Heading
+    // `heading`
     {
-      name: 'Should not detect headings when `skipHeading` is `true`',
+      name: 'Heading: Skips capitalization checks when no selectors are provided',
       code: '# hello world!',
-      options: [{ skipHeading: true }],
+      options: [],
     },
-
     {
       name: 'Heading: Empty',
       code: '## ',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
     },
     {
       name: 'Heading: 1 level depth',
       code: '# Hello World!',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
     },
     {
       name: 'Heading: 2 level depth - em',
       code: '# *Hello* World!',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
     },
     {
       name: 'Heading: 2 level depth - strong',
       code: '# **Hello** World!',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
     },
     {
       name: 'Heading: 3 level depth - em + strong - 1',
       code: '# ***Hello*** World!',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
     },
     {
       name: 'Heading: 3 level depth - em + strong - 2',
       code: '# _**Hello**_ _World!_',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
     },
     {
-      name: 'Heading: A text node with leading spaces should not be detected - 1',
+      name: 'Heading: Should not report text starting with a space after inline code',
       code: '# `code` hello world!',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
     },
     {
-      name: 'Heading: A text node with leading spaces should not be detected - 2',
+      name: 'Heading: Should not report text starting with a space after an image',
       code: '# ![alt](image.png) hello world!',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
     },
 
-    // Options: ListItem
+    // `listItem`
     {
-      name: 'Should not detect list items when `skipListItem` is `true`',
+      name: 'ListItem: Skips capitalization checks when no selectors are provided',
       code: '- hello world!',
-      options: [{ skipListItem: true }],
+      options: [],
     },
-
     {
       name: 'ListItem: Empty',
       code: '- ',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
     },
     {
       name: 'ListItem: 1 level depth',
       code: '- Hello World!',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
     },
     {
       name: 'ListItem: 2 level depth - em',
       code: '- *Hello* World!',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
     },
     {
       name: 'ListItem: 2 level depth - strong',
       code: '- **Hello** World!',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
     },
     {
       name: 'ListItem: 3 level depth - em + strong - 1',
       code: '- ***Hello*** World!',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
     },
     {
       name: 'ListItem: 3 level depth - em + strong - 2',
       code: '- _**Hello**_ _World!_',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
     },
     {
-      name: 'ListItem: A text node with leading spaces should not be detected - 1',
+      name: 'ListItem: Should not report text starting with a space after inline code',
       code: '- `code` hello world!',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
     },
     {
-      name: 'ListItem: A text node with leading spaces should not be detected - 2',
+      name: 'ListItem: Should not report text starting with a space after an image',
       code: '- ![alt](image.png) hello world!',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
     },
 
-    // Options: Paragraph
+    // `paragraph`
     {
-      name: 'Should not detect paragraphs when `skipParagraph` is `true`',
+      name: 'Paragraph: Skips capitalization checks when no selectors are provided',
       code: 'hello world!',
-      options: [{ skipParagraph: true }],
+      options: [],
     },
-
     {
       name: 'Paragraph: 1 level depth',
       code: 'Hello World!',
-      options: [{ skipParagraph: false }],
+      options: ['paragraph'],
     },
     {
       name: 'Paragraph: 2 level depth - em',
       code: '*Hello* World!',
-      options: [{ skipParagraph: false }],
+      options: ['paragraph'],
     },
     {
       name: 'Paragraph: 2 level depth - strong',
       code: '**Hello** World!',
-      options: [{ skipParagraph: false }],
+      options: ['paragraph'],
     },
     {
       name: 'Paragraph: 3 level depth - em + strong - 1',
       code: '***Hello*** World!',
-      options: [{ skipParagraph: false }],
+      options: ['paragraph'],
     },
     {
       name: 'Paragraph: 3 level depth - em + strong - 2',
       code: '_**Hello**_ World!',
-      options: [{ skipParagraph: false }],
+      options: ['paragraph'],
     },
     {
-      name: 'Paragraph: A text node with leading spaces should not be detected - 1',
+      name: 'Paragraph: Should not report text starting with a space after inline code',
       code: '`code` hello world!',
-      options: [{ skipParagraph: false }],
+      options: ['paragraph'],
     },
     {
-      name: 'Paragraph: A text node with leading spaces should not be detected - 2',
+      name: 'Paragraph: Should not report text starting with a space after an image',
       code: '![alt](image.png) hello world!',
-      options: [{ skipParagraph: false }],
+      options: ['paragraph'],
     },
 
-    // Options: TableCell
+    // `table`
     {
-      name: 'Should not detect table cells when `skipTableCell` is `true`',
+      name: 'TableCell: Skips capitalization checks when no selectors are provided',
       code: '| hello world! |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: true }],
+      options: [],
     },
     {
-      name: "Should not detect table header cells when `skipTableCell` is `'th'`",
+      name: 'TableCell: Should not report header cells when only data cells are selected',
       code: '| heading |\n| - |\n| Data |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: 'th' }],
+      options: ['table > tableRow:not(:first-child) > tableCell'],
     },
     {
-      name: "Should not detect table data cells when `skipTableCell` is `'td'`",
+      name: 'TableCell: Should not report data cells when only header cells are selected',
       code: '| Heading |\n| - |\n| data |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: 'td' }],
+      options: ['table > tableRow:first-child > tableCell'],
     },
 
+    // `tableCell`
     {
       name: 'TableCell: Empty',
       code: '| |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
     },
     {
       name: 'TableCell: 1 level depth',
       code: '| Hello World! |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
     },
     {
       name: 'TableCell: 2 level depth - em',
       code: '| *Hello* World! |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
     },
     {
       name: 'TableCell: 2 level depth - strong',
       code: '| **Hello** World! |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
     },
     {
       name: 'TableCell: 3 level depth - em + strong - 1',
       code: '| ***Hello*** World! |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
     },
     {
       name: 'TableCell: 3 level depth - em + strong - 2',
       code: '| _**Hello**_ _World!_ |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
     },
     {
-      name: 'TableCell: A text node with leading spaces should not be detected - 1',
+      name: 'TableCell: Should not report text starting with a space after inline code',
       code: '| `code` hello world! |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
     },
     {
-      name: 'TableCell: A text node with leading spaces should not be detected - 2',
+      name: 'TableCell: Should not report text starting with a space after an image',
       code: '| ![alt](image.png) hello world! |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
     },
   ],
 
   invalid: [
-    // Options: Blockquote
+    // `blockquote`
     {
       name: 'Blockquote: 1 level depth',
       code: '> hello world!',
       output: '> Hello world!',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -353,7 +349,7 @@ ruleTester('require-capitalization', rule, {
           column: 3,
           endLine: 1,
           endColumn: 4,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -361,7 +357,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Blockquote: 2 level depth - em',
       code: '> *hello* world!',
       output: '> *Hello* world!',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -369,7 +365,7 @@ ruleTester('require-capitalization', rule, {
           column: 4,
           endLine: 1,
           endColumn: 5,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -377,7 +373,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Blockquote: 2 level depth - strong',
       code: '> **hello** world!',
       output: '> **Hello** world!',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -385,7 +381,7 @@ ruleTester('require-capitalization', rule, {
           column: 5,
           endLine: 1,
           endColumn: 6,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -393,7 +389,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Blockquote: 3 level depth - em + strong - 1',
       code: '> ***hello*** world!',
       output: '> ***Hello*** world!',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -401,7 +397,7 @@ ruleTester('require-capitalization', rule, {
           column: 6,
           endLine: 1,
           endColumn: 7,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -409,7 +405,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Blockquote: 3 level depth - em + strong - 2',
       code: '> _**hello**_ world!',
       output: '> _**Hello**_ world!',
-      options: [{ skipBlockquote: false }],
+      options: ['blockquote > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -417,18 +413,18 @@ ruleTester('require-capitalization', rule, {
           column: 6,
           endLine: 1,
           endColumn: 7,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
 
-    // Options: FootnoteDefinition
+    // `footnoteDefinition`
     {
       name: 'FootnoteDefinition: 1 level depth',
       code: '[^1]: hello world!',
       output: '[^1]: Hello world!',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -436,7 +432,7 @@ ruleTester('require-capitalization', rule, {
           column: 7,
           endLine: 1,
           endColumn: 8,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -445,7 +441,7 @@ ruleTester('require-capitalization', rule, {
       code: '[^1]: *hello* world!',
       output: '[^1]: *Hello* world!',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -453,7 +449,7 @@ ruleTester('require-capitalization', rule, {
           column: 8,
           endLine: 1,
           endColumn: 9,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -462,7 +458,7 @@ ruleTester('require-capitalization', rule, {
       code: '[^1]: **hello** world!',
       output: '[^1]: **Hello** world!',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -470,7 +466,7 @@ ruleTester('require-capitalization', rule, {
           column: 9,
           endLine: 1,
           endColumn: 10,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -479,7 +475,7 @@ ruleTester('require-capitalization', rule, {
       code: '[^1]: ***hello*** world!',
       output: '[^1]: ***Hello*** world!',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -487,7 +483,7 @@ ruleTester('require-capitalization', rule, {
           column: 10,
           endLine: 1,
           endColumn: 11,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -496,7 +492,7 @@ ruleTester('require-capitalization', rule, {
       code: '[^1]: _**hello**_ world!',
       output: '[^1]: _**Hello**_ world!',
       language: 'markdown/gfm',
-      options: [{ skipFootnoteDefinition: false }],
+      options: ['footnoteDefinition > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -504,17 +500,17 @@ ruleTester('require-capitalization', rule, {
           column: 10,
           endLine: 1,
           endColumn: 11,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
 
-    // Options: Heading
+    // `heading`
     {
       name: 'Heading: 1 level depth',
       code: '# hello world!',
       output: '# Hello world!',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -522,7 +518,7 @@ ruleTester('require-capitalization', rule, {
           column: 3,
           endLine: 1,
           endColumn: 4,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -530,7 +526,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Heading: 2 level depth - em',
       code: '# *hello* world!',
       output: '# *Hello* world!',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -538,7 +534,7 @@ ruleTester('require-capitalization', rule, {
           column: 4,
           endLine: 1,
           endColumn: 5,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -546,7 +542,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Heading: 2 level depth - strong',
       code: '# **hello** world!',
       output: '# **Hello** world!',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -554,7 +550,7 @@ ruleTester('require-capitalization', rule, {
           column: 5,
           endLine: 1,
           endColumn: 6,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -562,7 +558,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Heading: 3 level depth - em + strong - 1',
       code: '# ***hello*** world!',
       output: '# ***Hello*** world!',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -570,7 +566,7 @@ ruleTester('require-capitalization', rule, {
           column: 6,
           endLine: 1,
           endColumn: 7,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -578,7 +574,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Heading: 3 level depth - em + strong - 2',
       code: '# _**hello**_ world!',
       output: '# _**Hello**_ world!',
-      options: [{ skipHeading: false }],
+      options: ['heading'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -586,17 +582,17 @@ ruleTester('require-capitalization', rule, {
           column: 6,
           endLine: 1,
           endColumn: 7,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
 
-    // Options: ListItem
+    // `listItem`
     {
       name: 'ListItem: 1 level depth',
       code: '- hello world!',
       output: '- Hello world!',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -604,7 +600,7 @@ ruleTester('require-capitalization', rule, {
           column: 3,
           endLine: 1,
           endColumn: 4,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -612,7 +608,7 @@ ruleTester('require-capitalization', rule, {
       name: 'ListItem: 2 level depth - em',
       code: '- *hello* world!',
       output: '- *Hello* world!',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -620,7 +616,7 @@ ruleTester('require-capitalization', rule, {
           column: 4,
           endLine: 1,
           endColumn: 5,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -628,7 +624,7 @@ ruleTester('require-capitalization', rule, {
       name: 'ListItem: 2 level depth - strong',
       code: '- **hello** world!',
       output: '- **Hello** world!',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -636,7 +632,7 @@ ruleTester('require-capitalization', rule, {
           column: 5,
           endLine: 1,
           endColumn: 6,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -644,7 +640,7 @@ ruleTester('require-capitalization', rule, {
       name: 'ListItem: 3 level depth - em + strong - 1',
       code: '- ***hello*** world!',
       output: '- ***Hello*** world!',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -652,7 +648,7 @@ ruleTester('require-capitalization', rule, {
           column: 6,
           endLine: 1,
           endColumn: 7,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -660,7 +656,7 @@ ruleTester('require-capitalization', rule, {
       name: 'ListItem: 3 level depth - em + strong - 2',
       code: '- _**hello**_ world!',
       output: '- _**Hello**_ world!',
-      options: [{ skipListItem: false }],
+      options: ['listItem > paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -668,17 +664,17 @@ ruleTester('require-capitalization', rule, {
           column: 6,
           endLine: 1,
           endColumn: 7,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
 
-    // Options: Paragraph
+    // `paragraph`
     {
       name: 'Paragraph: 1 level depth',
       code: 'hello world!',
       output: 'Hello world!',
-      options: [{ skipParagraph: false }],
+      options: ['paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -686,7 +682,7 @@ ruleTester('require-capitalization', rule, {
           column: 1,
           endLine: 1,
           endColumn: 2,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -694,7 +690,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Paragraph: 2 level depth - em',
       code: '*hello* world!',
       output: '*Hello* world!',
-      options: [{ skipParagraph: false }],
+      options: ['paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -702,7 +698,7 @@ ruleTester('require-capitalization', rule, {
           column: 2,
           endLine: 1,
           endColumn: 3,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -710,7 +706,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Paragraph: 2 level depth - strong',
       code: '**hello** world!',
       output: '**Hello** world!',
-      options: [{ skipParagraph: false }],
+      options: ['paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -718,7 +714,7 @@ ruleTester('require-capitalization', rule, {
           column: 3,
           endLine: 1,
           endColumn: 4,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -726,7 +722,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Paragraph: 3 level depth - em + strong - 1',
       code: '***hello*** world!',
       output: '***Hello*** world!',
-      options: [{ skipParagraph: false }],
+      options: ['paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -734,7 +730,7 @@ ruleTester('require-capitalization', rule, {
           column: 4,
           endLine: 1,
           endColumn: 5,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -742,7 +738,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Paragraph: 3 level depth - em + strong - 2',
       code: '_**hello**_ world!',
       output: '_**Hello**_ world!',
-      options: [{ skipParagraph: false }],
+      options: ['paragraph'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -750,18 +746,18 @@ ruleTester('require-capitalization', rule, {
           column: 4,
           endLine: 1,
           endColumn: 5,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
 
-    // Options: TableCell
+    // `table`
     {
-      name: 'TableCell: 1 level depth',
-      code: '| hello world! |\n| - |',
-      output: '| Hello world! |\n| - |',
+      name: 'TableCell: Should capitalize only header cells when selected',
+      code: '| header |\n| - |\n| data |',
+      output: '| Header |\n| - |\n| data |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['table > tableRow:first-child > tableCell'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -769,7 +765,43 @@ ruleTester('require-capitalization', rule, {
           column: 3,
           endLine: 1,
           endColumn: 4,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
+        },
+      ],
+    },
+    {
+      name: 'TableCell: Should capitalize only data cells when selected',
+      code: '| header |\n| - |\n| data |',
+      output: '| header |\n| - |\n| Data |',
+      language: 'markdown/gfm',
+      options: ['table > tableRow:not(:first-child) > tableCell'],
+      errors: [
+        {
+          messageId: 'requireCapitalization',
+          line: 3,
+          column: 3,
+          endLine: 3,
+          endColumn: 4,
+          data: { message: '`d` should be capitalized.' },
+        },
+      ],
+    },
+
+    // `tableCell`
+    {
+      name: 'TableCell: 1 level depth',
+      code: '| hello world! |\n| - |',
+      output: '| Hello world! |\n| - |',
+      language: 'markdown/gfm',
+      options: ['tableCell'],
+      errors: [
+        {
+          messageId: 'requireCapitalization',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 4,
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -778,7 +810,7 @@ ruleTester('require-capitalization', rule, {
       code: '| *hello* world! |\n| - |',
       output: '| *Hello* world! |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -786,7 +818,7 @@ ruleTester('require-capitalization', rule, {
           column: 4,
           endLine: 1,
           endColumn: 5,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -795,7 +827,7 @@ ruleTester('require-capitalization', rule, {
       code: '| **hello** world! |\n| - |',
       output: '| **Hello** world! |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -803,7 +835,7 @@ ruleTester('require-capitalization', rule, {
           column: 5,
           endLine: 1,
           endColumn: 6,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -812,7 +844,7 @@ ruleTester('require-capitalization', rule, {
       code: '| ***hello*** world! |\n| - |',
       output: '| ***Hello*** world! |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -820,7 +852,7 @@ ruleTester('require-capitalization', rule, {
           column: 6,
           endLine: 1,
           endColumn: 7,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -829,7 +861,7 @@ ruleTester('require-capitalization', rule, {
       code: '| _**hello**_ world! |\n| - |',
       output: '| _**Hello**_ world! |\n| - |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -837,7 +869,7 @@ ruleTester('require-capitalization', rule, {
           column: 6,
           endLine: 1,
           endColumn: 7,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
       ],
     },
@@ -846,7 +878,7 @@ ruleTester('require-capitalization', rule, {
       code: '| header |\n| - |\n| data |',
       output: '| Header |\n| - |\n| Data |',
       language: 'markdown/gfm',
-      options: [{ skipTableCell: false }],
+      options: ['tableCell'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -854,7 +886,7 @@ ruleTester('require-capitalization', rule, {
           column: 3,
           endLine: 1,
           endColumn: 4,
-          data: { lowercase: 'h' },
+          data: { message: '`h` should be capitalized.' },
         },
         {
           messageId: 'requireCapitalization',
@@ -862,42 +894,7 @@ ruleTester('require-capitalization', rule, {
           column: 3,
           endLine: 3,
           endColumn: 4,
-          data: { lowercase: 'd' },
-        },
-      ],
-    },
-
-    {
-      name: 'TableCell: Header cells should be detected when `skipTableCell` is `td`',
-      code: '| header |\n| - |\n| data |',
-      output: '| Header |\n| - |\n| data |',
-      language: 'markdown/gfm',
-      options: [{ skipTableCell: 'td' }],
-      errors: [
-        {
-          messageId: 'requireCapitalization',
-          line: 1,
-          column: 3,
-          endLine: 1,
-          endColumn: 4,
-          data: { lowercase: 'h' },
-        },
-      ],
-    },
-    {
-      name: 'TableCell: Data cells should be detected when `skipTableCell` is `th`',
-      code: '| header |\n| - |\n| data |',
-      output: '| header |\n| - |\n| Data |',
-      language: 'markdown/gfm',
-      options: [{ skipTableCell: 'th' }],
-      errors: [
-        {
-          messageId: 'requireCapitalization',
-          line: 3,
-          column: 3,
-          endLine: 3,
-          endColumn: 4,
-          data: { lowercase: 'd' },
+          data: { message: '`d` should be capitalized.' },
         },
       ],
     },

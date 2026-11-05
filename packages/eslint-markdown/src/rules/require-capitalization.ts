@@ -1,17 +1,13 @@
 /**
  * @fileoverview Rule to enforce the use of capital letters at the beginning of sentences.
- * @author 루밀LuMir(lumirlumir)
+ * @author lumir(lumirlumir)
  */
-
-// TODO:
-// - Consider `always` and `never` options for each node type.
-// - Consider allow or allowPattern options to allow certain words or patterns to be exempt from capitalization.
 
 // --------------------------------------------------------------------------------
 // Import
 // --------------------------------------------------------------------------------
 
-import type { Heading, Nodes, Paragraph, TableCell, Text } from 'mdast';
+import type { Nodes, Text } from 'mdast';
 import { URL_RULE_DOCS } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -19,16 +15,23 @@ import type { RuleModule } from '../core/types.js';
 // Typedefs
 // --------------------------------------------------------------------------------
 
-type RuleOptions = [
-  {
-    skipBlockquote: boolean;
-    skipFootnoteDefinition: boolean;
-    skipHeading: boolean;
-    skipListItem: boolean;
-    skipParagraph: boolean;
-    skipTableCell: boolean | 'th' | 'td';
-  },
-];
+/**
+ * Options for the `require-capitalization` rule.
+ */
+type RuleOptions = (
+  | string
+  | {
+      /**
+       * An AST selector matching the Markdown nodes to check.
+       */
+      selector: string;
+      /**
+       * A custom message to report when the selected node requires capitalization.
+       * When omitted or empty, the default capitalization message is used.
+       */
+      message?: string;
+    }
+)[];
 type MessageIds = 'requireCapitalization';
 
 // --------------------------------------------------------------------------------
@@ -84,158 +87,83 @@ export default {
 
     fixable: 'code',
 
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          skipBlockquote: {
-            type: 'boolean',
+    schema: {
+      type: 'array',
+      items: {
+        oneOf: [
+          {
+            type: 'string',
           },
-          skipFootnoteDefinition: {
-            type: 'boolean',
+          {
+            type: 'object',
+            properties: {
+              selector: { type: 'string' },
+              message: { type: 'string' },
+            },
+            required: ['selector'],
+            additionalProperties: false,
           },
-          skipHeading: {
-            type: 'boolean',
-          },
-          skipListItem: {
-            type: 'boolean',
-          },
-          skipParagraph: {
-            type: 'boolean',
-          },
-          skipTableCell: {
-            oneOf: [
-              {
-                type: 'boolean',
-              },
-              {
-                enum: ['th', 'td'],
-              },
-            ],
-          },
-        },
-        additionalProperties: false,
+        ],
       },
-    ],
+      // Intentionally allow no selectors so the rule performs no checks,
+      // matching the behavior of `no-restricted-syntax`.
+      minItems: 0,
+      uniqueItems: true,
+    },
 
-    defaultOptions: [
-      {
-        skipBlockquote: false,
-        skipFootnoteDefinition: false,
-        skipHeading: false,
-        skipListItem: false,
-        skipParagraph: false,
-        skipTableCell: false,
-      },
-    ],
+    defaultOptions: [],
 
     messages: {
-      requireCapitalization: '`{{ lowercase }}` should be capitalized.',
+      requireCapitalization: '{{ message }}',
     },
 
     language: 'markdown',
   },
 
   create(context) {
-    const { sourceCode } = context;
-    const [
-      {
-        skipBlockquote,
-        skipFootnoteDefinition,
-        skipHeading,
-        skipListItem,
-        skipParagraph,
-        skipTableCell,
-      },
-    ] = context.options;
+    const { options, sourceCode } = context;
 
-    /** @param node The heading, paragraph, or table cell to report. */
-    function report(node: Heading | Paragraph | TableCell) {
-      const textNode = findFirstTextNode(node);
+    return options.reduce((listeners, selectorOrObject) => {
+      const isStringFormat = typeof selectorOrObject === 'string';
+      const selector = isStringFormat ? selectorOrObject : selectorOrObject.selector;
+      const customMessage = isStringFormat ? undefined : selectorOrObject.message;
 
-      if (!textNode) return;
+      return Object.assign(listeners, {
+        [selector](node: Nodes) {
+          const textNode = findFirstTextNode(node);
 
-      const match = lowercaseRegex.exec(textNode.value);
+          if (!textNode) return;
 
-      if (!match) return;
+          const match = lowercaseRegex.exec(textNode.value);
 
-      const [nodeStartOffset] = sourceCode.getRange(textNode);
-      const lowercase = match[0];
-      const startOffset = nodeStartOffset + match.index;
-      const endOffset = startOffset + lowercase.length;
+          if (!match) return;
 
-      context.report({
-        loc: {
-          start: sourceCode.getLocFromIndex(startOffset),
-          end: sourceCode.getLocFromIndex(endOffset),
-        },
+          const [nodeStartOffset] = sourceCode.getRange(textNode);
+          const lowercase = match[0];
+          const startOffset = nodeStartOffset + match.index;
+          const endOffset = startOffset + lowercase.length;
 
-        data: {
-          lowercase,
-        },
+          context.report({
+            loc: {
+              start: sourceCode.getLocFromIndex(startOffset),
+              end: sourceCode.getLocFromIndex(endOffset),
+            },
 
-        messageId: 'requireCapitalization',
+            messageId: 'requireCapitalization',
 
-        fix(fixer) {
-          return fixer.replaceTextRange(
-            [startOffset, endOffset],
-            lowercase.toUpperCase(),
-          );
+            data: {
+              message: customMessage ?? `\`${lowercase}\` should be capitalized.`,
+            },
+
+            fix(fixer) {
+              return fixer.replaceTextRange(
+                [startOffset, endOffset],
+                lowercase.toUpperCase(),
+              );
+            },
+          });
         },
       });
-    }
-
-    return {
-      // blockquote
-      'blockquote > paragraph'(node: Paragraph) {
-        if (skipBlockquote) return;
-
-        report(node);
-      },
-
-      // footnoteDefinition
-      'footnoteDefinition > paragraph'(node: Paragraph) {
-        if (skipFootnoteDefinition) return;
-
-        report(node);
-      },
-
-      // heading
-      heading(node) {
-        if (skipHeading) return;
-
-        report(node);
-      },
-
-      // listItem
-      'listItem > paragraph'(node: Paragraph) {
-        if (skipListItem) return;
-
-        report(node);
-      },
-
-      // paragraph
-      'paragraph:not(blockquote > paragraph, footnoteDefinition > paragraph, listItem > paragraph)'(
-        node: Paragraph,
-      ) {
-        if (skipParagraph) return;
-
-        report(node);
-      },
-
-      // tableCell: th (table header)
-      'table > tableRow:first-child > tableCell'(node: TableCell) {
-        if (skipTableCell === true || skipTableCell === 'th') return;
-
-        report(node);
-      },
-
-      // tableCell: td (table data)
-      'table > tableRow:not(:first-child) > tableCell'(node: TableCell) {
-        if (skipTableCell === true || skipTableCell === 'td') return;
-
-        report(node);
-      },
-    };
+    }, {});
   },
 } as const satisfies RuleModule<RuleOptions, MessageIds>;
