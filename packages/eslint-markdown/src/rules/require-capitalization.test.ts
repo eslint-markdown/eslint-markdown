@@ -1,6 +1,6 @@
 /**
  * @fileoverview Test for `require-capitalization.ts`.
- * @author 루밀LuMir(lumirlumir)
+ * @author lumir(lumirlumir)
  */
 
 // --------------------------------------------------------------------------------
