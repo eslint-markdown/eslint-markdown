@@ -180,6 +180,13 @@ ruleTester('require-capitalization', rule, {
       options: ['heading'],
     },
 
+    // `link`
+    {
+      name: 'Link: Should preserve an email autolink selected directly',
+      code: '<user@example.com>',
+      options: ['link'],
+    },
+
     // `listItem`
     {
       name: 'ListItem: Skips capitalization checks when no selectors are provided',
@@ -313,6 +320,39 @@ ruleTester('require-capitalization', rule, {
       code: '*&#X68;ello* world!',
       options: ['paragraph'],
     },
+    {
+      name: 'Paragraph: Should preserve an email autolink destination',
+      code: '<user@example.com>',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should preserve a URL autolink destination',
+      code: '<https://example.com>',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should preserve a GFM bare email destination',
+      code: 'user@example.com',
+      language: 'markdown/gfm',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should preserve a GFM bare URL destination',
+      code: 'https://example.com',
+      language: 'markdown/gfm',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should preserve a GFM www autolink destination',
+      code: 'www.example.com',
+      language: 'markdown/gfm',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should preserve an autolink nested in emphasis without checking later text',
+      code: '*<user@example.com>*hello',
+      options: ['paragraph'],
+    },
 
     // `table`
     {
@@ -390,6 +430,13 @@ ruleTester('require-capitalization', rule, {
       code: '| ![alt](image.png) hello world! |\n| - |',
       language: 'markdown/gfm',
       options: ['tableCell'],
+    },
+
+    // `text`
+    {
+      name: 'Text: Should preserve an email autolink when its text is selected directly',
+      code: '<user@example.com>',
+      options: ['text'],
     },
   ],
 
@@ -820,6 +867,54 @@ ruleTester('require-capitalization', rule, {
           column: 1,
           endLine: 1,
           endColumn: 2,
+          data: { message: '`h` should be capitalized.' },
+        },
+      ],
+    },
+    {
+      name: 'Paragraph: Should capitalize an explicit email link label without changing its destination',
+      code: '[contact](mailto:user@example.com)',
+      output: '[Contact](mailto:user@example.com)',
+      options: ['paragraph'],
+      errors: [
+        {
+          messageId: 'requireCapitalization',
+          line: 1,
+          column: 2,
+          endLine: 1,
+          endColumn: 3,
+          data: { message: '`c` should be capitalized.' },
+        },
+      ],
+    },
+    {
+      name: 'Paragraph: Should capitalize a formatted explicit link label',
+      code: '[*hello*](https://example.com)',
+      output: '[*Hello*](https://example.com)',
+      options: ['paragraph'],
+      errors: [
+        {
+          messageId: 'requireCapitalization',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 4,
+          data: { message: '`h` should be capitalized.' },
+        },
+      ],
+    },
+    {
+      name: 'Paragraph: Should capitalize a reference link label',
+      code: '[hello][ref]\n\n[ref]: https://example.com',
+      output: '[Hello][ref]\n\n[ref]: https://example.com',
+      options: ['paragraph'],
+      errors: [
+        {
+          messageId: 'requireCapitalization',
+          line: 1,
+          column: 2,
+          endLine: 1,
+          endColumn: 3,
           data: { message: '`h` should be capitalized.' },
         },
       ],

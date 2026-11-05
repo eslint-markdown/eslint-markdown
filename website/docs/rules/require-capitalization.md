@@ -120,6 +120,8 @@ When set to `true`, GFM table cells are not checked for capitalization. When set
 
 This rule fixes the reported lowercase letter by replacing it with its uppercase form.
 
+Autolinks such as `<user@example.com>`, `<https://example.com>`, and GFM bare URLs or email addresses are ignored to preserve their destinations. Explicit link labels, such as `[hello](https://example.com)`, are still checked.
+
 ## When Not To Use It
 
 You might want to disable this rule if:
