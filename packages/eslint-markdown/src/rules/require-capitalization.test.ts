@@ -1088,5 +1088,50 @@ ruleTester('require-capitalization', rule, {
         },
       ],
     },
+
+    // Options
+    {
+      name: 'Options: Should use the default message when an object selector omits the message',
+      code: 'hello world!',
+      output: 'Hello world!',
+      options: [{ selector: 'paragraph' }],
+      errors: [
+        {
+          messageId: 'requireCapitalization',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 2,
+          data: { message: '`h` should be capitalized.' },
+        },
+      ],
+    },
+    {
+      name: 'Options: Should preserve a custom message when string and object selectors are mixed',
+      code: '# hello\n\nworld',
+      output: '# Hello\n\nWorld',
+      options: [
+        'paragraph',
+        { selector: 'heading', message: 'start headings with a capital letter' },
+      ],
+      errors: [
+        {
+          messageId: 'requireCapitalization',
+          line: 1,
+          column: 3,
+          endLine: 1,
+          endColumn: 4,
+          data: { message: 'start headings with a capital letter' },
+        },
+        {
+          messageId: 'requireCapitalization',
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 2,
+          data: { message: '`w` should be capitalized.' },
+        },
+      ],
+    },
   ],
 });
