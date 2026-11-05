@@ -7,7 +7,8 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import type { Nodes, Text } from 'mdast';
+import type { Nodes, Parents, Text } from 'mdast';
+import { isAutolink } from '../core/utils/index.js';
 import { URL_RULE_DOCS } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -124,6 +125,10 @@ export default {
           const textNode = findFirstTextNode(node);
 
           if (!textNode) return;
+
+          const parent = sourceCode.getParent(textNode) as Parents | undefined;
+
+          if (parent?.type === 'link' && isAutolink(parent, sourceCode)) return;
 
           const match = lowercaseRegex.exec(sourceCode.getText(textNode));
 

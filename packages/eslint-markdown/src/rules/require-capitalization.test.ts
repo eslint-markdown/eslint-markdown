@@ -350,7 +350,12 @@ ruleTester('require-capitalization', rule, {
     },
     {
       name: 'Paragraph: Should preserve an autolink nested in emphasis without checking later text',
-      code: '*<user@example.com>*hello',
+      code: '*<user@example.com>* hello',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should preserve a URL autolink nested in emphasis and strong without checking later text',
+      code: '_**<https://example.com>**_ hello',
       options: ['paragraph'],
     },
 
@@ -915,6 +920,22 @@ ruleTester('require-capitalization', rule, {
           column: 2,
           endLine: 1,
           endColumn: 3,
+          data: { message: '`h` should be capitalized.' },
+        },
+      ],
+    },
+    {
+      name: 'Paragraph: Should capitalize an explicit link label nested in emphasis and strong',
+      code: '[_**hello**_](mailto:user@example.com)',
+      output: '[_**Hello**_](mailto:user@example.com)',
+      options: ['paragraph'],
+      errors: [
+        {
+          messageId: 'requireCapitalization',
+          line: 1,
+          column: 5,
+          endLine: 1,
+          endColumn: 6,
           data: { message: '`h` should be capitalized.' },
         },
       ],
