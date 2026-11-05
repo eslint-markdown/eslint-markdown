@@ -71,6 +71,11 @@ ruleTester('require-capitalization', rule, {
       code: '> ![alt](image.png) hello world!',
       options: ['blockquote'],
     },
+    {
+      name: 'Blockquote: Should not search later paragraphs after leading inline code',
+      code: '> `foo`\n>\n> bar',
+      options: ['blockquote'],
+    },
 
     // `footnoteDefinition`
     {
@@ -263,6 +268,26 @@ ruleTester('require-capitalization', rule, {
       code: '![alt](image.png) hello world!',
       options: ['paragraph'],
     },
+    {
+      name: 'Paragraph: Should not report text immediately after leading inline code',
+      code: '  `foo`bar  ',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should not report text immediately after a leading image',
+      code: '![alt](image.png)bar',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should not report text after inline code nested in emphasis and strong',
+      code: '_**`foo`bar**_',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should not search later siblings after a non-text first branch',
+      code: '[`foo`](https://example.com)bar',
+      options: ['paragraph'],
+    },
 
     // `table`
     {
@@ -282,6 +307,14 @@ ruleTester('require-capitalization', rule, {
       code: '| Heading |\n| - |\n| data |',
       language: 'markdown/gfm',
       options: ['table > tableRow:first-child > tableCell'],
+    },
+
+    // `tableRow`
+    {
+      name: 'TableRow: Should not search later cells after an empty first cell',
+      code: '| | bar |\n| - | - |',
+      language: 'markdown/gfm',
+      options: ['tableRow'],
     },
 
     // `tableCell`

@@ -206,6 +206,12 @@ export const mdRules = {
   'md/no-url-trailing-slash': 'off',
 
   /**
+   * Enforce the use of capital letters at the beginning of sentences.
+   * @see https://eslint-markdown.lumir.page/docs/rules/require-capitalization
+   */
+  'md/require-capitalization': 'off',
+
+  /**
    * Enforce the use of heading IDs.
    * @see https://eslint-markdown.lumir.page/docs/rules/require-heading-id
    */
@@ -223,5 +229,3 @@ export const mdRules = {
    */
   'md/require-link-title': 'off', // Too tight.
 } as const satisfies Linter.RulesRecord;
-
-// TODO

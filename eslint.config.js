@@ -98,8 +98,23 @@ export default defineConfig([
           },
         },
       ],
+      'md/require-capitalization': [
+        'error',
+        {
+          selector: 'heading',
+          message: 'Headings must begin with a capital letter.',
+        },
+        {
+          // Preserve names and URLs in leading links, including prior-art references.
+          selector: 'paragraph:not(:has(> :matches(link, linkReference):first-child))',
+          message: 'Paragraphs must begin with a capital letter.',
+        },
+        {
+          // Table bodies may contain literal values rather than prose.
+          selector: 'table > tableRow:first-child > tableCell',
+          message: 'Table headers must begin with a capital letter.',
+        },
+      ],
     },
   },
 ]);
-
-// TODO

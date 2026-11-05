@@ -41,9 +41,9 @@ type MessageIds = 'requireCapitalization';
 const lowercaseRegex = /^[a-z]/u;
 
 /**
- * Traverses the Markdown AST using a DFS pre-order approach to find the first text node.
+ * Follows the first child at each level to find a leading text node.
  * @param node The node to start searching from.
- * @returns The first text node, if present.
+ * @returns The leading text node, or `null` if the first branch does not lead to text.
  */
 function findFirstTextNode(node: Nodes): Text | null {
   // Base case: if the current node is a text node, return it.
@@ -51,21 +51,12 @@ function findFirstTextNode(node: Nodes): Text | null {
     return node;
   }
 
-  // Check if the current node has children to traverse.
-  // In the Markdown AST (Mdast), if a node has children
-  // they are always represented as an array even when empty.
-  if ('children' in node) {
-    for (const child of node.children) {
-      const textNode = findFirstTextNode(child);
-
-      // Return the first text node found in the subtree.
-      if (textNode) {
-        return textNode;
-      }
-    }
+  // Only follow the first child.
+  if ('children' in node && node.children.length > 0) {
+    return findFirstTextNode(node.children[0]);
   }
 
-  // When no text node is found in the subtree, return `null`.
+  // An empty parent or a non-text leaf has no leading text to check.
   return null;
 }
 
@@ -105,8 +96,7 @@ export default {
           },
         ],
       },
-      // Intentionally allow no selectors so the rule performs no checks,
-      // matching the behavior of `no-restricted-syntax`.
+      // Intentionally allow an empty selector list, matching the behavior of `no-restricted-syntax`.
       minItems: 0,
       uniqueItems: true,
     },
