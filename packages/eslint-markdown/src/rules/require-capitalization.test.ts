@@ -288,6 +288,31 @@ ruleTester('require-capitalization', rule, {
       code: '[`foo`](https://example.com)bar',
       options: ['paragraph'],
     },
+    {
+      name: 'Paragraph: Should accept an uppercase letter encoded as a character reference',
+      code: '&#72;ello world!',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should skip a leading decimal character reference',
+      code: '&#104;ello world!',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should skip a leading hexadecimal character reference',
+      code: '&#x68;ello world!',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should skip a named character reference that decodes to multiple letters',
+      code: '&fjlig;oo',
+      options: ['paragraph'],
+    },
+    {
+      name: 'Paragraph: Should skip a character reference nested in emphasis',
+      code: '*&#X68;ello* world!',
+      options: ['paragraph'],
+    },
 
     // `table`
     {
@@ -779,6 +804,22 @@ ruleTester('require-capitalization', rule, {
           column: 4,
           endLine: 1,
           endColumn: 5,
+          data: { message: '`h` should be capitalized.' },
+        },
+      ],
+    },
+    {
+      name: 'Paragraph: Should fix a literal leading letter while preserving later character references',
+      code: 'h&#101;llo &amp; world!',
+      output: 'H&#101;llo &amp; world!',
+      options: ['paragraph'],
+      errors: [
+        {
+          messageId: 'requireCapitalization',
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 2,
           data: { message: '`h` should be capitalized.' },
         },
       ],

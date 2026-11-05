@@ -124,7 +124,7 @@ export default {
 
           if (!textNode) return;
 
-          const match = lowercaseRegex.exec(textNode.value);
+          const match = lowercaseRegex.exec(sourceCode.getText(textNode));
 
           if (!match) return;
 
