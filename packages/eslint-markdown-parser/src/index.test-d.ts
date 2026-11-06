@@ -6,6 +6,11 @@
 // Import
 // --------------------------------------------------------------------------------
 
+import type {
+  Json as ESLintMarkdownJson,
+  JsonData as ESLintMarkdownJsonData,
+  MarkdownLanguageOptions,
+} from '@eslint/markdown';
 import parser, {
   meta,
   parse,
@@ -13,11 +18,6 @@ import parser, {
   type JsonData,
   type ParseOptions,
 } from 'eslint-markdown-parser';
-import type {
-  Json as ESLintMarkdownJson,
-  JsonData as ESLintMarkdownJsonData,
-  MarkdownLanguageOptions,
-} from '@eslint/markdown';
 import type { Data, FrontmatterContent, PhrasingContent, Root, RootContent } from 'mdast';
 
 // --------------------------------------------------------------------------------

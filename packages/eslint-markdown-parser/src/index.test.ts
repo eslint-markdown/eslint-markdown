@@ -15,6 +15,12 @@ import pkg from '../package.json' with { type: 'json' };
 // --------------------------------------------------------------------------------
 
 describe('index', () => {
+  describe('package.json', () => {
+    it('should have `sideEffects: false`', () => {
+      assert.strictEqual(pkg.sideEffects, false);
+    });
+  });
+
   describe('named export', () => {
     describe('meta', () => {
       it('should have a `name` property', () => {
