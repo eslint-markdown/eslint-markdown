@@ -55,6 +55,7 @@ For full documentation, see the [official documentation of the `eslint-markdown`
 - [Rules](https://eslint-markdown.lumir.page/docs/rules)
 - [Packages](https://eslint-markdown.lumir.page/docs/packages)
   - [`eslint-markdown`](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown)
+  - [`eslint-markdown-parser`](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown-parser)
   - [`eslint-lumir`](https://eslint-markdown.lumir.page/docs/packages/eslint-lumir)
 
 ## License

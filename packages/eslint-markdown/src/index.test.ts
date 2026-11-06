@@ -191,6 +191,52 @@ describe('index', () => {
       assert.strictEqual(messages[1].messageId, 'style');
       assert.strictEqual(messages[1].severity, 2);
     });
+
+    it('should fix capitalization in CommonMark under a custom rule namespace', () => {
+      const linter = new Linter();
+      const result = linter.verifyAndFix(
+        'hello world!',
+        {
+          files: ['**/*.md'],
+          plugins: {
+            markdown,
+            custommd: md,
+          },
+          language: 'markdown/commonmark',
+          rules: {
+            'custommd/require-capitalization': ['error', 'paragraph'],
+          },
+        },
+        { filename: 'test.md' },
+      );
+
+      assert.strictEqual(result.fixed, true);
+      assert.strictEqual(result.output, 'Hello world!');
+      assert.deepStrictEqual(result.messages, []);
+    });
+
+    it('should fix capitalization in GFM table cells under a custom rule namespace', () => {
+      const linter = new Linter();
+      const result = linter.verifyAndFix(
+        '| heading |\n| ------- |\n| cell    |',
+        {
+          files: ['**/*.md'],
+          plugins: {
+            markdown,
+            custommd: md,
+          },
+          language: 'markdown/gfm',
+          rules: {
+            'custommd/require-capitalization': ['error', 'tableCell'],
+          },
+        },
+        { filename: 'test.md' },
+      );
+
+      assert.strictEqual(result.fixed, true);
+      assert.strictEqual(result.output, '| Heading |\n| ------- |\n| Cell    |');
+      assert.deepStrictEqual(result.messages, []);
+    });
   });
 
   describe('Config rules should use `md/` prefix', () => {

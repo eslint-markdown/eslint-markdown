@@ -7,7 +7,7 @@
 // --------------------------------------------------------------------------------
 
 import { assert, describe, it } from 'vitest';
-import { RuleTester } from 'eslint';
+import { RuleTester, type Linter } from 'eslint';
 import markdown, { type MarkdownRuleDefinitionTypeOptions } from '@eslint/markdown';
 import type { RuleModule } from '../core/types.js';
 
@@ -17,7 +17,23 @@ import type { RuleModule } from '../core/types.js';
 
 type RuleOptions = MarkdownRuleDefinitionTypeOptions['RuleOptions'];
 type MessageIds = MarkdownRuleDefinitionTypeOptions['MessageIds'];
-type Tests = Parameters<RuleTester['run']>[2];
+// ESLint v9 supports `language` and suggestion counts at runtime but omits them from its types.
+// TODO: Remove this once support for ESLint v9 is dropped.
+type Tests = Omit<Parameters<RuleTester['run']>[2], 'valid' | 'invalid'> & {
+  valid: (string | (RuleTester.ValidTestCase & Pick<Linter.Config, 'language'>))[];
+  invalid: (Omit<RuleTester.InvalidTestCase, 'errors'> &
+    Pick<Linter.Config, 'language'> & {
+      errors:
+        | number
+        | (
+            | string
+            | RegExp
+            | (Omit<RuleTester.TestCaseError, 'suggestions'> & {
+                suggestions?: RuleTester.TestCaseError['suggestions'] | number;
+              })
+          )[];
+    })[];
+};
 
 // --------------------------------------------------------------------------------
 // Helper
@@ -59,9 +75,17 @@ const ruleTesterGfm = new RuleTester({
 export default function ruleTester(
   ruleName: string,
   rule: RuleModule<RuleOptions, MessageIds>,
-  tests: Tests,
+  tests: Omit<Tests, 'assertionOptions'>,
 ) {
   const { meta } = rule;
+  const testsWithAssertions = {
+    ...tests,
+    assertionOptions: {
+      requireMessage: 'messageId',
+      requireLocation: true,
+      requireData: true,
+    },
+  } as const;
 
   describe(ruleName, () => {
     describe('meta', () => {
@@ -115,7 +139,10 @@ export default function ruleTester(
         // @ts-expect-error -- Required for testing.
         Object.values(meta.messages).forEach(message => {
           assert.ok(message);
-          assert.match(message, /^[^a-z].*\.$/);
+          // Custom messages may use user-defined capitalization and punctuation.
+          if (message !== '{{ message }}') {
+            assert.match(message, /^[^a-z].*\.$/);
+          }
         });
       });
 
@@ -128,13 +155,25 @@ export default function ruleTester(
     describe('rule', () => {
       if (meta?.languages.includes('markdown/commonmark')) {
         describe('commonmark', () => {
-          ruleTesterCommonmark.run(ruleName, rule, tests);
+          // ESLint v9's run types do not fully support Markdown rules or suggestion counts.
+          // TODO: Remove this once support for ESLint v9 is dropped.
+          ruleTesterCommonmark.run(
+            ruleName,
+            rule as unknown as Parameters<RuleTester['run']>[1],
+            testsWithAssertions as Parameters<RuleTester['run']>[2],
+          );
         });
       }
 
       if (meta?.languages.includes('markdown/gfm')) {
         describe('gfm', () => {
-          ruleTesterGfm.run(ruleName, rule, tests);
+          // ESLint v9's run types do not fully support Markdown rules or suggestion counts.
+          // TODO: Remove this once support for ESLint v9 is dropped.
+          ruleTesterGfm.run(
+            ruleName,
+            rule as unknown as Parameters<RuleTester['run']>[1],
+            testsWithAssertions as Parameters<RuleTester['run']>[2],
+          );
         });
       }
     });

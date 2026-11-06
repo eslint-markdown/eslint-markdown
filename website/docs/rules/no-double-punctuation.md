@@ -13,6 +13,12 @@ It reports cases where exactly two of the following punctuation marks appear in 
 
 For example, `!!`, `?!`, `..`, `::`, `??`, and `;:` are reported, whereas `...`, `!!!`, `?!?`, and `,.;` are not.
 
+::: tip NOTE
+
+You can use a backslash to escape ASCII punctuation, such as `\!!`, to avoid reporting.
+
+:::
+
 ## Examples
 
 ### :x: Incorrect {#incorrect}
@@ -28,6 +34,15 @@ This usually means a typo!.
 Did you mean this?!
 Maybe this..
 Wait,. what about this?
+```
+
+#### With `{ allowTerms: [/etc\.;/] }` Option
+
+```md eslint-check
+<!-- eslint md/no-double-punctuation: ['error', { allowTerms: [/etc\.;/] }] -->
+
+This is a typo.;
+foo, bar, baz, etc.!
 ```
 
 #### With `{ punctuation: ['.', '!'] }` Option
@@ -63,6 +78,14 @@ Really!!
 Are you sure?!
 ```
 
+#### With `{ allowTerms: [/etc\.;/] }` Option
+
+```md eslint-check
+<!-- eslint md/no-double-punctuation: ['error', { allowTerms: [/etc\.;/] }] -->
+
+foo, bar, baz, etc.;
+```
+
 #### With `{ punctuation: ['.', '!'] }` Option
 
 ```md eslint-check
@@ -77,6 +100,7 @@ Did you mean this?!
 ```js
 'md/no-double-punctuation': ['error', {
   allow: [],
+  allowTerms: [],
   punctuation: ['.', ',', ';', ':', '!', '?'],
 }]
 ```
@@ -91,6 +115,16 @@ When `allow` is specified, the listed two-character punctuation patterns are ign
 
 Patterns in [`allow`](#allow) containing characters outside [`punctuation`](#punctuation) are silently ignored.
 
+:::
+
+### `allowTerms`
+
+> Type: `(RegExp | string)[]` / Default: `[]`
+
+When `allowTerms` is specified, text matching the listed patterns is ignored by this rule. This is useful when terms such as `etc.;` are intentionally used instead of being treated as a typo. String patterns must be non-empty.
+
+::: warning Escaping special characters
+Escape special characters to match them literally. For example, use `/etc\.;/u` or `'etc\\.;'` to match `etc.;`.
 :::
 
 ### `punctuation`
