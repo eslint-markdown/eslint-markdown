@@ -94,6 +94,7 @@ export default {
 
     docs: {
       description: 'Disallow irregular dash',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-irregular-dash'),
       recommended: true,
       stylistic: false,
@@ -163,8 +164,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

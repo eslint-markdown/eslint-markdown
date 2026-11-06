@@ -48,6 +48,7 @@ export default {
 
     docs: {
       description: 'Disallow dollar signs before commands without showing output',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-shell-dollar'),
       recommended: false,
       stylistic: false,
@@ -83,8 +84,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

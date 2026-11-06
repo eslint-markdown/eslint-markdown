@@ -64,6 +64,7 @@ export default {
 
     docs: {
       description: 'Disallow curly quotes(`“`, `”`, `‘` or `’`) in text',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-curly-quote'),
       recommended: true,
       stylistic: false,
@@ -107,8 +108,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

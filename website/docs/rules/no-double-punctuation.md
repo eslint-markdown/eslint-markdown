@@ -13,6 +13,12 @@ It reports cases where exactly two of the following punctuation marks appear in 
 
 For example, `!!`, `?!`, `..`, `::`, `??`, and `;:` are reported, whereas `...`, `!!!`, `?!?`, and `,.;` are not.
 
+::: tip NOTE
+
+You can use a backslash to escape ASCII punctuation, such as `\!!`, to avoid reporting.
+
+:::
+
 ## Examples
 
 ### :x: Incorrect {#incorrect}
@@ -28,6 +34,24 @@ This usually means a typo!.
 Did you mean this?!
 Maybe this..
 Wait,. what about this?
+```
+
+#### With `{ allowTerms: [/etc\.;/] }` Option
+
+```md eslint-check
+<!-- eslint md/no-double-punctuation: ['error', { allowTerms: [/etc\.;/] }] -->
+
+This is a typo.;
+foo, bar, baz, etc.!
+```
+
+#### With `{ punctuation: ['.', '!'] }` Option
+
+```md eslint-check
+<!-- eslint md/no-double-punctuation: ['error', { punctuation: ['.', '!'] }] -->
+
+This usually means a typo!.
+Maybe this..
 ```
 
 ### :white_check_mark: Correct {#correct}
@@ -54,11 +78,30 @@ Really!!
 Are you sure?!
 ```
 
+#### With `{ allowTerms: [/etc\.;/] }` Option
+
+```md eslint-check
+<!-- eslint md/no-double-punctuation: ['error', { allowTerms: [/etc\.;/] }] -->
+
+foo, bar, baz, etc.;
+```
+
+#### With `{ punctuation: ['.', '!'] }` Option
+
+```md eslint-check
+<!-- eslint md/no-double-punctuation: ['error', { punctuation: ['.', '!'] }] -->
+
+Is this correct?
+Did you mean this?!
+```
+
 ## Options
 
 ```js
 'md/no-double-punctuation': ['error', {
   allow: [],
+  allowTerms: [],
+  punctuation: ['.', ',', ';', ':', '!', '?'],
 }]
 ```
 
@@ -67,6 +110,32 @@ Are you sure?!
 > Type: `string[]` / Default: `[]`
 
 When `allow` is specified, the listed two-character punctuation patterns are ignored by this rule. This is useful when punctuation such as `!!` or `?!` is intentionally used for tone or emphasis instead of being treated as a typo.
+
+::: warning
+
+Patterns in [`allow`](#allow) containing characters outside [`punctuation`](#punctuation) are silently ignored.
+
+:::
+
+### `allowTerms`
+
+> Type: `(RegExp | string)[]` / Default: `[]`
+
+When `allowTerms` is specified, text matching the listed patterns is ignored by this rule. This is useful when terms such as `etc.;` are intentionally used instead of being treated as a typo. String patterns must be non-empty.
+
+::: warning Escaping special characters
+Escape special characters to match them literally. For example, use `/etc\.;/u` or `'etc\\.;'` to match `etc.;`.
+:::
+
+### `punctuation`
+
+> Type: `string[]` / Default: `['.', ',', ';', ':', '!', '?']`
+
+Specifies the characters that are treated as punctuation by this rule.
+
+The configured array replaces the default punctuation characters. Each item must be a single character, and at least one character is required.
+
+NOTE: Spaces, tabs, line feeds, carriage returns, and backslashes are not allowed.
 
 ## Fix
 

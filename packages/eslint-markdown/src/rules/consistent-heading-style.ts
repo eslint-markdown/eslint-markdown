@@ -69,6 +69,7 @@ export default {
 
     docs: {
       description: 'Enforce consistent heading style',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('consistent-heading-style'),
       recommended: false,
       stylistic: true,
@@ -103,8 +104,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

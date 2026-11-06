@@ -65,6 +65,7 @@ export default {
 
     docs: {
       description: 'Disallow tab characters',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-tab'),
       recommended: false,
       stylistic: true,
@@ -123,8 +124,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

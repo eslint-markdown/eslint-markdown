@@ -9,6 +9,12 @@
     },
     {
       "path": "./packages/parser/tsconfig.json"
+    },
+    {
+      "path": "./tests/tsconfig.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
     }
   ]
 }

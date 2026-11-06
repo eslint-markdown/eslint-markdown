@@ -28,11 +28,7 @@
  * SOFTWARE.
  */
 
-/* eslint-disable
-  typescript/ban-ts-comment,
-  typescript/no-shadow,
-  consistent-return
-*/
+// eslint-disable-next-line typescript/ban-ts-comment
 // @ts-nocheck -- TODO: Code was simply copied and pasted. Type annotations will be modified later.
 
 // --------------------------------------------------------------------------------
@@ -41,10 +37,9 @@
 
 import { existsSync } from 'node:fs';
 import { createRequire, isBuiltin } from 'node:module';
-import path from 'node:path';
+import { dirname, isAbsolute, join, matchesGlob, relative, resolve } from 'node:path';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { Rule } from 'eslint';
-import { minimatch, type MinimatchOptions } from 'minimatch';
 
 // --------------------------------------------------------------------------------
 // Typedef
@@ -74,7 +69,6 @@ type RuleContext<TMessageIds extends string = string> = TSESLint.RuleContext<
 interface PathGroup {
   pattern: string;
   group: ImportType;
-  patternOptions?: MinimatchOptions;
   position?: 'before' | 'after';
 }
 
@@ -119,7 +113,6 @@ interface ImportEntryWithRank extends ImportEntry {
 
 interface RanksPathGroup {
   pattern: string;
-  patternOptions?: MinimatchOptions;
   group: string;
   position?: number;
 }
@@ -153,9 +146,9 @@ function getContextPackagePath(context: RuleContext): string {
   if (directory) {
     return directory;
   }
-  directory = path.dirname(path.resolve(context.cwd, context.physicalFilename));
-  while (!existsSync(path.join(directory, 'package.json'))) {
-    const parent = path.dirname(directory);
+  directory = dirname(resolve(context.cwd, context.physicalFilename));
+  while (!existsSync(join(directory, 'package.json'))) {
+    const parent = dirname(directory);
     if (parent === directory) {
       directory = context.cwd;
       break;
@@ -206,7 +199,7 @@ function resolveImport(name: string, context: RuleContext): string | null | unde
     return null;
   }
   try {
-    return createRequire(path.resolve(context.cwd, physicalFilename)).resolve(name);
+    return createRequire(resolve(context.cwd, physicalFilename)).resolve(name);
   } catch {
     return undefined;
   }
@@ -224,7 +217,7 @@ function importType(name: LiteralNodeValue, context: RuleContext): ImportType {
     if (internalScope && new RegExp(internalScope).test(name)) {
       return 'internal';
     }
-    if (path.isAbsolute(name)) {
+    if (isAbsolute(name)) {
       return 'absolute';
     }
     const base = /^@[^/]+\/?[^/]+/.test(name)
@@ -246,20 +239,17 @@ function importType(name: LiteralNodeValue, context: RuleContext): ImportType {
   }
   if (modulePath) {
     const packagePath = getContextPackagePath(context);
-    const relativePath = path.relative(packagePath, modulePath);
+    const relativePath = relative(packagePath, modulePath);
     const folders = settings['import/external-module-folders'] || ['node_modules'];
     if (
       relativePath.startsWith('..') ||
       folders.some(
-        folder =>
-          !path.relative(path.resolve(packagePath, folder), modulePath).startsWith('..'),
+        folder => !relative(resolve(packagePath, folder), modulePath).startsWith('..'),
       )
     ) {
       return 'external';
     }
-    if (!relativePath.startsWith('../')) {
-      return 'internal';
-    }
+    return 'internal';
   }
   if (typeof name === 'string' && (/^\w/.test(name) || /^@[^/]+\/?[^/]+/.test(name))) {
     return 'external';
@@ -583,18 +573,19 @@ function isCJSExports(context: RuleContext, node: TSESTree.Expression) {
       .getScope(node)
       .variables.some(variable => variable.name === 'exports');
   }
+  return undefined;
 }
 
 function getNamedCJSExports(context: RuleContext, node: TSESTree.Node) {
   if (node.type !== 'MemberExpression') {
-    return;
+    return undefined;
   }
   const result: string[] = [];
   let root: TSESTree.Expression = node;
   let parent!: TSESTree.Expression;
   while (root.type === 'MemberExpression') {
     if (root.property.type !== 'Identifier') {
-      return;
+      return undefined;
     }
     result.unshift(root.property.name);
     parent = root;
@@ -608,6 +599,7 @@ function getNamedCJSExports(context: RuleContext, node: TSESTree.Node) {
   if (isCJSExports(context, parent)) {
     return result.slice(1);
   }
+  return undefined;
 }
 
 function canCrossNodeWhileReorder(node: TSESTree.Node) {
@@ -646,10 +638,6 @@ function makeImportDescription(node: ImportEntry) {
   }
   if (node.node.importKind === 'type') {
     return 'type import';
-  }
-  // @ts-expect-error - flow type
-  if (node.node.importKind === 'typeof') {
-    return 'typeof import';
   }
   return 'import';
 }
@@ -941,14 +929,15 @@ function mutateRanksToAlphabetize(
 function computePathRank(
   ranks: RanksGroups,
   pathGroups: RanksPathGroup[],
-  path: string,
+  importPath: string,
   maxPosition: number,
 ) {
-  for (const { pattern, patternOptions, group, position = 1 } of pathGroups) {
-    if (minimatch(path, pattern, patternOptions || { nocomment: true })) {
+  for (const { pattern, group, position = 1 } of pathGroups) {
+    if (matchesGlob(importPath, pattern)) {
       return ranks[group] + position / maxPosition;
     }
   }
+  return undefined;
 }
 
 function computeRank(
@@ -1052,6 +1041,7 @@ function getRequireBlock(node: TSESTree.Node) {
   ) {
     return n.parent.parent.parent;
   }
+  return undefined;
 }
 
 const types: ImportType[] = [
@@ -1174,6 +1164,7 @@ function removeNewLineAfterImport(
   if (/^\s*$/.test(sourceCode.text.slice(rangeToRemove[0], rangeToRemove[1]))) {
     return (fixer: TSESLint.RuleFixer) => fixer.removeRange(rangeToRemove);
   }
+  return undefined;
 }
 
 function makeNewlinesBetweenReport(
@@ -1416,9 +1407,6 @@ const rule: Rule.RuleModule = {
                 pattern: {
                   type: 'string',
                 },
-                patternOptions: {
-                  type: 'object',
-                },
                 group: {
                   type: 'string',
                   enum: types,
@@ -1645,7 +1633,7 @@ const rule: Rule.RuleModule = {
       return blockExports;
     }
 
-    function makeNamedOrderReport(context: RuleContext, namedImports: ImportEntry[]) {
+    function makeNamedOrderReport(namedImports: ImportEntry[]) {
       if (namedImports.length > 1) {
         const imports = namedImports.map(namedImport => {
           const kind = namedImport.kind || 'value';
@@ -1690,7 +1678,6 @@ const rule: Rule.RuleModule = {
 
           if (named.import) {
             makeNamedOrderReport(
-              context,
               node.specifiers
                 .filter(specifier => specifier.type === 'ImportSpecifier')
                 .map(specifier => ({
@@ -1779,7 +1766,6 @@ const rule: Rule.RuleModule = {
               }
             }
             makeNamedOrderReport(
-              context,
               node.id.properties.map(prop_ => {
                 const prop = prop_ as TSESTree.Property;
                 const key = prop.key as TSESTree.Identifier;
@@ -1800,7 +1786,6 @@ const rule: Rule.RuleModule = {
       ...(named.export && {
         ExportNamedDeclaration(node) {
           makeNamedOrderReport(
-            context,
             node.specifiers.map(specifier => ({
               node: specifier,
               value: getValue(specifier.local),
@@ -1830,7 +1815,6 @@ const rule: Rule.RuleModule = {
                 }
 
                 makeNamedOrderReport(
-                  context,
                   properties.map(prop_ => {
                     const prop = prop_ as TSESTree.Property;
                     const key = prop.key as TSESTree.Identifier;

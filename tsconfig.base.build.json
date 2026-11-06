@@ -1,0 +1,36 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "${configDir}/src/**/*.js",
+    "${configDir}/src/**/*.mjs",
+    "${configDir}/src/**/*.cjs",
+    "${configDir}/src/**/*.jsx",
+    "${configDir}/src/**/*.ts",
+    "${configDir}/src/**/*.mts",
+    "${configDir}/src/**/*.cts",
+    "${configDir}/src/**/*.tsx"
+  ],
+  "exclude": [
+    "${configDir}/src/**/*.test.js",
+    "${configDir}/src/**/*.test.mjs",
+    "${configDir}/src/**/*.test.cjs",
+    "${configDir}/src/**/*.test.jsx",
+    "${configDir}/src/**/*.test.ts",
+    "${configDir}/src/**/*.test.mts",
+    "${configDir}/src/**/*.test.cts",
+    "${configDir}/src/**/*.test.tsx",
+    "${configDir}/src/**/*.test-d.ts",
+    "${configDir}/src/**/*.test-d.mts",
+    "${configDir}/src/**/*.test-d.cts",
+    "${configDir}/src/**/*.test-d.tsx",
+    "${configDir}/**/fixtures/**"
+  ],
+  "compilerOptions": {
+    /* Emit */
+    "emitDeclarationOnly": false,
+    "outDir": "${configDir}/build",
+
+    /* Projects */
+    "tsBuildInfoFile": "${configDir}/.tsbuildinfo/tsconfig.build.tsbuildinfo"
+  }
+}

@@ -29,6 +29,8 @@ type RuleOptions = [
   {
     /**
      * Specifies the characters that are not allowed at the end of headings.
+     *
+     * NOTE: Spaces, tabs, line feeds, carriage returns, and backslashes are not allowed.
      * @default ['.', ',', ';', ':', '!', '。', '，', '；', '：', '！']
      */
     punctuation: string[];
@@ -57,6 +59,7 @@ export default {
 
     docs: {
       description: 'Disallow trailing punctuation in headings',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('no-trailing-heading-punctuation'),
       recommended: false,
       stylistic: true,
@@ -74,6 +77,7 @@ export default {
               type: 'string',
               minLength: 1,
               maxLength: 1,
+              pattern: String.raw`^[^ \t\r\n\\]+$`,
             },
             minItems: 1,
             uniqueItems: true,
@@ -95,8 +99,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

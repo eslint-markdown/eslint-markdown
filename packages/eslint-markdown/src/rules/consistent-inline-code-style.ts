@@ -42,6 +42,7 @@ export default {
 
     docs: {
       description: 'Enforce consistent inline code style',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('consistent-inline-code-style'),
       recommended: false,
       stylistic: true,
@@ -54,8 +55,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

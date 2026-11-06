@@ -33,16 +33,27 @@ ruleTester('no-double-punctuation', rule, {
     'Foo! Bar? Baz.',
     'Foo... Bar!!! Baz!!?',
     'Foo?!? Bar,.; Baz;:!',
-    '`Foo!!` and `Bar??`', // `InlineCode` is ignored.
-    '```md\nFoo!!\nBar??\n```', // `Code` is ignored.
-    // gemoji is ignored.
+    '`Foo!!` and `Bar??`', // `InlineCode` is ignored
+    '```md\nFoo!!\nBar??\n```', // `Code` is ignored
+    // gemoji is ignored
     'This is :smile:.',
     'This is :smile:. Next sentence.',
     'hi.:tada:',
     ':banana::tada::confetti_ball::partying_face:',
-    // html entity is ignored.
+    // html entity is ignored
     'Copyright &copy;.',
     'Copyright &copy;! All rights reserved.',
+    // escaped punctuation
+    'Foo\\!!',
+    'Foo\\?!',
+    'Foo!\\!',
+    'Foo\\!\\!',
+    `Foo${'\\'.repeat(3)}!!`,
+    'Foo!\\!!',
+    {
+      code: 'Foo\\++',
+      options: [{ punctuation: ['+'] }],
+    },
 
     // `allow` option
     {
@@ -66,6 +77,100 @@ ruleTester('no-double-punctuation', rule, {
       options: [
         {
           allow: [',.'],
+        },
+      ],
+    },
+
+    // `allowTerms` option
+    {
+      code: 'foo, bar, baz, etc.; foo bar baz',
+      options: [{ allowTerms: [/etc\.;/u] }],
+    },
+    {
+      code: 'ETC.; etc.;\n\n**Etc.;**',
+      options: [{ allowTerms: [/etc\.;/giu] }],
+    },
+    {
+      code: 'ETC.; etc.;',
+      options: [{ allowTerms: [/etc\.;/iu] }],
+    },
+    {
+      code: 'etc;; etc.;',
+      options: [{ allowTerms: ['etc.;'] }],
+    },
+    {
+      code: 'etc.; e.g.,',
+      options: [{ allowTerms: ['etc\\.;', /e\.g\.,/u] }],
+    },
+    {
+      // Overlapping allowed terms should not prevent each other from matching.
+      code: 'foo!! bar??',
+      options: [{ allowTerms: [/foo!! bar/u, /bar\?\?/u] }],
+    },
+    {
+      // Allows terms containing emoji shortcodes and HTML entities.
+      code: ':smile:!! &copy;!!',
+      options: [{ allowTerms: [/:smile:!!/u, /&copy;!!/u] }],
+    },
+
+    // `punctuation` option
+    {
+      code: 'Foo?!',
+      options: [
+        {
+          punctuation: ['.', '!'],
+        },
+      ],
+    },
+    {
+      code: 'Foo!!',
+      options: [
+        {
+          punctuation: ['?'],
+        },
+      ],
+    },
+    {
+      code: 'Foo 💥',
+      options: [
+        {
+          punctuation: ['💥'],
+        },
+      ],
+    },
+    {
+      code: 'Foo&excl;&excl;',
+      options: [
+        {
+          punctuation: ['!'],
+        },
+      ],
+    },
+    {
+      code: 'Foo&quest;&quest;',
+      options: [
+        {
+          punctuation: ['?'],
+        },
+      ],
+    },
+
+    // `allow` and `punctuation` option
+    {
+      code: 'Foo++',
+      options: [
+        {
+          allow: ['++'],
+          punctuation: ['+'],
+        },
+      ],
+    },
+    {
+      code: 'Foo??',
+      options: [
+        {
+          allow: ['??'],
+          punctuation: ['!'],
         },
       ],
     },
@@ -560,12 +665,406 @@ Baz:`,
       ],
     },
 
+    // escaped punctuation
+    {
+      code: 'Foo\\\\!!',
+      output: 'Foo\\\\!',
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 6,
+          endLine: 1,
+          endColumn: 8,
+          data: { punctuation: '!!' },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: `Foo${'\\'.repeat(4)}?!`,
+      output: null,
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 8,
+          endLine: 1,
+          endColumn: 10,
+          data: { punctuation: '?!' },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: { punctuation: '?!', leftPunctuation: '?' },
+              output: `Foo${'\\'.repeat(4)}?`,
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: { punctuation: '?!', rightPunctuation: '!' },
+              output: `Foo${'\\'.repeat(4)}!`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // Should not escape non-ASCII punctuation
+      code: 'Foo\\！！',
+      output: 'Foo\\！',
+      options: [{ punctuation: ['！'] }],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 5,
+          endLine: 1,
+          endColumn: 7,
+          data: { punctuation: '！！' },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'Foo\\!! Bar!!',
+      output: 'Foo\\!! Bar!',
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 11,
+          endLine: 1,
+          endColumn: 13,
+          data: { punctuation: '!!' },
+          suggestions: undefined,
+        },
+      ],
+    },
+
     // `allow` option
     {
       code: 'Foo!! Bar?!',
       options: [
         {
           allow: ['!!'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 10,
+          endLine: 1,
+          endColumn: 12,
+          data: {
+            punctuation: '?!',
+          },
+          suggestions: [
+            {
+              output: 'Foo!! Bar?',
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: '?!',
+                leftPunctuation: '?',
+              },
+            },
+            {
+              output: 'Foo!! Bar!',
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: '?!',
+                rightPunctuation: '!',
+              },
+            },
+          ],
+        },
+      ],
+    },
+
+    // `allowTerms` option
+    {
+      code: 'a!! longer!! typo??',
+      output: 'a!! longer!! typo?',
+      options: [{ allowTerms: [/\w+!!/u] }],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 18,
+          endLine: 1,
+          endColumn: 20,
+          data: {
+            punctuation: '??',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'etc;;',
+      output: 'etc;',
+      options: [{ allowTerms: [/(?=etc)/u] }],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: ';;',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'etc;;',
+      output: 'etc;',
+      options: [{ allowTerms: ['etc\\.;'] }],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: ';;',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'etc.;',
+      output: null,
+      options: [{ allowTerms: ['etc'] }],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: '.;',
+          },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: '.;',
+                leftPunctuation: '.',
+              },
+              output: 'etc.',
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: '.;',
+                rightPunctuation: ';',
+              },
+              output: 'etc;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'etc.; typo.;',
+      output: null,
+      options: [{ allowTerms: ['etc\\.;'] }],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 11,
+          endLine: 1,
+          endColumn: 13,
+          data: {
+            punctuation: '.;',
+          },
+          suggestions: [
+            {
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: '.;',
+                leftPunctuation: '.',
+              },
+              output: 'etc.; typo.',
+            },
+            {
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: '.;',
+                rightPunctuation: ';',
+              },
+              output: 'etc.; typo;',
+            },
+          ],
+        },
+      ],
+    },
+
+    // `punctuation` option
+    {
+      code: 'Foo..',
+      output: 'Foo.',
+      options: [
+        {
+          punctuation: ['.', '!'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: '..',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'Foo?!',
+      output: null,
+      options: [
+        {
+          punctuation: ['?', '!'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: '?!',
+          },
+          suggestions: [
+            {
+              output: 'Foo?',
+              messageId: 'suggestReplaceWithLeft',
+              data: {
+                punctuation: '?!',
+                leftPunctuation: '?',
+              },
+            },
+            {
+              output: 'Foo!',
+              messageId: 'suggestReplaceWithRight',
+              data: {
+                punctuation: '?!',
+                rightPunctuation: '!',
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'Foo++',
+      output: 'Foo+',
+      options: [
+        {
+          punctuation: ['+'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: '++',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'Foo]]',
+      output: 'Foo]',
+      options: [
+        {
+          punctuation: [']'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: ']]',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'Foo--',
+      output: 'Foo-',
+      options: [
+        {
+          punctuation: ['-'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 4,
+          endLine: 1,
+          endColumn: 6,
+          data: {
+            punctuation: '--',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'Foo 💥💥',
+      output: 'Foo 💥',
+      options: [
+        {
+          punctuation: ['💥'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noDoublePunctuation',
+          line: 1,
+          column: 5,
+          endLine: 1,
+          endColumn: 9,
+          data: {
+            punctuation: '💥💥',
+          },
+          suggestions: undefined,
+        },
+      ],
+    },
+
+    // `allow` and `punctuation` option
+    {
+      code: 'Foo!! Bar?!',
+      output: null,
+      options: [
+        {
+          allow: ['!!'],
+          punctuation: ['!', '?'],
         },
       ],
       errors: [

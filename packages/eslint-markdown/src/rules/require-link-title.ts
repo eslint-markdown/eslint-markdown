@@ -10,7 +10,7 @@
 import type { Definition } from 'mdast';
 import { normalizeIdentifier } from 'micromark-util-normalize-identifier';
 import type { Position } from 'unist';
-import { getElementsByTagName } from '../core/utils/index.js';
+import { getElementsByTagName, isAutolink } from '../core/utils/index.js';
 import { URL_RULE_DOCS } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -44,6 +44,7 @@ export default {
 
     docs: {
       description: 'Enforce the use of title attribute for links',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('require-link-title'),
       recommended: false,
       stylistic: false,
@@ -76,8 +77,6 @@ export default {
     },
 
     language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {
@@ -101,10 +100,8 @@ export default {
 
     return {
       link(node) {
-        const [nodeStartOffset] = sourceCode.getRange(node);
-
         // Exclude auto-link literals like `<https://example.com>` or `https://example.com`
-        if (sourceCode.text[nodeStartOffset] === '[' && !node.title) {
+        if (!isAutolink(node, sourceCode) && !node.title) {
           report(sourceCode.getLoc(node));
         }
       },
