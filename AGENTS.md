@@ -65,7 +65,7 @@ Use this guide when preparing any PR in this repository.
 #### `scope` rules
 
 - For AI-generated changes, use:
-  - `eslint-markdown` or `eslint-lumir` for changes specific to that package, or
+  - `eslint-markdown`, `eslint-markdown-parser`, or `eslint-lumir` for changes specific to that package, or
   - `*` for repo-wide/docs/tooling changes.
 
 #### `description` rules
