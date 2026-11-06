@@ -5,7 +5,7 @@
 
 This rule enforces the use of capital letters at the beginning of sentences in Markdown documents. Maintaining consistent capitalization improves document readability and professionalism.
 
-The rule checks the leading text in paragraphs, headings, blockquotes, footnote definitions, list items, and table cells (depending on the configured selectors) to ensure proper capitalization. When the checked text begins with a lowercase ASCII letter (`a` through `z`), the rule flags it as a violation and can automatically fix the issue by converting that letter to uppercase.
+The rule checks the leading text of nodes matched by the configured selectors, such as paragraphs, headings, list items, and table cells, to ensure proper capitalization. When the checked text begins with a lowercase ASCII letter (`a` through `z`), the rule reports a violation.
 
 ::: info
 
@@ -19,48 +19,110 @@ This rule doesn't report any errors by default. You must configure it with selec
 
 Examples of **incorrect** code for this rule:
 
-#### With `'paragraph'`, `'heading'`, and `'tableCell'` Selectors
+#### With `'paragraph'` Selector
 
 ```md eslint-check
-<!-- eslint md/require-capitalization: ['error', 'paragraph', 'heading', 'tableCell'] -->
+<!-- eslint md/require-capitalization: ['error', 'paragraph'] -->
 
 hello world!
-
-# hello world!
 
 > hello world!
 
 [^note]: footnote text
 
 - hello world!
+```
+
+#### With `'heading'` Selector
+
+```md eslint-check
+<!-- eslint md/require-capitalization: ['error', 'heading'] -->
+
+# hello world!
+```
+
+#### With `'tableCell'` Selector
+
+```md eslint-check
+<!-- eslint md/require-capitalization: ['error', 'tableCell'] -->
 
 | heading |
 | ------- |
 | cell    |
 ```
 
+#### With `'heading[depth=2]'` Selector
+
+This [ESQuery selector](https://eslint.org/docs/latest/extend/selectors) checks only second-level headings.
+
+```md eslint-check
+<!-- eslint md/require-capitalization: ['error', 'heading[depth=2]'] -->
+
+# hello world!
+
+## hello world!
+
+### hello world!
+```
+
+#### With `'table > tableRow:first-child > tableCell'` Selector
+
+This [ESQuery selector](https://eslint.org/docs/latest/extend/selectors) selects table cells in the first (header) row of the table.
+
+```md eslint-check
+<!-- eslint md/require-capitalization: ['error', 'table > tableRow:first-child > tableCell'] -->
+
+| header |
+| ------ |
+| data   |
+```
+
 ### :white_check_mark: Correct {#correct}
 
 Examples of **correct** code for this rule:
 
-#### With `'paragraph'`, `'heading'`, and `'tableCell'` Selectors
+#### With `'paragraph'` Selector
 
 ```md eslint-check
-<!-- eslint md/require-capitalization: ['error', 'paragraph', 'heading', 'tableCell'] -->
+<!-- eslint md/require-capitalization: ['error', 'paragraph'] -->
 
 Hello world!
-
-# Hello world!
 
 > Hello world!
 
 [^note]: Footnote text
 
 - Hello world!
+```
+
+#### With `'heading'` Selector
+
+```md eslint-check
+<!-- eslint md/require-capitalization: ['error', 'heading'] -->
+
+# Hello world!
+```
+
+#### With `'tableCell'` Selector
+
+```md eslint-check
+<!-- eslint md/require-capitalization: ['error', 'tableCell'] -->
 
 | Heading |
 | ------- |
 | Cell    |
+```
+
+#### With `'heading[depth=2]'` Selector
+
+```md eslint-check
+<!-- eslint md/require-capitalization: ['error', 'heading[depth=2]'] -->
+
+# hello world!
+
+## Hello world!
+
+### hello world!
 ```
 
 #### With `'root > paragraph'` Selector
@@ -73,6 +135,16 @@ Hello world!
 # hello world!
 
 - hello world!
+```
+
+#### With `'table > tableRow:first-child > tableCell'` Selector
+
+```md eslint-check
+<!-- eslint md/require-capitalization: ['error', 'table > tableRow:first-child > tableCell'] -->
+
+| Header |
+| ------ |
+| data   |
 ```
 
 ## Options
@@ -106,15 +178,9 @@ Selectors and custom messages must be non-empty strings. String and object optio
 
 This rule fixes the reported lowercase letter by replacing it with its uppercase form.
 
-Autolinks such as `<user@example.com>`, `<https://example.com>`, and GFM bare URLs or email addresses are ignored to preserve their destinations. Explicit link labels, such as `[hello](https://example.com)`, are still checked.
-
 ## When Not To Use It
 
-You might want to disable this rule if:
-
-- You're working with a documentation style guide that permits or requires lowercase at the beginning of sentences.
-- Your document contains many code examples or technical terms that conventionally start with lowercase.
-- You're writing in a language other than English or a language that doesn't follow the same capitalization rules.
+You can disable this rule if your documentation style, technical terminology, or language does not require initial capitalization.
 
 ## Prior Art
 
