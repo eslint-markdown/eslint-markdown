@@ -4,5 +4,9 @@
     {
       "path": "./tsconfig.build.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    /* Modules */
+    "types": ["node"]
+  }
 }

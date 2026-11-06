@@ -154,8 +154,7 @@ export function parse(
     };
   }
 
-  // TODO: Remove `as Root` when https://github.com/bruits/satteri/issues/191 is resolved.
-  return ast as Root;
+  return ast;
 }
 
 // --------------------------------------------------------------------------------
