@@ -1,6 +1,7 @@
 {
+  "private": true,
   "name": "eslint-markdown-parser",
-  "version": "0.0.0-canary.0",
+  "version": "0.21.0",
   "type": "module",
   "sideEffects": false,
   "description": "A blazing fast Markdown parser for ESLint.⚡",
@@ -53,19 +54,18 @@
     "node": "^20.19.0 || ^22.13.0 || >=24.0.0"
   },
   "publishConfig": {
-    "access": "public",
     "provenance": true
   },
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "tsc -b tsconfig.build.json",
     "test": "npm run test:types && npm run test:unit",
-    "test:types": "tsc -b ./tsconfig.json",
+    "test:types": "tsc -b tsconfig.json",
     "test:unit": "vitest run"
   },
   "dependencies": {
     "@types/mdast": "^4.0.4",
-    "satteri": "^0.10.5"
+    "satteri": "^0.11.6"
   },
   "devDependencies": {
     "@eslint/markdown": "^8.0.3",

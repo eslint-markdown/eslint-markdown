@@ -60,3 +60,5 @@ lumirlumir/lumirlumir:
     dest: ./configs/LICENSE.md
   - source: ./packages/eslint-markdown/LICENSE.md
     dest: ./configs/LICENSE.md
+  - source: ./packages/eslint-markdown-parser/LICENSE.md
+    dest: ./configs/LICENSE.md

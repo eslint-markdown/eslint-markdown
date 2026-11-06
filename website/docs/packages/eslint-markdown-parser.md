@@ -8,6 +8,35 @@ description: "Package documentation and configuration options for the `eslint-ma
 
 `eslint-markdown-parser` parses Markdown source text into an [mdast](https://github.com/syntax-tree/mdast#readme) syntax tree. It supports CommonMark and GitHub Flavored Markdown (GFM), with optional support for YAML, TOML, or JSON front matter and math syntax.
 
+## Installation
+
+### Prerequisites
+
+- Node.js: `{{ $version['eslint-markdown-parser'].nodejs }}`
+- Module Support: ECMAScript Modules (ESM) Only
+
+### Install
+
+::: code-group
+
+```sh [npm]
+npm install -D eslint-markdown-parser
+```
+
+```sh [pnpm]
+pnpm add -D eslint-markdown-parser
+```
+
+```sh [yarn]
+yarn add --dev eslint-markdown-parser
+```
+
+```sh [bun]
+bun add -d eslint-markdown-parser
+```
+
+:::
+
 ## Usage
 
 The default export provides the parser metadata and the `parse` function. The same values are also available as named exports.
@@ -62,3 +91,5 @@ Enables inline and block math syntax when set to `true`.
 | `Json`         | TypeScript type for JSON front matter nodes.                                |
 | `JsonData`     | TypeScript type for data associated with JSON front matter nodes.           |
 | `ParseOptions` | TypeScript type for the options accepted by `parse`.                        |
+
+Package metadata is also available through the `eslint-markdown-parser/package.json` subpath export.

@@ -1,24 +1,8 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "include": [
-    "src/**/*.test.js",
-    "src/**/*.test.mjs",
-    "src/**/*.test.cjs",
-    "src/**/*.test.ts",
-    "src/**/*.test.mts",
-    "src/**/*.test.cts"
-  ],
-  "exclude": ["**/fixtures/**"],
+  "extends": "../../tsconfig.base.test.json",
   "references": [
     {
       "path": "./tsconfig.build.json"
     }
-  ],
-  "compilerOptions": {
-    /* Emit */
-    "noEmit": true,
-
-    /* Projects */
-    "tsBuildInfoFile": "${configDir}/.tsbuildinfo/tsconfig.test.tsbuildinfo"
-  }
+  ]
 }

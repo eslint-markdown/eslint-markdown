@@ -1,12 +1,59 @@
-# `eslint-markdown-parser`
+<!-- eslint-disable markdown/no-html -->
+
+<p align="center">
+  <img alt="ESLint Markdown Logo" src="https://eslint-markdown.lumir.page/logo.svg" width="150">
+</p>
+
+<h1 align="center">ESLint Markdown</h1>
+
+<p align="center">
+  <a href="https://eslint-markdown.lumir.page">Documentation</a> |
+  <a href="https://eslint-markdown.lumir.page/docs/rules/">Rules</a> |
+  <a href="https://eslint-markdown.lumir.page/docs/get-started/configurations">Configurations</a> |
+  <a href="https://eslint-markdown.lumir.page/docs/get-started/migration">Migration</a> |
+  <a href="https://eslint-markdown.lumir.page/docs/packages">Packages</a> |
+  <a href="https://github.com/eslint-markdown/eslint-markdown">Repository</a> |
+  <a href="https://github.com/eslint-markdown/eslint-markdown/discussions">Discussions</a>
+</p>
+
+<p align="center">
+  Community-Maintained ESLint Tools, Rules, and Configurations for High-Quality and Performant Markdown Linting.
+</p>
+
+<p align="center">
+  <a href="https://github.com/eslint-markdown/eslint-markdown/actions/workflows/ci.yml"><img alt="ci" src="https://img.shields.io/github/actions/workflow/status/eslint-markdown/eslint-markdown/ci.yml?label=ci&color=341bab&labelColor=1a1a1a&logo=github"></a>
+  <a href="https://github.com/eslint-markdown/eslint-markdown/actions/workflows/test.yml"><img alt="test" src="https://img.shields.io/github/actions/workflow/status/eslint-markdown/eslint-markdown/test.yml?label=test&color=341bab&labelColor=1a1a1a&logo=github"></a>
+  <a href="https://codecov.io/gh/eslint-markdown/eslint-markdown"><img alt="codecov" src="https://img.shields.io/codecov/c/gh/eslint-markdown/eslint-markdown?token=LJMUst9eR3&label=Codecov&color=341bab&labelColor=1a1a1a&logo=codecov"></a>
+  <img alt="Node Current" src="https://img.shields.io/node/v/eslint-markdown-parser?color=341bab&labelColor=1a1a1a&logo=node.js">
+</p>
+
+<!-- eslint-enable markdown/no-html -->
+
+> [!IMPORTANT]
+>
+> If you like this package, please give it a star on [GitHub](https://github.com/eslint-markdown/eslint-markdown)!⭐<br/>
+> Your support helps us improve and maintain the project.
+
+## `eslint-markdown-parser`
+
+[![npm package eslint-markdown-parser latest version](https://img.shields.io/npm/v/eslint-markdown-parser?label=eslint-markdown-parser@latest&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-markdown-parser)
+[![npm package eslint-markdown-parser next version](https://img.shields.io/npm/v/eslint-markdown-parser/next?label=eslint-markdown-parser@next&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-markdown-parser)
+[![npm package eslint-markdown-parser downloads per month](https://img.shields.io/npm/dm/eslint-markdown-parser?label=downloads&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-markdown-parser)
 
 A blazing fast Markdown parser for ESLint.⚡
 
-Parses Markdown into an mdast syntax tree, with support for CommonMark, GFM, front matter, and math.
-
 ## Documentation
 
-See the [parser documentation](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown-parser) for usage and configuration options.
+For full documentation, see the [parser documentation](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown-parser).
+
+- [Installation](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown-parser#installation)
+- [Usage](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown-parser#usage)
+- [Configuration](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown-parser#configuration)
+- [Exports](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown-parser#exports)
+- [Packages](https://eslint-markdown.lumir.page/docs/packages)
+  - [`eslint-markdown`](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown)
+  - [`eslint-markdown-parser`](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown-parser)
+  - [`eslint-lumir`](https://eslint-markdown.lumir.page/docs/packages/eslint-lumir)
 
 ## License
 
