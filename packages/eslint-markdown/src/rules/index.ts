@@ -32,6 +32,7 @@ import noShellDollar from './no-shell-dollar.js';
 import noTab from './no-tab.js';
 import noTrailingHeadingPunctuation from './no-trailing-heading-punctuation.js';
 import noUrlTrailingSlash from './no-url-trailing-slash.js';
+import requireCapitalization from './require-capitalization.js';
 import requireHeadingId from './require-heading-id.js';
 import requireImageTitle from './require-image-title.js';
 import requireLinkTitle from './require-link-title.js';
@@ -64,6 +65,7 @@ export default {
   'no-tab': noTab,
   'no-trailing-heading-punctuation': noTrailingHeadingPunctuation,
   'no-url-trailing-slash': noUrlTrailingSlash,
+  'require-capitalization': requireCapitalization,
   'require-heading-id': requireHeadingId,
   'require-image-title': requireImageTitle,
   'require-link-title': requireLinkTitle,
