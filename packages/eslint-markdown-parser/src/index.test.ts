@@ -146,6 +146,33 @@ describe('index', () => {
         assert.strictEqual(frontmatter.value, '{"title": "Example"}');
       });
 
+      it('should ignore a leading BOM before YAML frontmatter', () => {
+        const text = '---\ntitle: Example\n---\n\n# Hello';
+
+        assert.deepStrictEqual(
+          parse(`\uFEFF${text}`, { frontmatter: 'yaml' }),
+          parse(text, { frontmatter: 'yaml' }),
+        );
+      });
+
+      it('should ignore a leading BOM before TOML frontmatter', () => {
+        const text = '+++\ntitle = "Example"\n+++\n\n# Hello';
+
+        assert.deepStrictEqual(
+          parse(`\uFEFF${text}`, { frontmatter: 'toml' }),
+          parse(text, { frontmatter: 'toml' }),
+        );
+      });
+
+      it('should ignore a leading BOM before JSON frontmatter', () => {
+        const text = '---\n{"title": "Example"}\n---\n\n# Hello';
+
+        assert.deepStrictEqual(
+          parse(`\uFEFF${text}`, { frontmatter: 'json' }),
+          parse(text, { frontmatter: 'json' }),
+        );
+      });
+
       it("should not parse TOML frontmatter when `frontmatter` is set to `'yaml'`", () => {
         const ast = parse('+++\ntitle = "Example"\n+++', {
           frontmatter: 'yaml',

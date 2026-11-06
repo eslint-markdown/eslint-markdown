@@ -118,16 +118,16 @@ export function parse(
   { mode = 'commonmark', frontmatter = false, math = false }: ParseOptions = {},
 ): Root {
   /*
-   * ESLint removes the BOM before calling the parser, so the BOM does not need to
-   * be handled here and `startsWith()` is safe to use.
-   * See: https://github.com/eslint/markdown/blob/v8.0.3/src/language/markdown-language.js#L209-L210
+   * Match `satteri`, which strips one leading BOM before parsing.
    *
    * We can also remove this logic once the following issue is resolved:
    * https://github.com/bruits/satteri/issues/194
    */
+  const startOffset = text.startsWith('\uFEFF') ? 1 : 0;
   const frontmatterEnabled =
-    (frontmatter === 'toml' && text.startsWith('+++')) ||
-    ((frontmatter === 'yaml' || frontmatter === 'json') && text.startsWith('---'));
+    (frontmatter === 'toml' && text.startsWith('+++', startOffset)) ||
+    ((frontmatter === 'yaml' || frontmatter === 'json') &&
+      text.startsWith('---', startOffset));
 
   const ast = markdownToMdast(text, {
     features: {
