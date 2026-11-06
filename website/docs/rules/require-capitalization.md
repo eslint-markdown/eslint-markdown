@@ -5,7 +5,13 @@
 
 This rule enforces the use of capital letters at the beginning of sentences in Markdown documents. Maintaining consistent capitalization improves document readability and professionalism.
 
-The rule checks the first text node in paragraphs, headings, blockquotes, footnote definitions, list items, and table cells (depending on configuration) to ensure proper capitalization. When the checked text begins with a lowercase letter, the rule flags it as a violation and can automatically fix the issue by converting that letter to uppercase.
+The rule checks the leading text in paragraphs, headings, blockquotes, footnote definitions, list items, and table cells (depending on the configured selectors) to ensure proper capitalization. When the checked text begins with a lowercase ASCII letter (`a` through `z`), the rule flags it as a violation and can automatically fix the issue by converting that letter to uppercase.
+
+::: info
+
+This rule doesn't report any errors by default. You must configure it with selectors matching the Markdown nodes you want to check.
+
+:::
 
 ## Examples
 
@@ -13,10 +19,10 @@ The rule checks the first text node in paragraphs, headings, blockquotes, footno
 
 Examples of **incorrect** code for this rule:
 
-#### Default
+#### With `'paragraph'`, `'heading'`, and `'tableCell'` Selectors
 
 ```md eslint-check
-<!-- eslint md/require-capitalization: 'error' -->
+<!-- eslint md/require-capitalization: ['error', 'paragraph', 'heading', 'tableCell'] -->
 
 hello world!
 
@@ -37,10 +43,10 @@ hello world!
 
 Examples of **correct** code for this rule:
 
-#### Default
+#### With `'paragraph'`, `'heading'`, and `'tableCell'` Selectors
 
 ```md eslint-check
-<!-- eslint md/require-capitalization: 'error' -->
+<!-- eslint md/require-capitalization: ['error', 'paragraph', 'heading', 'tableCell'] -->
 
 Hello world!
 
@@ -57,10 +63,12 @@ Hello world!
 | Cell    |
 ```
 
-#### With `{ skipHeading: true, skipListItem: true }` Option
+#### With `'root > paragraph'` Selector
 
 ```md eslint-check
-<!-- eslint md/require-capitalization: ['error', { skipHeading: true, skipListItem: true }] -->
+<!-- eslint md/require-capitalization: ['error', 'root > paragraph'] -->
+
+Hello world!
 
 # hello world!
 
@@ -69,52 +77,30 @@ Hello world!
 
 ## Options
 
+Like ESLint's [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax#options), this rule accepts a list of [AST selector](https://eslint.org/docs/latest/extend/selectors) strings:
+
 ```js
-'md/require-capitalization': ['error', {
-  skipBlockquote: false,
-  skipFootnoteDefinition: false,
-  skipHeading: false,
-  skipListItem: false,
-  skipParagraph: false,
-  skipTableCell: false,
-}]
+'md/require-capitalization': ['error', 'paragraph', 'heading', 'tableCell']
 ```
 
-### `skipBlockquote`
+Selectors match Markdown AST nodes. For example, `'heading'` selects all headings, while `'heading[depth=2]'` selects only second-level headings. Use [ESLint Code Explorer](https://explorer.eslint.org) with Markdown selected to inspect node types and properties.
 
-> Type: `boolean` / Default: `false`
+Alternatively, each option can be an object with:
 
-When set to `true`, paragraphs that are direct children of blockquotes are not checked for capitalization.
+- `selector` (required): The AST selector to check.
+- `message` (optional): The message reported for violations matching that selector. When omitted, the default message is used, for example: `` `h` should be capitalized. ``
 
-### `skipFootnoteDefinition`
+Selectors and custom messages must be non-empty strings. String and object options can be mixed:
 
-> Type: `boolean` / Default: `false`
-
-When set to `true`, GFM footnote definitions are not checked for capitalization.
-
-### `skipHeading`
-
-> Type: `boolean` / Default: `false`
-
-When set to `true`, headings are not checked for capitalization. This is useful for documentation styles that intentionally use lowercase headings or for code-like headings.
-
-### `skipListItem`
-
-> Type: `boolean` / Default: `false`
-
-When set to `true`, paragraphs in list items are not checked for capitalization. This is helpful for lists that might contain sentence fragments or code examples.
-
-### `skipParagraph`
-
-> Type: `boolean` / Default: `false`
-
-When set to `true`, regular paragraphs are not checked for capitalization. This does not skip headings, blockquote paragraphs, footnote definitions, list item paragraphs, or table cells.
-
-### `skipTableCell`
-
-> Type: `boolean | 'th' | 'td'` / Default: `false`
-
-When set to `true`, GFM table cells are not checked for capitalization. When set to `'th'`, only table header cells are skipped. When set to `'td'`, only table data cells are skipped.
+```js
+'md/require-capitalization': ['error',
+  'paragraph',
+  {
+    selector: 'heading',
+    message: 'Headings must begin with a capital letter.',
+  },
+]
+```
 
 ## Fix
 
@@ -133,3 +119,4 @@ You might want to disable this rule if:
 ## Prior Art
 
 - [`capitalized-comments`](https://eslint.org/docs/latest/rules/capitalized-comments)
+- [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax)
