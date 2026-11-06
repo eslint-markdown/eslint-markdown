@@ -196,42 +196,42 @@ ruleTester('require-capitalization', rule, {
     {
       name: 'ListItem: Empty',
       code: '- ',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
     },
     {
       name: 'ListItem: 1 level depth',
       code: '- Hello World!',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
     },
     {
       name: 'ListItem: 2 level depth - em',
       code: '- *Hello* World!',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
     },
     {
       name: 'ListItem: 2 level depth - strong',
       code: '- **Hello** World!',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
     },
     {
       name: 'ListItem: 3 level depth - em + strong - 1',
       code: '- ***Hello*** World!',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
     },
     {
       name: 'ListItem: 3 level depth - em + strong - 2',
       code: '- _**Hello**_ _World!_',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
     },
     {
       name: 'ListItem: Should not report text starting with a space after inline code',
       code: '- `code` hello world!',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
     },
     {
       name: 'ListItem: Should not report text starting with a space after an image',
       code: '- ![alt](image.png) hello world!',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
     },
 
     // `paragraph`
@@ -451,7 +451,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Blockquote: 1 level depth',
       code: '> hello world!',
       output: '> Hello world!',
-      options: ['blockquote > paragraph'],
+      options: ['blockquote'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -467,7 +467,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Blockquote: 2 level depth - em',
       code: '> *hello* world!',
       output: '> *Hello* world!',
-      options: ['blockquote > paragraph'],
+      options: ['blockquote'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -483,7 +483,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Blockquote: 2 level depth - strong',
       code: '> **hello** world!',
       output: '> **Hello** world!',
-      options: ['blockquote > paragraph'],
+      options: ['blockquote'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -499,7 +499,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Blockquote: 3 level depth - em + strong - 1',
       code: '> ***hello*** world!',
       output: '> ***Hello*** world!',
-      options: ['blockquote > paragraph'],
+      options: ['blockquote'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -515,7 +515,7 @@ ruleTester('require-capitalization', rule, {
       name: 'Blockquote: 3 level depth - em + strong - 2',
       code: '> _**hello**_ world!',
       output: '> _**Hello**_ world!',
-      options: ['blockquote > paragraph'],
+      options: ['blockquote'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -534,7 +534,7 @@ ruleTester('require-capitalization', rule, {
       code: '[^1]: hello world!',
       output: '[^1]: Hello world!',
       language: 'markdown/gfm',
-      options: ['footnoteDefinition > paragraph'],
+      options: ['footnoteDefinition'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -551,7 +551,7 @@ ruleTester('require-capitalization', rule, {
       code: '[^1]: *hello* world!',
       output: '[^1]: *Hello* world!',
       language: 'markdown/gfm',
-      options: ['footnoteDefinition > paragraph'],
+      options: ['footnoteDefinition'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -568,7 +568,7 @@ ruleTester('require-capitalization', rule, {
       code: '[^1]: **hello** world!',
       output: '[^1]: **Hello** world!',
       language: 'markdown/gfm',
-      options: ['footnoteDefinition > paragraph'],
+      options: ['footnoteDefinition'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -585,7 +585,7 @@ ruleTester('require-capitalization', rule, {
       code: '[^1]: ***hello*** world!',
       output: '[^1]: ***Hello*** world!',
       language: 'markdown/gfm',
-      options: ['footnoteDefinition > paragraph'],
+      options: ['footnoteDefinition'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -602,7 +602,7 @@ ruleTester('require-capitalization', rule, {
       code: '[^1]: _**hello**_ world!',
       output: '[^1]: _**Hello**_ world!',
       language: 'markdown/gfm',
-      options: ['footnoteDefinition > paragraph'],
+      options: ['footnoteDefinition'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -702,7 +702,7 @@ ruleTester('require-capitalization', rule, {
       name: 'ListItem: 1 level depth',
       code: '- hello world!',
       output: '- Hello world!',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -718,7 +718,7 @@ ruleTester('require-capitalization', rule, {
       name: 'ListItem: 2 level depth - em',
       code: '- *hello* world!',
       output: '- *Hello* world!',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -734,7 +734,7 @@ ruleTester('require-capitalization', rule, {
       name: 'ListItem: 2 level depth - strong',
       code: '- **hello** world!',
       output: '- **Hello** world!',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -750,7 +750,7 @@ ruleTester('require-capitalization', rule, {
       name: 'ListItem: 3 level depth - em + strong - 1',
       code: '- ***hello*** world!',
       output: '- ***Hello*** world!',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
       errors: [
         {
           messageId: 'requireCapitalization',
@@ -766,7 +766,7 @@ ruleTester('require-capitalization', rule, {
       name: 'ListItem: 3 level depth - em + strong - 2',
       code: '- _**hello**_ world!',
       output: '- _**Hello**_ world!',
-      options: ['listItem > paragraph'],
+      options: ['listItem'],
       errors: [
         {
           messageId: 'requireCapitalization',
