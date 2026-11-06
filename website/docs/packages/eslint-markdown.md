@@ -41,9 +41,3 @@ md.meta;
 md.rules;
 md.configs;
 ```
-
-### Rule Language Metadata
-
-Each rule exposes `meta.languages` with its supported ESLint language identifiers: `markdown/commonmark`, `markdown/gfm`, or both. This replaces the legacy `meta.language` property. The human-readable dialect names remain available in `meta.docs.dialects`.
-
-For example, `require-capitalization` supports both languages, while `consistent-delete-style` supports only `markdown/gfm`. The identifiers refer to the languages provided by `@eslint/markdown`, even when you register `eslint-markdown` under a custom rule namespace.

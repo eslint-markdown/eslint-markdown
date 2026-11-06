@@ -33,35 +33,16 @@ export type RuleContext<Options extends Partial<MarkdownRuleDefinitionTypeOption
 export interface RuleModule<
   RuleOptions extends MarkdownRuleDefinitionTypeOptions['RuleOptions'],
   MessageIds extends MarkdownRuleDefinitionTypeOptions['MessageIds'],
-> extends Omit<
-  MarkdownRuleDefinition<{
-    RuleOptions: RuleOptions;
-    MessageIds: MessageIds;
-  }>,
-  'meta'
-> {
-  meta: NonNullable<
-    MarkdownRuleDefinition<{
-      RuleOptions: RuleOptions;
-      MessageIds: MessageIds;
-      ExtRuleDocs: {
-        /**
-         * The Markdown dialects supported by this rule.
-         */
-        dialects: ('CommonMark' | 'GFM')[];
-        /**
-         * Indicates whether this rule is part of the stylistic configuration.
-         */
-        stylistic?: boolean;
-      };
-    }>['meta']
-  > & {
+> extends MarkdownRuleDefinition<{
+  RuleOptions: RuleOptions;
+  MessageIds: MessageIds;
+  ExtRuleDocs: Partial<{
     /**
-     * The supported language identifiers, including for ESLint v9's metadata types.
+     * Indicates whether this rule is part of the stylistic configuration.
      */
-    languages: ('markdown/commonmark' | 'markdown/gfm')[];
-  };
-
+    stylistic: boolean;
+  }>;
+}> {
   create(
     context: RuleContext<{ RuleOptions: RuleOptions; MessageIds: MessageIds }>,
   ): MarkdownRuleVisitor;

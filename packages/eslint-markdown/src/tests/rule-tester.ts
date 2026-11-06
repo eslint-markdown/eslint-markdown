@@ -153,7 +153,7 @@ export default function ruleTester(
     });
 
     describe('rule', () => {
-      if (meta?.languages.includes('markdown/commonmark')) {
+      if (meta?.docs?.dialects?.includes('CommonMark')) {
         describe('commonmark', () => {
           // ESLint v9's run types do not fully support Markdown rules or suggestion counts.
           // TODO: Remove this once support for ESLint v9 is dropped.
@@ -165,7 +165,7 @@ export default function ruleTester(
         });
       }
 
-      if (meta?.languages.includes('markdown/gfm')) {
+      if (meta?.docs?.dialects?.includes('GFM')) {
         describe('gfm', () => {
           // ESLint v9's run types do not fully support Markdown rules or suggestion counts.
           // TODO: Remove this once support for ESLint v9 is dropped.
