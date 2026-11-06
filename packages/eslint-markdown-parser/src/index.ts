@@ -1,5 +1,5 @@
 /**
- * @fileoverview Entry file for the `@eslint-markdown/parser` package.
+ * @fileoverview Entry file for the `eslint-markdown-parser` package.
  * @see https://eslint.org/docs/latest/use/configure/parser
  * @see https://eslint.org/docs/latest/extend/custom-parsers
  */
@@ -88,7 +88,7 @@ export const meta = {
   /**
    * The name of the parser.
    */
-  name: '@eslint-markdown/parser',
+  name: 'eslint-markdown-parser',
 
   /**
    * The version of the parser.
@@ -104,7 +104,7 @@ export const meta = {
  * @returns The mdast syntax tree.
  * @example
  * ```js
- * import { parse } from '@eslint-markdown/parser';
+ * import { parse } from 'eslint-markdown-parser';
  *
  * const ast = parse('# Hello, world!', {
  *   mode: 'commonmark',

@@ -12,7 +12,7 @@ import parser, {
   type Json,
   type JsonData,
   type ParseOptions,
-} from '@eslint-markdown/parser';
+} from 'eslint-markdown-parser';
 import type {
   Json as ESLintMarkdownJson,
   JsonData as ESLintMarkdownJsonData,
@@ -109,7 +109,7 @@ parseOptions = { math: 'true' };
 // #region meta (named export)
 
 meta.name satisfies string;
-meta.name satisfies '@eslint-markdown/parser';
+meta.name satisfies 'eslint-markdown-parser';
 
 meta.version satisfies string;
 

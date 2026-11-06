@@ -47,7 +47,7 @@ For full documentation, see the [official documentation of the `eslint-markdown`
 - [Rules](https://eslint-markdown.lumir.page/docs/rules)
 - [Packages](https://eslint-markdown.lumir.page/docs/packages)
   - [`eslint-markdown`](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown)
-  - [`@eslint-markdown/parser`](https://eslint-markdown.lumir.page/docs/packages/parser)
+  - [`eslint-markdown-parser`](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown-parser)
   - [`eslint-lumir`](https://eslint-markdown.lumir.page/docs/packages/eslint-lumir)
 
 ## Included Packages
@@ -68,6 +68,10 @@ This repository is maintained as a monorepo and includes the following three pac
 
 Lint your Markdown with ESLint. Additional rules for use with `@eslint/markdown`.🛠️
 
+### `eslint-markdown-parser` - [Docs](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown-parser) | [Repository](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-markdown-parser) | [npm](https://www.npmjs.com/package/eslint-markdown-parser)
+
+A blazing fast Markdown parser for ESLint.⚡
+
 ### `eslint-lumir` - [Docs](https://eslint-markdown.lumir.page/docs/packages/eslint-lumir) | [Repository](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/eslint-lumir) | [npm](https://www.npmjs.com/package/eslint-lumir)
 
 [![npm package eslint-lumir latest version](https://img.shields.io/npm/v/eslint-lumir?label=eslint-lumir@latest&color=341bab&labelColor=1a1a1a&logo=npm)](https://www.npmjs.com/package/eslint-lumir)
@@ -79,10 +83,6 @@ Lint your Markdown with ESLint. Additional rules for use with `@eslint/markdown`
 > This package is currently marked as private and excluded from npm publishing. It will be made public once it's ready for release.
 
 Lumir's ESLint config preset.
-
-### `@eslint-markdown/parser` - [Docs](https://eslint-markdown.lumir.page/docs/packages/parser) | [Repository](https://github.com/eslint-markdown/eslint-markdown/tree/main/packages/parser) | [npm](https://www.npmjs.com/package/@eslint-markdown/parser)
-
-A blazing fast Markdown parser for ESLint.⚡
 
 ## Code of Conduct
 

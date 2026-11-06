@@ -1,19 +1,19 @@
 ---
-description: "Package documentation and configuration options for the `@eslint-markdown/parser` Markdown parser."
+description: "Package documentation and configuration options for the `eslint-markdown-parser` Markdown parser."
 ---
 
-# `@eslint-markdown/parser`
+# `eslint-markdown-parser`
 
 > A blazing fast Markdown parser for ESLint.
 
-`@eslint-markdown/parser` parses Markdown source text into an [mdast](https://github.com/syntax-tree/mdast#readme) syntax tree. It supports CommonMark and GitHub Flavored Markdown (GFM), with optional support for YAML, TOML, or JSON front matter and math syntax.
+`eslint-markdown-parser` parses Markdown source text into an [mdast](https://github.com/syntax-tree/mdast#readme) syntax tree. It supports CommonMark and GitHub Flavored Markdown (GFM), with optional support for YAML, TOML, or JSON front matter and math syntax.
 
 ## Usage
 
 The default export provides the parser metadata and the `parse` function. The same values are also available as named exports.
 
 ```js
-import parser from '@eslint-markdown/parser';
+import parser from 'eslint-markdown-parser';
 
 const ast = parser.parse('# Hello, world!', {
   mode: 'gfm',

@@ -237,8 +237,8 @@ export default defineConfig({
               link: 'eslint-lumir',
             },
             {
-              text: '@eslint-markdown/parser',
-              link: 'parser',
+              text: 'eslint-markdown-parser',
+              link: 'eslint-markdown-parser',
             },
           ],
         },

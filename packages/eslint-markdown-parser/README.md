@@ -1,4 +1,4 @@
-# `@eslint-markdown/parser`
+# `eslint-markdown-parser`
 
 A blazing fast Markdown parser for ESLint.⚡
 
@@ -6,8 +6,8 @@ Parses Markdown into an mdast syntax tree, with support for CommonMark, GFM, fro
 
 ## Documentation
 
-See the [parser documentation](https://eslint-markdown.lumir.page/docs/packages/parser) for usage and configuration options.
+See the [parser documentation](https://eslint-markdown.lumir.page/docs/packages/eslint-markdown-parser) for usage and configuration options.
 
 ## License
 
-[MIT](https://github.com/eslint-markdown/eslint-markdown/blob/main/packages/parser/LICENSE.md)
+[MIT](https://github.com/eslint-markdown/eslint-markdown/blob/main/packages/eslint-markdown-parser/LICENSE.md)
