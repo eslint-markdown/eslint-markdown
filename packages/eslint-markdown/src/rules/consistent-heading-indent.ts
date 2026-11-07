@@ -62,6 +62,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Disallow heading indentation',
       dialects: ['CommonMark', 'GFM'],
@@ -75,8 +77,6 @@ export default {
     messages: {
       noHeadingIndentation: 'Heading indentation is not allowed.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {
