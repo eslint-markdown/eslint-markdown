@@ -69,6 +69,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce the use of capital letters at the beginning of sentences',
       dialects: ['CommonMark', 'GFM'],
@@ -108,8 +110,6 @@ export default {
     messages: {
       requireCapitalization: '{{ message }}',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

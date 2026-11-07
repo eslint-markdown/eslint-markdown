@@ -63,6 +63,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Disallow tab characters',
       dialects: ['CommonMark', 'GFM'],
@@ -122,8 +124,6 @@ export default {
     messages: {
       noTab: 'Tab character is not allowed. Please use spaces instead.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {
