@@ -103,9 +103,11 @@ export default function ruleTester(
         meta.languages.forEach(language => {
           assert.match(language, /^markdown\/(?:commonmark|gfm)$/);
         });
+
+        assert.ok(meta.docs?.dialects);
         assert.deepStrictEqual(
           meta.languages,
-          meta.docs?.dialects.map(dialect => `markdown/${dialect.toLowerCase()}`),
+          meta.docs.dialects.map(dialect => `markdown/${dialect.toLowerCase()}`),
         );
       });
 
