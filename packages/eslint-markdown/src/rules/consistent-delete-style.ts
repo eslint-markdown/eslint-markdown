@@ -43,6 +43,8 @@ export default {
   meta: {
     type: 'layout',
 
+    languages: ['markdown/gfm'],
+
     docs: {
       description: 'Enforce consistent delete style',
       dialects: ['GFM'],
@@ -74,8 +76,6 @@ export default {
     messages: {
       style: 'Delete style should be `{{ style }}`.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

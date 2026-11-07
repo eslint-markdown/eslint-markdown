@@ -49,6 +49,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Disallow git conflict markers',
       dialects: ['CommonMark', 'GFM'],
@@ -96,8 +98,6 @@ export default {
       noGitConflictMarker:
         'Git conflict marker `{{ gitConflictMarker }}` is not allowed.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

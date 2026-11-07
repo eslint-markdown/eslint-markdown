@@ -44,6 +44,8 @@ export default {
   meta: {
     type: 'layout',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Disallow multiple spaces around ATX heading markers',
       dialects: ['CommonMark', 'GFM'],
@@ -78,8 +80,6 @@ export default {
       noMultipleAtxClosedHeadingSpace:
         'Multiple spaces before closing ATX heading markers are not allowed.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

@@ -16,6 +16,8 @@ import { escapeStringRegexp, normalizeRegexPattern } from '../core/utils/index.j
 import {
   URL_RULE_DOCS,
   asciiPunctuationWithQuestionMark,
+  asciiPunctuationRegex,
+  escapedTrailingBackslashRegex,
   gemojiRegex as originalGemojiRegex,
   htmlEntityRegex as originalHtmlEntityRegex,
 } from '../core/constants.js';
@@ -73,6 +75,8 @@ const htmlEntityRegex = new RegExp(originalHtmlEntityRegex.source, 'g');
 export default {
   meta: {
     type: 'problem',
+
+    languages: ['markdown/commonmark', 'markdown/gfm'],
 
     docs: {
       description: 'Disallow double consecutive punctuation in text',
@@ -140,8 +144,6 @@ export default {
       suggestReplaceWithRight:
         'Replace `{{ punctuation }}` with the right punctuation mark `{{ rightPunctuation }}`.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {
@@ -178,13 +180,19 @@ export default {
 
         for (const match of matches) {
           const punctuation = match[0];
+          const [leftPunctuation, rightPunctuation] = punctuation;
+
+          if (
+            allow.includes(punctuation) ||
+            // The preceding backslash is an escape only when the punctuation is escapable.
+            (asciiPunctuationRegex.test(leftPunctuation) &&
+              escapedTrailingBackslashRegex.test(text.slice(0, match.index)))
+          ) {
+            continue;
+          }
 
           const startOffset = nodeStartOffset + match.index;
           const endOffset = startOffset + punctuation.length;
-
-          if (allow.includes(punctuation)) continue;
-
-          const [leftPunctuation, rightPunctuation] = punctuation;
           const violation = {
             loc: {
               start: sourceCode.getLocFromIndex(startOffset),
