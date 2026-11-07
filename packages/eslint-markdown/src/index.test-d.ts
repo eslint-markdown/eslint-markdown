@@ -86,6 +86,7 @@ plugin.rules['no-emoji'].meta.dialects;
 'no-trailing-heading-punctuation' satisfies RuleName;
 'no-url-trailing-slash' satisfies RuleName;
 'require-capitalization' satisfies RuleName;
+'require-eol-last' satisfies RuleName;
 'require-heading-id' satisfies RuleName;
 'require-image-title' satisfies RuleName;
 'require-link-title' satisfies RuleName;
@@ -133,6 +134,7 @@ type AllConfigRuleName = keyof typeof plugin.configs.all.rules;
 'md/no-trailing-heading-punctuation' satisfies AllConfigRuleName;
 'md/no-url-trailing-slash' satisfies AllConfigRuleName;
 'md/require-capitalization' satisfies AllConfigRuleName;
+'md/require-eol-last' satisfies AllConfigRuleName;
 'md/require-heading-id' satisfies AllConfigRuleName;
 'md/require-image-title' satisfies AllConfigRuleName;
 'md/require-link-title' satisfies AllConfigRuleName;
@@ -178,6 +180,7 @@ type StylisticConfigRuleName = keyof typeof plugin.configs.stylistic.rules;
 'md/no-multiple-atx-heading-space' satisfies StylisticConfigRuleName;
 'md/no-tab' satisfies StylisticConfigRuleName;
 'md/no-trailing-heading-punctuation' satisfies StylisticConfigRuleName;
+'md/require-eol-last' satisfies StylisticConfigRuleName;
 
 // #endregion configs
 // --------------------------------------------------------------------------------

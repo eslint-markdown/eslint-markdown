@@ -212,6 +212,12 @@ export const mdRules = {
   'md/require-capitalization': 'off',
 
   /**
+   * Require or disallow a newline at the end of files.
+   * @see https://eslint-markdown.lumir.page/docs/rules/require-eol-last
+   */
+  'md/require-eol-last': 'error',
+
+  /**
    * Enforce the use of heading IDs.
    * @see https://eslint-markdown.lumir.page/docs/rules/require-heading-id
    */

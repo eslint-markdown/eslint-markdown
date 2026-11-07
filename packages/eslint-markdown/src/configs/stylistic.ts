@@ -42,6 +42,7 @@ export default function stylistic(plugin: ESLint.Plugin) {
       'md/no-multiple-atx-heading-space': 'error',
       'md/no-tab': 'error',
       'md/no-trailing-heading-punctuation': 'error',
+      'md/require-eol-last': 'error',
     },
   } as const satisfies Linter.Config;
 }
