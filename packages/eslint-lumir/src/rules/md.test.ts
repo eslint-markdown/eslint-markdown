@@ -24,7 +24,7 @@ const prefix = 'md/';
 describe('md', () => {
   it('should lint Markdown with the configured eslint-markdown rules', () => {
     const messages = new Linter().verify('Text  here.\n', {
-      language: 'markdown/commonmark',
+      language: 'markdown/gfm',
       plugins: { ...markdownPlugin, ...mdPlugin },
       rules: mdRules,
     });

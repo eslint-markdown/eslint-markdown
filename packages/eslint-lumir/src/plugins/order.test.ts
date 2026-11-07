@@ -454,7 +454,7 @@ ruleTester.run('order', rule, {
         },
       ],
     }),
-    // Using pathGroups to customize ordering, with patternOptions
+    // Using pathGroups to match a literal leading exclamation mark
     tValid({
       code: `
         import fs from 'fs';
@@ -473,7 +473,6 @@ ruleTester.run('order', rule, {
             { pattern: '~/**', group: 'external', position: 'after' },
             {
               pattern: '!/**',
-              patternOptions: { nonegate: true },
               group: 'external',
               position: 'after',
             },
@@ -1151,6 +1150,7 @@ ruleTester.run('order', rule, {
       ],
     }),
     // Option pathGroup[].distinctGroup: 'false' should prevent 'position' properties from affecting the visible grouping 3
+    // Use suffix globs so matching does not depend on platform-specific case sensitivity.
     tValid({
       code: `
         import A from "baz";
@@ -1204,17 +1204,17 @@ ruleTester.run('order', rule, {
               position: 'before',
             },
             {
-              pattern: '[a-z]*',
+              pattern: '*az',
               group: 'external',
               position: 'before',
             },
             {
-              pattern: '../[a-z]*',
+              pattern: '../*az',
               group: 'parent',
               position: 'before',
             },
             {
-              pattern: './[a-z]*',
+              pattern: './*az',
               group: 'sibling',
               position: 'before',
             },

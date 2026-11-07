@@ -46,6 +46,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Disallow dollar signs before commands without showing output',
       dialects: ['CommonMark', 'GFM'],
@@ -82,8 +84,6 @@ export default {
       noShellDollar:
         'Dollar sign should not be used before commands without showing output.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

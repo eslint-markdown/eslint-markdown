@@ -60,6 +60,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce the use of allowed or disallowed URLs for links',
       dialects: ['CommonMark', 'GFM'],
@@ -120,8 +122,6 @@ export default {
       emptyAllowLinkUrl:
         'The URL `{{ url }}` is not allowed because the list of allowed URLs is empty.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

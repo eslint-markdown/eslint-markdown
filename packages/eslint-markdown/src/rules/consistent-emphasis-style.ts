@@ -43,6 +43,8 @@ export default {
   meta: {
     type: 'layout',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce consistent emphasis style',
       dialects: ['CommonMark', 'GFM'],
@@ -74,8 +76,6 @@ export default {
     messages: {
       style: 'Emphasis style should be `{{ style }}`.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

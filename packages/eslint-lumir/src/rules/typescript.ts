@@ -408,4 +408,16 @@ export const typescriptRules = {
 
   // #endregion Stylistic
   // ------------------------------------------------------------------------------
+
+  // ------------------------------------------------------------------------------
+  // #region Others
+
+  /**
+   * Require top-level type qualifiers for imports containing only inline type specifiers.
+   * @see https://typescript-eslint.io/rules/no-import-type-side-effects
+   */
+  'typescript/no-import-type-side-effects': 'error',
+
+  // #endregion Others
+  // ------------------------------------------------------------------------------
 } as const satisfies Linter.RulesRecord;

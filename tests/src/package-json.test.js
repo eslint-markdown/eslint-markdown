@@ -9,6 +9,7 @@
 import { assert, describe, it } from 'vitest';
 import eslintLumir from 'eslint-lumir/package.json' with { type: 'json' };
 import eslintMarkdown from 'eslint-markdown/package.json' with { type: 'json' };
+import eslintMarkdownParser from 'eslint-markdown-parser/package.json' with { type: 'json' };
 import monorepo from '../../package.json' with { type: 'json' };
 
 // --------------------------------------------------------------------------------
@@ -23,6 +24,7 @@ describe('package-json', () => {
         monorepo.devEngines.runtime.version,
         eslintLumir.engines.node,
         eslintMarkdown.engines.node,
+        eslintMarkdownParser.engines.node,
       ]).size,
       1,
     );

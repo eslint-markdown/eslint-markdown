@@ -13,6 +13,12 @@ It reports cases where exactly two of the following punctuation marks appear in 
 
 For example, `!!`, `?!`, `..`, `::`, `??`, and `;:` are reported, whereas `...`, `!!!`, `?!?`, and `,.;` are not.
 
+::: tip NOTE
+
+You can use a backslash to escape ASCII punctuation, such as `\!!`, to avoid reporting.
+
+:::
+
 ## Examples
 
 ### :x: Incorrect {#incorrect}
