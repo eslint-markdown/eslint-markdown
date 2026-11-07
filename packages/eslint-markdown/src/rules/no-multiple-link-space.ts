@@ -40,6 +40,8 @@ export default {
   meta: {
     type: 'layout',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Disallow multiple spaces around link text',
       dialects: ['CommonMark', 'GFM'],
@@ -53,8 +55,6 @@ export default {
     messages: {
       noMultipleLinkSpace: 'Multiple spaces around link text are not allowed.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {
