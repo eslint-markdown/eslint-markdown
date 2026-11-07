@@ -45,14 +45,20 @@ const headingOptionsSchema = {
     allow: {
       type: 'array',
       items: {
-        oneOf: [{ type: 'object', additionalProperties: false }, { type: 'string' }],
+        oneOf: [
+          { type: 'object', additionalProperties: false },
+          { type: 'string', minLength: 1 },
+        ],
       },
       uniqueItems: true,
     },
     disallow: {
       type: 'array',
       items: {
-        oneOf: [{ type: 'object', additionalProperties: false }, { type: 'string' }],
+        oneOf: [
+          { type: 'object', additionalProperties: false },
+          { type: 'string', minLength: 1 },
+        ],
       },
       uniqueItems: true,
     },
@@ -68,8 +74,11 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce the use of allowed or disallowed headings',
+      dialects: ['CommonMark', 'GFM'],
       url: URL_RULE_DOCS('allow-heading'),
       recommended: false,
       stylistic: false,
@@ -109,10 +118,6 @@ export default {
       emptyAllowHeading:
         'No level {{ depth }} headings are allowed because the list of allowed headings is empty.',
     },
-
-    language: 'markdown',
-
-    dialects: ['commonmark', 'gfm'],
   },
 
   create(context) {

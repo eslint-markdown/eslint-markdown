@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.test-d.json",
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    }
+  ],
+  "compilerOptions": {
+    /* Modules */
+    "types": ["node"]
+  }
+}

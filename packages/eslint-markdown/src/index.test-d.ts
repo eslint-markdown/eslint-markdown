@@ -39,7 +39,13 @@ plugin.meta.version satisfies string;
 type RuleName = keyof typeof plugin.rules;
 
 ({}) as (typeof plugin.rules)[RuleName]['meta']['type'] satisfies 'problem' | 'layout';
+({}) as (typeof plugin.rules)[RuleName]['meta']['languages'] satisfies (
+  'markdown/commonmark' | 'markdown/gfm'
+)[];
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['description'] satisfies `${'Enforce' | 'Require' | 'Disallow'} ${string}`;
+({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['dialects'] satisfies (
+  'CommonMark' | 'GFM'
+)[];
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['url'] satisfies string;
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['recommended'] satisfies boolean;
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['stylistic'] satisfies boolean;
@@ -50,6 +56,8 @@ type RuleName = keyof typeof plugin.rules;
 
 // @ts-expect-error -- Rule message IDs should remain specific to each rule.
 plugin.rules['no-emoji'].meta.messages.unknownMessage;
+// @ts-expect-error -- Dialects belong in `meta.docs`.
+plugin.rules['no-emoji'].meta.dialects;
 
 'allow-heading' satisfies RuleName;
 'allow-image-url' satisfies RuleName;
@@ -60,6 +68,7 @@ plugin.rules['no-emoji'].meta.messages.unknownMessage;
 'consistent-emphasis-style' satisfies RuleName;
 'consistent-heading-style' satisfies RuleName;
 'consistent-inline-code-style' satisfies RuleName;
+'consistent-ordered-list-style' satisfies RuleName;
 'consistent-strong-style' satisfies RuleName;
 'consistent-table-style' satisfies RuleName;
 'consistent-thematic-break-style' satisfies RuleName;
@@ -77,6 +86,7 @@ plugin.rules['no-emoji'].meta.messages.unknownMessage;
 'no-tab' satisfies RuleName;
 'no-trailing-heading-punctuation' satisfies RuleName;
 'no-url-trailing-slash' satisfies RuleName;
+'require-capitalization' satisfies RuleName;
 'require-heading-id' satisfies RuleName;
 'require-image-title' satisfies RuleName;
 'require-link-title' satisfies RuleName;
@@ -106,6 +116,7 @@ type AllConfigRuleName = keyof typeof plugin.configs.all.rules;
 'md/consistent-emphasis-style' satisfies AllConfigRuleName;
 'md/consistent-heading-style' satisfies AllConfigRuleName;
 'md/consistent-inline-code-style' satisfies AllConfigRuleName;
+'md/consistent-ordered-list-style' satisfies AllConfigRuleName;
 'md/consistent-strong-style' satisfies AllConfigRuleName;
 'md/consistent-table-style' satisfies AllConfigRuleName;
 'md/consistent-thematic-break-style' satisfies AllConfigRuleName;
@@ -123,6 +134,7 @@ type AllConfigRuleName = keyof typeof plugin.configs.all.rules;
 'md/no-tab' satisfies AllConfigRuleName;
 'md/no-trailing-heading-punctuation' satisfies AllConfigRuleName;
 'md/no-url-trailing-slash' satisfies AllConfigRuleName;
+'md/require-capitalization' satisfies AllConfigRuleName;
 'md/require-heading-id' satisfies AllConfigRuleName;
 'md/require-image-title' satisfies AllConfigRuleName;
 'md/require-link-title' satisfies AllConfigRuleName;
@@ -160,6 +172,7 @@ type StylisticConfigRuleName = keyof typeof plugin.configs.stylistic.rules;
 'md/consistent-emphasis-style' satisfies StylisticConfigRuleName;
 'md/consistent-heading-style' satisfies StylisticConfigRuleName;
 'md/consistent-inline-code-style' satisfies StylisticConfigRuleName;
+'md/consistent-ordered-list-style' satisfies StylisticConfigRuleName;
 'md/consistent-strong-style' satisfies StylisticConfigRuleName;
 'md/consistent-table-style' satisfies StylisticConfigRuleName;
 'md/consistent-thematic-break-style' satisfies StylisticConfigRuleName;

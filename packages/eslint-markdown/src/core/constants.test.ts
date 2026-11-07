@@ -15,6 +15,7 @@ import {
   nonAsciiPunctuationWithQuestionMark,
   punctuation,
   punctuationWithQuestionMark,
+  asciiPunctuationRegex,
   escapedTrailingBackslashRegex,
   gemojiRegex,
   htmlEntityRegex,
@@ -119,6 +120,49 @@ describe('constants', () => {
   });
 
   describe('regex', () => {
+    describe('asciiPunctuationRegex', () => {
+      it('should match all 32 ASCII punctuation characters defined by CommonMark', () => {
+        const characters = [
+          '!',
+          '"',
+          '#',
+          '$',
+          '%',
+          '&',
+          "'",
+          '(',
+          ')',
+          '*',
+          '+',
+          ',',
+          '-',
+          '.',
+          '/',
+          ':',
+          ';',
+          '<',
+          '=',
+          '>',
+          '?',
+          '@',
+          '[',
+          '\\',
+          ']',
+          '^',
+          '_',
+          '`',
+          '{',
+          '|',
+          '}',
+          '~',
+        ];
+
+        for (const character of characters) {
+          assert.match(character, asciiPunctuationRegex);
+        }
+      });
+    });
+
     describe('escapedTrailingBackslashRegex', () => {
       it('should match one trailing backslash because the run length is odd', () => {
         assert.match('text\\', escapedTrailingBackslashRegex);

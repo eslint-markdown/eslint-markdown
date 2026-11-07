@@ -132,7 +132,7 @@ Each heading level can be configured with:
 - `allow`: Allowed heading patterns. Only headings matching at least one pattern are allowed.
 - `disallow`: Disallowed heading patterns. Headings matching any pattern are reported.
 
-Both options accept `RegExp` objects and string patterns. String patterns are compiled with the `u` flag. Patterns are tested against the Markdown source of the entire heading node, including its heading markers. For example, an `h2` ATX heading with the text `Overview` is tested as `## Overview`.
+Both options accept `RegExp` objects and string patterns. String patterns must be non-empty and are compiled with the `u` flag. Patterns are tested against the Markdown source of the entire heading node, including its heading markers. For example, an `h2` ATX heading with the text `Overview` is tested as `## Overview`.
 
 ::: warning Escaping special characters
 Regular expression special characters must be escaped when they should be matched literally. For example, to match `## [heading]`, use `/^## \[heading\]$/u` or the string pattern `'^## \\[heading\\]$'`.

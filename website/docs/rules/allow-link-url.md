@@ -165,7 +165,7 @@ Please note that this rule doesn't report definition-style comments (e.g., `[//]
 
 > Type: `(RegExp | string)[]` / Default: `[/.*/u]`
 > > This option accepts `RegExp` objects and string patterns.  
-> > String patterns are compiled with the `u` flag.
+> > String patterns must be non-empty and are compiled with the `u` flag.
 
 Allowed URLs act like a ***whitelist***. Only those written on the whitelist **can** pass through.
 
@@ -179,7 +179,7 @@ Regular expression special characters must be escaped when matched literally. Fo
 
 > Type: `(RegExp | string)[]` / Default: `[]`
 > > This option accepts `RegExp` objects and string patterns.  
-> > String patterns are compiled with the `u` flag.
+> > String patterns must be non-empty and are compiled with the `u` flag.
 
 On the contrary, disallowed URLs act like a ***blacklist***. Only those written on the blacklist **cannot** pass through.
 
