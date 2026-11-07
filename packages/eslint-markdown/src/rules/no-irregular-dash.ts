@@ -92,6 +92,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Disallow irregular dash',
       dialects: ['CommonMark', 'GFM'],
@@ -162,8 +164,6 @@ export default {
     messages: {
       noIrregularDash: 'Irregular dash `{{ irregularDash }}` is not allowed.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

@@ -57,6 +57,8 @@ export default {
   meta: {
     type: 'problem',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Disallow trailing punctuation in headings',
       dialects: ['CommonMark', 'GFM'],
@@ -97,8 +99,6 @@ export default {
       noTrailingHeadingPunctuation:
         'Trailing punctuation `{{ punctuation }}` is not allowed in headings.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

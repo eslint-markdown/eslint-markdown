@@ -39,6 +39,9 @@ plugin.meta.version satisfies string;
 type RuleName = keyof typeof plugin.rules;
 
 ({}) as (typeof plugin.rules)[RuleName]['meta']['type'] satisfies 'problem' | 'layout';
+({}) as (typeof plugin.rules)[RuleName]['meta']['languages'] satisfies (
+  'markdown/commonmark' | 'markdown/gfm'
+)[];
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['description'] satisfies `${'Enforce' | 'Require' | 'Disallow'} ${string}`;
 ({}) as (typeof plugin.rules)[RuleName]['meta']['docs']['dialects'] satisfies (
   'CommonMark' | 'GFM'
@@ -83,6 +86,7 @@ plugin.rules['no-emoji'].meta.dialects;
 'no-tab' satisfies RuleName;
 'no-trailing-heading-punctuation' satisfies RuleName;
 'no-url-trailing-slash' satisfies RuleName;
+'require-capitalization' satisfies RuleName;
 'require-heading-id' satisfies RuleName;
 'require-image-title' satisfies RuleName;
 'require-link-title' satisfies RuleName;
@@ -130,6 +134,7 @@ type AllConfigRuleName = keyof typeof plugin.configs.all.rules;
 'md/no-tab' satisfies AllConfigRuleName;
 'md/no-trailing-heading-punctuation' satisfies AllConfigRuleName;
 'md/no-url-trailing-slash' satisfies AllConfigRuleName;
+'md/require-capitalization' satisfies AllConfigRuleName;
 'md/require-heading-id' satisfies AllConfigRuleName;
 'md/require-image-title' satisfies AllConfigRuleName;
 'md/require-link-title' satisfies AllConfigRuleName;
