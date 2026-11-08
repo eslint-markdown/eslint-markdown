@@ -55,3 +55,19 @@ All packages are located in the `packages` directory, and the documentation can 
 - [`markdownlint` Rules](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md#rules)
 - [`remark-lint` Rules](https://github.com/remarkjs/remark-lint?tab=readme-ov-file#rules)
 - [`textlint` Rules](https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule#contents)
+
+## Comparing Rules with `markdownlint`
+
+If you use [Visual Studio Code](https://code.visualstudio.com/), install the [`markdownlint` extension](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) to see how its rules behave as you edit your Markdown files.
+
+For example, the following snippet enables only `MD029` with the `one` style and disables ESLint:
+
+```md
+<!-- markdownlint-configure-file { "MD029": { "style": "one" } } -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-enable MD029 -->
+<!-- eslint-disable -->
+
+1. hi
+2. hi
+```
