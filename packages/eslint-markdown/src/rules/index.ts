@@ -16,6 +16,7 @@ import consistentHeadingStyle from './consistent-heading-style.js';
 import consistentInlineCodeStyle from './consistent-inline-code-style.js';
 import consistentOrderedListStyle from './consistent-ordered-list-style.js';
 import consistentStrongStyle from './consistent-strong-style.js';
+import consistentTablePipeStyle from './consistent-table-pipe-style.js';
 import consistentThematicBreakStyle from './consistent-thematic-break-style.js';
 import consistentUnorderedListStyle from './consistent-unordered-list-style.js';
 import noConsecutiveBlankLine from './no-consecutive-blank-line.js';
@@ -49,6 +50,7 @@ export default {
   'consistent-inline-code-style': consistentInlineCodeStyle,
   'consistent-ordered-list-style': consistentOrderedListStyle,
   'consistent-strong-style': consistentStrongStyle,
+  'consistent-table-pipe-style': consistentTablePipeStyle,
   'consistent-thematic-break-style': consistentThematicBreakStyle,
   'consistent-unordered-list-style': consistentUnorderedListStyle,
   'no-consecutive-blank-line': noConsecutiveBlankLine,
