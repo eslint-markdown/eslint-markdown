@@ -152,7 +152,7 @@
     "globals": "^17.14.0"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^16.4.4",
+    "@next/eslint-plugin-next": "^16.4.5",
     "@typescript-eslint/utils": "^8.72.0",
     "eslint": "^10.13.0"
   }
