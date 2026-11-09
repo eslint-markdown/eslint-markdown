@@ -49,8 +49,11 @@ export default {
   meta: {
     type: 'layout',
 
+    languages: ['markdown/gfm'],
+
     docs: {
       description: 'Enforce consistent table style',
+      dialects: ['GFM'],
       url: URL_RULE_DOCS('consistent-table-style'),
       recommended: false,
       stylistic: true,
@@ -100,10 +103,6 @@ export default {
       blankLineBelow:
         'Table should be surrounded by {{ blankLineBelow }} blank line(s) below.',
     },
-
-    language: 'markdown',
-
-    dialects: ['gfm'],
   },
 
   create(context) {
