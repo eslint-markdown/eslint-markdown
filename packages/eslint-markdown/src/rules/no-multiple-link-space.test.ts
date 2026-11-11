@@ -135,35 +135,40 @@ ruleTester('no-multiple-link-space', rule, {
     {
       // NOTE: `[x]` at the head of a list item is a GFM checkbox, so the fix would drop the link.
       // CommonMark has no task list items, but the padding is kept there too for consistency.
+      // `markdownlint` reports this case, but doing so is unsafe.
       name: 'ListItem: Shortcut reference that would become a checked task list item',
       code: '- [x ] details\n\n[x]: https://eslint.org',
-    }, // TODO
+    },
     {
       // NOTE: The list marker sits on an earlier line, so the line holding the link has none.
+      // `markdownlint` reports this case, but doing so is unsafe.
       name: 'ListItem: Shortcut reference that would become a task list item across lines',
       code: '-\n  [x ] details\n\n[x]: https://eslint.org',
-    }, // TODO
+    },
     {
       // NOTE: The definition renders nothing, so the paragraph after it still opens the list item.
+      // `markdownlint` reports this case, but doing so is unsafe.
       name: 'ListItem: Shortcut reference that would become a task list item after a definition',
       code: '- [x]: https://eslint.org\n  [x ] details',
-    }, // TODO
+    },
     {
       name: 'ListItem: Shortcut reference that would become a task list item of a doubly marked list',
       code: '- - [x ] details\n\n[x]: https://eslint.org',
-    }, // TODO
+    },
     {
       name: 'ListItem: Shortcut reference that would become a task list item of a nested list',
       code: '- > - [x ] details\n\n[x]: https://eslint.org',
-    }, // TODO
+    },
     {
+      // `markdownlint` reports this case, but doing so is unsafe.
       name: 'ListItem: Shortcut reference in uppercase that would become a task list item',
       code: '- [ X ] details\n\n[x]: https://eslint.org',
-    }, // TODO
+    },
     {
+      // `markdownlint` reports this case, but doing so is unsafe.
       name: 'ListItem: Shortcut reference that would become a task list item of an ordered list',
       code: '1. [x ] details\n\n[x]: https://eslint.org',
-    }, // TODO
+    },
 
     // Out of scope
     {
