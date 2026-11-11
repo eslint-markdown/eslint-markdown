@@ -93,13 +93,19 @@ ruleTester('no-multiple-link-space', rule, {
       code: '> [ESLint\n> ](https://eslint.org)',
     },
     {
+      // NOTE: Unlike `markdownlint`, this rule only checks single-line link text.
+      // Whitespace in multiline link text may form hard breaks or belong to
+      // container prefixes for blockquotes, lists, and other structures.
       name: 'Link: Line break alone at both ends of the link text',
       code: '[\nESLint\n](https://eslint.org)',
-    }, // TODO: `markdownlint` reports this.
+    },
     {
+      // NOTE: Unlike `markdownlint`, this rule only checks single-line link text.
+      // Whitespace in multiline link text may form hard breaks or belong to
+      // container prefixes for blockquotes, lists, and other structures.
       name: 'Link: Padding next to a line break inside the link text',
       code: '[ \nESLint\n ](https://eslint.org)',
-    }, // TODO: `markdownlint` reports this.
+    },
     {
       name: 'Link: Line break inside the link text without padding',
       code: '[ES\nLint](https://eslint.org)',
