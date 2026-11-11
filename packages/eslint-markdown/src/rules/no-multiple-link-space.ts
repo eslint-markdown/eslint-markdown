@@ -10,7 +10,7 @@
 
 import type { Link, LinkReference, ListItem, PhrasingContent } from 'mdast';
 import { isAutolink } from '../core/utils/index.js';
-import { URL_RULE_DOCS } from '../core/constants.js';
+import { URL_RULE_DOCS, blankLineChars, lineEndingRegex } from '../core/constants.js';
 import type { RuleModule, SourceRange } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
@@ -26,9 +26,6 @@ type MessageIds = 'noMultipleLinkSpace';
 // --------------------------------------------------------------------------------
 // Helper
 // --------------------------------------------------------------------------------
-
-const spaces = new Set([' ', '\t']);
-const lineEndings = new Set(['\r', '\n']);
 
 // NOTE: GFM reads `[x]` or `[X]` at the head of a list item as a checked task list item.
 const taskListMarkers = new Set(['x', 'X']);
@@ -108,7 +105,7 @@ export default {
 
         // Skip link text spanning multiple lines. It can carry a hard break, a backslash before a
         // line ending, or blockquote markers, which padding removal would break.
-        if ([...lineEndings].some(lineEnding => label.includes(lineEnding))) {
+        if (lineEndingRegex.test(label)) {
           return;
         }
 
@@ -116,13 +113,13 @@ export default {
         let leadingSpaceLength = 0;
         let trailingSpaceLength = 0;
 
-        while (spaces.has(label[leadingSpaceLength])) {
+        while (blankLineChars.has(label[leadingSpaceLength])) {
           leadingSpaceLength++;
         }
 
         while (
           trailingSpaceLength < label.length - leadingSpaceLength &&
-          spaces.has(label[label.length - 1 - trailingSpaceLength])
+          blankLineChars.has(label[label.length - 1 - trailingSpaceLength])
         ) {
           trailingSpaceLength++;
         }
@@ -139,8 +136,8 @@ export default {
             label.slice(leadingSpaceLength, label.length - trailingSpaceLength),
           ) &&
           (charAfterNode === undefined ||
-            spaces.has(charAfterNode) ||
-            lineEndings.has(charAfterNode)) &&
+            blankLineChars.has(charAfterNode) ||
+            lineEndingRegex.test(charAfterNode)) &&
           listItemHeads.has(node)
         ) {
           return;
