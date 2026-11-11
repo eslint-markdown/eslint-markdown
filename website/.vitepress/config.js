@@ -24,7 +24,6 @@ import { createTwoslasher } from 'twoslash-eslint';
 import {
   CONFIG_INSPECTOR_ESLINT_MARKDOWN_PATH,
   CONFIG_INSPECTOR_ESLINT_LUMIR_PATH,
-  vitePluginCodecov,
   vitePluginConfigInspector,
 } from './plugins/index.js';
 
@@ -329,16 +328,7 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [
-      groupIconVitePlugin(),
-      vitePluginConfigInspector(),
-      vitePluginCodecov({
-        // Put the Codecov vite plugin after all other plugins
-        enableBundleAnalysis: process.env.CODECOV !== undefined, // Enable bundle analysis when CODECOV environment variable is defined
-        bundleName: 'website',
-        gitService: 'github',
-      }),
-    ],
+    plugins: [groupIconVitePlugin(), vitePluginConfigInspector()],
   },
 
   transformPageData(pageData) {

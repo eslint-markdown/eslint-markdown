@@ -14,7 +14,6 @@
     "start:vp": "vitepress preview"
   },
   "devDependencies": {
-    "@codecov/bundler-plugin-core": "^2.0.1",
     "@eslint/config-inspector": "^3.5.0",
     "@next/eslint-plugin-next": "^16.4.4",
     "@shikijs/transformers": "^3.20.0",
