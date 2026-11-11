@@ -43,9 +43,6 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
 
-    env:
-      CODECOV: true
-
     steps:
       - name: Set up checkout
         uses: actions/checkout@v7
@@ -67,3 +64,39 @@ jobs:
 
       - name: Upload results to codecov
         uses: codecov/codecov-action@v7
+
+  bundle:
+    if: github.event_name == 'pull_request'
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Set up checkout
+        uses: actions/checkout@v7
+
+      - name: Set up node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm # https://github.com/actions/setup-node#caching-global-packages-data
+
+      - name: Compare bundle sizes with main
+        id: bundle
+        uses: preactjs/compressed-size-action@v2
+        with:
+          base-ref: main
+          install-script: npm ci --no-audit --no-fund --prefer-offline
+          build-script: build
+          pattern: website/build/**/*.{js,css}
+          compression: gzip
+          # Normalize VitePress and config inspector hashes, including lean page chunks.
+          strip-hash: '[.-][\w-]{8}(?=(?:\.lean)?\.(?:js|css)$)'
+
+      - name: Summarize bundle sizes
+        run: printf '%s\n' "$BUNDLE_SIZE_REPORT" >> "$GITHUB_STEP_SUMMARY"
+        env:
+          BUNDLE_SIZE_REPORT: ${{ steps.bundle.outputs.comment-body }}
