@@ -134,9 +134,7 @@ export default {
           node.referenceType === 'shortcut' &&
           trimmedLabel.toLowerCase() === 'x' &&
           listItemHeads.has(node) &&
-          (charAfterNode === undefined ||
-            blankLineChars.has(charAfterNode) ||
-            lineEndingRegex.test(charAfterNode))
+          (blankLineChars.has(charAfterNode) || lineEndingRegex.test(charAfterNode))
         ) {
           return;
         }

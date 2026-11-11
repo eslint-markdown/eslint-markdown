@@ -143,6 +143,21 @@ ruleTester('no-multiple-link-space', rule, {
       code: '- [x ] details\n\n[x]: https://eslint.org',
     },
     {
+      // NOTE: A line ending after `]` can separate a checkbox from its content.
+      name: 'ListItem: Shortcut reference followed by a line break before task content - CR',
+      code: '- [x ]\r  details\n\n[x]: https://eslint.org',
+    },
+    {
+      // NOTE: A line ending after `]` can separate a checkbox from its content.
+      name: 'ListItem: Shortcut reference followed by a line break before task content - LF',
+      code: '- [x ]\n  details\n\n[x]: https://eslint.org',
+    },
+    {
+      // NOTE: A line ending after `]` can separate a checkbox from its content.
+      name: 'ListItem: Shortcut reference followed by a line break before task content - CRLF',
+      code: '- [x ]\r\n  details\n\n[x]: https://eslint.org',
+    },
+    {
       // NOTE: The list marker sits on an earlier line, so the line holding the link has none.
       // `markdownlint` reports this case, but doing so is unsafe.
       name: 'ListItem: Shortcut reference that would become a task list item across lines',
