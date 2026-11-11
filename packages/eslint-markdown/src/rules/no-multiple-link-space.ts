@@ -115,57 +115,52 @@ export default {
         }
 
         // NOTE: Loops are used instead of `/[ \t]+$/`, which backtracks quadratically on long runs.
-        let leadingSpaceLength = 0;
-        let trailingSpaceLength = 0;
+        let linkTextStart = 0;
+        let linkTextEnd = label.length;
 
-        while (blankLineChars.has(label[leadingSpaceLength])) {
-          leadingSpaceLength++;
+        while (blankLineChars.has(label[linkTextStart])) {
+          linkTextStart++;
         }
 
         while (
-          trailingSpaceLength < label.length - leadingSpaceLength &&
-          blankLineChars.has(label[label.length - 1 - trailingSpaceLength])
+          // Keep the ranges disjoint so padding-only labels are reported once.
+          linkTextEnd > linkTextStart &&
+          blankLineChars.has(label[linkTextEnd - 1])
         ) {
-          trailingSpaceLength++;
+          linkTextEnd--;
         }
+
+        const trimmedLabel = label.slice(linkTextStart, linkTextEnd);
+        const charAfterNode = sourceCode.text[nodeEndOffset];
 
         // Skip a shortcut reference that would become a checkbox like `[x]` without its padding.
         // Only a shortcut reference has nothing after its label, and GFM needs a space, tab, or
         // line ending right after the closing bracket.
-        const charAfterNode = sourceCode.text[nodeEndOffset];
-
         if (
           node.type === 'linkReference' &&
           node.referenceType === 'shortcut' &&
-          taskListMarkers.has(
-            label.slice(leadingSpaceLength, label.length - trailingSpaceLength),
-          ) &&
+          taskListMarkers.has(trimmedLabel) &&
+          listItemHeads.has(node) &&
           (charAfterNode === undefined ||
             blankLineChars.has(charAfterNode) ||
-            lineEndingRegex.test(charAfterNode)) &&
-          listItemHeads.has(node)
+            lineEndingRegex.test(charAfterNode))
         ) {
           return;
         }
 
         const paddingRanges: SourceRange[] = [];
 
-        if (leadingSpaceLength === label.length) {
-          // Report padding-only link text like `[ ](url)` once, since both ends cover the same range.
-          paddingRanges.push([labelStartOffset, labelEndOffset]);
-        } else {
-          if (leadingSpaceLength > 0) {
-            paddingRanges.push([labelStartOffset, labelStartOffset + leadingSpaceLength]);
-          }
+        if (linkTextStart > 0) {
+          paddingRanges.push([labelStartOffset, labelStartOffset + linkTextStart]);
+        }
 
-          // If an odd number of backslashes precede the padding, removing it would escape the
-          // closing bracket and turn the link into plain text.
-          if (
-            trailingSpaceLength > 0 &&
-            !escapedTrailingBackslashRegex.test(label.slice(0, -trailingSpaceLength))
-          ) {
-            paddingRanges.push([labelEndOffset - trailingSpaceLength, labelEndOffset]);
-          }
+        // If an odd number of backslashes precede the padding, removing it would escape the
+        // closing bracket and turn the link into plain text.
+        if (
+          linkTextEnd < label.length &&
+          !escapedTrailingBackslashRegex.test(trimmedLabel)
+        ) {
+          paddingRanges.push([labelStartOffset + linkTextEnd, labelEndOffset]);
         }
 
         for (const [startOffset, endOffset] of paddingRanges) {
