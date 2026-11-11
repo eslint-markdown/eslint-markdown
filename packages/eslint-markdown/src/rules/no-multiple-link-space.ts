@@ -10,7 +10,12 @@
 
 import type { Link, LinkReference, ListItem, PhrasingContent } from 'mdast';
 import { isAutolink } from '../core/utils/index.js';
-import { URL_RULE_DOCS, blankLineChars, lineEndingRegex } from '../core/constants.js';
+import {
+  URL_RULE_DOCS,
+  blankLineChars,
+  escapedTrailingBackslashRegex,
+  lineEndingRegex,
+} from '../core/constants.js';
 import type { RuleModule, SourceRange } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
@@ -155,15 +160,10 @@ export default {
 
           // If an odd number of backslashes precede the padding, removing it would escape the
           // closing bracket and turn the link into plain text.
-          let backslashCount = 0;
-
-          while (
-            label[label.length - trailingSpaceLength - 1 - backslashCount] === '\\'
+          if (
+            trailingSpaceLength > 0 &&
+            !escapedTrailingBackslashRegex.test(label.slice(0, -trailingSpaceLength))
           ) {
-            backslashCount++;
-          }
-
-          if (trailingSpaceLength > 0 && backslashCount % 2 === 0) {
             paddingRanges.push([labelEndOffset - trailingSpaceLength, labelEndOffset]);
           }
         }
