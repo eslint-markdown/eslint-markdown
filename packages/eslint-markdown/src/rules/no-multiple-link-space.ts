@@ -147,12 +147,7 @@ export default {
           paddingRanges.push([labelStartOffset, labelStartOffset + linkTextStart]);
         }
 
-        // If an odd number of backslashes precede the padding, removing it would escape the
-        // closing bracket and turn the link into plain text.
-        if (
-          linkTextEnd < label.length &&
-          !escapedTrailingBackslashRegex.test(trimmedLabel)
-        ) {
+        if (linkTextEnd < label.length) {
           paddingRanges.push([labelStartOffset + linkTextEnd, labelEndOffset]);
         }
 
@@ -166,6 +161,15 @@ export default {
             messageId: 'noMultipleLinkSpace',
 
             fix(fixer) {
+              // Removing padding after an odd number of backslashes would escape the closing
+              // bracket and turn the link into plain text, so report it without a fix.
+              if (
+                endOffset === labelEndOffset &&
+                escapedTrailingBackslashRegex.test(trimmedLabel)
+              ) {
+                return null;
+              }
+
               return fixer.removeRange([startOffset, endOffset]);
             },
           });

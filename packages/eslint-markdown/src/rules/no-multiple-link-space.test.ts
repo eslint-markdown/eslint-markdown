@@ -105,13 +105,6 @@ ruleTester('no-multiple-link-space', rule, {
       code: '[\u00a0ES\nLint\u00a0](https://eslint.org)',
     },
 
-    // Link: Backslashes
-    {
-      // NOTE: Removing the padding would leave the backslash escaping the closing bracket.
-      name: 'Link: Backslash before padding at the end of the link text',
-      code: '[ESLint\\ ](https://eslint.org)',
-    }, // TODO: `markdownlint` reports this.
-
     // LinkReference
     {
       name: 'LinkReference: Full reference link without padding',
@@ -473,6 +466,42 @@ ruleTester('no-multiple-link-space', rule, {
       code: '[ESLint\\\\ ](https://eslint.org)',
       output: '[ESLint\\\\](https://eslint.org)',
       errors: [
+        {
+          messageId: 'noMultipleLinkSpace',
+          line: 1,
+          column: 10,
+          endLine: 1,
+          endColumn: 11,
+        },
+      ],
+    },
+    {
+      // NOTE: Removing the padding would leave the backslash escaping the closing bracket.
+      name: 'Link: Backslash before trailing padding is reported without a fix',
+      code: '[ESLint\\ ](https://eslint.org)',
+      output: null,
+      errors: [
+        {
+          messageId: 'noMultipleLinkSpace',
+          line: 1,
+          column: 9,
+          endLine: 1,
+          endColumn: 10,
+        },
+      ],
+    },
+    {
+      name: 'Link: Leading padding is fixed while padding after a backslash is only reported',
+      code: '[ ESLint\\ ](https://eslint.org)',
+      output: '[ESLint\\ ](https://eslint.org)',
+      errors: [
+        {
+          messageId: 'noMultipleLinkSpace',
+          line: 1,
+          column: 2,
+          endLine: 1,
+          endColumn: 3,
+        },
         {
           messageId: 'noMultipleLinkSpace',
           line: 1,
