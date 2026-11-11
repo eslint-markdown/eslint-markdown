@@ -70,19 +70,28 @@ ruleTester('no-multiple-link-space', rule, {
     // Link: Line Breaks
     {
       // NOTE: Removing the line break would drop the hard break it forms with the two spaces.
+      // `markdownlint` reports this case, but doing so is unsafe.
       name: 'Link: Hard break at the end of the link text',
       code: '[ESLint  \n](https://eslint.org)',
-    }, // TODO: `markdownlint` reports this.
+    },
     {
       // NOTE: Removing the line break would leave the backslash escaping the closing bracket.
+      // `markdownlint` reports this case, but doing so is unsafe.
       name: 'Link: Backslash before a line break at the end of the link text',
       code: '[ESLint\\\n](https://eslint.org)',
-    }, // TODO: `markdownlint` reports this.
+    },
     {
       // NOTE: The two spaces form a hard break with the line ending, so they are not padding.
+      // `markdownlint` reports this case, but doing so is unsafe.
       name: 'Link: Hard break at the start of the link text',
       code: '[  \nESLint](https://eslint.org)',
-    }, // TODO: `markdownlint` reports this.
+    },
+    {
+      // NOTE: The blockquote marker of the second line sits between the text and the bracket.
+      // `markdownlint` reports this case, but doing so is unsafe.
+      name: 'Link: Link text spanning lines of a blockquote',
+      code: '> [ESLint\n> ](https://eslint.org)',
+    },
     {
       name: 'Link: Line break alone at both ends of the link text',
       code: '[\nESLint\n](https://eslint.org)',
@@ -90,11 +99,6 @@ ruleTester('no-multiple-link-space', rule, {
     {
       name: 'Link: Padding next to a line break inside the link text',
       code: '[ \nESLint\n ](https://eslint.org)',
-    }, // TODO: `markdownlint` reports this.
-    {
-      // NOTE: The blockquote marker of the second line sits between the text and the bracket.
-      name: 'Link: Link text spanning lines of a blockquote',
-      code: '> [ESLint\n> ](https://eslint.org)',
     }, // TODO: `markdownlint` reports this.
     {
       name: 'Link: Line break inside the link text without padding',
