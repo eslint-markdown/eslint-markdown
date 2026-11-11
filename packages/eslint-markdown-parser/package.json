@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "eslint-markdown-parser",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "type": "module",
   "sideEffects": false,
   "description": "A blazing fast Markdown parser for ESLint.⚡",
