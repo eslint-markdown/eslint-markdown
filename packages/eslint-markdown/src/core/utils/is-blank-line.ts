@@ -4,10 +4,15 @@
  */
 
 // --------------------------------------------------------------------------------
+// Import
+// --------------------------------------------------------------------------------
+
+import { blankLineChars } from '../constants.js';
+
+// --------------------------------------------------------------------------------
 // Helper
 // --------------------------------------------------------------------------------
 
-const whitespaceChars = new Set([' ', '\t']);
 const blockquoteChar = '>';
 
 // --------------------------------------------------------------------------------
@@ -29,7 +34,7 @@ export function isBlankLine(str: string, blockquoteDepth = -1): boolean {
   for (let i = 0; i < strLength; i++) {
     const char = str[i];
 
-    if (!whitespaceChars.has(char)) {
+    if (!blankLineChars.has(char)) {
       if (remainingBlockquotes > 0 && char === blockquoteChar) {
         remainingBlockquotes--;
         continue;
