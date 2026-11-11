@@ -79,13 +79,13 @@ ruleTester('no-multiple-link-space', rule, {
       code: '[ESLint\\\n](https://eslint.org)',
     }, // TODO: `markdownlint` reports this.
     {
-      name: 'Link: Line break alone at both ends of the link text',
-      code: '[\nESLint\n](https://eslint.org)',
-    }, // TODO: `markdownlint` reports this.
-    {
       // NOTE: The two spaces form a hard break with the line ending, so they are not padding.
       name: 'Link: Hard break at the start of the link text',
       code: '[  \nESLint](https://eslint.org)',
+    }, // TODO: `markdownlint` reports this.
+    {
+      name: 'Link: Line break alone at both ends of the link text',
+      code: '[\nESLint\n](https://eslint.org)',
     }, // TODO: `markdownlint` reports this.
     {
       // NOTE: The blockquote marker of the second line sits between the text and the bracket.
