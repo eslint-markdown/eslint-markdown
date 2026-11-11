@@ -20,6 +20,7 @@ import {
   escapedTrailingBackslashRegex,
   gemojiRegex,
   htmlEntityRegex,
+  lineEndingRegex,
   trailingAtxHeadingHashRegex,
 } from './constants.js';
 
@@ -416,6 +417,50 @@ describe('constants', () => {
           assert.notMatch(`\\&copy;`, htmlEntityRegex);
           assert.notMatch(`${'\\'.repeat(3)}&copy;`, htmlEntityRegex);
         });
+      });
+    });
+
+    describe('lineEndingRegex', () => {
+      it('should split lines separated by a line feed', () => {
+        assert.deepStrictEqual('first\nsecond'.split(lineEndingRegex), [
+          'first',
+          'second',
+        ]);
+      });
+
+      it('should split lines separated by a carriage return', () => {
+        assert.deepStrictEqual('first\rsecond'.split(lineEndingRegex), [
+          'first',
+          'second',
+        ]);
+      });
+
+      it('should treat CRLF as a single line ending', () => {
+        assert.deepStrictEqual('first\r\nsecond'.split(lineEndingRegex), [
+          'first',
+          'second',
+        ]);
+      });
+
+      it('should split lines with mixed line endings', () => {
+        assert.deepStrictEqual('first\r\nsecond\rthird\nfourth'.split(lineEndingRegex), [
+          'first',
+          'second',
+          'third',
+          'fourth',
+        ]);
+      });
+
+      it('should preserve blank lines between consecutive line endings', () => {
+        assert.deepStrictEqual('first\r\n\r\nlast'.split(lineEndingRegex), [
+          'first',
+          '',
+          'last',
+        ]);
+      });
+
+      it('should not match other whitespace or Unicode line separators', () => {
+        assert.notMatch(' \t\v\f\u0085\u2028\u2029', lineEndingRegex);
       });
     });
 

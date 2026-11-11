@@ -9,7 +9,11 @@
 // --------------------------------------------------------------------------------
 
 import { getCodeStyle, isBlankLine } from '../core/utils/index.js';
-import { URL_RULE_DOCS, escapedTrailingBackslashRegex } from '../core/constants.js';
+import {
+  URL_RULE_DOCS,
+  escapedTrailingBackslashRegex,
+  lineEndingRegex,
+} from '../core/constants.js';
 import type { RuleModule, SourceRange } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
@@ -36,7 +40,6 @@ type MessageIds = 'noShellDollar';
 
 const dollarCommandRegex = /^[ \t]*\$[ \t]+/u;
 const promptRegex = /\$[ \t]+/u;
-const lineEndingRegex = /\r\n|[\r\n]/u;
 
 // --------------------------------------------------------------------------------
 // Rule Definition
