@@ -62,6 +62,18 @@ export const punctuationWithQuestionMark = [
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
+// #region set
+
+/**
+ * Characters allowed in a CommonMark blank line.
+ * @see https://spec.commonmark.org/0.31.2/#blank-line
+ */
+export const blankLineChars = new Set([' ', '\t']);
+
+// #endregion set
+// --------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------
 // #region regex
 
 /**

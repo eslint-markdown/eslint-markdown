@@ -15,6 +15,7 @@ import {
   nonAsciiPunctuationWithQuestionMark,
   punctuation,
   punctuationWithQuestionMark,
+  blankLineChars,
   asciiPunctuationRegex,
   escapedTrailingBackslashRegex,
   gemojiRegex,
@@ -115,6 +116,36 @@ describe('constants', () => {
           '！',
           '？',
         ]);
+      });
+    });
+  });
+
+  describe('set', () => {
+    describe('blankLineChars', () => {
+      it('should include a space', () => {
+        assert.strictEqual(blankLineChars.has(' '), true);
+      });
+
+      it('should include a tab', () => {
+        assert.strictEqual(blankLineChars.has('\t'), true);
+      });
+
+      it('should not include line endings', () => {
+        assert.strictEqual(blankLineChars.has('\n'), false);
+        assert.strictEqual(blankLineChars.has('\r'), false);
+      });
+
+      it('should not include vertical tabs or form feeds', () => {
+        assert.strictEqual(blankLineChars.has('\v'), false);
+        assert.strictEqual(blankLineChars.has('\f'), false);
+      });
+
+      it('should not include a non-breaking space', () => {
+        assert.strictEqual(blankLineChars.has('\u00A0'), false);
+      });
+
+      it('should not include a letter', () => {
+        assert.strictEqual(blankLineChars.has('a'), false);
       });
     });
   });
