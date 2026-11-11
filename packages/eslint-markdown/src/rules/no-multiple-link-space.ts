@@ -29,13 +29,6 @@ type RuleOptions = [];
 type MessageIds = 'noMultipleLinkSpace';
 
 // --------------------------------------------------------------------------------
-// Helper
-// --------------------------------------------------------------------------------
-
-// NOTE: GFM reads `[x]` or `[X]` at the head of a list item as a checked task list item.
-const taskListMarkers = new Set(['x', 'X']);
-
-// --------------------------------------------------------------------------------
 // Rule Definition
 // --------------------------------------------------------------------------------
 
@@ -133,13 +126,13 @@ export default {
         const trimmedLabel = label.slice(linkTextStart, linkTextEnd);
         const charAfterNode = sourceCode.text[nodeEndOffset];
 
-        // Skip a shortcut reference that would become a checkbox like `[x]` without its padding.
+        // Skip a shortcut reference that would become a checkbox like `[x]` or `[X]` without its padding.
         // Only a shortcut reference has nothing after its label, and GFM needs a space, tab, or
         // line ending right after the closing bracket.
         if (
           node.type === 'linkReference' &&
           node.referenceType === 'shortcut' &&
-          taskListMarkers.has(trimmedLabel) &&
+          trimmedLabel.toLowerCase() === 'x' &&
           listItemHeads.has(node) &&
           (charAfterNode === undefined ||
             blankLineChars.has(charAfterNode) ||
