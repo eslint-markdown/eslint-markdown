@@ -9,6 +9,7 @@
 // --------------------------------------------------------------------------------
 
 import type { Link, LinkReference, ListItem, PhrasingContent } from 'mdast';
+import { isAutolink } from '../core/utils/index.js';
 import { URL_RULE_DOCS } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
@@ -84,14 +85,17 @@ export default {
 
       'link, linkReference'(node: Link | LinkReference) {
         const { children } = node;
-        const [nodeStartOffset, nodeEndOffset] = sourceCode.getRange(node);
 
         // Skip autolinks like `<https://example.com>` and GFM autolink literals like
         // `https://example.com`, which have no brackets, and empty link text like `[](url)`.
-        if (sourceCode.text[nodeStartOffset] !== '[' || children.length === 0) {
+        if (
+          (node.type === 'link' && isAutolink(node, sourceCode)) ||
+          children.length === 0
+        ) {
           return;
         }
 
+        const [nodeStartOffset, nodeEndOffset] = sourceCode.getRange(node);
         const [, lastChildEndOffset] = sourceCode.getRange(children[children.length - 1]);
 
         // The opening bracket is the first character of the node. The closing bracket is the first
