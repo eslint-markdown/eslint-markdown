@@ -2,6 +2,8 @@ lumirlumir/lumirlumir:
   - source: ./.github/sync-client.yml
     dest: ./clients/npm-eslint-markdown.yml
   # ./.github/workflows
+  - source: ./.github/workflows/bundle.yml
+    dest: ./configs/.github/workflows/bundle.yml
   - source: ./.github/workflows/ci.yml
     dest: ./configs/.github/workflows/ci.yml
   - source: ./.github/workflows/publish.yml
