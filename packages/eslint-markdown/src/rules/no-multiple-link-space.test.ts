@@ -88,13 +88,13 @@ ruleTester('no-multiple-link-space', rule, {
       code: '[\nESLint\n](https://eslint.org)',
     }, // TODO: `markdownlint` reports this.
     {
+      name: 'Link: Padding next to a line break inside the link text',
+      code: '[ \nESLint\n ](https://eslint.org)',
+    }, // TODO: `markdownlint` reports this.
+    {
       // NOTE: The blockquote marker of the second line sits between the text and the bracket.
       name: 'Link: Link text spanning lines of a blockquote',
       code: '> [ESLint\n> ](https://eslint.org)',
-    }, // TODO: `markdownlint` reports this.
-    {
-      name: 'Link: Padding next to a line break inside the link text',
-      code: '[ \nESLint\n ](https://eslint.org)',
     }, // TODO: `markdownlint` reports this.
     {
       name: 'Link: Line break inside the link text without padding',
