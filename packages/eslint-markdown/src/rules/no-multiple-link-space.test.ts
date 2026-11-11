@@ -25,106 +25,118 @@ ruleTester('no-multiple-link-space', rule, {
       name: 'Empty string',
       code: '  ',
     },
+
+    // Link
     {
-      name: 'Inline link without padding',
-      code: '[ESLint](https://eslint.org)',
-    },
-    {
-      name: 'Full reference link without padding',
-      code: '[ESLint][eslint]\n\n[eslint]: https://eslint.org',
-    },
-    {
-      name: 'Collapsed reference link without padding',
-      code: '[ESLint][]\n\n[ESLint]: https://eslint.org',
-    },
-    {
-      name: 'Shortcut reference link without padding',
-      code: '[ESLint]\n\n[ESLint]: https://eslint.org',
-    },
-    {
-      name: 'Empty link text',
+      name: 'Link: Empty link text',
       code: '[](https://eslint.org)',
     },
     {
-      name: 'Spaces between words of the link text',
+      name: 'Link: Inline link without padding',
+      code: '[ESLint](https://eslint.org)',
+    },
+    {
+      name: 'Link: Spaces between words of the link text',
       code: '[a b](https://eslint.org)',
     },
     {
-      name: 'Spaces outside the link',
+      name: 'Link: Spaces outside the link',
       code: 'a [ESLint](https://eslint.org) b',
     },
     {
-      name: 'Spaces inside the destination',
+      name: 'Link: Spaces inside the destination',
       code: '[ESLint](<https://eslint.org/a b>)',
     },
     {
       // NOTE: A no-break space is not padding under this rule, unlike `MD039`.
-      name: 'No-break space at both ends of the link text',
+      name: 'Link: No-break space at both ends of the link text',
       code: '[\u00a0ESLint\u00a0](https://eslint.org)',
     },
 
-    // Out of scope
+    // Link(Autolink)
     {
-      name: 'Image with padding is out of scope',
-      code: '![ ESLint ](https://eslint.org/logo.png)',
-    },
-    {
-      name: 'Image reference with padding is out of scope',
-      code: '![ ESLint ][eslint]\n\n[eslint]: https://eslint.org/logo.png',
-    },
-    {
-      name: 'Autolink followed by trailing spaces',
+      name: 'Link(Autolink): Followed by trailing spaces',
       code: '<https://eslint.org>  ',
     },
     {
-      name: 'Autolink followed by brackets that are not a link',
+      name: 'Link(Autolink): Followed by brackets that are not a link',
       code: '<https://eslint.org> [ ESLint ]',
     },
     {
-      name: 'GFM literal autolink followed by brackets that are not a link',
+      name: 'Link(Autolink): GFM literal autolink followed by brackets that are not a link',
       code: 'https://eslint.org [ ESLint ]',
-    },
-    {
-      name: 'Bracket that is not a link',
-      code: '[ ESLint ]',
-    },
-    {
-      name: 'Inline code containing a padded link',
-      code: '`[ ESLint ](https://eslint.org)`',
-    },
-    {
-      name: 'Fenced code block containing a padded link',
-      code: '```md\n[ ESLint ](https://eslint.org)\n```',
+      language: 'markdown/gfm',
     },
 
-    // Line breaks
+    // Link(Line Breaks)
     {
       // NOTE: Removing the line break would drop the hard break it forms with the two spaces.
-      name: 'Hard break at the end of the link text',
+      name: 'Link(Line Breaks): Hard break at the end of the link text',
       code: '[ESLint  \n](https://eslint.org)',
     },
     {
       // NOTE: Removing the line break would leave the backslash escaping the closing bracket.
-      name: 'Backslash before a line break at the end of the link text',
+      name: 'Link(Line Breaks): Backslash before a line break at the end of the link text',
       code: '[ESLint\\\n](https://eslint.org)',
     },
     {
-      name: 'Line break alone at both ends of the link text',
+      name: 'Link(Line Breaks): Line break alone at both ends of the link text',
       code: '[\nESLint\n](https://eslint.org)',
     },
     {
       // NOTE: The two spaces form a hard break with the line ending, so they are not padding.
-      name: 'Hard break at the start of the link text',
+      name: 'Link(Line Breaks): Hard break at the start of the link text',
       code: '[  \nESLint](https://eslint.org)',
     },
     {
       // NOTE: The blockquote marker of the second line sits between the text and the bracket.
-      name: 'Link text spanning lines of a blockquote',
+      name: 'Link(Line Breaks): Link text spanning lines of a blockquote',
       code: '> [ESLint\n> ](https://eslint.org)',
     },
     {
-      name: 'Padding next to a line break inside the link text',
+      name: 'Link(Line Breaks): Padding next to a line break inside the link text',
       code: '[ \nESLint\n ](https://eslint.org)',
+    },
+
+    // LinkReference
+    {
+      name: 'LinkReference: Full reference link without padding',
+      code: '[ESLint][eslint]\n\n[eslint]: https://eslint.org',
+    },
+    {
+      name: 'LinkReference: Collapsed reference link without padding',
+      code: '[ESLint][]\n\n[ESLint]: https://eslint.org',
+    },
+    {
+      name: 'LinkReference: Shortcut reference link without padding',
+      code: '[ESLint]\n\n[ESLint]: https://eslint.org',
+    },
+    {
+      // NOTE: A no-break space is not padding under this rule, unlike `MD039`.
+      name: 'LinkReference: No-break space at both ends of the link text',
+      code: '[\u00a0ESLint\u00a0][eslint]\n\n[eslint]: https://eslint.org',
+    },
+
+    // Out of scope
+    {
+      name: 'Image: Image with padding is out of scope',
+      code: '![ ESLint ](https://eslint.org/logo.png)',
+    },
+    {
+      name: 'ImageReference: Image reference with padding is out of scope',
+      code: '![ ESLint ][eslint]\n\n[eslint]: https://eslint.org/logo.png',
+    },
+    {
+      name: 'Text: Bracket that is not a link',
+      code: '[ ESLint ]',
+    },
+    {
+      name: 'InlineCode: Inline code containing a padded link',
+      code: '`[ ESLint ](https://eslint.org)`',
+    },
+    {
+      name: 'Code: Code block containing a padded link',
+      code: '```md\n[ ESLint ](https://eslint.org)\n```',
     },
 
     // Backslashes
