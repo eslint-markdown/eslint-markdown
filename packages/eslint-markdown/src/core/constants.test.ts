@@ -15,10 +15,12 @@ import {
   nonAsciiPunctuationWithQuestionMark,
   punctuation,
   punctuationWithQuestionMark,
+  blankLineChars,
   asciiPunctuationRegex,
   escapedTrailingBackslashRegex,
   gemojiRegex,
   htmlEntityRegex,
+  lineEndingRegex,
   trailingAtxHeadingHashRegex,
 } from './constants.js';
 
@@ -115,6 +117,36 @@ describe('constants', () => {
           '！',
           '？',
         ]);
+      });
+    });
+  });
+
+  describe('set', () => {
+    describe('blankLineChars', () => {
+      it('should include a space', () => {
+        assert.strictEqual(blankLineChars.has(' '), true);
+      });
+
+      it('should include a tab', () => {
+        assert.strictEqual(blankLineChars.has('\t'), true);
+      });
+
+      it('should not include line endings', () => {
+        assert.strictEqual(blankLineChars.has('\n'), false);
+        assert.strictEqual(blankLineChars.has('\r'), false);
+      });
+
+      it('should not include vertical tabs or form feeds', () => {
+        assert.strictEqual(blankLineChars.has('\v'), false);
+        assert.strictEqual(blankLineChars.has('\f'), false);
+      });
+
+      it('should not include a non-breaking space', () => {
+        assert.strictEqual(blankLineChars.has('\u00A0'), false);
+      });
+
+      it('should not include a letter', () => {
+        assert.strictEqual(blankLineChars.has('a'), false);
       });
     });
   });
@@ -385,6 +417,50 @@ describe('constants', () => {
           assert.notMatch(`\\&copy;`, htmlEntityRegex);
           assert.notMatch(`${'\\'.repeat(3)}&copy;`, htmlEntityRegex);
         });
+      });
+    });
+
+    describe('lineEndingRegex', () => {
+      it('should split lines separated by a line feed', () => {
+        assert.deepStrictEqual('first\nsecond'.split(lineEndingRegex), [
+          'first',
+          'second',
+        ]);
+      });
+
+      it('should split lines separated by a carriage return', () => {
+        assert.deepStrictEqual('first\rsecond'.split(lineEndingRegex), [
+          'first',
+          'second',
+        ]);
+      });
+
+      it('should treat CRLF as a single line ending', () => {
+        assert.deepStrictEqual('first\r\nsecond'.split(lineEndingRegex), [
+          'first',
+          'second',
+        ]);
+      });
+
+      it('should split lines with mixed line endings', () => {
+        assert.deepStrictEqual('first\r\nsecond\rthird\nfourth'.split(lineEndingRegex), [
+          'first',
+          'second',
+          'third',
+          'fourth',
+        ]);
+      });
+
+      it('should preserve blank lines between consecutive line endings', () => {
+        assert.deepStrictEqual('first\r\n\r\nlast'.split(lineEndingRegex), [
+          'first',
+          '',
+          'last',
+        ]);
+      });
+
+      it('should not match other whitespace or Unicode line separators', () => {
+        assert.notMatch(' \t\v\f\u0085\u2028\u2029', lineEndingRegex);
       });
     });
 
