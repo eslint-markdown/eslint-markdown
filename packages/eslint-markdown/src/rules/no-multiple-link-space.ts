@@ -11,7 +11,7 @@
 import type { Link, LinkReference, ListItem, PhrasingContent } from 'mdast';
 import { isAutolink } from '../core/utils/index.js';
 import { URL_RULE_DOCS } from '../core/constants.js';
-import type { RuleModule } from '../core/types.js';
+import type { RuleModule, SourceRange } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
 // Typedef
@@ -145,7 +145,7 @@ export default {
           return;
         }
 
-        const paddingRanges: [number, number][] = [];
+        const paddingRanges: SourceRange[] = [];
 
         if (leadingSpaceLength === label.length) {
           // Report padding-only link text like `[ ](url)` once, since both ends cover the same
