@@ -70,30 +70,30 @@ ruleTester('no-multiple-link-space', rule, {
     // Link: Line Breaks
     {
       // NOTE: Removing the line break would drop the hard break it forms with the two spaces.
-      name: 'Link(Line Breaks): Hard break at the end of the link text',
+      name: 'Link: Hard break at the end of the link text',
       code: '[ESLint  \n](https://eslint.org)',
     }, // TODO: `markdownlint` reports this.
     {
       // NOTE: Removing the line break would leave the backslash escaping the closing bracket.
-      name: 'Link(Line Breaks): Backslash before a line break at the end of the link text',
+      name: 'Link: Backslash before a line break at the end of the link text',
       code: '[ESLint\\\n](https://eslint.org)',
     }, // TODO: `markdownlint` reports this.
     {
-      name: 'Link(Line Breaks): Line break alone at both ends of the link text',
+      name: 'Link: Line break alone at both ends of the link text',
       code: '[\nESLint\n](https://eslint.org)',
     }, // TODO: `markdownlint` reports this.
     {
       // NOTE: The two spaces form a hard break with the line ending, so they are not padding.
-      name: 'Link(Line Breaks): Hard break at the start of the link text',
+      name: 'Link: Hard break at the start of the link text',
       code: '[  \nESLint](https://eslint.org)',
     }, // TODO: `markdownlint` reports this.
     {
       // NOTE: The blockquote marker of the second line sits between the text and the bracket.
-      name: 'Link(Line Breaks): Link text spanning lines of a blockquote',
+      name: 'Link: Link text spanning lines of a blockquote',
       code: '> [ESLint\n> ](https://eslint.org)',
     }, // TODO: `markdownlint` reports this.
     {
-      name: 'Link(Line Breaks): Padding next to a line break inside the link text',
+      name: 'Link: Padding next to a line break inside the link text',
       code: '[ \nESLint\n ](https://eslint.org)',
     }, // TODO: `markdownlint` reports this.
     {
