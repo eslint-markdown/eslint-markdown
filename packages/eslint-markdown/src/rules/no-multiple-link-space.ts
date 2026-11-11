@@ -96,13 +96,14 @@ export default {
         }
 
         const [nodeStartOffset, nodeEndOffset] = sourceCode.getRange(node);
-        const [, lastChildEndOffset] = sourceCode.getRange(children[children.length - 1]);
+        const [, lastChildNodeEndOffset] = sourceCode.getRange(
+          children[children.length - 1],
+        );
 
         // The opening bracket is the first character of the node. The closing bracket is the first
-        // one after the last child, because padding next to a line break can sit outside the
-        // children.
+        // one after the last child, because padding next to a line break can sit outside the children.
         const labelStartOffset = nodeStartOffset + 1;
-        const labelEndOffset = sourceCode.text.indexOf(']', lastChildEndOffset);
+        const labelEndOffset = sourceCode.text.indexOf(']', lastChildNodeEndOffset);
         const label = sourceCode.text.slice(labelStartOffset, labelEndOffset);
 
         // Skip link text spanning multiple lines. It can carry a hard break, a backslash before a
