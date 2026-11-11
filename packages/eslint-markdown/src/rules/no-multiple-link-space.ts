@@ -146,8 +146,7 @@ export default {
         const paddingRanges: SourceRange[] = [];
 
         if (leadingSpaceLength === label.length) {
-          // Report padding-only link text like `[ ](url)` once, since both ends cover the same
-          // range.
+          // Report padding-only link text like `[ ](url)` once, since both ends cover the same range.
           paddingRanges.push([labelStartOffset, labelEndOffset]);
         } else {
           if (leadingSpaceLength > 0) {
