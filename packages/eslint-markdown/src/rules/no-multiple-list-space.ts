@@ -40,6 +40,8 @@ export default {
   meta: {
     type: 'layout',
 
+    languages: ['markdown/commonmark', 'markdown/gfm'],
+
     docs: {
       description: 'Enforce spaces after list markers',
       dialects: ['CommonMark', 'GFM'],
@@ -88,8 +90,6 @@ export default {
       noMultipleListSpace:
         'List marker should be followed by {{ expected }} space(s), not {{ actual }}.',
     },
-
-    language: 'markdown',
   },
 
   create(context) {

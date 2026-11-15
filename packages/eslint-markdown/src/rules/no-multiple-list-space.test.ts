@@ -7,7 +7,7 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import ruleTester from '../tests/rule-tester';
+import ruleTester from '../tests/rule-tester.js';
 import rule from './no-multiple-list-space.js';
 
 // --------------------------------------------------------------------------------
