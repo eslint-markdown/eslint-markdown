@@ -31,7 +31,7 @@ jobs:
 
       - name: Compare bundle sizes with main
         id: bundle
-        uses: preactjs/compressed-size-action@v2
+        uses: preactjs/compressed-size-action@v3
         with:
           base-ref: main
           install-script: npm ci --no-audit --no-fund --prefer-offline
