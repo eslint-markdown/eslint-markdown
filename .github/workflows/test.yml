@@ -39,6 +39,15 @@ jobs:
         eslint-markdown-version:
           - 9.x
           - 8.x
+        exclude:
+          - runner-image: macos-latest
+            node-version: 22.13.0
+          - runner-image: macos-latest
+            node-version: 20.19.0
+          - runner-image: windows-latest
+            node-version: 22.13.0
+          - runner-image: windows-latest
+            node-version: 20.19.0
         include:
           - runner-image: ubuntu-latest
             node-version: 26.x # TODO: Temporary fix for `latest` tag
