@@ -23,6 +23,6 @@
     "eslint-markdown-parser": "^0.22.0",
     "twoslash-eslint": "^0.3.4",
     "vitepress": "2.0.0-alpha.17",
-    "vitepress-plugin-group-icons": "^1.8.1"
+    "vitepress-plugin-group-icons": "^1.8.2"
   }
 }
