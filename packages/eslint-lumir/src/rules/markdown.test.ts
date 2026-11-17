@@ -23,7 +23,7 @@ const prefix = 'markdown/';
 describe('markdown', () => {
   it('should lint Markdown with the configured Markdown rules', () => {
     const messages = new Linter().verify('# Title\n\n### Details\n', {
-      language: 'markdown/commonmark',
+      language: 'markdown/gfm',
       plugins: markdownPlugin,
       rules: markdownRules,
     });
