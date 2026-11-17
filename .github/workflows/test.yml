@@ -37,8 +37,17 @@ jobs:
           - 10.x
           - 9.x
         eslint-markdown-version:
+          - 9.x
           - 8.x
         include:
+          - runner-image: ubuntu-latest
+            node-version: 26.x # TODO: Temporary fix for `latest` tag
+            eslint-version: 10.0.0
+            eslint-markdown-version: 9.0.0
+          - runner-image: ubuntu-latest
+            node-version: 26.x # TODO: Temporary fix for `latest` tag
+            eslint-version: 9.39.0
+            eslint-markdown-version: 9.0.0
           - runner-image: ubuntu-latest
             node-version: 26.x # TODO: Temporary fix for `latest` tag
             eslint-version: 10.0.0
