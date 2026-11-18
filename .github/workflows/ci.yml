@@ -38,6 +38,8 @@ jobs:
         run: npm run build --if-present
 
       - name: Lint
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: npm run lint
 
   coverage:
