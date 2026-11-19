@@ -58,6 +58,7 @@ export default function all(plugin: ESLint.Plugin) {
       'md/no-trailing-heading-punctuation': 'error',
       'md/no-url-trailing-slash': 'error',
       'md/require-capitalization': 'error',
+      'md/require-eol-last': 'error',
       'md/require-heading-id': 'error',
       'md/require-image-title': 'error',
       'md/require-link-title': 'error',
