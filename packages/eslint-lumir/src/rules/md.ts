@@ -174,6 +174,12 @@ export const mdRules = {
   'md/no-multiple-atx-heading-space': ['error', { checkClosedHeading: true }],
 
   /**
+   * Disallow multiple spaces around link text.
+   * @see https://eslint-markdown.lumir.page/docs/rules/no-multiple-link-space
+   */
+  'md/no-multiple-link-space': 'error',
+
+  /**
    * Disallow dollar signs before commands without showing output.
    * @see https://eslint-markdown.lumir.page/docs/rules/no-shell-dollar
    */

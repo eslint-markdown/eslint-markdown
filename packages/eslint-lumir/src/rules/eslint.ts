@@ -1171,6 +1171,26 @@ export const eslintRules = {
       property: 'pow',
       message: 'Use the exponentiation operator (`**`) instead.',
     },
+    {
+      object: 'assert',
+      property: 'equal',
+      message: 'Use `assert.strictEqual` instead of `assert.equal`.',
+    },
+    {
+      object: 'assert',
+      property: 'notEqual',
+      message: 'Use `assert.notStrictEqual` instead of `assert.notEqual`.',
+    },
+    {
+      object: 'assert',
+      property: 'deepEqual',
+      message: 'Use `assert.deepStrictEqual` instead of `assert.deepEqual`.',
+    },
+    {
+      object: 'assert',
+      property: 'notDeepEqual',
+      message: 'Use `assert.notDeepStrictEqual` instead of `assert.notDeepEqual`.',
+    },
   ],
 
   /**

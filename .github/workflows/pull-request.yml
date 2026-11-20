@@ -2,7 +2,7 @@ name: pull-request
 
 on:
   pull_request_target:
-    types: [opened, edited, synchronize]
+    types: [opened, edited, synchronize, ready_for_review, reopened]
 
 permissions:
   pull-requests: write
@@ -13,6 +13,8 @@ concurrency:
 
 jobs:
   lint-pull-request-title:
+    if: github.event.pull_request.draft == false
+
     runs-on: ubuntu-slim
 
     steps:
@@ -145,7 +147,7 @@ jobs:
       scope: ${{ steps.lint-pull-request-title.outputs.scope }}
 
   labeler:
-    if: github.event.action == 'opened' || github.event.changes.title || github.event.action == 'synchronize'
+    if: github.event.pull_request.draft == false && (github.event.action != 'edited' || github.event.changes.title)
 
     runs-on: ubuntu-slim
 

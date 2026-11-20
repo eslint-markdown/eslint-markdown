@@ -62,6 +62,18 @@ export const punctuationWithQuestionMark = [
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
+// #region set
+
+/**
+ * Characters allowed in a CommonMark blank line.
+ * @see https://spec.commonmark.org/0.31.2/#blank-line
+ */
+export const blankLineChars = new Set([' ', '\t']);
+
+// #endregion set
+// --------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------
 // #region regex
 
 /**
@@ -90,6 +102,12 @@ export const gemojiRegex =
  */
 export const htmlEntityRegex =
   /(?<=(?<!\\)(?:\\{2})*)&(?:#\d+|#[xX][\da-fA-F]+|[a-zA-Z]{2,31}|blk\d{2}|emsp1[34]|frac\d{2}|sup\d|there4);/;
+
+/**
+ * Matches a CommonMark line ending, treating CRLF as a single line ending.
+ * @see https://spec.commonmark.org/0.31.2/#line-ending
+ */
+export const lineEndingRegex = /\r\n|[\r\n]/u;
 
 /**
  * Matches the closing sequence of a closed ATX heading.

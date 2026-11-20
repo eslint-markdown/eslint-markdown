@@ -33,5 +33,10 @@
     "markdown"
   ],
   "stylelint.validate": ["css", "scss"],
-  "C_Cpp.clang_format_fallbackStyle": "Google"
+  "C_Cpp.clang_format_fallbackStyle": "Google",
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "file": "./AGENTS.md"
+    }
+  ]
 }
