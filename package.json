@@ -67,7 +67,7 @@
     "@types/node": "~20.19.43",
     "@vitest/coverage-v8": "^4.1.12",
     "editorconfig-checker": "^6.2.0",
-    "eslint": "^10.14.0",
+    "eslint": "^10.15.0",
     "eslint-lumir": "file:packages/eslint-lumir",
     "eslint-markdown": "file:packages/eslint-markdown",
     "husky": "^9.1.7",
