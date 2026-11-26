@@ -62,6 +62,12 @@ export const mdRules = {
   'md/consistent-emphasis-style': ['error', { style: '*' }],
 
   /**
+   * Disallow heading indentation.
+   * @see https://eslint-markdown.lumir.page/docs/rules/consistent-heading-indent
+   */
+  'md/consistent-heading-indent': 'error',
+
+  /**
    * Enforce consistent heading style.
    * @see https://eslint-markdown.lumir.page/docs/rules/consistent-heading-style
    */
